@@ -36,11 +36,11 @@ Branding, Group Page and Video Planning  | • Will have in person recording and
 Item | By Who? | Notes |
 ---- | ---- | ---- |
 Team Name | group vote 6.5/9 | Mariposa (Project Mariposa?) |
-Role: UI | choice | @Alvin Mangaliman @Jeremy Lei @Brian_Dinh @Noah Terminello @Andrew Man |
-Role: Backend | choice | @Brian_Dinh @Andrew Man @Yinlong Mi @Xuying He @Liam Golly |
-Role: Github Repo | choice | @Chi Zhang @Jeremy Lei @Liam Golly @Alvin Mangaliman |
-Role: DevOps | choice | @Chi Zhang @Noah Terminello |
-Role: Testing | choice | @Andrew Man @Xuying He @Yinlong Mi @Brian_Dinh |
+Role: UI | choice | Alvin, Jeremy, Brian, Noah, Andrew |
+Role: Backend | choice | Brian, Andrew, Yinlong, Xuying, Liam |
+Role: Github Repo | choice | Chi Zhang, Jeremy, Liam, Alvin |
+Role: DevOps | choice | Chi, Noah |
+Role: Testing | choice | Andrew, Xuying, Yinlong, Brian |
 Meeting type | vote | Hybrid Weekly Meeting (kind of by defaul due to mixed vote)|
 Note-taking/group format | collective agreement? | compile group meeting notes into the main weekly one |
 
