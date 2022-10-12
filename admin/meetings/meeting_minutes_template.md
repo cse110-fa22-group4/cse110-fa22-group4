@@ -39,5 +39,10 @@ item | who | notes |
 | ---- | ---- | ---- | ---- |
 | | item | who | due_date |
 
+## Unfinished Items
+| Item | Who | When |
+| ---- | ---- | ---- |
+| item | who | when |
+
 ## Other Notes & Information
 N/A

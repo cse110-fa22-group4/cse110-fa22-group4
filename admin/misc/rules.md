@@ -1,4 +1,4 @@
-# Team Working Agreement
+# Team Working Agreement (In Progress)
 Term: Autumn 2022
 
 Creation: 10/11/2022
