@@ -7,18 +7,18 @@ Team 4 - (Team Name)
 
 Team member info:
 
-| Name                  | Email                         | Phone         |
-| --------------------- | ----------------------------- | ------------- |
-| teammate 1            | Title                         |               |
-| teammate 1            | Title                         |               |
-| teammate 1            | Title                         |               |
-| teammate 1            | Title                         |               |
-| teammate 1            | Title                         |               |
-| teammate 1            | Title                         |               |
-| teammate 1            | Title                         |               |
-| teammate 1            | Title                         |               |
-| teammate 1            | Title                         |               |
-| teammate 1            | Title                         |               |
+| Name              | Email                         | Phone         |
+| ----------------- | ----------------------------- | ------------- |
+| Brian Dinh        |  |  |
+| Liam Golly        |  |  |
+| Xuying He         |  |  |
+| Jeremy Lei        |  |  |
+| Andrew Man        |  |  |
+| Alvin Mangaliman  |  |  |
+| Yinlong Mi        |  |  |
+| Noah Terminello   |  |  |
+| Jiseung Yoo       |  |  |
+| Chi Zang          |  |  |
 
 
 1) Primary Means of Communication and Expectations
