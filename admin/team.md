@@ -9,7 +9,7 @@ _(team values...)_<br>
 | Liam Golly        | (about) | [view](https://github.com/liamgolly)      |
 | Xuying He         | (about) | [view](https://github.com/pika-chu11)     |
 | Jeremy Lei        | (about) | [view](https://github.com/countpearsauce) |
-| Andrew Man        | Hello World, this is Andrew from Team Mariposa. I am a current Computer Science major with interests in Math and Economics as well so the application of all 3 domains would be something like trading algos.   | [view](https://github.com/AndrwMan) |   
+| Andrew Man        | Hello World, this is Andrew from Team Mariposa. I am a current Computer Science major with interests in Math and Economics as well so the application of all 3 domains would be something like trading algos. Though this class is focused on web developement I am still excited to polish my skills   | [view](https://github.com/AndrwMan) |   
 | Alvin Mangaliman  | (about) | [view](https://github.com/realhumanbeen)  |
 | Yinlong Mi        | (about) | [view](https://github.com/YinlongMi)      |
 | Noah Terminello   | (about) | [view](https://github.com/owadg)          |
