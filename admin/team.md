@@ -1,7 +1,9 @@
 # Team Mariposa
  
-![Team Logo](mariposalogo.png)
- 
+<img src="mariposalogo.png" alt="Team Logo" width="200"/>
+
+<br>
+
 ## Team Values
 We aim to promote a positive work environment, where opinions are respected and humility is appreciated. We aim to work together as equals towards a common goal. We aim to help each other in our time of need. We aim to encourage collaboration amongst all members to fuse our ideas into one great creation. We strive to become better programmers every day and improve ourselves and our product. We aim to perform to the best of our ability, striving for a product that goes beyond the bare minimum. We aim to value our clients as our own and give them the best experience.
  
