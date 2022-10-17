@@ -36,10 +36,10 @@ Furthermore smaller subgroup meetings will be held at date and times determined 
 
 This element of the team working agreement is the list of rules/agreements or the contract that all members agree to live by.
 
-Attend meetings at agreed times 
-Complete standups within a 24 hour timeframe. 
-Make a good faith attempt to complete your tasks, but if you need assistance communicate with group members for help. Initially this entails consulting with subgroup members then escalating the issue to the wider team if needed.  
-Members are expected to foster a healthy environment through respect and consideration of other members of the group. 
+- Attend meetings at agreed times 
+- Complete standups within a 24 hour timeframe. 
+- Make a good faith attempt to complete your tasks, but if you need assistance communicate with group members for help. Initially this entails consulting with subgroup members then escalating the issue to the wider team if needed.  
+- Members are expected to foster a healthy environment through respect and consideration of other members of the group. 
 <br><br>
 
 ### 4) Specific SubTeam Responsibilities
