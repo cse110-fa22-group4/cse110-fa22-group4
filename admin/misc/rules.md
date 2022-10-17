@@ -18,7 +18,7 @@
 | Jeremy Lei | 6696490316 | jlei@ucsd.edu |
 | Xuying He | 6268220548 | xuh013@ucsd.edu |
 | Yinlong Mi |  |  |
-| Jiseung Yoo |  |  |
+| Jiseung Yoo | 6616065252 | jiyoo@ucsd.edu |
 <br>
 
 ### 1) Primary Means of Communication and Expectations

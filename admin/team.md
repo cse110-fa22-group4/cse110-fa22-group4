@@ -1,7 +1,7 @@
 # Team Mariposa
  
-(team logo)
- 
+<img src="branding/mariposalogo.png" alt="Team Logo" width="250" />
+
 ## Team Values
 We aim to promote a positive work environment, where opinions are respected and humility is appreciated. We aim to work together as equals towards a common goal. We aim to help each other in our time of need. We aim to encourage collaboration amongst all members to fuse our ideas into one great creation. We strive to become better programmers every day and improve ourselves and our product. We aim to perform to the best of our ability, striving for a product that goes beyond the bare minimum. We aim to value our clients as our own and give them the best experience.
  
@@ -15,5 +15,5 @@ We aim to promote a positive work environment, where opinions are respected and 
 | Alvin Mangaliman  | Greetings! I’m Alvin and I'm majoring in Computer Science. I’m interested in computer graphics and augmented reality. My hobbies include running, bowling, and all things music! | [view](https://github.com/realhumanbeen)  |
 | Yinlong Mi        | (about) | [view](https://github.com/YinlongMi)      |
 | Noah Terminello   | Hi everyone! My name is Noah. I'm a Math-CS major. In my free time, I like to inline skate and play video games. A fun fact about me: I have over 100 hours of experience riding trains. I'm excited to do some web development with everyone. | [view](https://github.com/owadg)          |
-| Jiseung Yoo       | (about) | [view](https://github.com/wltmd153)       |
+| Jiseung Yoo       | Hi, I am Jiseung Yoo who is majoring in CSE. I am currently in my 4th year. I have confidence in backend coding and structural coding using C++. In the meantime, I work on my project, which has a month of due date from now or play newly released games. | [view](https://github.com/wltmd153)       |
 | Chi Zang          | Hi, I am Chi Zhang from Warren College from Team Mariposa, currently majoring in computer science under the CSE department. This is the third year for me at UCSD. I have computer graphics, frontend, UI, and data science. I love watching anime and making music in my free time. | [view](https://github.com/chizhang9135)   |
