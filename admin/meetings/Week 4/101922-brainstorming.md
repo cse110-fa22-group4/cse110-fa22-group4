@@ -40,6 +40,8 @@ project | vote |
 ---- | ---- |
 out of three | art:5, garden:7, local spotify:8 |
 out of two | garden: 5, spotify: 3 |
+spotify | So actually we are going with local music manager idea since people were not too convinced we could get users for the garden app, and were seemingly not as passionate about |
+
 
 ## Other Notes & Information
 Roles to be confirmed on Saturday
