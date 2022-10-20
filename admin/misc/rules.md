@@ -17,7 +17,6 @@
 | Noah Terminello | 8054433201 | nterminello@ucsd.edu |
 | Jeremy Lei | 6696490316 | jlei@ucsd.edu |
 | Xuying He | 6268220548 | xuh013@ucsd.edu |
-| Yinlong Mi |  |  |
 | Jiseung Yoo | 6616065252 | jiyoo@ucsd.edu |
 <br>
 
@@ -47,10 +46,10 @@ This element of the team working agreement is the list of rules/agreements or th
 | Role | Lead | Sub | Description |
 |------|------|-----|-------------|
 | UI | Andrew | Noah, Alvin | Write the structure of the app and Stylize the HTML |
-| Backend | Liam | Yinlong, Xuying | Manages programming of the application |
-| Github Repo | Chi | Jeremy, Alvin | Manage PR’s to the main branch and Github Actions |
-| DevOps | Yoo | Yinlong, Noah | Manage documentation and meeting notes |
-| Testing | Brian | Jeremy, Xuying | Develop code for testing the project |
+| Backend | Liam | Brian, Xuying | Manages programming of the application |
+| Github Repo | Chi | Alvin | Manage PR’s to the main branch and Github Actions |
+| DevOps | Yoo | Noah | Manage documentation and meeting notes |
+| Testing | Jeremy | Brian, Xuying | Develop code for testing the project |
 <br>
 
 ### 5) Conflict Resolution
@@ -70,5 +69,4 @@ TA is expected to be able to resolve conflicts brought by the team. TA should al
 <br><br><br>
 
 Signature	__________________________________
-
 
