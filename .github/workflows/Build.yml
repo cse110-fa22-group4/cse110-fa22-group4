@@ -12,12 +12,8 @@ on:
     
 
 jobs:
-  release:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+  build:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out Git repository
