@@ -6,8 +6,10 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
+    paths: source/**
   pull_request:
     branches: [ "main" ]
+    paths: source/**
 
 jobs:
   build:
@@ -22,21 +24,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-      
-
-    - run: npm ci
-      working-directory: ./source/multiplayer
-      
-      
-    - run: npm run build --if-present
-      working-directory: ./source/multiplayer
-      
-    
-    - run: npm test
-      working-directory: ./source/multiplayer
-      
+    - name: compile
+      run: |
+        cd source/musicplayer
+        npm install
+        npm testa
