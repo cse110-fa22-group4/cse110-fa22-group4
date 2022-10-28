@@ -24,7 +24,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: compile
+    - name: build
       working-directory: ./source/music/**
       run: npm install
            npm test
