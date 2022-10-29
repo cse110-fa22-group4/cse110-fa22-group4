@@ -1,7 +1,7 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 
 const createWindow = () => {
@@ -43,3 +43,16 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+// This is where ipc security checks are being done.
+// TODO: Abstract this out to a separate "IPC Security" file.
+ipcMain.handle('managedAttributeCheck', (event, args) => {
+  let _ = event;
+  _ = args;
+  return true; // TODO: Add security!
+})
+ipcMain.handle('managedAddEventListenerCheck', (event, args) => {
+  let _ = event;
+  _ = args;
+  return true; // TODO: Add security!
+})
