@@ -1,7 +1,3 @@
-// If one is using intellisense, you may notice that domAPI is recognized to be an error, as it is unresolved.
-// This appears to be an active issue with electron, and can be safely ignored. This does compile correctly,
-// however during development one's code complete and intellisense will be limited. I am looking into a fix
-// for this now, I think there is one, and I will add it when I find it. - Liam
 
 // Creates an onLoad function.
 window.addEventListener('DOMContentLoaded', () => {
