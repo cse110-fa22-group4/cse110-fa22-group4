@@ -5,9 +5,11 @@
   "main": "main.js",
   "scripts": {
     "update": "npm install",
-    "clean": "rm -r ./dist",
+    "clean": "rm -r ./dist & rm -r ./node_modules",
+    "clean-win": "rd /s /q dist & rd /s /q node_modules",
     "build" : "webpack --config ./webpack.config.js",
-    "rebuild": "npm run clean && npm run build",
+    "rebuild": "npm run clean & npm run update && npm run build",
+    "rebuild-win": "npm run clean-win & npm run update && npm run build",
     "test": "npm run build && electron ./dist/main.js"
   },
   "author": "Team Mariposa",
