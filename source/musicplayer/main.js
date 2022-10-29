@@ -4,7 +4,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 
-const createWindow = () => {
+const createWindow = async () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -15,7 +15,7 @@ const createWindow = () => {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  await mainWindow.loadFile('index.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -24,11 +24,11 @@ const createWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
-  createWindow()
+app.whenReady().then(async () => {
+  await createWindow()
 
   app.on('activate', () => {
-    // On macOS it's common to re-create a window in the app when the
+    // On macOS, it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
@@ -47,12 +47,8 @@ app.on('window-all-closed', () => {
 // This is where ipc security checks are being done.
 // TODO: Abstract this out to a separate "IPC Security" file.
 ipcMain.handle('managedAttributeCheck', (event, args) => {
-  let _ = event;
-  _ = args;
   return true; // TODO: Add security!
 })
 ipcMain.handle('managedAddEventListenerCheck', (event, args) => {
-  let _ = event;
-  _ = args;
   return true; // TODO: Add security!
 })

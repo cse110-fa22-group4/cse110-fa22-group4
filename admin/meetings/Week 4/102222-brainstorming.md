@@ -21,18 +21,18 @@ People absent:
 
 ## Agenda
 
-Item | Description
----- | ----
-Reorganization  | •We need to discuss how to reorganize the team after Yinlong's departure <br>•Yoo has also been absent at almost every meeting.
-Mock up music-player idea | • explore feasibility <br>• go over existing players <br>• define a problem 
-Start ADR for project | 
+| Item                      | Description                                                                                                                     |
+|---------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| Reorganization            | •We need to discuss how to reorganize the team after Yinlong's departure <br>•Yoo has also been absent at almost every meeting. |
+| Mock up music-player idea | • explore feasibility <br>• go over existing players <br>• define a problem                                                     |
+| Start ADR for project     | 
 
 ## Decisions
-Item | By Who? | Notes |
----- | ---- | ---- |
-Project Idea | team | Project will be a local music player with an emphasis on user-defined metadata, both for organization and creating playlists. |
-Reorganizing | team | We will be keeping the structure of the team the same for right now.
-Yoo's nonattendance | Noah | Postponing any action for now. Noah is supposed to meet with Yoo on Thursday for the DevOps. Noah is on the Devops team with Yoo. Expecting to receive communication concerning that beforehand.|
+| Item                | By Who? | Notes                                                                                                                                                                                            |
+|---------------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Project Idea        | team    | Project will be a local music player with an emphasis on user-defined metadata, both for organization and creating playlists.                                                                    |
+| Reorganizing        | team    | We will be keeping the structure of the team the same for right now.                                                                                                                             |
+| Yoo's nonattendance | Noah    | Postponing any action for now. Noah is supposed to meet with Yoo on Thursday for the DevOps. Noah is on the Devops team with Yoo. Expecting to receive communication concerning that beforehand. |
 
 ## Documents
 

@@ -17,6 +17,6 @@
 - Should work on brainstorming this week
   - Should try for 2 meetings
 - Pitch should be given to TA next Tuesday (10/25)
-- Try to encorporate the user-focus from 10/17's lecture
+- Try to incorporate the user-focus from 10/17's lecture
 - After brainstorming, can begin to think about design of project
 - General notice: Lab material is important to being able to implement their topics into our labs, we should try to ensure we understand the material and read the documentation. Don't do it simply for the sake of the lab assignment 

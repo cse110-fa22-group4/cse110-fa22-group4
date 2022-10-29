@@ -23,25 +23,25 @@ People absent:
 
 ## Agenda
 
-Item | Description
----- | ----
-item1  | • <br>• <br>• <br>• 
-item2 | • <br>• <br>• <br>• 
-item3 | • <br>• <br>• <br>• 
+| Item  | Description         |
+|-------|---------------------|
+| item1 | • <br>• <br>• <br>• |
+| item2 | • <br>• <br>• <br>• |
+| item3 | • <br>• <br>• <br>• |
 
 ## Decisions
-Item | By Who? | Notes |
----- | ---- | ---- |
-item | who | notes |
+ | Item | By Who? | Notes |
+|------|---------|-------|
+ | item | who     | notes |
 
 ## Action Items
 | Done? | Item | Responsible | Due Date |
-| ---- | ---- | ---- | ---- |
-| | item | who | due_date |
+|-------|------|-------------|----------|
+|       | item | who         | due_date |
 
 ## Unfinished Items
 | Item | Who | When |
-| ---- | ---- | ---- |
+|------|-----|------|
 | item | who | when |
 
 ## Other Notes & Information
