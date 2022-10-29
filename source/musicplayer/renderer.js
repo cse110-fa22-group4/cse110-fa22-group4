@@ -5,7 +5,7 @@
 
 // Creates an onLoad function.
 window.addEventListener('DOMContentLoaded', () => {
-    window.domAPI.managedAddEventListener('my-button', 'click', onButtonClick);
+    domAPI.managedAddEventListener('my-button', 'click', onButtonClick);
 });
 
 /**
@@ -16,8 +16,8 @@ window.addEventListener('DOMContentLoaded', () => {
  * @param element The element that this event listener is attached to.
  */
 function onButtonClick(element) {
-    let attribute = window.domAPI.managedGetAttribute('my-button', 'data-value');
+    let attribute = domAPI.managedGetAttribute('my-button', 'data-value');
     attribute = parseInt(attribute, 10) + 1; // here we must be confident that attribute is a decimal!
-    window.domAPI.managedSetAttribute('my-button', 'data-value', attribute);
+    domAPI.managedSetAttribute('my-button', 'data-value', attribute);
     element.innerText = `I have been pressed ${attribute} times!`;
 }
