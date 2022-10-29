@@ -6,15 +6,17 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
-    paths: source/**
   pull_request:
     branches: [ "main" ]
-    paths: source/**
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+       working-directory: source/musicplayer
     
 
     strategy:
@@ -25,6 +27,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: build
-      working-directory: ./source/music/**
       run: npm install
            npm test
