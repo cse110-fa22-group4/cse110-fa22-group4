@@ -4,11 +4,18 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "electron ."
+    "update": "npm install",
+    "clean": "rm -r ./dist",
+    "build" : "webpack --config ./webpack.config.js",
+    "rebuild": "npm run clean && npm run build",
+    "test": "npm run build && electron ./dist/main.js"
   },
-  "author": "",
+  "author": "Team Mariposa",
   "license": "ISC",
-  "devDependencies": {
-    "electron": "^21.2.0"
+  "dependencies": {
+    "electron": "^21.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   }
 }

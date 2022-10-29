@@ -21,7 +21,7 @@
 - Xuying
 
 # Information
-- People should get familiar with the tools (git, etc) before assignment though labs
+- People should get familiar with the tools (git, etc.) before assignment though labs
 - Project is graded on process, not just end product
   - Sharing of work
   - Consistent updates
