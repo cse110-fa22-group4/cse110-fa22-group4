@@ -3,6 +3,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
+const htmlPath = __dirname + "/source/musicplayer/html";
 
 const createWindow = async () => {
   // Create the browser window.
@@ -10,12 +11,15 @@ const createWindow = async () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, '/../preload/preload.js'),
+      sandbox: false,
+      contextIsolation: true
     }
   })
 
   // and load the index.html of the app.
-  await mainWindow.loadFile('index.html')
+  await mainWindow.loadFile(path.join(__dirname, '/../html/index.html'))
+
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -52,3 +56,6 @@ ipcMain.handle('managedAttributeCheck', (event, args) => {
 ipcMain.handle('managedAddEventListenerCheck', (event, args) => {
   return true; // TODO: Add security!
 })
+ipcMain.handle('getUserData', (event, args) => {
+  return app.getPath('userData'); // No security needed, just returns a path to user data.
+});
