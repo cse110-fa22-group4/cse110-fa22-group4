@@ -18,4 +18,5 @@ function onButtonClick(element) {
     attribute = parseInt(attribute, 10) + 1; // here we must be confident that attribute is a decimal!
     domAPI.managedSetAttribute('my-button', 'data-value', attribute.toString());
     element.innerText = `I have been pressed ${attribute} times!`;
+
 }
