@@ -3,7 +3,7 @@
 window.addEventListener('DOMContentLoaded', () => {
     domAPI.managedAddEventListener('my-button', 'click', onButtonClick);
 
-    $('#subpage').load("./../html/subpage.html");
+    $('#subpage').load('./../html/subpage.html');
 });
 
 /**
