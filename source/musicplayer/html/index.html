@@ -9,7 +9,10 @@
     <title>Hello World!</title>
 
     <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
+    <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../renderer/renderer.js"></script>
+    <!-- You can not use inline scripts in electron!
+    <script> jqAPI.managedLoad('#subpage', 'subpage.html'); </script> -->
   </head>
   <body>
     <h1>Hello World!</h1>
@@ -17,6 +20,7 @@
     Chromium <span id="chrome-version"></span>,
     and Electron <span id="electron-version"></span>.
     <br>
-  <button id="my-button" data-value="0"> I have been pressed 0 times! </button>
+  <button id="my-button" data-value="0"> I have been pressed 0 times! </button> <br>
+  <div id="subpage"> </div>
   </body>
 </html>
