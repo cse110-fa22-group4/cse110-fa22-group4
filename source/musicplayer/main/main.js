@@ -56,3 +56,6 @@ ipcMain.handle('managedAttributeCheck', (event, args) => {
 ipcMain.handle('managedAddEventListenerCheck', (event, args) => {
   return true; // TODO: Add security!
 })
+ipcMain.handle('getUserData', (event, args) => {
+  return app.getPath('userData'); // No security needed, just returns a path to user data.
+});

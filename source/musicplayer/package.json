@@ -7,11 +7,11 @@
     "update": "npm install",
     "clean": "rm -r ./dist & rm -r ./node_modules",
     "clean-win": "rd /s /q dist & rd /s /q node_modules",
-    "webpack-build" : "webpack --config ./webpack.config.js",
+    "webpack-build" : "webpack --config webpack.config.js",
     "webpack-rebuild": "npm run clean & npm run update && npm run webpack-build",
     "webpack-rebuild-win": "npm run clean-win & npm run update && npm run webpack-build",
     "webpack-test": "npm run webpack-build && electron ./dist/main.js",
-    "test": "electron ./main/main.js"
+    "test": "electron main/main.js"
   },
   "author": "Team Mariposa",
   "license": "ISC",
@@ -19,7 +19,6 @@
     "electron": "^21.2.0",
     "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0",
-    "jquery": "^3.6.1"
+    "webpack-cli": "^4.10.0"
   }
 }
