@@ -32,9 +32,13 @@ jobs:
         uses: wearerequired/lint-action@v1
         with:
           github_token: ${{ secrets.github_token }}
+          # install eslint
           # Enable linters
           eslint: true
-          prettier: true
+          # Enable formatter
+          eslint_format: true
+          # Enable formatter
+          eslint_format_staged: true
 
 
 
