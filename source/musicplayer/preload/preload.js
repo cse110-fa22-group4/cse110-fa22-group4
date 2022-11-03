@@ -25,7 +25,7 @@ const {
 const {
     debugLog,
     htmlFromRenderer,
-    loadPage
+    jqLoadPage
 } = require('./genAPICalls.js');
 
 /**
@@ -82,7 +82,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 contextBridge.exposeInMainWorld('genAPI', {
     debugLog: debugLog,
     htmlFromRenderer: htmlFromRenderer,
-    loadPage: loadPage
+    jqLoadPage: jqLoadPage
 });
 
 contextBridge.exposeInMainWorld('domAPI', {

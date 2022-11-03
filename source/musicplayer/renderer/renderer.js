@@ -1,12 +1,33 @@
-
 // Creates an onLoad function.
 window.addEventListener('DOMContentLoaded', () => {
-    domAPI.managedAddEventListener('my-button', 'click', onButtonClick);
-
-    let test = genAPI.loadPage('#subpage', 'subpage.html');
-    //test();
-    $('#subpage').load(genAPI.htmlFromRenderer('subpage.html'));
+    eventHandlerLoadPhase();
+    jqLoadPhase();
+    postInit();
 });
+
+/**
+ * @name eventHandlerLoadPhase
+ * @description Inits all Event Listeners
+ */
+function eventHandlerLoadPhase() {
+    domAPI.managedAddEventListener('my-button', 'click', onButtonClick);
+}
+
+/**
+ * @name jqLoadPhase
+ * @description Inits all JQuery dynamic loading that needs to happen on page load.
+ */
+function jqLoadPhase() {
+    genAPI.jqLoadPage('#subpage', 'subpage.html');
+}
+
+/**
+ * @name postInit
+ * @description All other misc. initialization that needs to happen
+ */
+function postInit() {
+
+}
 
 /**
  * An example function that demonstrates an event listener that can be entered into the
@@ -20,5 +41,4 @@ function onButtonClick(element) {
     attribute = parseInt(attribute, 10) + 1; // here we must be confident that attribute is a decimal!
     domAPI.managedSetAttribute('my-button', 'data-value', attribute.toString());
     element.innerText = `I have been pressed ${attribute} times!`;
-
 }

@@ -1,4 +1,5 @@
 const path = require('path');
+const { ipcRenderer } = require('electron');
 
 /**
  * @description A boolean to toggle debug code
@@ -40,21 +41,23 @@ function htmlFromRenderer(htmlFile) {
 }
 
 /**
- * @todo: fix
- * @deprecated
- * @name loadPage
+ * @name jqLoadPage
  * @memberOf genAPI
- * @param targetID {string}
- * @param htmlFile {string}
- * @param callback {function | undefined}
+ * @description Loads a html page into an element using JQuery.
+ * @param targetID {string} The ID of the element to load a html page into.
+ * @param htmlFile {string} The name of the html file to load.
+ * @param callback {function | undefined} An optional callback to execute.
  */
-function loadPage(targetID, htmlFile, callback = undefined) {
-    let func = `$(${targetID}).load(htmlFromRenderer(${htmlFile}));`;
-    return () => eval(func);
+function jqLoadPage(targetID, htmlFile, callback = undefined) {
+    // this is the solution? fixes a crazy annoying bug, do not declare at top of file.
+    const $ = require('jquery/dist/jquery.min');
+    callback !== undefined ?
+        $(targetID).load(htmlFromRenderer(htmlFile), callback) :
+        $(targetID).load(htmlFromRenderer(htmlFile));
 }
 
 module.exports = {
     debugLog,
     htmlFromRenderer,
-    loadPage
+    jqLoadPage
 };
