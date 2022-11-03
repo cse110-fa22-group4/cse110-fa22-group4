@@ -28,6 +28,9 @@ jobs:
       - name: Install Node.js dependencies
         run: npm install
 
+      - name: Install ESLint
+        run: npm install -g eslint
+
       - name: Run linters
         uses: wearerequired/lint-action@v1
         with:
@@ -35,10 +38,7 @@ jobs:
           # install eslint
           # Enable linters
           eslint: true
-          # Enable formatter
-          eslint_format: true
-          # Enable formatter
-          eslint_format_staged: true
+
 
 
 
