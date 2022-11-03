@@ -3,7 +3,9 @@
 window.addEventListener('DOMContentLoaded', () => {
     domAPI.managedAddEventListener('my-button', 'click', onButtonClick);
 
-    $('#subpage').load('./../html/subpage.html');
+    let test = genAPI.loadPage('#subpage', 'subpage.html');
+    //test();
+    $('#subpage').load(genAPI.htmlFromRenderer('subpage.html'));
 });
 
 /**

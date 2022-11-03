@@ -1,5 +1,7 @@
 const path = require('path');
+const { ipcRenderer } = require('electron');
 const child_process = require('child_process');
+const { getSettings } = require('./fsAPICalls.js');
 
 let ffProbePath = "";
 let ffmpegPath = "";
@@ -39,7 +41,7 @@ function getWriteCMD(filepath, options) {
  * @returns {string} A JSON string of the metadata of the file
  */
 function ffmpegRead(filepath) {
-    return child_process.execSync(getReadCMD(filepath)).toString();
+    return JSON.parse(child_process.execSync(getReadCMD(filepath)).toString());
 }
 /**
  * @name ffmpegWrite
@@ -56,11 +58,22 @@ function ffmpegWrite(filepath, options) {
 }
 /**
  * @name binPath
- * @description Sets a path to ffprobe and ffmpeg, if it already exists on the system.
+ * @description Sets a path to ffprobe and ffmpeg, if it already exists on the system. If binPath is not
+ *              passed in, will attempt to use path from settings.
  * @memberOf ffmpegAPI
  * @param binPath The path to ffprobe and ffmpeg.
  */
-function setPath(binPath) {
+function setPath(binPath = undefined) {
+    if (binPath === undefined) {
+        let settings = getSettings();
+        if (settings['ffmpegPath'] !== undefined) {
+            binPath = settings["ffmpegPath"];
+            console.log("Found Path!");
+        }
+        else {
+            return;
+        }
+    }
     ffProbePath = path.join(binPath, "/ffprobe.exe");
     ffmpegPath = path.join(binPath, "/ffmpeg.exe");
 }

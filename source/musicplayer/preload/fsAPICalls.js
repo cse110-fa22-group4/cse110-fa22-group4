@@ -1,17 +1,26 @@
 const fs = require('fs');
-const { app, ipcRenderer } = require('electron');
+const { ipcRenderer } = require('electron');
 const path = require('path');
 
 let storagePath = '';
 
 /**
- * @description MUST BE CALLED ON STARTUP.
+ * @description MUST BE CALLED ON STARTUP. Sets the path to userData, which can only be done from main.js.
  * @return {void}
  */
 async function fsInit() {
     storagePath = await ipcRenderer.invoke('getUserData');
     storagePath = path.join(storagePath, "MixMatch");
-    console.log("UserData Storage Path: " + storagePath);
+    if (!fs.existsSync(storagePath)) {
+        console.log(storagePath);
+        fs.mkdirSync(storagePath);
+    }
+    /*
+        Bro this function can't call any APIs since it is used before the initialization
+        of the APIs, so we don't get any custom debug log functions.
+     */
+    // genAPI.debugLog("UserData Storage Path: " + storagePath, this);
+    console.log("UserData Storage Path: " + storagePath); //todo: figure out cross apis
 }
 
 /**
@@ -146,7 +155,7 @@ function writeSongs(songs) {
  */
 function appendSong(newSongKey, newSongVal) {
     let songs = getSongs();
-    songs[newSongKey] = newSongVal;
+    songs[newSongKey] = newSongVal; // TODO: change me to only be value instead of kvp
     writeSongs(songs);
 }
 /**
@@ -158,7 +167,7 @@ function appendSong(newSongKey, newSongVal) {
  */
 function removeSong(oldSong) {
     let songs = getSongs();
-    delete songs[oldSong];
+    delete songs[oldSong]; // TODO: change me to remove from array instead of remove from dict
     writeSongs(songs);
 }
 /**
@@ -263,7 +272,7 @@ function removePlaylist(playlistName) {
  *              overwritten.
  * @memberOf fsAPI
  * @param playlistName {string} The name of the playlist to write to.
- * @param playlist {object} A JSON formatted object containing the playlsit information.
+ * @param playlist {object} A JSON formatted object containing the playlist information.
  * @returns {void}
  * @todo Right now file extension must be passed in, this should be fixed!
  */
@@ -286,6 +295,37 @@ function getSRCString(path) {
     return "file:///" + path;
 }
 
+/**
+ * @name recursiveSearchAtPath
+ * @description Recursively searches every subdirectory at a given directory to return every song.
+ * @memberOf fsAPI
+ * @param searchPath {string} The pat at which to recursively search
+ * @return {string[]}  An array of every song path that exists recursiveliy within the directory.
+ */
+function recursiveSearchAtPath(searchPath) {
+    try {
+        let ret = [];
+        let dirs = fs.readdirSync(searchPath, {withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name);
+        dirs.forEach(dir => {
+            let dirPath = path.join(searchPath, dir);
+            if (fs.existsSync(dirPath)) {
+                let paths = recursiveSearchAtPath(dirPath);
+                paths.forEach(p => ret.push(p));
+            }
+        });
+
+        let files = fs.readdirSync(searchPath, {withFileTypes: true }).filter(d => d.isFile()).filter(d => d.name.split('.').pop() === "mp3").map(d => d.name);
+        files.forEach(f => ret.push(path.join(searchPath, f)));
+
+        return ret;
+    }
+    catch (e) {
+        console.log(e);
+        return [];
+    }
+
+}
+
 module.exports = {
     getSettings,
     writeSettings,
@@ -304,5 +344,6 @@ module.exports = {
     writePlaylist,
     getSRCString,
     fsInit,
-    devClear
+    devClear,
+    recursiveSearchAtPath
 }

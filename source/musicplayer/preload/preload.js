@@ -18,9 +18,15 @@ const {
     getSongs, writeSongs, appendSong, removeSong,
     getStats, writeStats, writeToStat, deleteStat,
     getAllPlaylists, removePlaylist, writePlaylist,
+    recursiveSearchAtPath,
     getSRCString, fsInit, devClear
-
 } = require('./fsAPICalls');
+
+const {
+    debugLog,
+    htmlFromRenderer,
+    loadPage
+} = require('./genAPICalls.js');
 
 /**
  * @namespace domAPI
@@ -48,6 +54,14 @@ window.ffmpegAPI = undefined;
  */
 window.fsAPI = undefined;
 
+/**
+ * @namespace genAPI
+ * @description A collection of general methods useful for production and debugging.
+ * @type {object}
+ */
+window.genAPI = undefined;
+
+module.exports = { debugLog }
 
 // All the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
@@ -61,7 +75,14 @@ window.addEventListener('DOMContentLoaded', async () => {
         replaceText(`${dependency}-version`, process.versions[dependency])
     }
 
-    await fsInit(app);
+    fsInit();
+    setPath();
+});
+
+contextBridge.exposeInMainWorld('genAPI', {
+    debugLog: debugLog,
+    htmlFromRenderer: htmlFromRenderer,
+    loadPage: loadPage
 });
 
 contextBridge.exposeInMainWorld('domAPI', {
@@ -93,5 +114,6 @@ contextBridge.exposeInMainWorld('fsAPI', {
     getAllPlaylists: getAllPlaylists,
     removePlaylist: removePlaylist,
     writePlaylist: writePlaylist,
-    getSRCString: getSRCString
+    getSRCString: getSRCString,
+    recursiveSearchAtPath: recursiveSearchAtPath
 });
