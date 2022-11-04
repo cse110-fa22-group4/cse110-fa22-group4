@@ -10,7 +10,7 @@ $(document).ready(function() {
   $("#main-container").load("../html/pages/home.html");
   $("#playback-container").load("../html/components/playback.html");
 
-  overviewIsExtended = false;  
+  overviewIsExtended = false;
 });
 
 /* SIDEBAR NAVIGATION */

@@ -1,6 +1,0 @@
-{
-  "extends": ["eslint:recommended", "google"],
-  "rules": {
-    // additional rules if needed
-  }
-}
