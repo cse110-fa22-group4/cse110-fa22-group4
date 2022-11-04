@@ -8,14 +8,17 @@ const htmlPath = __dirname + "/source/musicplayer/html";
 const createWindow = async () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 1920,
-    height: 1080,
+    width: 1000,
+    height: 800,
     webPreferences: {
       preload: path.join(__dirname, '/../preload/preload.js'),
       sandbox: false,
       contextIsolation: true
     }
   })
+
+  // maximize window at start
+  mainWindow.maximize();
 
   // and load the index.html of the app.
   await mainWindow.loadFile(path.join(__dirname, '/../html/index.html'))
