@@ -7,11 +7,7 @@ const { ipcRenderer } = require('electron');
  */
 const debug = true;
 
-/**
- * @description A path to the html directory from any file in the renderer directory.
- * @type {string}
- */
-const htmlFilePath = "./../html"
+
 
 
 /**
@@ -29,35 +25,10 @@ function debugLog(message, source,  force = false) {
     }
 }
 
-/**
- * @name htmlFromRenderer
- * @memberOf genAPI
- * @description Gets a filepath corresponding to the actual html file path from a renderer process.
- * @param htmlFile {string} The name of the html file to get.
- * @return {string} The actual path to the html file from a renderer process.
- */
-function htmlFromRenderer(htmlFile) {
-    return path.join(htmlFilePath, htmlFile);
-}
 
-/**
- * @name jqLoadPage
- * @memberOf genAPI
- * @description Loads a html page into an element using JQuery.
- * @param targetID {string} The ID of the element to load a html page into.
- * @param htmlFile {string} The name of the html file to load.
- * @param callback {function | undefined} An optional callback to execute.
- */
-function jqLoadPage(targetID, htmlFile, callback = undefined) {
-    // this is the solution? fixes a crazy annoying bug, do not declare at top of file.
-    const $ = require('jquery/dist/jquery.min');
-    callback !== undefined ?
-        $(targetID).load(htmlFromRenderer(htmlFile), callback) :
-        $(targetID).load(htmlFromRenderer(htmlFile));
-}
+
+
 
 module.exports = {
-    debugLog,
-    htmlFromRenderer,
-    jqLoadPage
+    debugLog
 };

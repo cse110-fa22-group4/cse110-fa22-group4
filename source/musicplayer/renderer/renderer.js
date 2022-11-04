@@ -1,3 +1,8 @@
+/**
+ * @fileOverview This file handles all logic related to navigation, and acts as a master file to control subpages.
+ */
+
+
 // Creates an onLoad function.
 window.addEventListener('DOMContentLoaded', () => {
     eventHandlerLoadPhase();
@@ -11,13 +16,19 @@ window.addEventListener('DOMContentLoaded', () => {
  * @description Inits all Event Listeners
  */
 function eventHandlerLoadPhase() {
-    // domAPI.managedAddEventListener('my-button', 'click', onButtonClick);
-    $('body').on('click', '#btn-home', navToHome);
-    $('body').on('click', '#btn-overview', navToOverview);
-    $('body').on('click', '#btn-library', navToLibrary);
-    $('body').on('click', '#btn-playlists', navToPlaylists);
-    $('body').on('click', '#btn-search', navToSearch);
-    $('body').on('click', '#btn-search-tracks', navToSearchExtended);
+    jqAPI.onEvent('body', 'click', '#btn-home', navToHome);
+    jqAPI.onEvent('body','click','#btn-overview', navToOverview);
+    jqAPI.onEvent('body', 'click', '#btn-library', navToLibrary);
+    jqAPI.onEvent('body', 'click', '#btn-playlists', navToPlaylists);
+    jqAPI.onEvent('body', 'click', '#btn-search', navToSearch);
+    jqAPI.onEvent('body', 'click', '#btn-search-tracks', navToSearchExtended);
+
+    //$('body').on('click', '#btn-home', navToHome);
+    //$('body').on('click', '#btn-overview', navToOverview);
+    //$('body').on('click', '#btn-library', navToLibrary);
+    //$('body').on('click', '#btn-playlists', navToPlaylists);
+    //$('body').on('click', '#btn-search', navToSearch);
+    //$('body').on('click', '#btn-search-tracks', navToSearchExtended);
 }
 
 /**
@@ -25,7 +36,17 @@ function eventHandlerLoadPhase() {
  * @description Inits all JQuery dynamic loading that needs to happen on page load.
  */
 function jqLoadPhase() {
-    genAPI.jqLoadPage('#subpage', 'subpage.html');
+    //$("#sidebar-container").load("../html/components/sidebar.html");
+    //$("#overview-container").load("../html/components/overview.html");
+    //$("#main-header-container").load("../html/components/mainHeader.html");
+    //$("#main-container").load("../html/pages/home.html");
+    //$("#playback-container").load("../html/components/playback.html");
+
+    jqAPI.loadPage('#sidebar-container', 'components/sidebar.html');
+    jqAPI.loadPage('#overview-container', 'components/overview.html');
+    jqAPI.loadPage('#main-header-container', 'components/mainHeader.html');
+    jqAPI.loadPage('#main-container', 'pages/home.html');
+    jqAPI.loadPage('#playback-container', 'components/playback.html');
 }
 
 /**
@@ -36,63 +57,66 @@ function postInit() {
 
 }
 
-/**
- * An example function that demonstrates an event listener that can be entered into the
- * managedAddEventListener. Must have 'element' as a parameter.
- * While it isn't necessary, as with access to the DOM element one can get and set attributes directly,
- * this function also gives and example of how to get and set attributes through the domAPI.
- * @param {HTMLElement} element The element that this event listener is attached to.
- */
-function onButtonClick(element) {
-    let attribute = domAPI.managedGetAttribute('my-button', 'data-value');
-    attribute = parseInt(attribute, 10) + 1; // here we must be confident that attribute is a decimal!
-    domAPI.managedSetAttribute('my-button', 'data-value', attribute.toString());
-    element.innerText = `I have been pressed ${attribute} times!`;
-}
-
 /* FRONT END JS INCOMING BELOW */
 
 /* GENERATE HOME PAGE */
-$(document).ready(function() {
-  $("#sidebar-container").load("../html/components/sidebar.html");
-  $("#overview-container").load("../html/components/overview.html");
-  $("#main-header-container").load("../html/components/mainHeader.html");
-  $("#main-container").load("../html/pages/home.html");
-  $("#playback-container").load("../html/components/playback.html");
-});
+//$(document).ready(function () {
+//
+//});
 
 /* SIDEBAR NAVIGATION */
+
 // Navigate to Home view
 function navToHome(element) {
-$('#main-container').load('../html/pages/home.html');
-  document.getElementById('main-header').innerHTML = '<h1>Home<h1>';
-};
+    //$('#main-container').load('../html/pages/home.html');
+    //document.getElementById('main-header').innerHTML = '<h1>Home<h1>';
+
+    jqAPI.loadPage('#main-container', 'pages/home.html');
+    domAPI.managedSetHTML('main-header', '<h1>Home</h1>');
+}
 
 // Navigate to Overview (Now Playing) view
 function navToOverview(element) {
-  $('#main-container').load('../html/pages/overview.html');
-  document.getElementById('main-header').innerHTML = '<h1>Now Playing<h1>';
-};
+    //$('#main-container').load('../html/pages/overview.html');
+    //document.getElementById('main-header').innerHTML = '<h1>Now Playing<h1>';
+
+    // the overview.html page does not exist, I guessed that this might work.
+    jqAPI.loadPage('#main-container', 'pages/current.html');
+    domAPI.managedSetHTML('main-header', '<h1>Now Playing</h1>');
+}
 
 // Navigate to Library view
 function navToLibrary(element) {
-  $('#main-container').load('../html/pages/library.html');
-  document.getElementById('main-header').innerHTML = '<h1>Library<h1>';
-};
+    //$('#main-container').load('../html/pages/library.html');
+    //document.getElementById('main-header').innerHTML = '<h1>Library<h1>';
+
+    jqAPI.loadPage('#main-container', 'pages/library.html');
+    domAPI.managedSetHTML('main-header', '<h1>Library</h1>');
+}
 
 // Navigate to Playlists view
 function navToPlaylists(element) {
-  $('#main-container').load('../html/pages/playlists.html');
-  document.getElementById('main-header').innerHTML = '<h1>Playlists<h1>';
-};
+    //$('#main-container').load('../html/pages/playlists.html');
+    //document.getElementById('main-header').innerHTML = '<h1>Playlists<h1>';
+
+    jqAPI.loadPage('#main-container', 'pages/playlists.html');
+    domAPI.managedSetHTML('main-header', '<h1>Playlists</h1>');
+}
 
 // Navigate to Search results view
 function navToSearch(element) {
-  $('#main-container').load('../html/pages/search.html');
-  document.getElementById('main-header').innerHTML = '<h1>Search<h1>';
-};
+    //$('#main-container').load('../html/pages/search.html');
+    //document.getElementById('main-header').innerHTML = '<h1>Search<h1>';
+
+    jqAPI.loadPage('#main-container', 'pages/search.html');
+    domAPI.managedSetHTML('main-header', '<h1>Search</h1>');
+
+}
 
 // Navigate to Search results extended view
 function navToSearchExtended(element) {
-  $('#main-container').load('../html/pages/search_extend.html');
-};
+
+    //$('#main-container').load('../html/pages/search_extend.html');
+    jqAPI.loadPage('#main-container', 'pages/search_extend.html');
+    domAPI.managedSetHTML('#main-header', '<h1>Search</h1>');
+}

@@ -1,10 +1,17 @@
 // preload.js
 const {ipcRenderer, contextBridge, app} = require('electron');
+
+const {
+    onEvent,
+    loadPage
+} = require('./jqAPICalls.js')
+
 const {
     managedAddEventListener,
     managedGetAttribute,
     managedSetAttribute,
-    managedAddChild
+    managedAddChild,
+    managedSetHTML
 } = require('./domAPICalls.js');
 
 const {
@@ -24,8 +31,6 @@ const {
 
 const {
     debugLog,
-    htmlFromRenderer,
-    jqLoadPage
 } = require('./genAPICalls.js');
 
 /**
@@ -55,6 +60,14 @@ window.ffmpegAPI = undefined;
 window.fsAPI = undefined;
 
 /**
+ * @namespace jqAPI
+ * @description The jqAPI exposes required functions to make jquery accessible to the renderer thread without giving
+ *              sudo access to any user on the console.
+ * @type {object}
+ */
+window.jqAPI = undefined;
+
+/**
  * @namespace genAPI
  * @description A collection of general methods useful for production and debugging.
  * @type {object}
@@ -81,15 +94,19 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 contextBridge.exposeInMainWorld('genAPI', {
     debugLog: debugLog,
-    htmlFromRenderer: htmlFromRenderer,
-    jqLoadPage: jqLoadPage
+});
+
+contextBridge.exposeInMainWorld('jqAPI', {
+   onEvent: onEvent,
+   loadPage: loadPage
 });
 
 contextBridge.exposeInMainWorld('domAPI', {
     managedAddEventListener: managedAddEventListener,
     managedGetAttribute: managedGetAttribute,
     managedSetAttribute: managedSetAttribute,
-    managedAddChild: managedAddChild
+    managedAddChild: managedAddChild,
+    managedSetHTML: managedSetHTML
 });
 
 contextBridge.exposeInMainWorld('ffmpegAPI', {

@@ -3,6 +3,22 @@ const { ipcRenderer } = require('electron');
 // Ensures that an event is not established multiple times by accident.
 let establishedEvents = {};
 
+
+/**
+ * @name managedSetHTML
+ * @memberOf domAPI
+ * @description Sets the inner html of an element, if it is deemed 'safe.'
+ * @param domID {string} The 'id' tag that the element has in the html.
+ * @param html {string} The html to set to for the element.
+ */
+function managedSetHTML(domID, html) {
+    const isAttributeSafe = ipcRenderer.invoke('managedAttributeCheck', domID, 'innerHTML')
+    if (isAttributeSafe) {
+        document.getElementById(domID).innerHTML = html;
+    }
+
+}
+
 /**
  * @name managedAddEventListener
  * @memberOf domAPI
@@ -73,5 +89,6 @@ module.exports = {
     managedAddEventListener,
     managedGetAttribute,
     managedSetAttribute,
-    managedAddChild
+    managedAddChild,
+    managedSetHTML
 }

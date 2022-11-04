@@ -12,7 +12,7 @@
     "webpack-rebuild-win": "npm run clean-win & npm run update && npm run webpack-build",
     "webpack-test": "npm run webpack-build && electron ./dist/main.js",
     "test": "electron main/main.js",
-    "start": "electron ."
+    "start": "electron main/main.js"
   },
   "author": "Team Mariposa",
   "license": "ISC",
