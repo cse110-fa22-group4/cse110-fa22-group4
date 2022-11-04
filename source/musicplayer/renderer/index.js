@@ -1,11 +1,16 @@
+// Overview global vars
+let overviewIsExtended; // to toggle extended view of Overview container
 
 /* GENERATE HOME PAGE */
 $(document).ready(function() {
   $("#sidebar-container").load("../html/components/sidebar.html");
   $("#overview-container").load("../html/components/overview.html");
+  $("#overview-container-extended").load("../html/components/overviewExtended.html");
   $("#main-header-container").load("../html/components/mainHeader.html");
   $("#main-container").load("../html/pages/home.html");
   $("#playback-container").load("../html/components/playback.html");
+
+  overviewIsExtended = false;
 });
 
 /* SIDEBAR NAVIGATION */
@@ -18,8 +23,17 @@ $(document).on('click', '#btn-home', () => {
 
 // Toggle Overview (Now Playing) view
 $(document).on('click', '#btn-overview', () => {
-  $('#main-container').load('../html/pages/overview.html');
-  document.getElementById('main-header').innerHTML = '<h1>Now Playing<h1>';
+  if (!overviewIsExtended) {
+    // Toggle extended view
+    document.getElementById('top-container').style.visibility = 'hidden';
+    document.getElementById('top-container-extended').style.visibility = 'visible';
+    overviewIsExtended = true;
+  } else {
+    // Toggle default view
+    document.getElementById('top-container').style.visibility = 'visible';
+    document.getElementById('top-container-extended').style.visibility = 'hidden';
+    overviewIsExtended = false;
+  }
 });
 
 // Toggle Library view
