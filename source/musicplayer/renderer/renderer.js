@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
     eventHandlerLoadPhase();
     jqLoadPhase();
     postInit();
+
 });
 
 /**
@@ -10,7 +11,13 @@ window.addEventListener('DOMContentLoaded', () => {
  * @description Inits all Event Listeners
  */
 function eventHandlerLoadPhase() {
-    domAPI.managedAddEventListener('my-button', 'click', onButtonClick);
+    // domAPI.managedAddEventListener('my-button', 'click', onButtonClick);
+    $('body').on('click', '#btn-home', navToHome);
+    $('body').on('click', '#btn-overview', navToOverview);
+    $('body').on('click', '#btn-library', navToLibrary);
+    $('body').on('click', '#btn-playlists', navToPlaylists);
+    $('body').on('click', '#btn-search', navToSearch);
+    $('body').on('click', '#btn-search-tracks', navToSearchExtended);
 }
 
 /**
@@ -43,46 +50,49 @@ function onButtonClick(element) {
     element.innerText = `I have been pressed ${attribute} times!`;
 }
 
-// FRONT END JS INCCOMING BELOW
+/* FRONT END JS INCOMING BELOW */
 
-// Load Components on App Start
-// App starts on Home page
+/* GENERATE HOME PAGE */
 $(document).ready(function() {
   $("#sidebar-container").load("../html/components/sidebar.html");
-  $("#now-playing-container").load("../html/components/nowPlaying.html");
+  $("#overview-container").load("../html/components/overview.html");
   $("#main-header-container").load("../html/components/mainHeader.html");
   $("#main-container").load("../html/pages/home.html");
   $("#playback-container").load("../html/components/playback.html");
 });
 
-// Sidebar Navigation
-$("body").on("click", "#btn-home", function() {
-  $('#main-container').load('../html/pages/home.html');
+/* SIDEBAR NAVIGATION */
+// Navigate to Home view
+function navToHome(element) {
+$('#main-container').load('../html/pages/home.html');
   document.getElementById('main-header').innerHTML = '<h1>Home<h1>';
-});
+};
 
-$("body").on("click", "#btn-current", function() {
-  $('#main-container').load('../html/pages/current.html');
+// Navigate to Overview (Now Playing) view
+function navToOverview(element) {
+  $('#main-container').load('../html/pages/overview.html');
   document.getElementById('main-header').innerHTML = '<h1>Now Playing<h1>';
-});
+};
 
-$("body").on("click", "#btn-library", function() {
+// Navigate to Library view
+function navToLibrary(element) {
   $('#main-container').load('../html/pages/library.html');
   document.getElementById('main-header').innerHTML = '<h1>Library<h1>';
-});
+};
 
-$("body").on("click", "#btn-playlists", function() {
+// Navigate to Playlists view
+function navToPlaylists(element) {
   $('#main-container').load('../html/pages/playlists.html');
   document.getElementById('main-header').innerHTML = '<h1>Playlists<h1>';
-});
+};
 
-// Search bar
-$("body").on("click", "#search-bar", function() {
+// Navigate to Search results view
+function navToSearch(element) {
   $('#main-container').load('../html/pages/search.html');
   document.getElementById('main-header').innerHTML = '<h1>Search<h1>';
-});
+};
 
-// Search bar - extended
-$("body").on("click", "#btn-search-result-track", function() {
+// Navigate to Search results extended view
+function navToSearchExtended(element) {
   $('#main-container').load('../html/pages/search_extend.html');
-});
+};
