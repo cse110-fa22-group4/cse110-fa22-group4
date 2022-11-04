@@ -8,8 +8,8 @@ const htmlPath = __dirname + "/source/musicplayer/html";
 const createWindow = async () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1920,
+    height: 1080,
     webPreferences: {
       preload: path.join(__dirname, '/../preload/preload.js'),
       sandbox: false,

@@ -42,3 +42,47 @@ function onButtonClick(element) {
     domAPI.managedSetAttribute('my-button', 'data-value', attribute.toString());
     element.innerText = `I have been pressed ${attribute} times!`;
 }
+
+// FRONT END JS INCCOMING BELOW
+
+// Load Components on App Start
+// App starts on Home page
+$(document).ready(function() {
+  $("#sidebar-container").load("../html/components/sidebar.html");
+  $("#now-playing-container").load("../html/components/nowPlaying.html");
+  $("#main-header-container").load("../html/components/mainHeader.html");
+  $("#main-container").load("../html/pages/home.html");
+  $("#playback-container").load("../html/components/playback.html");
+});
+
+// Sidebar Navigation
+$("body").on("click", "#btn-home", function() {
+  $('#main-container').load('../html/pages/home.html');
+  document.getElementById('main-header').innerHTML = '<h1>Home<h1>';
+});
+
+$("body").on("click", "#btn-current", function() {
+  $('#main-container').load('../html/pages/current.html');
+  document.getElementById('main-header').innerHTML = '<h1>Now Playing<h1>';
+});
+
+$("body").on("click", "#btn-library", function() {
+  $('#main-container').load('../html/pages/library.html');
+  document.getElementById('main-header').innerHTML = '<h1>Library<h1>';
+});
+
+$("body").on("click", "#btn-playlists", function() {
+  $('#main-container').load('../html/pages/playlists.html');
+  document.getElementById('main-header').innerHTML = '<h1>Playlists<h1>';
+});
+
+// Search bar
+$("body").on("click", "#search-bar", function() {
+  $('#main-container').load('../html/pages/search.html');
+  document.getElementById('main-header').innerHTML = '<h1>Search<h1>';
+});
+
+// Search bar - extended
+$("body").on("click", "#btn-search-result-track", function() {
+  $('#main-container').load('../html/pages/search_extend.html');
+});
