@@ -1,8 +1,3 @@
-/**
- * @fileOverview This file handles all logic related to navigation, and acts as a master file to control subpages.
- */
-
-
 // Creates an onLoad function.
 window.addEventListener('DOMContentLoaded', () => {
     eventHandlerLoadPhase();
