@@ -1,5 +1,6 @@
 {
   "env": {
+    "node": true,
     "browser": true,
     "commonjs": true,
     "es2021": true
@@ -9,7 +10,6 @@
     "domAPI": true
   },
     "plugins": [
-
     ],
   "extends": [
     "eslint:recommended",
