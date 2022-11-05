@@ -1,0 +1,5 @@
+- Playing music while offline
+- Playing music with an easy to use UI
+- Playing music without being charged
+- Creating and sharing playlists
+- Easily manage large amounts of songs
