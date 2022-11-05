@@ -18,11 +18,11 @@
 }
 
 /* tool to reveal div borders for formatting purposes */
-.vis {
+/* .vis {
   background: steelblue;
   color: white;
   border: white 1px solid;
-}
+} */
 
 /* GENERAL */
 button,
@@ -148,6 +148,60 @@ td {
   color: white;
 }
 
+/* SEARCHBAR + SETTINGS */
+#searchbar-container {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  top: 30px;
+  right: 30px;
+
+  justify-content: end;
+  align-items: center;
+}
+
+#searchbar-container svg {
+  background-color: #FFFFFF;
+  color: #C4C4C4;
+  fill: currentColor;
+  width: 15px;
+  height: 18px;
+
+  padding-left: 10px;
+  padding-right: 10px;
+
+  border-top: 1px solid #C4C4C4;
+  border-left: 1px solid #C4C4C4;
+  border-bottom: 1px solid #C4C4C4;
+  border-radius: 2.5px 0 0 2.5px;
+}
+
+#input-search {
+  width: 20vw;
+  max-width: 365px;
+  height: 20px;
+
+  border: 1px solid #C4C4C4;
+  border-left: none;
+  border-radius: 0 2.5px 2.5px 0;
+
+  font-size: 12px;
+}
+
+::placeholder {
+  color: #C4C4C4;
+  font-size: 12px;
+}
+
+#btn-settings {
+  margin-left: 8px;
+  background-color: transparent;
+}
+
+#settings-icon {
+  height: 22px;
+}
+
 /* TOP CONTAINER */
 #top-container {
   background-color: var(--bg-1);
@@ -211,30 +265,7 @@ td {
   font-size: 12;
 }
 
-/* SEARCH + SETTINGS */
-#searchbar-container {
-  display: flex;
-  flex-direction: row;
-  position: fixed;
-  top: 30px;
-  right: 30px;
 
-  justify-content: end;
-  align-items: center;
-}
-
-#input-search {
-  width: 300px;
-  height: 20px;
-
-  border: 1px solid #C4C4C4;
-  border-radius: 5px;
-}
-
-#btn-settings {
-  height: 20px;
-  background-color: red;
-}
 
 /* TOP CONTAINER > MAIN HEADER */
 #main-header-container {
