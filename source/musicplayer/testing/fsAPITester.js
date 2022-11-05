@@ -17,24 +17,35 @@ function testSettings() {
 }
 
 function testSongs() {
-    let songPaths = fs.recursiveSearchAtPath(path.join(fs.getSourceFolder(), 'user/songs'));
-    fs.writeSongs(songPaths);
-    songs = fs.getSongs();
-    //console.log('Songs:' + songs);
-    let songList = [];
-    for (song in songs) {
-        // prints the file names w/ directories
-        songList[song] = (songs[song].split('\\').pop().split('/').pop());
+
+    let songs = fs.getSongs();
+
+    const songPaths = fs.recursiveSearchAtPath(path.join(fs.getSourceFolder(), 'user/songs'));
+    let songList = {};
+    for (song in songPaths) {
+        songList[songPaths[song].split('\\').pop().split('/').pop()] = songPaths[song];
     }
-    if(songList[0] == 'Tobu - Hope [NCS Release].mp3' &&
-    songList[1] == 'Tobu - Infectious [NCS Release].mp3' &&
-    songList[2] == 'Different Heaven & EH!DE - My Heart [NCS Release].mp3') {
+    fs.writeSongs(songList);
+    
+    console.log('Songs match after reload: ' + (JSON.stringify(songs) == JSON.stringify(fs.getSongs())));
+    
+    let names = Object.keys(songList);
+    if(names[0] == 'Tobu - Hope [NCS Release].mp3' &&
+    names[1] == 'Tobu - Infectious [NCS Release].mp3' &&
+    names[2] == 'Different Heaven & EH!DE - My Heart [NCS Release].mp3') {
         console.log("Songs loaded in correctly!");
     }
     else
-        console.log("Warning: songs not loaded in correctly")
+        console.log("Warning: songs not loaded in correctly");
     
-    //fs.removeSong('Different Heaven & EH!DE - My Heart [NCS Release].mp3');
+    songs = fs.getSongs();
+
+    testSongName = 'Alan Walker - Fade.mp3';
+    testSongPath = path.join(fs.getSourceFolder(), 'user/songs/Alan Walker - Fade.mp3');
+    fs.appendSong(testSongName, testSongPath);
+    fs.removeSong(testSongName);
+    
+    console.log('Songs match after remove and append: ' + (JSON.stringify(songs) == JSON.stringify(fs.getSongs())));
 
 }
 
