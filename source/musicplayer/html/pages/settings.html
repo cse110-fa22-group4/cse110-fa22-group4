@@ -1,8 +1,101 @@
+<!--May need to change input on toggles to style toggles correctly-->
+<div class="settings-container">
+    <h1>* SETTINGS UNDER CONSTRUCTION *</h1>
+    <!--First column-->
+    <div class="settings">
+        <!--Watch folders-->
+        <h2>Watch Folders</h2>
+        <p>Contents in watch folders will be added to your library</p>
+        <p>Watched folders:</p>
+        <div id="watched-folders">
+            <!--watched paths go here-->
+            <p>C://Users//Music</p>
+        </div>
+        <button id="settings-rescan">Rescan now</button>
+        <input type="file" id="add-paths-button">
+        <div class="toggle">
+            <p>Rescan watch folders at startup</p>
+            <input type="checkbox" id="enable-scan-on-startup">
+        </div>
 
-<h1>* SETTINGS UNDER CONSTRUCTION *</h1>
-<div>
-    <!--paths go here-->
+        <!--Playlists-->
+        <h2>Import / Export Playlists</h2>
+        <p>Discover new mixes by importing a playlist</p>
+        <input type="text">
+        <input type="file" id="add-playlist-input">
+    </div>
 
+    <!--Second column-->
+    <div class="settings">
+        <!--Theme-->
+        <h2>Theme</h2>
+        <div class="toggle">
+            <p>Default to light theme or toggle for dark mode</p>
+            <input type="checkbox" id="enable-dark-mode">
+        </div>
+
+        <!--Playback-->
+        <h2>Playback</h2>
+        <div class="toggle">
+            <p>Crossfase tracks</p>
+            <input type="checkbox" id="enable-crossfade">
+        </div>
+
+        <!--Sidebar Configuration-->
+        <h2>Sidebar Configuration</h2>
+        <p>Customize your sidebar by adding or removing options</p>
+        <div class="toggle">
+            <p>Home</p>
+            <input type="checkbox" id="enable-sidebar-home">
+        </div>
+        <div class="toggle">
+            <p>Now Playing</p>
+            <input type="checkbox" id="enable-sidebar-now-playing">
+        </div>
+        <div class="toggle">
+            <p>Library</p>
+            <input type="checkbox" id="enable-sidebar-Library">
+        </div>
+        <div class="toggle">
+            <p>Playlists</p>
+            <input type="checkbox" id="enable-sidebar-Playlists">
+        </div>
+        <div class="toggle">
+            <p>Quick Access</p>
+            <input type="checkbox" id="enable-sidebar-Quick-Access">
+        </div>
+    </div>
+
+    <!--Third Column-->
+    <div class="settings">
+        <h2>Stats</h2>
+        <p>You have the option of tracking your usage statistics</p>
+
+        <div class="toggle">
+            <p>Opt-in</p>
+            <input type="checkbox" id="enable-user-stats">
+        </div>
+
+        <!--According to Figma diagram, these should just be implemented with checkboxes-->
+        <div class="toggle">
+            <p>Most played tracks</p>
+            <input type="checkbox" id="enable-most-played-tracks">
+        </div>
+        <div class="toggle">
+            <p>Most played artists</p>
+            <input type="checkbox" id="enable-most-played-artists">
+        </div>
+        <div class="toggle">
+            <p>Most played albums</p>
+            <input type="checkbox" id="enable-most-played-albums">
+        </div>
+        <div class="toggle">
+            <p>Most played playlists</p>
+            <input type="checkbox" id="enable-most-played-playlists">
+        </div>
+        <div class="toggle">
+            <p>Most played genres</p>
+            <input type="checkbox" id="enable-most-played-genres">
+        </div>
+    </div>
 </div>
-<button id="settings-rescan">Rescan now</button>
-<button id="add-paths-button">Add</button>
