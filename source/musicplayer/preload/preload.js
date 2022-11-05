@@ -12,7 +12,8 @@ const {
     managedSetAttribute,
     managedAddChild,
     managedSetHTML,
-    managedSetStyle
+    managedSetStyle,
+    managedGetValue
 } = require('./domAPICalls.js');
 
 const {
@@ -108,7 +109,8 @@ contextBridge.exposeInMainWorld('domAPI', {
     managedSetAttribute: managedSetAttribute,
     managedAddChild: managedAddChild,
     managedSetHTML: managedSetHTML,
-    managedSetStyle: managedSetStyle
+    managedSetStyle: managedSetStyle,
+    managedGetValue: managedGetValue
 });
 
 contextBridge.exposeInMainWorld('ffmpegAPI', {

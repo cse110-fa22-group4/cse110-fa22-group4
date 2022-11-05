@@ -94,10 +94,28 @@ function managedAddChild(domID, child) {
  * @param value {string} The value to set the style to.
  */
 function managedSetStyle(domID, style, value) {
-    const isChildSafe = ipcRenderer.invoke('mangedChildCheck', domID);
+    const isChildSafe = ipcRenderer.invoke('managedChildCheck', domID);
     if (isChildSafe) {
         document.getElementById(domID).style[style] = value;
     }
+}
+
+/**
+ * @name managedGetValue
+ * @memberOf domAPI
+ * @description Gets the value of a given domID, if it exists and is deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} value The value to get from the element.
+ * @return {object | undefined} The value if the getter is successful, else undefined if either the value or element does not exist,
+ *          or if the value is deemed 'unsafe.'
+ */
+ function managedGetValue(domID, value) {
+  const isValueSafe = ipcRenderer.invoke('managedValueCheck', domID, value);
+  if (isValueSafe) {
+      return document.getElementById(domID).value;
+  }
+  else
+      return undefined;
 }
 
 module.exports = {
@@ -106,5 +124,6 @@ module.exports = {
     managedSetAttribute,
     managedAddChild,
     managedSetHTML,
-    managedSetStyle
+    managedSetStyle,
+    managedGetValue
 }

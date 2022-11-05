@@ -181,6 +181,8 @@ td {
   max-width: 365px;
   height: 20px;
 
+  color: #767676;
+
   border: 1px solid #C4C4C4;
   border-left: none;
   border-radius: 0 2.5px 2.5px 0;
