@@ -15,5 +15,4 @@ function rescanClick(element) {
 
 function addPath(element) {
     window.showDirectoryPicker();
-
 }
