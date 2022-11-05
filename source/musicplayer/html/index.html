@@ -1,0 +1,55 @@
+<!--index.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'">
+  <title>Mixmatch v0.1</title>
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <!-- You can also require other files to run in this process -->
+  <script src="../renderer/renderer.js"></script>
+  <script src="../renderer/index.js"></script>
+
+</head>
+
+<body>
+
+  <!-- <h1>Hello World!</h1>
+    We are using Node.js <span id="node-version"></span>,
+    Chromium <span id="chrome-version"></span>,
+    and Electron <span id="electron-version"></span>.
+    <br>
+  <button id="my-button" data-value="0"> I have been pressed 0 times! </button> <br>
+  <div id="subpage"> </div> -->
+
+  <!-- HOME PAGE COMPONENTS -->
+
+  <!-- Main Window -->
+  <div id="main-container" class="vis"></div>
+
+  <!-- Sidebar -->
+  <div id="sidebar-container" class="vis"></div>
+
+  <!-- Now Playing + Main Window Heading -->
+  <div id="top-container">
+    <div id="overview-container" class="vis"></div>
+    <div id="main-header-container" class="vis"></div>
+  </div>
+
+  <div id="top-container-extended">
+    <div id="overview-container-extended" class="vis"></div>
+  </div>
+
+  <!-- Playback -->
+  <div id="playback-container" class="vis"></div>
+
+</body>
+
+</html>

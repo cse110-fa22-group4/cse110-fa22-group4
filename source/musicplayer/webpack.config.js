@@ -1,12 +1,17 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 let outputDirectory = '/dist'
 
 module.exports = [
+  {
+    plugins: [new ESLintPlugin()],
+  },
     {
         mode: 'development',
-        entry: './main.js',
+        entry: './main/main.js',
         target: 'electron-main',
+        devtool: 'source-map',
         output: {
             path: __dirname + outputDirectory,
             filename: 'main.js'
@@ -14,8 +19,9 @@ module.exports = [
     },
     {
         mode: 'development',
-        entry: './preload.js',
+        entry: './preload/preload.js',
         target: 'electron-preload',
+        devtool: 'source-map',
         output: {
             path: __dirname + outputDirectory,
             filename: 'preload.js'
@@ -23,7 +29,7 @@ module.exports = [
     },
     {
         mode: 'development',
-        entry: './renderer.js',
+        entry: './renderer/renderer.js',
         target: 'electron-renderer',
         devtool: 'source-map',
         output: {
@@ -32,7 +38,7 @@ module.exports = [
         },
         plugins: [
             new HtmlWebpackPlugin( {
-                template: './index.html',
+                template: './html/index.html',
                 inject: false // THIS LINE IS VERY IMPORTANT! Without this line, webpack instantiates 2 main.js files.
             })
         ]
