@@ -12,8 +12,8 @@ function submitSearch(element) {
   if (searchQuery.length !== 0) {
     // Switch to search results page
     jqAPI.loadPage('#main-container', 'pages/search.html');
-    toggleOverview();
-
+    topExtensionOff()
+    
     // Change main header to match search query
     domAPI.managedSetHTML('main-header', `<h1>Top results for: '${searchQuery}'</h1>`);
   }

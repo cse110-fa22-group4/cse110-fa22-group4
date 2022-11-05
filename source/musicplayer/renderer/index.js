@@ -1,12 +1,12 @@
 /* GLOBAL VARS */
-let overviewIsExtended = false; // to toggle extended view of Overview container
+let topContainerIsExtended = false; // to toggle extended view of top container
 let searchQuery = "";  // the current query entered in the search bar
 
 /* GENERATE HOME PAGE */
 window.addEventListener('DOMContentLoaded', () => {
+  domAPI.managedSetStyle('top-container-extended', 'visibility', 'hidden');
   jqAPI.loadPage('#sidebar-container', 'components/sidebar.html');
   jqAPI.loadPage('#overview-container', 'components/overview.html');
-  jqAPI.loadPage('#overview-container-extended', 'components/overviewExtended.html');
   jqAPI.loadPage('#main-header-container', 'components/mainHeader.html');
   jqAPI.loadPage('#main-container', 'pages/home.html');
   jqAPI.loadPage('#playback-container', 'components/playback.html');
@@ -16,6 +16,7 @@ window.addEventListener('DOMContentLoaded', () => {
   jqAPI.onEvent('body', 'click', '#btn-library', libraryClick);
   jqAPI.onEvent('body', 'click', '#btn-playlists', playlistsClick);
   jqAPI.onEvent('body', 'click', '#btn-search-tracks', searchTracksClick);
+  jqAPI.onEvent('body', 'click', '#btn-settings', settingsClick);
   
 });
 
@@ -25,46 +26,55 @@ window.addEventListener('DOMContentLoaded', () => {
 function homeClick(element) {
     jqAPI.loadPage('#main-container', 'pages/home.html');
     domAPI.managedSetHTML('main-header', '<h1>Home</h1>');
-    toggleOverview();
+    topExtensionOff();
 }
 
 // Navigate to Overview (Now Playing) view
 function overviewClick(element)  {
-    if (!overviewIsExtended) {
-        // Toggle extended viewdocument.getElementById('top-container').style['visibility'] =
-        domAPI.managedSetStyle('top-container', 'visibility', 'hidden');
-        domAPI.managedSetStyle('top-container-extended', 'visibility', 'visible');
-        overviewIsExtended = true;
-    }
+  jqAPI.loadPage('#top-container-extended', 'pages/overviewExtended.html');
+  topExtensionOn();
 }
 
 // Navigate to Library view
 function libraryClick(element) {
     jqAPI.loadPage('#main-container', 'pages/library.html');
     domAPI.managedSetHTML('main-header', '<h1>Library</h1>');
-    toggleOverview();
+    topExtensionOff();
 }
 
 // Navigate to Playlists view
 function playlistsClick(element) {
     jqAPI.loadPage('#main-container', 'pages/playlists.html');
     domAPI.managedSetHTML('main-header', '<h1>Playlists</h1>');
-    toggleOverview();
+    topExtensionOff();
 }
 
 // Navigate to Search results extended view
 function searchTracksClick(element) {
     jqAPI.loadPage('#main-container', 'pages/search_extend.html');
     domAPI.managedSetHTML('main-header', '<h1>Search</h1>');
-    toggleOverview();
+    topExtensionOff();
+}
+
+// Navigate to Settings view
+function settingsClick(element) {
+  jqAPI.loadPage('#top-container-extended', 'pages/settings.html');
+  topExtensionOn();
 }
 
 /* TOGGLE OVERVIEW */
-function toggleOverview() {
-  if (overviewIsExtended) {
-    // Toggle default view
+function topExtensionOff() {
+  if (topContainerIsExtended) {
     domAPI.managedSetStyle('top-container', 'visibility', 'visible');
     domAPI.managedSetStyle('top-container-extended', 'visibility', 'hidden');
-    overviewIsExtended = false;
+    topContainerIsExtended = false;
+  }
+}
+
+function topExtensionOn() {
+  if (!topContainerIsExtended) {
+    domAPI.managedSetStyle('top-container', 'visibility', 'hidden');
+    domAPI.managedSetStyle('top-container-extended', 'visibility', 'visible');
+    topContainerIsExtended = true;
   }
 }

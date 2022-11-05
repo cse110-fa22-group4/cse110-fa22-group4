@@ -18,11 +18,11 @@
 }
 
 /* tool to reveal div borders for formatting purposes */
-/* .vis {
+.vis {
   background: steelblue;
   color: white;
   border: white 1px solid;
-} */
+}
 
 /* GENERAL */
 button,
@@ -195,6 +195,16 @@ td {
   font-size: 12px;
 }
 
+#settings-container {
+  display: flex;
+  flex: row;
+  min-height: 100vh;
+  max-height: 100vh;
+  background: #b42020;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 15px 15px;
+}
+
 #btn-settings {
   margin-left: 8px;
   background-color: transparent;
@@ -206,7 +216,6 @@ td {
 
 /* TOP CONTAINER */
 #top-container {
-  background-color: var(--bg-1);
   color: var(--txt-2);
 
   display: flex;
@@ -219,11 +228,12 @@ td {
 
 /* TOP CONTAINER > OVERVIEW > CURRENT TRACK */
 #overview-container {
+  background-color: var(--bg-2);
+
   display: flex;
   flex: row;
   min-height: 280px;
   max-height: 280px;
-  background: #1F1F1F;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   border-radius: 0px 0px 15px 15px;
 }
@@ -285,25 +295,25 @@ td {
 
 /* TOP CONTAINER - EXTENDED */
 #top-container-extended {
-  background-color: var(--bg-1);
+  background-color: var(--bg-2);
   color: var(--txt-2);
-  visibility: hidden;
-  display: flex;
-  flex-direction: column;
+
   position: fixed;
   top: 0;
   right: 0;
+  bottom: 100px;
   left: 230px;
-}
 
-#overview-container-extended {
-  display: flex;
-  flex: row;
-  min-height: 100vh;
-  max-height: 100vh;
-  background: #1F1F1F;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   border-radius: 0px 0px 15px 15px;
+
+  padding: 30px;
+}
+
+#overviewExtended-container {
+  display: grid;
+  min-height: 100%;
+  max-height: 100%;
 }
 
 
