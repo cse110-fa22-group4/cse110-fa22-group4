@@ -180,7 +180,7 @@ td {
   color: #C4C4C4;
   fill: currentColor;
   width: 15px;
-  height: 18px;
+  height: 22px;
 
   padding-left: 10px;
   padding-right: 10px;
@@ -194,7 +194,7 @@ td {
 #input-search {
   width: 20vw;
   max-width: 365px;
-  height: 20px;
+  height: 24px;
 
   color: #767676;
 
@@ -221,12 +221,12 @@ td {
 }
 
 #btn-settings {
-  margin-left: 8px;
+  margin-bottom: 6px;
   background-color: transparent;
 }
 
 #settings-icon {
-  height: 22px;
+  height: 26px;
 }
 
 /* TOP CONTAINER */
@@ -312,12 +312,33 @@ align-items: start;
   padding-right: 30px;
 }
 
-select {
+#playlist-create-input {
+  height: 18px;
+  width: 200px;
+  font-size: 12px;
+  border-radius: 2.5px;
+  color: var(--mid-dark);
+  border: 1px solid var(--mid);
+}
 
+#playlist-create-input::placeholder {
+  color: var(--mid-dark);
+}
+
+#playlist-add {
+  height: 22px;
+  width: 200px;
+  font-size: 12px;
+  border-radius: 2.5px;
+  color: var(--mid-dark);
+  border: 1px solid var(--mid);
+}
+
+
+select {
   font-family: 'Roboto', sans-serif;
   font-size: 13px;
   font-weight: 100;
-
 }
 
 /* TOP CONTAINER - EXTENDED */
