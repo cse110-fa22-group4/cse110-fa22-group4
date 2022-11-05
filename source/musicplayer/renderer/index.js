@@ -1,32 +1,27 @@
-// Overview global vars
-let overviewIsExtended; // to toggle extended view of Overview container
+// GLOBAL VARS
+let overviewIsExtended = false; // Overview - to toggle extended view of Overview container
 
 /* GENERATE HOME PAGE */
 window.addEventListener('DOMContentLoaded', () => {
-    jqAPI.loadPage('#sidebar-container', 'components/sidebar.html');
-    jqAPI.loadPage('#overview-container', 'components/overview.html');
-    jqAPI.loadPage('#overview-container-extended', 'components/overviewExtended.html');
-    jqAPI.loadPage('#main-header-container', 'components/mainHeader.html');
-    jqAPI.loadPage('#main-container', 'pages/home.html');
-    jqAPI.loadPage('#playback-container', 'components/playback.html');
-
-    jqAPI.onEvent('body', 'click', '#btn-home', homeClick);
-    jqAPI.onEvent('body', 'click', '#btn-overview', overviewClick);
-    jqAPI.onEvent('body', 'click', '#btn-playlists', playlistsClick);
-    jqAPI.onEvent('body', 'click', '#btn-search', searchClick);
-    jqAPI.onEvent('body', 'click', '#btn-library', libraryClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-tracks', searchTracksClick);
-
-    overviewIsExtended = false;
+  jqAPI.loadPage('#sidebar-container', 'components/sidebar.html');
+  jqAPI.loadPage('#overview-container', 'components/overview.html');
+  jqAPI.loadPage('#overview-container-extended', 'components/overviewExtended.html');
+  jqAPI.loadPage('#main-header-container', 'components/mainHeader.html');
+  jqAPI.loadPage('#main-container', 'pages/home.html');
+  jqAPI.loadPage('#playback-container', 'components/playback.html');
+  jqAPI.loadPage('#searchbar-container', 'components/searchbar.html');
+  jqAPI.onEvent('body', 'click', '#btn-home', homeClick);
+  jqAPI.onEvent('body', 'click', '#btn-overview', overviewClick);
+  jqAPI.onEvent('body', 'click', '#btn-library', libraryClick);
+  jqAPI.onEvent('body', 'click', '#btn-playlists', playlistsClick);
+  jqAPI.onEvent('body', 'click', '#input-search', searchClick);
+  jqAPI.onEvent('body', 'click', '#btn-search-tracks', searchTracksClick);
+  
 });
+
 /* SIDEBAR NAVIGATION */
 
-// Toggle Home views
-/**
- * @name homeClick
- * @description The event handler for when the home button is clicked in the sidebar.
- * @param element {object} A callback element that can be used on event.
- */
+// Toggle Home view
 function homeClick(element) {
     jqAPI.loadPage('#main-container', 'pages/home.html');
     domAPI.managedSetHTML('main-header', '<h1>Home</h1>');
@@ -45,7 +40,6 @@ function overviewClick(element)  {
         domAPI.managedSetStyle('top-container-extended', 'visibility', 'hidden');
         overviewIsExtended = false;
     }
-
 }
 
 // Toggle Library view
