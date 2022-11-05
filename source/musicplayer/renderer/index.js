@@ -1,5 +1,6 @@
 // GLOBAL VARS
-let overviewIsExtended = false; // Overview - to toggle extended view of Overview container
+let overviewIsExtended = false; // to toggle extended view of Overview container
+let searchQuery;  // the current query entered in the search bar
 
 /* GENERATE HOME PAGE */
 window.addEventListener('DOMContentLoaded', () => {
