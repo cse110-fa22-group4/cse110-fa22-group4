@@ -2,16 +2,21 @@ window.addEventListener('DOMContentLoaded', () => {
   jqAPI.onEvent('body', 'submit', '#search-form', submitSearch);
 });
 
+// Handle user search query
 function submitSearch(element) {
   event.preventDefault();
 
-  // get query from search bar input, set global var (incase value is needed later)
+  // Set global var for search query input
   searchQuery = domAPI.managedGetValue('input-search', 'value');
 
-  //
-  jqAPI.loadPage('#main-container', 'pages/search.html');
-  domAPI.managedSetHTML('main-header', `<h1>Search: '${searchQuery}'</h1>`);
+  if (searchQuery.length !== 0) {
+    // Switch to search results page
+    jqAPI.loadPage('#main-container', 'pages/search.html');
+    toggleOverview();
 
-  // TODO: Use this query value for searching our app's library
-  alert(`Hi, you entered the following search query:  '${searchQuery}' Unfortunately the search feature is under construction!`);
+    // Change main header to match search query
+    domAPI.managedSetHTML('main-header', `<h1>Top results for: '${searchQuery}'</h1>`);
+  }
+
+  // TODO: Use search query value for searching our app's library
 }

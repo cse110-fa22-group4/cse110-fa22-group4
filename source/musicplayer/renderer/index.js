@@ -1,6 +1,6 @@
-// GLOBAL VARS
+/* GLOBAL VARS */
 let overviewIsExtended = false; // to toggle extended view of Overview container
-let searchQuery;  // the current query entered in the search bar
+let searchQuery = "";  // the current query entered in the search bar
 
 /* GENERATE HOME PAGE */
 window.addEventListener('DOMContentLoaded', () => {
@@ -21,43 +21,50 @@ window.addEventListener('DOMContentLoaded', () => {
 
 /* SIDEBAR NAVIGATION */
 
-// Toggle Home view
+// Navigate to Home view
 function homeClick(element) {
     jqAPI.loadPage('#main-container', 'pages/home.html');
     domAPI.managedSetHTML('main-header', '<h1>Home</h1>');
+    toggleOverview();
 }
 
-// Toggle Overview (Now Playing) view
+// Navigate to Overview (Now Playing) view
 function overviewClick(element)  {
     if (!overviewIsExtended) {
         // Toggle extended viewdocument.getElementById('top-container').style['visibility'] =
         domAPI.managedSetStyle('top-container', 'visibility', 'hidden');
         domAPI.managedSetStyle('top-container-extended', 'visibility', 'visible');
         overviewIsExtended = true;
-    } else {
-        // Toggle default view
-        domAPI.managedSetStyle('top-container', 'visibility', 'visible');
-        domAPI.managedSetStyle('top-container-extended', 'visibility', 'hidden');
-        overviewIsExtended = false;
     }
 }
 
-// Toggle Library view
+// Navigate to Library view
 function libraryClick(element) {
     jqAPI.loadPage('#main-container', 'pages/library.html');
     domAPI.managedSetHTML('main-header', '<h1>Library</h1>');
+    toggleOverview();
 }
 
-// Toggle Playlists view
+// Navigate to Playlists view
 function playlistsClick(element) {
     jqAPI.loadPage('#main-container', 'pages/playlists.html');
     domAPI.managedSetHTML('main-header', '<h1>Playlists</h1>');
+    toggleOverview();
 }
 
-
-
-// Toggle Search results extended view
+// Navigate to Search results extended view
 function searchTracksClick(element) {
     jqAPI.loadPage('#main-container', 'pages/search_extend.html');
     domAPI.managedSetHTML('main-header', '<h1>Search</h1>');
+    toggleOverview();
+}
+
+/* TOGGLE OVERVIEW */
+function toggleOverview() {
+  if (overviewIsExtended) {
+    // Toggle default view
+    domAPI.managedSetStyle('top-container', 'visibility', 'visible');
+    domAPI.managedSetStyle('top-container-extended', 'visibility', 'hidden');
+    overviewIsExtended = false;
+  }
 }
