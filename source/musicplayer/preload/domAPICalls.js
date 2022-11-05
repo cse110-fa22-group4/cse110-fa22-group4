@@ -85,10 +85,26 @@ function managedAddChild(domID, child) {
     }
 }
 
+/**
+ * @name managedSetStyle
+ * @memberOf domAPI
+ * @description Sets a css style to a given value if it is deemed 'safe.'
+ * @param domID {string} The 'id' tag that the element has in the html.
+ * @param style {string} The style to change.
+ * @param value {string} The value to set the style to.
+ */
+function managedSetStyle(domID, style, value) {
+    const isChildSafe = ipcRenderer.invoke('mangedChildCheck', domID);
+    if (isChildSafe) {
+        document.getElementById(domID).style[style] = value;
+    }
+}
+
 module.exports = {
     managedAddEventListener,
     managedGetAttribute,
     managedSetAttribute,
     managedAddChild,
-    managedSetHTML
+    managedSetHTML,
+    managedSetStyle
 }

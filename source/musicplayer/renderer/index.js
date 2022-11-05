@@ -2,59 +2,72 @@
 let overviewIsExtended; // to toggle extended view of Overview container
 
 /* GENERATE HOME PAGE */
-$(document).ready(function() {
-  $("#sidebar-container").load("../html/components/sidebar.html");
-  $("#overview-container").load("../html/components/overview.html");
-  $("#overview-container-extended").load("../html/components/overviewExtended.html");
-  $("#main-header-container").load("../html/components/mainHeader.html");
-  $("#main-container").load("../html/pages/home.html");
-  $("#playback-container").load("../html/components/playback.html");
+window.addEventListener('DOMContentLoaded', () => {
+    jqAPI.loadPage('#sidebar-container', 'components/sidebar.html');
+    jqAPI.loadPage('#overview-container', 'components/overview.html');
+    jqAPI.loadPage('#overview-container-extended', 'components/overviewExtended.html');
+    jqAPI.loadPage('#main-header-container', 'components/mainHeader.html');
+    jqAPI.loadPage('#main-container', 'pages/home.html');
+    jqAPI.loadPage('#playback-container', 'components/playback.html');
 
-  overviewIsExtended = false;
+    jqAPI.onEvent('body', 'click', '#btn-home', homeClick);
+    jqAPI.onEvent('body', 'click', '#btn-overview', overviewClick);
+    jqAPI.onEvent('body', 'click', '#btn-playlists', playlistsClick);
+    jqAPI.onEvent('body', 'click', '#btn-search', searchClick);
+    jqAPI.onEvent('body', 'click', '#btn-library', libraryClick);
+    jqAPI.onEvent('body', 'click', '#btn-search-tracks', searchTracksClick);
+
+    overviewIsExtended = false;
 });
-
 /* SIDEBAR NAVIGATION */
 
-// Toggle Home view
-$(document).on('click', '#btn-home', () => {
-  $('#main-container').load('../html/pages/home.html');
-  document.getElementById('main-header').innerHTML = '<h1>Home<h1>';
-});
+// Toggle Home views
+/**
+ * @name homeClick
+ * @description The event handler for when the home button is clicked in the sidebar.
+ * @param element {object} A callback element that can be used on event.
+ */
+function homeClick(element) {
+    jqAPI.loadPage('#main-container', 'pages/home.html');
+    domAPI.managedSetHTML('main-header', '<h1>Home</h1>');
+}
 
 // Toggle Overview (Now Playing) view
-$(document).on('click', '#btn-overview', () => {
-  if (!overviewIsExtended) {
-    // Toggle extended view
-    document.getElementById('top-container').style.visibility = 'hidden';
-    document.getElementById('top-container-extended').style.visibility = 'visible';
-    overviewIsExtended = true;
-  } else {
-    // Toggle default view
-    document.getElementById('top-container').style.visibility = 'visible';
-    document.getElementById('top-container-extended').style.visibility = 'hidden';
-    overviewIsExtended = false;
-  }
-});
+function overviewClick(element)  {
+    if (!overviewIsExtended) {
+        // Toggle extended viewdocument.getElementById('top-container').style['visibility'] =
+        domAPI.managedSetStyle('top-container', 'visibility', 'hidden');
+        domAPI.managedSetStyle('top-container-extended', 'visibility', 'visible');
+        overviewIsExtended = true;
+    } else {
+        // Toggle default view
+        domAPI.managedSetStyle('top-container', 'visibility', 'visible');
+        domAPI.managedSetStyle('top-container-extended', 'visibility', 'hidden');
+        overviewIsExtended = false;
+    }
+
+}
 
 // Toggle Library view
-$(document).on('click', '#btn-library', () => {
-  $('#main-container').load('../html/pages/library.html');
-  document.getElementById('main-header').innerHTML = '<h1>Library<h1>';
-});
+function libraryClick(element) {
+    jqAPI.loadPage('#main-container', 'pages/library.html');
+    domAPI.managedSetHTML('main-header', '<h1>Library</h1>');
+}
 
 // Toggle Playlists view
-$(document).on('click', '#btn-playlists', () => {
-  $('#main-container').load('../html/pages/playlists.html');
-  document.getElementById('main-header').innerHTML = '<h1>Playlists<h1>';
-});
+function playlistsClick(element) {
+    jqAPI.loadPage('#main-container', 'pages/playlists.html');
+    domAPI.managedSetHTML('main-header', '<h1>Playlists</h1>');
+}
 
 // Toggle Search results view
-$(document).on('click', '#btn-search', () => {
-  $('#main-container').load('../html/pages/search.html');
-  document.getElementById('main-header').innerHTML = '<h1>Search<h1>';
-});
+function searchClick(element) {
+    jqAPI.loadPage('#main-container', 'pages/search.html');
+    domAPI.managedSetHTML('main-header', '<h1>Search</h1>');
+}
 
 // Toggle Search results extended view
-$(document).on('click', '#btn-search-tracks', () => {
-  $('#main-container').load('../html/pages/search_extend.html');
-});
+function searchTracksClick(element) {
+    jqAPI.loadPage('#main-container', 'pages/search_extend.html');
+    domAPI.managedSetHTML('main-header', '<h1>Search</h1>');
+}

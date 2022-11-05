@@ -43,10 +43,9 @@ function loadPage(targetID, htmlFile, callback = undefined) {
  */
 function onEvent(homeElement, event, targetID, func) {
     const $ = require('jquery/dist/jquery.min');
-    const jq = $(homeElement);
     const isSafe = ipcRenderer.invoke('managedAddEventListenerCheck', targetID, event);
     if (isSafe) {
-        jq.on(event, targetID, (element) => {
+        $(homeElement).on(event, targetID, (element) => {
             func(element);
         })
     }
