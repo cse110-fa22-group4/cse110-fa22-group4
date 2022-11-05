@@ -15,7 +15,6 @@ window.addEventListener('DOMContentLoaded', () => {
   jqAPI.onEvent('body', 'click', '#btn-overview', overviewClick);
   jqAPI.onEvent('body', 'click', '#btn-library', libraryClick);
   jqAPI.onEvent('body', 'click', '#btn-playlists', playlistsClick);
-  jqAPI.onEvent('body', 'click', '#input-search', searchClick);
   jqAPI.onEvent('body', 'click', '#btn-search-tracks', searchTracksClick);
   
 });
@@ -55,11 +54,7 @@ function playlistsClick(element) {
     domAPI.managedSetHTML('main-header', '<h1>Playlists</h1>');
 }
 
-// Toggle Search results view
-function searchClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/search.html');
-    domAPI.managedSetHTML('main-header', '<h1>Search</h1>');
-}
+
 
 // Toggle Search results extended view
 function searchTracksClick(element) {
