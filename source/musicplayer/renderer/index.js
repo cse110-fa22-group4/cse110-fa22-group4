@@ -1,6 +1,7 @@
 /* GLOBAL VARS */
 let topContainerIsExtended = false; // to toggle extended view of top container
 let searchQuery = "";  // the current query entered in the search bar
+let currentTrack; // object? of the currently playing track
 
 /* GENERATE HOME PAGE */
 window.addEventListener('DOMContentLoaded', () => {
