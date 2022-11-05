@@ -455,7 +455,10 @@ table {
 
 .ovEx-track-info {}
 
-.ovEx-queue-info {}
+.ovEx-queue-info {
+  padding-top: 20px;
+  border-top: var(--mid-dark) 1px solid;
+}
 
 .queue-info-headers {
   font-weight: 800;
