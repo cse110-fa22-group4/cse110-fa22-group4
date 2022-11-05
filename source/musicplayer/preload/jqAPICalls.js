@@ -39,7 +39,7 @@ function loadPage(targetID, htmlFile, callback = undefined) {
  * @param homeElement {string} The element to load jquery with.
  * @param event {string} The event to hook into.
  * @param targetID {string}The ID of the target to add an event to.
- * @param func {function} The function to run.
+ * @param func {function(HTMLElement)} The function to run.
  */
 function onEvent(homeElement, event, targetID, func) {
     const $ = require('jquery/dist/jquery.min');

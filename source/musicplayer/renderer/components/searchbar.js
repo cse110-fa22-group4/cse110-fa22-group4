@@ -7,7 +7,8 @@ function submitSearch(element) {
     event.preventDefault();
 
     // Set global var for search query input
-    searchQuery = domAPI.managedGetValue('input-search', 'value');
+    let searchQuery = domAPI.managedGetValue('input-search', 'value');
+    if (searchQuery === undefined) return;
 
     if (searchQuery.length !== 0) {
         // Switch to search results page

@@ -77,6 +77,21 @@ function getSettings() {
 }
 
 /**
+ * @name getSetting
+ * @memberOf fsAPI
+ * @description Gets a setting if it exists, and returns undefined otherwise.
+ * @param setting
+ * @return {object | undefined} The setting if it exists, and undefined otherwise.
+ */
+function getSetting(setting) {
+    const settings = getSettings();
+    if (setting in settings) {
+        return settings[setting];
+    }
+    return undefined;
+}
+
+/**
  * @name writeSettings
  * @description Rewrites the entire settings file using the given JSON. This rewrites the entire settings, if you
  *              want to only write one setting use writeToSetting()!
@@ -154,13 +169,12 @@ function writeSongs(songs) {
  * @name appendSong
  * @description Adds a new song to the songs.json file.
  * @memberOf fsAPI
- * @param newSongKey {string} The key used to insert into the songs.json file
- * @param newSongVal {object} The value used to insert into the songs.json file
+ * @param newSongPath {string} The path of the new song file.
  * @return {void}
  */
-function appendSong(newSongKey, newSongVal) {
+function appendSong(newSongPath) {
     const songs = getSongs();
-    songs[newSongKey] = newSongVal; // TODO: change me to only be value instead of kvp
+    songs.push(newSongPath) // TODO: change me to only be value instead of kvp
     writeSongs(songs);
 }
 
@@ -344,6 +358,7 @@ module.exports = {
     writeSettings,
     writeToSetting,
     deleteSetting,
+    getSetting,
     getSongs,
     writeSongs,
     appendSong,

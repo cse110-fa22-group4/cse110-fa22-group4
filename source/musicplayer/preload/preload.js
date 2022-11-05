@@ -23,7 +23,7 @@ const {
 } = require('./ffmpegAPICalls.js');
 
 const {
-    getSettings, writeSettings, writeToSetting, deleteSetting,
+    getSettings, writeSettings, writeToSetting, deleteSetting, getSetting,
     getSongs, writeSongs, appendSong, removeSong,
     getStats, writeStats, writeToStat, deleteStat,
     getAllPlaylists, removePlaylist, writePlaylist,
@@ -124,6 +124,7 @@ contextBridge.exposeInMainWorld('fsAPI', {
     writeSettings: writeSettings,
     writeToSetting: writeToSetting,
     deleteSetting: deleteSetting,
+    getSetting: getSetting,
     getSongs: getSongs,
     writeSongs: writeSongs,
     appendSongs: appendSong,
