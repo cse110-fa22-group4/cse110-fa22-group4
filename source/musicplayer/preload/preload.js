@@ -3,8 +3,8 @@ const {ipcRenderer, contextBridge, app} = require('electron');
 
 const {
     onEvent,
-    loadPage
-} = require('./jqAPICalls.js')
+    loadPage,
+} = require('./jqAPICalls.js');
 
 const {
     managedAddEventListener,
@@ -13,13 +13,13 @@ const {
     managedAddChild,
     managedSetHTML,
     managedSetStyle,
-    managedGetValue
+    managedGetValue,
 } = require('./domAPICalls.js');
 
 const {
     ffmpegRead,
     ffmpegWrite,
-    setPath
+    setPath,
 } = require('./ffmpegAPICalls.js');
 
 const {
@@ -28,7 +28,7 @@ const {
     getStats, writeStats, writeToStat, deleteStat,
     getAllPlaylists, removePlaylist, writePlaylist,
     recursiveSearchAtPath,
-    getSRCString, fsInit, devClear
+    getSRCString, fsInit, devClear,
 } = require('./fsAPICalls');
 
 const {
@@ -76,18 +76,18 @@ window.jqAPI = undefined;
  */
 window.genAPI = undefined;
 
-module.exports = { debugLog }
+module.exports = {debugLog};
 
 // All the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', async () => {
     const replaceText = (selector, text) => {
-        const element = document.getElementById(selector)
-        if (element) element.innerText = text
-    }
+        const element = document.getElementById(selector);
+        if (element) element.innerText = text;
+    };
 
     for (const dependency of ['chrome', 'node', 'electron']) {
-        replaceText(`${dependency}-version`, process.versions[dependency])
+        replaceText(`${dependency}-version`, process.versions[dependency]);
     }
 
     fsInit();
@@ -99,8 +99,8 @@ contextBridge.exposeInMainWorld('genAPI', {
 });
 
 contextBridge.exposeInMainWorld('jqAPI', {
-   onEvent: onEvent,
-   loadPage: loadPage
+    onEvent: onEvent,
+    loadPage: loadPage,
 });
 
 contextBridge.exposeInMainWorld('domAPI', {
@@ -110,13 +110,13 @@ contextBridge.exposeInMainWorld('domAPI', {
     managedAddChild: managedAddChild,
     managedSetHTML: managedSetHTML,
     managedSetStyle: managedSetStyle,
-    managedGetValue: managedGetValue
+    managedGetValue: managedGetValue,
 });
 
 contextBridge.exposeInMainWorld('ffmpegAPI', {
     readMetadata: ffmpegRead,
     writeMetadata: ffmpegWrite,
-    setBinPath: setPath
+    setBinPath: setPath,
 });
 
 contextBridge.exposeInMainWorld('fsAPI', {
@@ -136,5 +136,5 @@ contextBridge.exposeInMainWorld('fsAPI', {
     removePlaylist: removePlaylist,
     writePlaylist: writePlaylist,
     getSRCString: getSRCString,
-    recursiveSearchAtPath: recursiveSearchAtPath
+    recursiveSearchAtPath: recursiveSearchAtPath,
 });

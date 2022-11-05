@@ -1,13 +1,11 @@
 const path = require('path');
-const { ipcRenderer } = require('electron');
+const {ipcRenderer} = require('electron');
 
 /**
  * @description A boolean to toggle debug code
  * @type {boolean}
  */
 const debug = true;
-
-
 
 
 /**
@@ -19,16 +17,13 @@ const debug = true;
  * @param source {object} The caller of this method. Should be called with 'this'.
  * @param force {boolean} Force the print to go through. Defaults to false.
  */
-function debugLog(message, source,  force = false) {
+function debugLog(message, source, force = false) {
     if (debug && !force) {
         console.log(message);
     }
 }
 
 
-
-
-
 module.exports = {
-    debugLog
+    debugLog,
 };

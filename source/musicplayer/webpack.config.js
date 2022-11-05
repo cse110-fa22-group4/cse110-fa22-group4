@@ -1,12 +1,12 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-let outputDirectory = '/dist'
+const outputDirectory = '/dist';
 
 module.exports = [
-  {
-    plugins: [new ESLintPlugin()],
-  },
+    {
+        plugins: [new ESLintPlugin()],
+    },
     {
         mode: 'development',
         entry: './main/main.js',
@@ -14,8 +14,8 @@ module.exports = [
         devtool: 'source-map',
         output: {
             path: __dirname + outputDirectory,
-            filename: 'main.js'
-        }
+            filename: 'main.js',
+        },
     },
     {
         mode: 'development',
@@ -24,8 +24,8 @@ module.exports = [
         devtool: 'source-map',
         output: {
             path: __dirname + outputDirectory,
-            filename: 'preload.js'
-        }
+            filename: 'preload.js',
+        },
     },
     {
         mode: 'development',
@@ -34,13 +34,13 @@ module.exports = [
         devtool: 'source-map',
         output: {
             path: __dirname + outputDirectory,
-            filename: 'renderer.js'
+            filename: 'renderer.js',
         },
         plugins: [
-            new HtmlWebpackPlugin( {
+            new HtmlWebpackPlugin({
                 template: './html/index.html',
-                inject: false // THIS LINE IS VERY IMPORTANT! Without this line, webpack instantiates 2 main.js files.
-            })
-        ]
-    }
+                inject: false, // THIS LINE IS VERY IMPORTANT! Without this line, webpack instantiates 2 main.js files.
+            }),
+        ],
+    },
 ];

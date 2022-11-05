@@ -1,7 +1,7 @@
-const { ipcRenderer } = require('electron');
+const {ipcRenderer} = require('electron');
 
 // Ensures that an event is not established multiple times by accident.
-let establishedEvents = {};
+const establishedEvents = {};
 
 
 /**
@@ -12,11 +12,10 @@ let establishedEvents = {};
  * @param html {string} The html to set to for the element.
  */
 function managedSetHTML(domID, html) {
-    const isAttributeSafe = ipcRenderer.invoke('managedAttributeCheck', domID, 'innerHTML')
+    const isAttributeSafe = ipcRenderer.invoke('managedAttributeCheck', domID, 'innerHTML');
     if (isAttributeSafe) {
         document.getElementById(domID).innerHTML = html;
     }
-
 }
 
 /**
@@ -53,9 +52,9 @@ function managedGetAttribute(domID, attribute) {
     const isAttributeSafe = ipcRenderer.invoke('managedAttributeCheck', domID, attribute);
     if (isAttributeSafe) {
         return document.getElementById(domID).getAttribute(attribute);
-    }
-    else
+    } else {
         return undefined;
+    }
 }
 /**
  * @name managedSetAttribute
@@ -109,13 +108,13 @@ function managedSetStyle(domID, style, value) {
  * @return {object | undefined} The value if the getter is successful, else undefined if either the value or element does not exist,
  *          or if the value is deemed 'unsafe.'
  */
- function managedGetValue(domID, value) {
-  const isValueSafe = ipcRenderer.invoke('managedValueCheck', domID, value);
-  if (isValueSafe) {
-      return document.getElementById(domID).value;
-  }
-  else
-      return undefined;
+function managedGetValue(domID, value) {
+    const isValueSafe = ipcRenderer.invoke('managedValueCheck', domID, value);
+    if (isValueSafe) {
+        return document.getElementById(domID).value;
+    } else {
+        return undefined;
+    }
 }
 
 module.exports = {
@@ -125,5 +124,5 @@ module.exports = {
     managedAddChild,
     managedSetHTML,
     managedSetStyle,
-    managedGetValue
-}
+    managedGetValue,
+};

@@ -1,11 +1,11 @@
-const path = require("path");
-const { ipcRenderer } = require('electron');
+const path = require('path');
+const {ipcRenderer} = require('electron');
 
 /**
  * @description A path to the html directory from any file in the renderer directory.
  * @type {string}
  */
-const htmlFilePath = "./../html"
+const htmlFilePath = './../html';
 
 /**
  * @name htmlFromRenderer
@@ -47,11 +47,11 @@ function onEvent(homeElement, event, targetID, func) {
     if (isSafe) {
         $(homeElement).on(event, targetID, (element) => {
             func(element);
-        })
+        });
     }
 }
 
 module.exports = {
     loadPage,
-    onEvent
-}
+    onEvent,
+};

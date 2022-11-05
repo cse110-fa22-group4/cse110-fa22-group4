@@ -1,17 +1,33 @@
 {
-    "env": {
-        "node": true,
-        "commonjs": true,
-        "es2021": true
-    },
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es2021": true
+  },
     "plugins": [
+
     ],
-    "extends": ["eslint:recommended","google"],
-    "overrides": [
-    ],
-    "parserOptions": {
-        "ecmaVersion": "latest"
-    },
-    "rules": {
+  "extends": [
+    "eslint:recommended",
+    "google"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.js",
+        "*.json"
+      ],
+      "rules": {
+        "indent": [
+          "error",
+          4
+        ]
+      }
     }
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "rules": {
+  }
 }
