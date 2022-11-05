@@ -48,10 +48,6 @@ body {
   padding: 0;
 
   background-color: var(--bg-1);
-
-  white-space: nowrap;
-  overflow: hidden;
-
 }
 
 input {
@@ -110,7 +106,8 @@ td {
   min-width: 230px;
   max-width: 230px;
 
-
+  white-space: nowrap;
+  overflow: hidden;
 
 }
 
@@ -260,7 +257,7 @@ td {
   width: 300px;
 }
 
-.overview-artwork > img {
+.overview-artwork>img {
   height: 100%;
 
   border-radius: 5px 5px 5px 5px;
@@ -268,11 +265,11 @@ td {
 }
 
 .overview-track-info {
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-justify-content: center;
-align-items: start;
+  justify-content: center;
+  align-items: start;
 }
 
 .overview-track-info :nth-child(1) {
@@ -342,6 +339,26 @@ select {
 }
 
 /* TOP CONTAINER - EXTENDED */
+#btn-queue,
+#btn-track,
+#btn-lyrics {
+  color: var(--mid-dark);
+  height: 40px;
+}
+
+#btn-queue:hover {
+  color: #FFFFFF;
+}
+
+#btn-track:hover {
+  color: #FFFFFF;
+}
+
+#btn-lyrics:hover {
+  color: #FFFFFF;
+}
+
+
 #top-container-extended {
   background-color: var(--bg-2);
   color: var(--txt-2);
@@ -378,7 +395,7 @@ select {
   padding-top: 40px;
 }
 
-.ovEx-artwork > img {
+.ovEx-artwork>img {
   height: 100%;
   border-radius: 15px 15px 15px 15px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
@@ -390,7 +407,7 @@ select {
   align-items: end;
 }
 
-.ovEx-heading > * {
+.ovEx-heading>* {
   font-size: 26px;
   font-weight: 800;
   padding-right: 40px;
@@ -424,6 +441,7 @@ select {
 .ovEx-queue {
   display: flex;
   align-items: center;
+  overflow-y: auto;
 }
 
 thead {
@@ -441,6 +459,35 @@ table {
 
 .queue-info-headers {
   font-weight: 800;
+  color: var(--mid-dark);
+}
+
+/* OVERVIEW EXTENDED > LYRICS */
+#ovEx-lyrics-container {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+#ovEx-lyrics {
+  font-size: 12px;
+  top: 0;
+}
+
+#ovEx-metadata-container {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  width: 100%;
+  overflow-y: auto;
+
+}
+
+.track-info-headers {
+  font-weight: 800;
+}
+
+#ovEx-metadata {
 }
 
 /* MAIN */

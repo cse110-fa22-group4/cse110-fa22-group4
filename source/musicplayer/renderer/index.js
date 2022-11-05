@@ -15,9 +15,16 @@ window.addEventListener('DOMContentLoaded', () => {
   jqAPI.onEvent('body', 'click', '#btn-home', homeClick);
   jqAPI.onEvent('body', 'click', '#btn-overview', overviewClick);
   jqAPI.onEvent('body', 'click', '#btn-library', libraryClick);
+  jqAPI.onEvent('body', 'click', '#btn-library-artists', libraryArtistsClick);
+  jqAPI.onEvent('body', 'click', '#btn-library-albums', libraryAlbumsClick);
+  jqAPI.onEvent('body', 'click', '#btn-library-genres', libraryGenresClick);
+  jqAPI.onEvent('body', 'click', '#btn-library-tags', libraryTagsClick);
   jqAPI.onEvent('body', 'click', '#btn-playlists', playlistsClick);
   jqAPI.onEvent('body', 'click', '#btn-search-tracks', searchTracksClick);
   jqAPI.onEvent('body', 'click', '#btn-settings', settingsClick);
+  jqAPI.onEvent('body', 'click', '#btn-queue', ovExQueueClick);
+  jqAPI.onEvent('body', 'click', '#btn-track', ovExTrackClick);
+  jqAPI.onEvent('body', 'click', '#btn-lyrics', ovExLyricsClick);
   
 });
 
@@ -41,6 +48,34 @@ function libraryClick(element) {
     jqAPI.loadPage('#main-container', 'pages/library.html');
     domAPI.managedSetHTML('main-header', '<h1>Library</h1>');
     topExtensionOff();
+}
+
+// Navigate to Library > Artists view
+function libraryArtistsClick(element) {
+  jqAPI.loadPage('#main-container', 'pages/library_artists.html');
+  domAPI.managedSetHTML('main-header', '<h1>Artists</h1>');
+  topExtensionOff();
+}
+
+// Navigate to Library > Albums view
+function libraryAlbumsClick(element) {
+  jqAPI.loadPage('#main-container', 'pages/library_albums.html');
+  domAPI.managedSetHTML('main-header', '<h1>Albums</h1>');
+  topExtensionOff();
+}
+
+// Navigate to Library > Genres view
+function libraryGenresClick(element) {
+  jqAPI.loadPage('#main-container', 'pages/library_genres.html');
+  domAPI.managedSetHTML('main-header', '<h1>Genres</h1>');
+  topExtensionOff();
+}
+
+// Navigate to Library > Tags view
+function libraryTagsClick(element) {
+  jqAPI.loadPage('#main-container', 'pages/library_Tags.html');
+  domAPI.managedSetHTML('main-header', '<h1>Tags</h1>');
+  topExtensionOff();
 }
 
 // Navigate to Playlists view
@@ -78,4 +113,22 @@ function topExtensionOn() {
     domAPI.managedSetStyle('top-container-extended', 'visibility', 'visible');
     topContainerIsExtended = true;
   }
+}
+
+// Navigate to Overview extended > Queue view
+function ovExQueueClick(element) {
+  jqAPI.loadPage('#top-container-extended', 'pages/overviewExtended.html');
+  topExtensionOn();
+}
+
+// Navigate to Overview extended > Lyrics view
+function ovExLyricsClick(element) {
+  jqAPI.loadPage('#top-container-extended', 'pages/ovExLyrics.html');
+  topExtensionOn();
+}
+
+// Navigate to Overview extended > Track view
+function ovExTrackClick(element) {
+  jqAPI.loadPage('#top-container-extended', 'pages/ovExTrack.html');
+  topExtensionOn();
 }
