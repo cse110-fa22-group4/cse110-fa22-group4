@@ -23,6 +23,20 @@ async function fsInit() {
     console.log('UserData Storage Path: ' + storagePath); // todo: figure out cross apis
 }
 
+function setStoragePath(newStoragePath) {
+    localpath = getSourceFolder();
+    storagePath = path.join(localpath, newStoragePath);
+    if (!fs.existsSync(storagePath)) {
+        console.log(storagePath);
+        fs.mkdirSync(storagePath);
+    }
+    console.log('UserData Storage Path: ' + storagePath);
+}
+
+function getSourceFolder() {
+    return __dirname + '/../..';
+}
+
 /**
  * @name devClear
  * @description Deletes every file. Useful for development and unit tests. Can only be called from whitelisted callers.
@@ -359,4 +373,6 @@ module.exports = {
     fsInit,
     devClear,
     recursiveSearchAtPath,
+    setStoragePath,
+    getSourceFolder,
 };
