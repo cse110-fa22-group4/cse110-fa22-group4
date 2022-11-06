@@ -12,12 +12,14 @@
 
   <!-- Create playlist -->
   <form id="playlist-create">
-    <input id="playlist-create-input" type="text" placeholder="Create new playlist...">
+    <input id="playlist-create-input" type="text"
+      placeholder="Create new playlist...">
     <input id="btn-playlist-create" type="submit">
   </form>
 
   <!-- Add to playlist -->
-  <select name="add-ply" id="playlist-add" aria-placeholder="Add to playlist...">
+  <select name="add-ply" id="playlist-add"
+    aria-placeholder="Add to playlist...">
     <option value="" disabled selected>Add to playlist...</option>
     <option value="select-playlist-1">Summer Mix</option>
     <option value="select-playlist-2">Monday Songs</option>
@@ -43,6 +45,8 @@
   <button id="btn-meta" type="submit">Edit</button>
 
   <!-- Add File -->
-  <button id="btn-file" type="submit">+</button>
-  
+  <form id="file-add">
+    <input id="btn-file" type="file" multiple>
+  </form>
+
 </div>
