@@ -173,9 +173,10 @@ function writeSongs(songs) {
  * @return {void}
  */
 function appendSong(newSongPath) {
+
     const songs = getSongs();
-    songs.push(newSongPath) // TODO: change me to only be value instead of kvp
-    writeSongs(songs);
+    songs.push(newSongPath) 
+	writeSongs(songs);
 }
 
 /**
@@ -187,7 +188,7 @@ function appendSong(newSongPath) {
  */
 function removeSong(oldSong) {
     const songs = getSongs();
-    delete songs[oldSong]; // TODO: change me to remove from array instead of remove from dict
+    delete songs[oldSong];
     writeSongs(songs);
 }
 
@@ -255,9 +256,13 @@ function deleteStat(stat) {
  * @memberOf fsAPI
  * @return {object} An array of strings containing the name of every playlist.
  * @todo May or may not return file extensions, which could cause catastrophic errors if it doesn't. Testing needed.
+ * Update 11/06/2022, returns extensions on Mac and likely Linux, and either way, the other playlist functions are set to work without extensions
  */
 function getAllPlaylists() {
     const playlistPath = path.join(storagePath, 'playlists');
+	
+	//TODO: this folder checking will likely be a function
+	if(!fs.existsSync(path.join(storagePath, 'playlists'))) return;
     if (!fs.existsSync(playlistPath)) {
         fs.mkdirSync(playlistPath);
     }
@@ -273,6 +278,7 @@ function getAllPlaylists() {
  */
 function getPlaylist(playlist) {
     const playlistPath = path.join(storagePath, 'playlists', playlist);
+	if(!fs.existsSync(path.join(storagePath, 'playlists'))) return;
     if (!fs.existsSync(playlistPath)) {
         fs.closeSync(fs.openSync(playlistPath, 'w'));
         fs.writeFileSync(playlistPath, '{ }');
@@ -286,10 +292,11 @@ function getPlaylist(playlist) {
  * @memberOf fsAPI
  * @param playlistName The name of the playlist to delete
  * @return {void}
- * @todo Right now file extension must be passed in, this should be fixed!
  */
 function removePlaylist(playlistName) {
-    const playlistPath = path.join(storagePath, 'playlists', playlistName);
+    const playlistPath = path.join(storagePath, 'playlists', playlistName) + '.json';
+	if(!fs.existsSync(path.join(storagePath, 'playlists'))) return;
+
     if (!fs.existsSync(playlistPath)) return;
     fs.rmSync(playlistPath);
 }
@@ -302,10 +309,13 @@ function removePlaylist(playlistName) {
  * @param playlistName {string} The name of the playlist to write to.
  * @param playlist {object} A JSON formatted object containing the playlist information.
  * @return {void}
- * @todo Right now file extension must be passed in, this should be fixed!
  */
 function writePlaylist(playlistName, playlist) {
-    const playlistPath = path.join(storagePath, 'playlists', playlistName);
+    const playlistPath = path.join(storagePath, 'playlists', playlistName) + '.json';
+	//if folder doesn't exist, make sure it is created
+	if(!fs.existsSync(path.join(storagePath, 'playlists'))) {
+			fs.mkdirSync(path.join(storagePath, 'playlists'))
+	}
     if (!fs.existsSync(playlistPath)) {
         fs.closeSync(fs.openSync(playlistPath, 'w'));
     }
@@ -332,6 +342,7 @@ function getSRCString(path) {
  * @return {string[]}  An array of every song path that exists recursively within the directory.
  */
 function recursiveSearchAtPath(searchPath) {
+	//try and catch to take care of illegal folders/files
     try {
         const ret = [];
         const dirs = fs.readdirSync(searchPath, {withFileTypes: true}).filter((d) => d.isDirectory()).map((d) => d.name);

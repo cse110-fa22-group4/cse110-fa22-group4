@@ -1,7 +1,7 @@
 const path = require('path');
 const {ipcRenderer} = require('electron');
 const child_process = require('child_process');
-const {getSettings} = require('./fsAPICalls.js');
+const {getSettings, recursiveSearchAtPath, writeSongs} = require('./fsAPICalls.js');
 
 let ffProbePath = '';
 let ffmpegPath = '';
@@ -12,7 +12,7 @@ let ffmpegPath = '';
  * @return {string} The command to execute
  */
 function getReadCMD(filepath) {
-    return ffProbePath + ' -hide_banner -print_format json -show_format -show_streams -i "' +
+    return ffProbePath + ' -hide_banner -print_format json -show_format -i "' +
         filepath.split(path.sep).join(path.posix.sep) + '"';
 }
 
@@ -52,9 +52,15 @@ function ffmpegRead(filepath) {
  */
 function ffmpegWrite(filepath, options) {
     child_process.execSync(getWriteCMD(filepath, options)).toString();
-    // TODO: THIS ONLY WORKS ON WINDOWS!!
     const outPath = filepath.split('/');
-    child_process.execSync('move /y out.' + filepath.split('.').pop() + ' ' + filepath);
+	if(process.platform == 'win32') {
+
+    	child_process.execSync('move /y out.' + filepath.split('.').pop() + ' ' + filepath);
+	}
+	else {
+		child_process.execSync('mv out.' + filepath.split('.').pop() + ' ' + filepath);
+
+	}
 }
 /**
  * @name binPath
@@ -73,12 +79,34 @@ function setPath(binPath = undefined) {
             return;
         }
     }
-    ffProbePath = path.join(binPath, '/ffprobe.exe');
-    ffmpegPath = path.join(binPath, '/ffmpeg.exe');
+	
+	//Windows uses exe but mac and linux don't
+	if(process.platform == 'win32') {
+			ffProbePath = path.join(binPath, '/ffprobe.exe');
+			ffmpegPath = path.join(binPath, '/ffmpeg.exe');
+	}
+	else {
+			ffProbePath = path.join(binPath, '/ffprobe');
+			ffmpegPath = path.join(binPath, '/ffmpeg');
+	}
+}
+
+/**
+ * @name getMetadataRecursive
+ * @description recursively searches the files and prints it to songs.json
+ * @memberOf ffmpegAPI
+ * @param folderPath path to folder where we want to recursively search
+ * @todo Do we have to store ALL of the metadata for the tags?
+ */
+function getMetadataRecursive(folderPath) {
+	let listOfSongs = recursiveSearchAtPath(folderPath);
+	listOfSongs = listOfSongs.map(filePath => ffmpegRead(filePath));
+	writeSongs(JSON.stringify(listOfSongs))
 }
 
 module.exports = {
     ffmpegRead,
     ffmpegWrite,
     setPath,
+    getMetadataRecursive,
 };
