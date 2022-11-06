@@ -251,6 +251,20 @@ function deleteStat(stat) {
 }
 
 /**
+ * @name makeDirIfExists
+ * @description checks if the folder exists in appdata and if not creates it
+ * @memberOf fsAPI
+ * @param folder the folder to be checked for
+ * @todo name of the function may be kind of long and cumbersome to use
+ */
+function makeDirIfNotExists(folder) {
+
+    const folderPath = path.join(storagePath, folder);
+    if(!fs.existsSync(folderPath)) 
+        fs.mkdirSync(folderPath);
+
+}
+/**
  * @name getAllPlaylists
  * @description Gets an array that contains the names of every playlist.
  * @memberOf fsAPI
@@ -260,12 +274,8 @@ function deleteStat(stat) {
  */
 function getAllPlaylists() {
     const playlistPath = path.join(storagePath, 'playlists');
-	
-	//TODO: this folder checking will likely be a function
-	if(!fs.existsSync(path.join(storagePath, 'playlists'))) return;
-    if (!fs.existsSync(playlistPath)) {
-        fs.mkdirSync(playlistPath);
-    }
+
+    makeDirIfNotExists('playlists');
     return fs.readdirSync(playlistPath); // may not return file types
 }
 
@@ -277,8 +287,10 @@ function getAllPlaylists() {
  * @return {Object} A JSON formatted object that represents a playlist.
  */
 function getPlaylist(playlist) {
+    //To check for json: const playlistPath = path.join(storagePath, 'playlists', playlist) + '.json';
     const playlistPath = path.join(storagePath, 'playlists', playlist);
-	if(!fs.existsSync(path.join(storagePath, 'playlists'))) return;
+
+    makeDirIfNotExists('playlists');
     if (!fs.existsSync(playlistPath)) {
         fs.closeSync(fs.openSync(playlistPath, 'w'));
         fs.writeFileSync(playlistPath, '{ }');
@@ -294,9 +306,10 @@ function getPlaylist(playlist) {
  * @return {void}
  */
 function removePlaylist(playlistName) {
-    const playlistPath = path.join(storagePath, 'playlists', playlistName) + '.json';
-	if(!fs.existsSync(path.join(storagePath, 'playlists'))) return;
+    //const playlistPath = path.join(storagePath, 'playlists', playlistName) + '.json';
 
+    const playlistPath = path.join(storagePath, 'playlists', playlistName);
+    makeDirIfNotExists('playlists');
     if (!fs.existsSync(playlistPath)) return;
     fs.rmSync(playlistPath);
 }
@@ -311,11 +324,11 @@ function removePlaylist(playlistName) {
  * @return {void}
  */
 function writePlaylist(playlistName, playlist) {
-    const playlistPath = path.join(storagePath, 'playlists', playlistName) + '.json';
-	//if folder doesn't exist, make sure it is created
-	if(!fs.existsSync(path.join(storagePath, 'playlists'))) {
-			fs.mkdirSync(path.join(storagePath, 'playlists'))
-	}
+    //const playlistPath = path.join(storagePath, 'playlists', playlistName) + '.json';
+
+
+    const playlistPath = path.join(storagePath, 'playlists', playlistName);
+    makeDirIfNotExists('playlists');
     if (!fs.existsSync(playlistPath)) {
         fs.closeSync(fs.openSync(playlistPath, 'w'));
     }
