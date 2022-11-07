@@ -25,6 +25,8 @@
     "webpack-cli": "^4.10.0",
     "eslint": "^8.26.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-webpack-plugin": "^3.2.0"
+    "eslint-webpack-plugin": "^3.2.0",
+    "stylelint": "latest",
+    "stylelint-config-standard": "latest"
   }
 }
