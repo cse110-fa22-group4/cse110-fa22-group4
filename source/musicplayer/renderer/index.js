@@ -1,7 +1,8 @@
 /* GLOBAL VARS */
 let topContainerIsExtended = false; // to toggle extended view of top container
-const searchQuery = ''; // the current query entered in the search bar
+let searchQuery = ''; // the current query entered in the search bar
 let currentTrack; // object? of the currently playing track
+let currentSearchCategory;
 
 /* GENERATE HOME PAGE */
 window.addEventListener('DOMContentLoaded', () => {
@@ -21,6 +22,12 @@ window.addEventListener('DOMContentLoaded', () => {
     jqAPI.onEvent('body', 'click', '#btn-library-tags', libraryTagsClick);
     jqAPI.onEvent('body', 'click', '#btn-playlists', playlistsClick);
     jqAPI.onEvent('body', 'click', '#btn-search-tracks', searchTracksClick);
+    jqAPI.onEvent('body', 'click', '#btn-search-artists', searchArtistsClick);
+    jqAPI.onEvent('body', 'click', '#btn-search-albums', searchAlbumsClick);
+    jqAPI.onEvent('body', 'click', '#btn-search-genres', searchGenresClick);
+    jqAPI.onEvent('body', 'click', '#btn-search-playlists', searchPlaylistsClick);
+    jqAPI.onEvent('body', 'click', '#btn-search-tags', searchTagsClick);
+    jqAPI.onEvent('body', 'click', '#btn-search-all', searchAllClick);
     jqAPI.onEvent('body', 'click', '#btn-settings', settingsClick);
     jqAPI.onEvent('body', 'click', '#btn-queue', ovExQueueClick);
     jqAPI.onEvent('body', 'click', '#btn-track', ovExTrackClick);
@@ -84,11 +91,60 @@ function playlistsClick(element) {
     topExtensionOff();
 }
 
-// Navigate to Search results extended view
+// Navigate to Search results extended view > Tracks
 function searchTracksClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/search_extend.html');
-    domAPI.managedSetHTML('main-header', '<h1>Search</h1>');
+    jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+    domAPI.managedSetHTML('main-header', `<h1>Track results for: '${searchQuery}'</h1>`);
+    currentSearchCategory = 'tracks';
     topExtensionOff();
+}
+
+// Navigate to Search results extended view > Artists
+function searchArtistsClick(element) {
+  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  domAPI.managedSetHTML('main-header', `<h1>Artist results for: '${searchQuery}'</h1>`);
+  currentSearchCategory = 'artists';
+  topExtensionOff();
+}
+
+// Navigate to Search results extended view > Albums
+function searchAlbumsClick(element) {
+  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  domAPI.managedSetHTML('main-header', `<h1>Album results for: '${searchQuery}'</h1>`);
+  currentSearchCategory = 'albums';
+  topExtensionOff();
+}
+
+// Navigate to Search results extended view > Genres
+function searchGenresClick(element) {
+  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  domAPI.managedSetHTML('main-header', `<h1>Genre results for: '${searchQuery}'</h1>`);
+  currentSearchCategory = 'genres';
+  topExtensionOff();
+}
+
+// Navigate to Search results extended view > Playlists
+function searchPlaylistsClick(element) {
+  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  domAPI.managedSetHTML('main-header', `<h1>Playlist results for: '${searchQuery}'</h1>`);
+  currentSearchCategory = 'playlists';
+  topExtensionOff();
+}
+
+// Navigate to Search results extended view > Tags
+function searchTagsClick(element) {
+  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  domAPI.managedSetHTML('main-header', `<h1>Tag results for: '${searchQuery}'</h1>`);
+  currentSearchCategory = 'tags';
+  topExtensionOff();
+}
+
+// Navigate to Search results extended view > All
+function searchAllClick(element) {
+  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  domAPI.managedSetHTML('main-header', `<h1>All results for: '${searchQuery}'</h1>`);
+  currentSearchCategory = 'all';
+  topExtensionOff();
 }
 
 // Navigate to Settings view
