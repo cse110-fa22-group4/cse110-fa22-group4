@@ -59,28 +59,58 @@ form {
   display: inline;
 }
 
-/* TABLES */
-.search-lib-table {
-  width: 100%;
+/* LIBRARY */
+.library-container {
+
+  display: flex;
+  flex-direction: column;
+
+  /* width: 100%;
+  height: 100%; */
   text-align: left;
-  font-size: 12px;
-  font-weight: 100;
+  font-size: 13px;
+  white-space: hidden;
+
 }
 
-th {
-  background-color: #ffffff;
-  color: rgb(148, 148, 148);
-  position: sticky;
-  top: 0;
-  color: var(--bg-2);
-  text-align: left;
-  font-size: 14px;
-  padding: 10px;
-  border-bottom: rgb(198, 198, 198) 1px solid;
+.library-header {
+  display: flex;
+  flex-direction: row;
+  font-weight: 800;
+
+
 }
 
-td {
-  padding: 10px;
+.library-track-container {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.library-track {
+  display: flex;
+  flex-direction: row;
+}
+
+/* .library-header, .library-track {
+  margin-right: 10vw;
+} */
+
+.library-header div, .library-track div {
+  width: 200px;
+  /* min-width: 200px; */
+
+  margin: 10px 0;
+  margin-right: 10px;
+
+}
+
+.library-track-num {
+  max-width: 20px;
+}
+
+.library-track-title {
+  min-width: 200px;
 }
 
 /* SIDEBAR */
