@@ -53,14 +53,14 @@ function ffmpegRead(filepath) {
 function ffmpegWrite(filepath, options) {
     child_process.execSync(getWriteCMD(filepath, options)).toString();
     const outPath = filepath.split('/');
-	if(process.platform == 'win32') {
+    if(process.platform == 'win32') {
 
-    	child_process.execSync('move /y out.' + filepath.split('.').pop() + ' ' + filepath);
-	}
-	else {
-		child_process.execSync('mv out.' + filepath.split('.').pop() + ' ' + filepath);
+        child_process.execSync('move /y out.' + filepath.split('.').pop() + ' ' + filepath);
+    }
+    else {
+        child_process.execSync('mv out.' + filepath.split('.').pop() + ' ' + filepath);
 
-	}
+    }
 }
 /**
  * @name binPath
@@ -79,16 +79,16 @@ function setPath(binPath = undefined) {
             return;
         }
     }
-	
-	//Windows uses exe but mac and linux don't
-	if(process.platform == 'win32') {
-			ffProbePath = path.join(binPath, '/ffprobe.exe');
-			ffmpegPath = path.join(binPath, '/ffmpeg.exe');
-	}
-	else {
-			ffProbePath = path.join(binPath, '/ffprobe');
-			ffmpegPath = path.join(binPath, '/ffmpeg');
-	}
+    
+    //Windows uses exe but mac and linux don't
+    if(process.platform == 'win32') {
+            ffProbePath = path.join(binPath, '/ffprobe.exe');
+            ffmpegPath = path.join(binPath, '/ffmpeg.exe');
+    }
+    else {
+            ffProbePath = path.join(binPath, '/ffprobe');
+            ffmpegPath = path.join(binPath, '/ffmpeg');
+    }
 }
 
 /**
@@ -98,10 +98,10 @@ function setPath(binPath = undefined) {
  * @param folderPath path to folder where we want to recursively search
  * @todo Do we have to store ALL of the metadata for the tags?
  */
-function getMetadataRecursive(folderPath) {
-	let listOfSongs = recursiveSearchAtPath(folderPath);
-	listOfSongs = listOfSongs.map(filePath => ffmpegRead(filePath));
-	writeSongs(JSON.stringify(listOfSongs))
+function getMetadataRecursive(folderPath) { 
+    let listOfSongs = recursiveSearchAtPath(folderPath);
+    listOfSongs = listOfSongs.map(filePath => ffmpegRead(filePath));
+    writeSongs(JSON.stringify(listOfSongs))
 }
 
 module.exports = {

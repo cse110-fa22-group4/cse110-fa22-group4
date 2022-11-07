@@ -91,7 +91,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         replaceText(`${dependency}-version`, process.versions[dependency]);
     }
 
-    fsInit();
+    await fsInit();
     setPath();
 });
 
