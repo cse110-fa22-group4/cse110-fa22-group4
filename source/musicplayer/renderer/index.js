@@ -58,28 +58,28 @@ function libraryClick(element) {
 
 // Navigate to Library > Artists view
 function libraryArtistsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/library_artists.html');
+    jqAPI.loadPage('#main-container', 'pages/libraryArtists.html');
     domAPI.managedSetHTML('main-header', '<h1>Artists</h1>');
     topExtensionOff();
 }
 
 // Navigate to Library > Albums view
 function libraryAlbumsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/library_albums.html');
+    jqAPI.loadPage('#main-container', 'pages/libraryAlbums.html');
     domAPI.managedSetHTML('main-header', '<h1>Albums</h1>');
     topExtensionOff();
 }
 
 // Navigate to Library > Genres view
 function libraryGenresClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/library_genres.html');
+    jqAPI.loadPage('#main-container', 'pages/libraryGenres.html');
     domAPI.managedSetHTML('main-header', '<h1>Genres</h1>');
     topExtensionOff();
 }
 
 // Navigate to Library > Tags view
 function libraryTagsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/library_Tags.html');
+    jqAPI.loadPage('#main-container', 'pages/libraryTags.html');
     domAPI.managedSetHTML('main-header', '<h1>Tags</h1>');
     topExtensionOff();
 }
@@ -93,7 +93,7 @@ function playlistsClick(element) {
 
 // Navigate to Search results extended view > Tracks
 function searchTracksClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+    jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
     domAPI.managedSetHTML('main-header', `<h1>Track results for: '${searchQuery}'</h1>`);
     currentSearchCategory = 'tracks';
     topExtensionOff();
@@ -101,7 +101,7 @@ function searchTracksClick(element) {
 
 // Navigate to Search results extended view > Artists
 function searchArtistsClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
   domAPI.managedSetHTML('main-header', `<h1>Artist results for: '${searchQuery}'</h1>`);
   currentSearchCategory = 'artists';
   topExtensionOff();
@@ -109,7 +109,7 @@ function searchArtistsClick(element) {
 
 // Navigate to Search results extended view > Albums
 function searchAlbumsClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
   domAPI.managedSetHTML('main-header', `<h1>Album results for: '${searchQuery}'</h1>`);
   currentSearchCategory = 'albums';
   topExtensionOff();
@@ -117,7 +117,7 @@ function searchAlbumsClick(element) {
 
 // Navigate to Search results extended view > Genres
 function searchGenresClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
   domAPI.managedSetHTML('main-header', `<h1>Genre results for: '${searchQuery}'</h1>`);
   currentSearchCategory = 'genres';
   topExtensionOff();
@@ -125,7 +125,7 @@ function searchGenresClick(element) {
 
 // Navigate to Search results extended view > Playlists
 function searchPlaylistsClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
   domAPI.managedSetHTML('main-header', `<h1>Playlist results for: '${searchQuery}'</h1>`);
   currentSearchCategory = 'playlists';
   topExtensionOff();
@@ -133,7 +133,7 @@ function searchPlaylistsClick(element) {
 
 // Navigate to Search results extended view > Tags
 function searchTagsClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
   domAPI.managedSetHTML('main-header', `<h1>Tag results for: '${searchQuery}'</h1>`);
   currentSearchCategory = 'tags';
   topExtensionOff();
@@ -141,7 +141,7 @@ function searchTagsClick(element) {
 
 // Navigate to Search results extended view > All
 function searchAllClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/search_extended.html');
+  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
   domAPI.managedSetHTML('main-header', `<h1>All results for: '${searchQuery}'</h1>`);
   currentSearchCategory = 'all';
   topExtensionOff();
