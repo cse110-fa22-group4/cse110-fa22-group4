@@ -26,8 +26,11 @@ jobs:
       - name: Install Node.js dependencies
         run: npm update
 
-      - name: Run Lint
+      - name: Run Lint JS
         run: npx eslint .
+        
+      - name: Run Lint CSS
+        run: npx stylelint css/*
 
 
 
