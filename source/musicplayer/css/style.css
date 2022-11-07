@@ -102,8 +102,6 @@ form {
 
 .library-header div, .library-track div {
   width: 200px;
-  /* min-width: 200px; */
-
   margin: 10px 0;
   margin-right: 10px;
 
@@ -115,6 +113,24 @@ form {
 
 .library-track-title {
   min-width: 200px;
+}
+
+/* TABLES */
+
+th {
+  background-color: #ffffff;
+  color: rgb(148, 148, 148);
+  position: sticky;
+  top: 0;
+  color: var(--bg-2);
+  text-align: left;
+  font-size: 14px;
+  padding: 10px;
+  border-bottom: rgb(198, 198, 198) 1px solid;
+}
+
+td {
+  padding: 10px;
 }
 
 /* SIDEBAR */
