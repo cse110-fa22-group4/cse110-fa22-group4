@@ -3,30 +3,33 @@ const {ipcRenderer, contextBridge, app} = require('electron');
 
 const {
     onEvent,
-    loadPage
-} = require('./jqAPICalls.js')
+    loadPage,
+} = require('./jqAPICalls.js');
 
 const {
     managedAddEventListener,
     managedGetAttribute,
     managedSetAttribute,
     managedAddChild,
-    managedSetHTML
+    managedSetHTML,
+    managedSetStyle,
+    managedGetValue,
 } = require('./domAPICalls.js');
 
 const {
     ffmpegRead,
     ffmpegWrite,
-    setPath
+    setPath,
+    getMetadataRecursive,
 } = require('./ffmpegAPICalls.js');
 
 const {
-    getSettings, writeSettings, writeToSetting, deleteSetting,
+    getSettings, writeSettings, writeToSetting, deleteSetting, getSetting,
     getSongs, writeSongs, appendSong, removeSong,
     getStats, writeStats, writeToStat, deleteStat,
     getAllPlaylists, removePlaylist, writePlaylist,
     recursiveSearchAtPath,
-    getSRCString, fsInit, devClear
+    getSRCString, fsInit, devClear,
 } = require('./fsAPICalls');
 
 const {
@@ -74,21 +77,21 @@ window.jqAPI = undefined;
  */
 window.genAPI = undefined;
 
-module.exports = { debugLog }
+module.exports = {debugLog};
 
 // All the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', async () => {
     const replaceText = (selector, text) => {
-        const element = document.getElementById(selector)
-        if (element) element.innerText = text
-    }
+        const element = document.getElementById(selector);
+        if (element) element.innerText = text;
+    };
 
     for (const dependency of ['chrome', 'node', 'electron']) {
-        replaceText(`${dependency}-version`, process.versions[dependency])
+        replaceText(`${dependency}-version`, process.versions[dependency]);
     }
 
-    fsInit();
+    await fsInit();
     setPath();
 });
 
@@ -97,8 +100,8 @@ contextBridge.exposeInMainWorld('genAPI', {
 });
 
 contextBridge.exposeInMainWorld('jqAPI', {
-   onEvent: onEvent,
-   loadPage: loadPage
+    onEvent: onEvent,
+    loadPage: loadPage,
 });
 
 contextBridge.exposeInMainWorld('domAPI', {
@@ -106,13 +109,16 @@ contextBridge.exposeInMainWorld('domAPI', {
     managedGetAttribute: managedGetAttribute,
     managedSetAttribute: managedSetAttribute,
     managedAddChild: managedAddChild,
-    managedSetHTML: managedSetHTML
+    managedSetHTML: managedSetHTML,
+    managedSetStyle: managedSetStyle,
+    managedGetValue: managedGetValue,
 });
 
 contextBridge.exposeInMainWorld('ffmpegAPI', {
     readMetadata: ffmpegRead,
     writeMetadata: ffmpegWrite,
-    setBinPath: setPath
+    setBinPath: setPath,
+    getMetadataRecursive : getMetadataRecursive,
 });
 
 contextBridge.exposeInMainWorld('fsAPI', {
@@ -120,6 +126,7 @@ contextBridge.exposeInMainWorld('fsAPI', {
     writeSettings: writeSettings,
     writeToSetting: writeToSetting,
     deleteSetting: deleteSetting,
+    getSetting: getSetting,
     getSongs: getSongs,
     writeSongs: writeSongs,
     appendSongs: appendSong,
@@ -132,5 +139,5 @@ contextBridge.exposeInMainWorld('fsAPI', {
     removePlaylist: removePlaylist,
     writePlaylist: writePlaylist,
     getSRCString: getSRCString,
-    recursiveSearchAtPath: recursiveSearchAtPath
+    recursiveSearchAtPath: recursiveSearchAtPath,
 });

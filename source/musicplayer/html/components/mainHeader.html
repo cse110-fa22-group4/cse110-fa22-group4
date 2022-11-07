@@ -8,25 +8,26 @@
 <div id="main-buttons-search">
 
   <!-- Select Mode -->
-  <button id="btn-select" type="submit">Select: On</button>
+  <!-- <button id="btn-select" type="submit">Select: On</button> -->
 
   <!-- Create playlist -->
-  <form id="playlist-create" action="#" name="create-ply">
-    <input type="text" name="cplaylist" value="Create playlist...">
-    <input id="btn-playlist-create" type="submit" value="Create">
-  </form>
+  <input id="playlist-create-input" type="text"
+    placeholder="Name new playlist...">
+  <input id="btn-playlist-create" type="submit">
+  <label id="btn-playlist-create-label" for="btn-playlist-create">Create Playlist</label>
 
   <!-- Add to playlist -->
-  <select name="add-ply" id="select-playlist-add">
-    <option value="">Add to playlist...</option>
-    <option value="select-playlist-1">Playlist 1</option>
-    <option value="select-playlist-2">Playlist 2</option>
-    <option value="select-playlist-3">Playlist 3</option>
+  <select name="add-ply" id="playlist-add"
+    aria-placeholder="Add to playlist...">
+    <option value="" disabled selected>Add to playlist...</option>
+    <option value="select-playlist-1">Summer Mix</option>
+    <option value="select-playlist-2">Monday Songs</option>
+    <option value="select-playlist-3">Fav Karaoke</option>
   </select>
-  <button id="btn-playlist-add" type="submit">Add</button>
+  <button id="btn-playlist-add" type="submit">Add to Playlist</button>
 
   <!-- Views -->
-  <select name="views" id="btn-view">
+  <!-- <select name="views" id="btn-view">
     <option value="">Views</option>
     <option value="drop-track-num">#</option>
     <option value="drop-title">Title</option>
@@ -37,12 +38,13 @@
     <option value="drop-duration">Duration</option>
     <option value="drop-playlist">Playlist</option>
     <option value="drop-tag">Tag</option>
-  </select>
+  </select> -->
 
   <!-- Metadata Editor -->
-  <button id="btn-meta" type="submit">Meta</button>
+  <button id="btn-meta" type="submit">Edit</button>
 
   <!-- Add File -->
-  <button id="btn-file" type="submit">+</button>
-  
+  <input id="btn-file" type="file" multiple>
+  <label id="btn-file-label" for="btn-file">Add to Library</label>
+
 </div>

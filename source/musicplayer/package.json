@@ -12,7 +12,8 @@
     "webpack-rebuild-win": "npm run clean-win & npm run update && npm run webpack-build",
     "webpack-test": "npm run webpack-build && electron ./dist/main.js",
     "test": "electron main/main.js",
-    "start": "electron main/main.js"
+    "start": "electron main/main.js",
+    "lint-project": "npx eslint ."
   },
   "author": "Team Mariposa",
   "license": "ISC",
@@ -24,6 +25,8 @@
     "webpack-cli": "^4.10.0",
     "eslint": "^8.26.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-webpack-plugin": "^3.2.0"
+    "eslint-webpack-plugin": "^3.2.0",
+    "stylelint": "latest",
+    "stylelint-config-standard": "latest"
   }
 }

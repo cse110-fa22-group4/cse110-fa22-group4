@@ -1,11 +1,11 @@
-const path = require("path");
-const { ipcRenderer } = require('electron');
+const path = require('path');
+const {ipcRenderer} = require('electron');
 
 /**
  * @description A path to the html directory from any file in the renderer directory.
  * @type {string}
  */
-const htmlFilePath = "./../html"
+const htmlFilePath = './../html';
 
 /**
  * @name htmlFromRenderer
@@ -39,20 +39,19 @@ function loadPage(targetID, htmlFile, callback = undefined) {
  * @param homeElement {string} The element to load jquery with.
  * @param event {string} The event to hook into.
  * @param targetID {string}The ID of the target to add an event to.
- * @param func {function} The function to run.
+ * @param func {function(HTMLElement)} The function to run.
  */
 function onEvent(homeElement, event, targetID, func) {
     const $ = require('jquery/dist/jquery.min');
-    const jq = $(homeElement);
     const isSafe = ipcRenderer.invoke('managedAddEventListenerCheck', targetID, event);
     if (isSafe) {
-        jq.on(event, targetID, (element) => {
+        $(homeElement).on(event, targetID, (element) => {
             func(element);
-        })
+        });
     }
 }
 
 module.exports = {
     loadPage,
-    onEvent
-}
+    onEvent,
+};
