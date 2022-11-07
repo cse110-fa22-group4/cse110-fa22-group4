@@ -242,7 +242,7 @@ td {
 
   display: flex;
   flex: row;
-  min-height: 360px;
+  height: 30vh;
   max-height: 360px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   border-radius: 0px 0px 15px 15px;
@@ -253,6 +253,7 @@ td {
   flex-direction: row;
   margin: 30px;
   width: 300px;
+  justify-content: center;
 }
 
 .overview-artwork>img {
@@ -265,7 +266,7 @@ td {
 .overview-track-info {
   display: flex;
   flex-direction: column;
-
+  width: 100vw;
   justify-content: center;
   align-items: start;
 }
@@ -305,6 +306,17 @@ td {
   height: 50px;
   padding-left: 30px;
   padding-right: 30px;
+}
+
+
+#main-buttons-search {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#main-header {
+  white-space: nowrap;
+  overflow: visible;
 }
 
 #playlist-create-input {
@@ -452,7 +464,7 @@ select {
 }
 
 .ovEx-track-info :nth-child(1) {
-  font-size: 64px;
+  font-size: 44px;
   font-weight: 700;
 }
 
@@ -531,13 +543,11 @@ table {
   color: var(--txt-3);
 
   overflow-y: auto;
-
+  margin-top: 37vh;
   width: 100%;
-
   padding-right: 30px;
   padding-left: 30px;
 
-  margin-top: 430px;
   margin-bottom: 110px;
   margin-left: 230px;
 }
