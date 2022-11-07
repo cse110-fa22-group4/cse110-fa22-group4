@@ -115,49 +115,47 @@ td {
   padding: 10px;
   margin: 10px;
   margin-top: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
-.btn-sidebar {
-  background: transparent;
-  color: var(--txt-2);
-  border: none;
-
+.sidebar-icon-btn {
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-self: start;
+  height: 40px;
+}
+
+.sidebar-icon-btn:hover {
+  background-color: rgb(0, 0, 0, .2);
+}
+
+.icon-sidebar {
+  height: 24px;
+  position: fixed;
+  margin-left: 45px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.btn-sidebar, .btn-sidebar-sm {
+  background: transparent;
+  height: 40px;
+  width: 100%;
   font-family: 'Roboto', sans-serif;
   font-size: 13px;
   font-weight: 100;
+  text-align: start;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
-  height: 40px;
-  width: 100%;
-  padding-left: 50px;
-
+  padding-left: 90px;
 }
 
 .btn-sidebar-sm {
-  background: transparent;
-  color: var(--txt-2);
-  border: none;
-
-  display: flex;
-  align-items: center;
-  font-family: 'Roboto', sans-serif;
-  font-size: 13px;
-  font-weight: 100;
-
-  height: 40px;
-  width: 100%;
-  padding-left: 80px;
-
+  font-size: 11px;
+  padding-left: 110px;
 }
 
-.btn-sidebar:hover,
-.btn-sidebar-sm:hover {
-  background-color: rgb(0, 0, 0, .2);
-  color: white;
-}
 
 /* SEARCHBAR + SETTINGS */
 #searchbar-container {
