@@ -25,8 +25,7 @@
 } */
 
 /* GENERAL */
-button,
-#btn-playlist-create {
+button {
   background-color: var(--bg-2);
   color: var(--txt-2);
   border: none;
@@ -322,6 +321,8 @@ td {
   color: var(--mid-dark);
 }
 
+
+
 #playlist-add {
   height: 22px;
   width: 200px;
@@ -335,6 +336,38 @@ td {
 select {
   font-family: 'Roboto', sans-serif;
   font-size: 13px;
+  font-weight: 100;
+}
+
+#btn-playlist-create {
+  display: none;
+}
+
+#btn-playlist-create + label {
+  background-color: var(--bg-2);
+  color: var(--txt-2);
+  border: none;
+  border-radius: 2.5px;
+  padding: 4px 7px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+}
+
+#btn-file {
+  display: none;
+}
+
+#btn-file + label {
+  background-color: var(--bg-2);
+  color: var(--txt-2);
+  border: none;
+  border-radius: 2.5px;
+  padding: 4px 7px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
   font-weight: 100;
 }
 
