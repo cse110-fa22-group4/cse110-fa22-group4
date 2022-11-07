@@ -1,5 +1,5 @@
 # lint check for javascript, css, html using google style guide and github actions
-name: Lint
+name: LintJS
 
 on:
   push:
@@ -28,9 +28,7 @@ jobs:
 
       - name: Run Lint JS
         run: npx eslint .
-        
-      - name: Run Lint CSS
-        run: npx stylelint css/*
+
 
 
 
