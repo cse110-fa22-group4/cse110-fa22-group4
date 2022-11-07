@@ -1,0 +1,29 @@
+# lint check for javascript, css, html using google style guide and github actions
+name: LintCSS
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # run linter on source/musicplayer
+  lint:
+    defaults:
+      run:
+        working-directory: source/musicplayer
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      # ESLint and Prettier must be in `package.json`
+      - name: Install Node.js dependencies
+        run: npm update        
+      - name: Run Lint CSS
+        run: npx stylelint css/*
