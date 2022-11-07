@@ -92,9 +92,13 @@ form {
   flex-direction: row;
 }
 
-/* .library-header, .library-track {
-  margin-right: 10vw;
-} */
+.library-header, .library-track {
+  padding: 0 10px;
+}
+
+.library-header:hover, .library-track:hover {
+  background-color: rgb(0, 0, 0, .05);
+}
 
 .library-header div, .library-track div {
   width: 200px;
