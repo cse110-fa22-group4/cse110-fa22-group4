@@ -14,6 +14,7 @@ const {
     managedSetHTML,
     managedSetStyle,
     managedGetValue,
+    createLibraryEntry
 } = require('./domAPICalls.js');
 
 const {
@@ -34,6 +35,7 @@ const {
 
 const {
     debugLog,
+    openDialog
 } = require('./genAPICalls.js');
 
 /**
@@ -97,6 +99,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 contextBridge.exposeInMainWorld('genAPI', {
     debugLog: debugLog,
+    openDialog: openDialog
 });
 
 contextBridge.exposeInMainWorld('jqAPI', {
@@ -112,6 +115,8 @@ contextBridge.exposeInMainWorld('domAPI', {
     managedSetHTML: managedSetHTML,
     managedSetStyle: managedSetStyle,
     managedGetValue: managedGetValue,
+    createLibraryEntry: createLibraryEntry
+
 });
 
 contextBridge.exposeInMainWorld('ffmpegAPI', {

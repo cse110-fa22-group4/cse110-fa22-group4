@@ -51,9 +51,12 @@ function overviewClick(element) {
 
 // Navigate to Library view
 function libraryClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/library.html');
+    jqAPI.loadPage('#main-container', 'pages/library.html', postLibraryLoad);
     domAPI.managedSetHTML('main-header', '<h1>Library</h1>');
     topExtensionOff();
+}
+function postLibraryLoad() {
+    window.dispatchEvent(new Event('library-loaded'));
 }
 
 // Navigate to Library > Artists view

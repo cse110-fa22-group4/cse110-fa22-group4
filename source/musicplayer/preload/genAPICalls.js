@@ -23,7 +23,20 @@ function debugLog(message, source, force = false) {
     }
 }
 
+/**
+ * @name openDialog
+ * @memberOf genAPI
+ * @description Provides a wrapper to open a file dialog and get file paths.
+ * @param opts {object} The options to pass into the open dialog.
+ * @returns {Promise<Electron.OpenDialogReturnValue>}
+ */
+async function openDialog(opts) {
+    const { dialog } = require('electron');
+    return JSON.parse(await ipcRenderer.invoke('openDialog', opts));
+}
+
 
 module.exports = {
     debugLog,
+    openDialog
 };

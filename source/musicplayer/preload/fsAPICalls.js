@@ -18,6 +18,7 @@ async function fsInit() {
     /*
         Bro this function can't call any APIs since it is used before the initialization
         of the APIs, so we don't get any custom debug log functions.
+        @todo try to find a workaround if possible, and uncomment the following line of code.
      */
     // genAPI.debugLog("UserData Storage Path: " + storagePath, this);
     console.log('UserData Storage Path: ' + storagePath); // todo: figure out cross apis
@@ -28,7 +29,7 @@ async function fsInit() {
  * @description Deletes every file. Useful for development and unit tests. Can only be called from whitelisted callers.
  * @memberOf fsAPI
  * @param caller {object} A reference to the caller. This function can only be called from whitelisted callers.
- * @return {null}
+ * @return {void}
  */
 function devClear(caller) {
     const settingPath = path.join(storagePath, 'settings.json');
@@ -86,7 +87,7 @@ function getSettings() {
 function getSetting(setting) {
     const settings = getSettings();
     if (setting in settings) {
-        return settings[setting];
+        return JSON.parse(settings[setting]);
     }
     return undefined;
 }
@@ -112,12 +113,12 @@ function writeSettings(settings) {
  * @description Writes a single setting to the settings.
  * @memberOf fsAPI
  * @param setting {string} The name of the setting to write to.
- * @param val {string} The value to set the setting to.
+ * @param val {object} The value to set the setting to.
  * @return {void}
  */
 function writeToSetting(setting, val) {
     const settings = getSettings();
-    settings[setting] = val;
+    settings[setting] = JSON.stringify(val);
     writeSettings(settings);
 }
 
@@ -169,10 +170,10 @@ function writeSongs(songs) {
  * @name appendSong
  * @description Adds a new song to the songs.json file.
  * @memberOf fsAPI
- * @param newSongPath {string} The path of the new song file.
+ * @param newSong {object} The path of the new song file as a key, and metadata as a value.
  * @return {void}
  */
-function appendSong(newSongPath) {
+function appendSong(newSong) {
 
     const songs = getSongs();
     songs.push(newSongPath) 

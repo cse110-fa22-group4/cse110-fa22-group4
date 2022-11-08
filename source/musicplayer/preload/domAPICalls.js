@@ -39,6 +39,7 @@ function managedAddEventListener(domID, event, func) {
         establishedEvents[domID].push(event);
     }
 }
+
 /**
  * @name managedGetAttribute
  * @memberOf domAPI
@@ -56,6 +57,7 @@ function managedGetAttribute(domID, attribute) {
         return undefined;
     }
 }
+
 /**
  * @name managedSetAttribute
  * @memberOf domAPI
@@ -70,6 +72,7 @@ function managedSetAttribute(domID, attribute, value) {
         document.getElementById(domID).setAttribute(attribute, value);
     }
 }
+
 /**
  * @name managedAddChild
  * @memberOf domAPI
@@ -107,6 +110,7 @@ function managedSetStyle(domID, style, value) {
  * @param {string} value The value to get from the element.
  * @return {object | undefined} The value if the getter is successful, else undefined if either the value or element does not exist,
  *          or if the value is deemed 'unsafe.'
+ *
  */
 function managedGetValue(domID, value) {
     const isValueSafe = ipcRenderer.invoke('managedValueCheck', domID, value);
@@ -117,6 +121,89 @@ function managedGetValue(domID, value) {
     }
 }
 
+/**
+ * @name createLibraryEntry
+ * @memberOf domAPI
+ * @description Creates a HTML element that contains all style and syntax for a custom line in the library homepage.
+ * @param divID {string}
+ * @param title {string}
+ * @param artist {string}
+ * @param album {string}
+ * @param duration {string}
+ * @param year {string}
+ * @param genre {string}
+ * @param writer {string}
+ * @param producer {string}
+ * @param tags {string}
+ * @return {HTMLElement} The library line HTML element.
+ *
+ * @todo: This should be a HTML template file!
+ */
+function createLibraryEntry(divID = '',
+                            title = '',
+                            artist = '',
+                            album = '',
+                            duration = '',
+                            year = '',
+                            genre = '',
+                            writer = '',
+                            producer = '',
+                            tags = '') {
+    let elem = document.createElement('div');
+    elem.setAttribute('class', 'library-track');
+
+    let trackNum = document.createElement('div');
+    trackNum.setAttribute('class', 'library-track-num');
+    elem.appendChild(trackNum);
+
+    let trackTitle = document.createElement('div');
+    trackTitle.setAttribute('class', 'library-track-title');
+    trackTitle.innerHTML = title;
+    elem.appendChild(trackTitle);
+
+    let trackArtist = document.createElement('div');
+    trackArtist.setAttribute('class', 'library-track-artist');
+    trackArtist.innerHTML = artist;
+    elem.appendChild(trackArtist);
+
+    let trackAlbum = document.createElement('div');
+    trackAlbum.setAttribute('class', 'library-track-album');
+    trackAlbum.innerHTML = album;
+    elem.appendChild(trackAlbum);
+
+    let trackDuration = document.createElement('div');
+    trackDuration.setAttribute('class', 'library-track-duration');
+    trackDuration.innerHTML = duration;
+    elem.appendChild(trackDuration);
+
+    let trackYear = document.createElement('div');
+    trackYear.setAttribute('class', 'library-track-year');
+    trackYear.innerHTML = year;
+    elem.appendChild(trackYear);
+
+    let trackGenre = document.createElement('div');
+    trackGenre.setAttribute('class', 'library-track-genre');
+    trackGenre.innerHTML = genre;
+    elem.appendChild(trackGenre);
+
+    let trackWriter = document.createElement('div');
+    trackWriter.setAttribute('class', 'library-track-writer');
+    trackWriter.innerHTML = writer;
+    elem.appendChild(trackWriter);
+
+    let trackProducer = document.createElement('div');
+    trackProducer.setAttribute('class', 'library-track-producer');
+    trackProducer.innerHTML = producer;
+    elem.appendChild(trackProducer);
+
+    let trackTags = document.createElement('div');
+    trackTags.setAttribute('class', 'library-track-tags');
+    trackTags.innerHTML = tags;
+    elem.appendChild(trackTags);
+
+    return elem;
+}
+
 module.exports = {
     managedAddEventListener,
     managedGetAttribute,
@@ -125,4 +212,5 @@ module.exports = {
     managedSetHTML,
     managedSetStyle,
     managedGetValue,
+    createLibraryEntry
 };

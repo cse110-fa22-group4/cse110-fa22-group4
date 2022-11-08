@@ -4,15 +4,25 @@ window.addEventListener("DOMContentLoaded", ()=> {
 });
 
 function rescanClick(element) {
-    let scannedSongs = [];
-    let settings = fsAPI.getSetting('watchedFile');
+    ffmpegAPI.setBinPath();
+    let scannedSongs = { };
+    let settings = fsAPI.getSetting('watchedDir');
     if (settings === undefined) return;
-    for (let song in settings) {
-        scannedSongs.push(fsAPI.recursiveSearchAtPath(song));
-    }
+    settings.forEach(path => {
+        let songs = fsAPI.recursiveSearchAtPath(path[0]);
+        songs.forEach(s => {
+            scannedSongs[s] = ffmpegAPI.readMetadata(s);
+        });
+    });
     fsAPI.writeSongs(scannedSongs);
+    console.log(scannedSongs);
 }
 
-function addPath(element) {
-    window.showDirectoryPicker();
+async function addPath(element) {
+    let dirs = await genAPI.openDialog({ properties: ['openDirectory']});
+    console.log(dirs["filePaths"]);
+    let watched = fsAPI.getSetting('watchedDir');
+    if (watched === undefined) watched = [];
+    watched.push(dirs["filePaths"]);
+    fsAPI.writeToSetting('watchedDir', watched);
 }

@@ -41,7 +41,8 @@ function getWriteCMD(filepath, options) {
  * @return {string} A JSON string of the metadata of the file
  */
 function ffmpegRead(filepath) {
-    return JSON.parse(child_process.execSync(getReadCMD(filepath)).toString());
+    let res = child_process.execSync(getReadCMD(filepath));
+    return JSON.parse(res.toString());
 }
 /**
  * @name ffmpegWrite
@@ -52,14 +53,11 @@ function ffmpegRead(filepath) {
  */
 function ffmpegWrite(filepath, options) {
     child_process.execSync(getWriteCMD(filepath, options)).toString();
-    const outPath = filepath.split('/');
-    if(process.platform == 'win32') {
-
+    if(process.platform === 'win32') {
         child_process.execSync('move /y out.' + filepath.split('.').pop() + ' ' + filepath);
     }
     else {
         child_process.execSync('mv out.' + filepath.split('.').pop() + ' ' + filepath);
-
     }
 }
 /**
@@ -79,9 +77,9 @@ function setPath(binPath = undefined) {
             return;
         }
     }
-    
+
     //Windows uses exe but mac and linux don't
-    if(process.platform == 'win32') {
+    if(process.platform === 'win32') {
             ffProbePath = path.join(binPath, '/ffprobe.exe');
             ffmpegPath = path.join(binPath, '/ffmpeg.exe');
     }
@@ -95,13 +93,13 @@ function setPath(binPath = undefined) {
  * @name getMetadataRecursive
  * @description recursively searches the files and prints it to songs.json
  * @memberOf ffmpegAPI
- * @param folderPath path to folder where we want to recursively search
+ * @param {string} folderPath path to folder where we want to recursively search
  * @todo Do we have to store ALL of the metadata for the tags?
  */
-function getMetadataRecursive(folderPath) { 
+function getMetadataRecursive(folderPath) {
     let listOfSongs = recursiveSearchAtPath(folderPath);
     listOfSongs = listOfSongs.map(filePath => ffmpegRead(filePath));
-    writeSongs(JSON.stringify(listOfSongs))
+    writeSongs(JSON.stringify(listOfSongs));
 }
 
 module.exports = {

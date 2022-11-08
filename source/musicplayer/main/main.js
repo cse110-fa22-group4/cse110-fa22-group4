@@ -1,7 +1,7 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, ipcMain} = require('electron');
+const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const path = require('path');
 const htmlPath = __dirname + '/source/musicplayer/html';
 
@@ -69,4 +69,7 @@ ipcMain.handle('managedValueCheck', (event, args) => {
 });
 ipcMain.handle('managedChildCheck', (event, args) => {
     return true;
+});
+ipcMain.handle('openDialog', async (event, args) => {
+   return JSON.stringify(await dialog.showOpenDialog(args));
 });
