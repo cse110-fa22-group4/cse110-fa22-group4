@@ -28,6 +28,7 @@ async function findCategories(query, categories, tagCategories) {
     for (let i in songs) {
         let song = songs[i];
         let data = song['format'];
+        if (data === undefined) continue;
         categories.forEach(cat =>  {
             if (data[cat]) {
                 if (!results[cat]) results[cat] = [];

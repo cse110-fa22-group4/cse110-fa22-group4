@@ -147,7 +147,9 @@ function getSongs() {
         fs.closeSync(fs.openSync(songPath, 'w'));
         fs.writeFileSync(songPath, '{ }');
     }
-    return JSON.parse(fs.readFileSync(songPath, 'utf8'));
+    let res = fs.readFileSync(songPath, 'utf8');
+
+    return JSON.parse(res);
 }
 
 /**
@@ -378,6 +380,22 @@ function recursiveSearchAtPath(searchPath) {
     }
 }
 
+function cullShortAudio() {
+    let songs = getSongs();
+    const remove = [ ];
+    Object.keys(songs).forEach(song => {
+        console.log(songs[song])
+        if (!songs[song] ||
+            !songs[song]['format'] ||
+            !songs[song]['format']['duration'] ||
+            !(song[song]['format']['duration'] > 10)) {
+            remove.push(song);
+        }
+    });
+    songs = songs.filter(e => !remove.includes(e));
+    writeSongs(songs);
+}
+
 module.exports = {
     getSettings,
     writeSettings,
@@ -399,4 +417,5 @@ module.exports = {
     fsInit,
     devClear,
     recursiveSearchAtPath,
+    cullShortAudio
 };

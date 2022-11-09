@@ -29,7 +29,7 @@ const {
     getSongs, writeSongs, appendSong, removeSong,
     getStats, writeStats, writeToStat, deleteStat,
     getAllPlaylists, removePlaylist, writePlaylist,
-    recursiveSearchAtPath,
+    recursiveSearchAtPath, cullShortAudio,
     getSRCString, fsInit, devClear,
 } = require('./fsAPICalls');
 
@@ -145,4 +145,5 @@ contextBridge.exposeInMainWorld('fsAPI', {
     writePlaylist: writePlaylist,
     getSRCString: getSRCString,
     recursiveSearchAtPath: recursiveSearchAtPath,
+    cullShortAudio: cullShortAudio
 });

@@ -1,7 +1,7 @@
 const path = require('path');
 const {ipcRenderer} = require('electron');
 const child_process = require('child_process');
-const {getSettings, recursiveSearchAtPath, writeSongs} = require('./fsAPICalls.js');
+const {getSettings, writeSettings, recursiveSearchAtPath, writeSongs} = require('./fsAPICalls.js');
 
 let ffProbePath = '';
 let ffmpegPath = '';
@@ -68,8 +68,9 @@ function ffmpegWrite(filepath, options) {
  * @param binPath The path to ffprobe and ffmpeg.
  */
 function setPath(binPath = undefined) {
+    const settings = getSettings();
+
     if (binPath === undefined) {
-        const settings = getSettings();
         if (settings['ffmpegPath'] !== undefined) {
             binPath = settings['ffmpegPath'];
             console.log('Found Path!');
@@ -87,6 +88,8 @@ function setPath(binPath = undefined) {
             ffProbePath = path.join(binPath, '/ffprobe');
             ffmpegPath = path.join(binPath, '/ffmpeg');
     }
+    settings['ffmpegPath'] = binPath;
+    writeSettings(settings);
 }
 
 /**
@@ -97,9 +100,16 @@ function setPath(binPath = undefined) {
  * @todo Do we have to store ALL of the metadata for the tags?
  */
 function getMetadataRecursive(folderPath) {
+    let songObj = { };
     let listOfSongs = recursiveSearchAtPath(folderPath);
-    listOfSongs = listOfSongs.map(filePath => ffmpegRead(filePath));
-    writeSongs(JSON.stringify(listOfSongs));
+    const totalLength = listOfSongs.length;
+    listOfSongs.forEach((song, index) => {
+        console.log(index / totalLength);
+        songObj[song] = ffmpegRead(song);
+
+    });
+    console.log(songObj);
+    writeSongs(songObj);
 }
 
 module.exports = {
