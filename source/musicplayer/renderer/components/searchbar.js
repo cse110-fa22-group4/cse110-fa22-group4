@@ -17,6 +17,7 @@ function submitSearch(element) {
 
         // Change main header to match search query
         domAPI.managedSetHTML('main-header', `<h1>Top results for: '${searchQuery}'</h1>`);
+        window.dispatchEvent(new CustomEvent('searchbarSearch', {detail: searchQuery}));
     }
 
     // TODO: Use search query value for searching our app's library
