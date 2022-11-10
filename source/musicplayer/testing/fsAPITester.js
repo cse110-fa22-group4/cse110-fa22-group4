@@ -1,26 +1,54 @@
 const path = require('path');
 const fs = require('../preload/fsAPICalls');
 
+
 function testSettings() {
+
+    let settingName = 'testingStatus';
+    testGetSettings();
+
+    // run twice to test override
+    testWriteToSetting(settingName);
+    testWriteToSetting(settingName);
+
+    // run twice to test deleting non-existent setting
+    testDeleteSetting(settingName);
+    testDeleteSetting(settingName);
+
     settings = fs.getSettings();
+    testWriteSettings(settings);
 
-    fs.writeToSetting('testingStatus', 'inProgress')
-
-    console.log('Settings contents: ' + JSON.stringify(fs.getSettings()));
-    fs.deleteSetting('testingStatus');
-
-    console.log('Settings match after add and delete: ' + (JSON.stringify(settings) == JSON.stringify(fs.getSettings())));
-    
-    fs.writeSettings((fs.getSettings()));
-
-    console.log('Settings match after rewrite: ' + (JSON.stringify(settings) == JSON.stringify(fs.getSettings())));
 }
 
-function testSongs() {
+function testGetSettings() {
+    settings = fs.getSettings();
+    console.log('settings file: ' + JSON.stringify(settings));
+}
+
+function testWriteToSetting(name) {
+    let val = true;
+    fs.writeToSetting(name, val);
+    setting = JSON.parse(fs.getSettings()[name]);
+    console.log('Write to Setting Test Passed: ' + (setting==val));
+}
+
+function testDeleteSetting(name) {
+    fs.deleteSetting(name);
+    settings = fs.getSettings();
+    console.log("Setting 'testingStatus' successfully removed: " + (settings['testingStatus']==null));
+}
+
+function testWriteSettings(settings) {
+    fs.writeSettings(settings);
+    settingsNew = fs.getSettings();
+    console.log('WriteSettings successful: ' + (JSON.stringify(settings) == JSON.stringify(settingsNew)));
+}
+
+function testSongs(folderPath) {
 
     let songs = fs.getSongs();
 
-    const songPaths = fs.recursiveSearchAtPath(path.join(fs.getSourceFolder(), 'user/songs'));
+    const songPaths = fs.recursiveSearchAtPath(path.join(fs.getSourceFolder(), folderPath));
     let songList = {};
     for (song in songPaths) {
         songList[songPaths[song].split('\\').pop().split('/').pop()] = songPaths[song];
@@ -49,12 +77,19 @@ function testSongs() {
 
 }
 
+function testWriteSong() {
+
+}
+
 function testAll() {
     fs.setStoragePath('user_1/data');
     
     // read songs from songs folder and write their paths to songs.json.
     // Check if song names are as expected
-    testSongs();
+
+    let folderPath = 'user_1/songs';
+
+    testSongs(folderPath);
 
     // tests reading, writing, and deleting in settings
     testSettings();
