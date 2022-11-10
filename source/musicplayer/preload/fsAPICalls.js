@@ -5,7 +5,8 @@ const path = require('path');
 let storagePath = '';
 
 /**
- * @description MUST BE CALLED ON STARTUP. Sets the path to userData, which can only be done from main.js.
+ * @description MUST BE CALLED ON STARTUP. Sets the path to userData, which can
+ * only be done from main.js.
  * @return {void}
  */
 async function fsInit() {
@@ -15,20 +16,23 @@ async function fsInit() {
         console.log(storagePath);
         fs.mkdirSync(storagePath);
     }
-    /*
-        Bro this function can't call any APIs since it is used before the initialization
-        of the APIs, so we don't get any custom debug log functions.
-        @todo try to find a workaround if possible, and uncomment the following line of code.
+    /**
+     * Bro this function can't call any APIs since it is used before the
+     * initialization of the APIs, so we don't get any custom debug log
+     * functions.
+     * @todo try to find a workaround and uncomment the following line of code.
      */
     // genAPI.debugLog("UserData Storage Path: " + storagePath, this);
-    console.log('UserData Storage Path: ' + storagePath); // todo: figure out cross apis
+    console.log('UserData Storage Path: ' + storagePath);
 }
 
 /**
  * @name devClear
- * @description Deletes every file. Useful for development and unit tests. Can only be called from whitelisted callers.
+ * @description Deletes every file. Useful for development and unit tests.
+ *              Can only be called from whitelisted callers.
  * @memberOf fsAPI
- * @param caller {object} A reference to the caller. This function can only be called from whitelisted callers.
+ * @param {object} caller A reference to the caller. This function can only be
+ *                      called from whitelisted callers.
  * @return {void}
  */
 function devClear(caller) {
@@ -81,8 +85,8 @@ function getSettings() {
  * @name getSetting
  * @memberOf fsAPI
  * @description Gets a setting if it exists, and returns undefined otherwise.
- * @param setting
- * @return {object | undefined} The setting if it exists, and undefined otherwise.
+ * @param {string} setting
+ * @return {object | undefined} The setting if it exists, else undefined.
  */
 function getSetting(setting) {
     const settings = getSettings();
@@ -94,10 +98,11 @@ function getSetting(setting) {
 
 /**
  * @name writeSettings
- * @description Rewrites the entire settings file using the given JSON. This rewrites the entire settings, if you
- *              want to only write one setting use writeToSetting()!
+ * @description Rewrites the entire settings file using the given JSON.
+ * This rewrites the entire settings, if you want to only write one setting
+ * use writeToSetting()!
  * @memberOf fsAPI
- * @param settings {object} The new settings to set, in JSON format.
+ * @param {object} settings The new settings to set, in JSON format.
  * @return {void}
  */
 function writeSettings(settings) {
@@ -112,8 +117,8 @@ function writeSettings(settings) {
  * @name writeToSetting
  * @description Writes a single setting to the settings.
  * @memberOf fsAPI
- * @param setting {string} The name of the setting to write to.
- * @param val {object} The value to set the setting to.
+ * @param {string} setting The name of the setting to write to.
+ * @param {object} val The value to set the setting to.
  * @return {void}
  */
 function writeToSetting(setting, val) {
@@ -126,7 +131,8 @@ function writeToSetting(setting, val) {
  * @name deleteSetting
  * @description Removes a setting from the settings file entirely.
  * @memberOf fsAPI
- * @param setting The name of the setting to remove from the settings file.
+ * @param {string} setting The name of the setting to remove from the settings
+ * file.
  * @return {void}
  */
 function deleteSetting(setting) {
@@ -137,7 +143,8 @@ function deleteSetting(setting) {
 
 /**
  * @name getSongs
- * @description Gets the JSON formatted object that contains all songs and their paths.
+ * @description Gets the JSON formatted object that contains all songs and
+ *                  their paths.
  * @memberOf fsAPI
  * @return {object} A JSON formatted object containing all songs.
  */
@@ -147,17 +154,17 @@ function getSongs() {
         fs.closeSync(fs.openSync(songPath, 'w'));
         fs.writeFileSync(songPath, '{ }');
     }
-    let res = fs.readFileSync(songPath, 'utf8');
+    const res = fs.readFileSync(songPath, 'utf8');
 
     return JSON.parse(res);
 }
 
 /**
  * @name writeSongs
- * @description Rewrites the songs.json file with new content. If you want to modify a single song, use writeSongs() or
- *              readSongs()!
+ * @description Rewrites the songs.json file with new content. If you want to
+ *              modify a single song, use writeSongs() or readSongs()!
  * @memberOf fsAPI
- * @param songs {object} The JSON formatted object to write to songs.json
+ * @param {object} songs The JSON formatted object to write to songs.json
  * @return {void}
  */
 function writeSongs(songs) {
@@ -172,21 +179,21 @@ function writeSongs(songs) {
  * @name appendSong
  * @description Adds a new song to the songs.json file.
  * @memberOf fsAPI
- * @param newSong {object} The path of the new song file as a key, and metadata as a value.
+ * @param {object} newSong The path of the new song file as a key, and
+ *                          metadata as a value.
  * @return {void}
  */
 function appendSong(newSong) {
-
     const songs = getSongs();
-    songs.push(newSongPath) 
-	writeSongs(songs);
+    songs.push(newSong);
+    writeSongs(songs);
 }
 
 /**
  * @name removeSong
  * @description Removes a song from the songs.json folder
  * @memberOf fsAPI
- * @param oldSong {string} The name of the old song
+ * @param {string} oldSong The name of the old song.
  * @return {void}
  */
 function removeSong(oldSong) {
@@ -212,10 +219,11 @@ function getStats() {
 
 /**
  * @name writeStats
- * @description Rewrites the stats file using the given JSON formatted object. To modify a single stat, use
- *              writeToStat() or deleteStat()!
+ * @description Rewrites the stats file using the given JSON formatted object.
+ *               To modify a single stat, use writeToStat() or deleteStat()!
  * @memberOf fsAPI
- * @param stats {object} A JSON formatted object representing the entire stats file.
+ * @param {object} stats A JSON formatted object representing the entire
+ * stats file.
  * @return {void}
  */
 function writeStats(stats) {
@@ -230,8 +238,8 @@ function writeStats(stats) {
  * @name writeToStat
  * @description Modifies a single stat.
  * @memberOf fsAPI
- * @param stat {string} The stat to write to.
- * @param val {string} The value of the stat to set.
+ * @param {string} stat The stat to write to.
+ * @param {string} val The value of the stat to set.
  * @return {void}
  */
 function writeToStat(stat, val) {
@@ -244,7 +252,7 @@ function writeToStat(stat, val) {
  * @name deleteStat
  * @description Removes a stat from stats.json
  * @memberOf fsAPI
- * @param stat {string} The name of the stat to remove.
+ * @param {string} stat The name of the stat to remove.
  * @return {void}
  */
 function deleteStat(stat) {
@@ -257,23 +265,21 @@ function deleteStat(stat) {
  * @name makeDirIfExists
  * @description checks if the folder exists in appdata and if not creates it
  * @memberOf fsAPI
- * @param folder the folder to be checked for
+ * @param {string} folder the folder to be checked for
  * @todo name of the function may be kind of long and cumbersome to use
  */
 function makeDirIfNotExists(folder) {
-
     const folderPath = path.join(storagePath, folder);
-    if(!fs.existsSync(folderPath)) 
+    if (!fs.existsSync(folderPath)) {
         fs.mkdirSync(folderPath);
-
+    }
 }
+
 /**
  * @name getAllPlaylists
  * @description Gets an array that contains the names of every playlist.
  * @memberOf fsAPI
  * @return {object} An array of strings containing the name of every playlist.
- * @todo May or may not return file extensions, which could cause catastrophic errors if it doesn't. Testing needed.
- * Update 11/06/2022, returns extensions on Mac and likely Linux, and either way, the other playlist functions are set to work without extensions
  */
 function getAllPlaylists() {
     const playlistPath = path.join(storagePath, 'playlists');
@@ -286,11 +292,10 @@ function getAllPlaylists() {
  * @name getPlaylist
  * @description Gets a single playlist by name.
  * @memberOf fsAPI
- * @param playlist {string} The name of the playlist to get.
+ * @param {string} playlist The name of the playlist to get.
  * @return {Object} A JSON formatted object that represents a playlist.
  */
 function getPlaylist(playlist) {
-    //To check for json: const playlistPath = path.join(storagePath, 'playlists', playlist) + '.json';
     const playlistPath = path.join(storagePath, 'playlists', playlist);
 
     makeDirIfNotExists('playlists');
@@ -305,12 +310,10 @@ function getPlaylist(playlist) {
  * @name removePlaylist
  * @description Deletes a playlist by name.
  * @memberOf fsAPI
- * @param playlistName The name of the playlist to delete
+ * @param {string} playlistName The name of the playlist to delete
  * @return {void}
  */
 function removePlaylist(playlistName) {
-    //const playlistPath = path.join(storagePath, 'playlists', playlistName) + '.json';
-
     const playlistPath = path.join(storagePath, 'playlists', playlistName);
     makeDirIfNotExists('playlists');
     if (!fs.existsSync(playlistPath)) return;
@@ -319,17 +322,15 @@ function removePlaylist(playlistName) {
 
 /**
  * @name writePlaylist
- * @description Writes a playlist. If it does not exist, creates a new playlist. If the playlist exists, it is
- *              overwritten.
+ * @description Writes a playlist. If it does not exist, creates a new
+ * playlist.  If the playlist exists, it is overwritten.
  * @memberOf fsAPI
- * @param playlistName {string} The name of the playlist to write to.
- * @param playlist {object} A JSON formatted object containing the playlist information.
+ * @param {string} playlistName The name of the playlist to write to.
+ * @param {object} playlist A JSON formatted object containing the playlist
+ * information.
  * @return {void}
  */
 function writePlaylist(playlistName, playlist) {
-    //const playlistPath = path.join(storagePath, 'playlists', playlistName) + '.json';
-
-
     const playlistPath = path.join(storagePath, 'playlists', playlistName);
     makeDirIfNotExists('playlists');
     if (!fs.existsSync(playlistPath)) {
@@ -340,9 +341,10 @@ function writePlaylist(playlistName, playlist) {
 
 /**
  * @name getSRCString
- * @description Gets a string that, when passed into the src of a HTML Audio element will play the sound.
+ * @description Gets a string that, when passed into the src of a HTML Audio
+ * element will play the sound.
  * @memberOf fsAPI
- * @param path {string} The path to an audio file on the computer
+ * @param {string} path The path to an audio file on the computer
  * @return {string} A HTML Audio compatible src string.
  * @todo May not work on all (or any) OS! May need to give filesystem access!
  */
@@ -352,16 +354,22 @@ function getSRCString(path) {
 
 /**
  * @name recursiveSearchAtPath
- * @description Recursively searches every subdirectory at a given directory to return every song.
+ * @description Recursively searches every subdirectory at a given directory
+ * to return every song.
  * @memberOf fsAPI
- * @param searchPath {string} The pat at which to recursively search
- * @return {string[]}  An array of every song path that exists recursively within the directory.
+ * @param {string} searchPath The pat at which to recursively search
+ * @return {string[]}  An array of every song path that exists recursively
+ * within the directory.
  */
 function recursiveSearchAtPath(searchPath) {
-	//try and catch to take care of illegal folders/files
+    // try and catch to take care of illegal folders/files
     try {
         const ret = [];
-        const dirs = fs.readdirSync(searchPath, {withFileTypes: true}).filter((d) => d.isDirectory()).map((d) => d.name);
+        const dirs = fs.readdirSync(
+            searchPath,
+            {withFileTypes: true},
+        ).filter((d) => d.isDirectory()).map((d) => d.name);
+
         dirs.forEach((dir) => {
             const dirPath = path.join(searchPath, dir);
             if (fs.existsSync(dirPath)) {
@@ -370,7 +378,12 @@ function recursiveSearchAtPath(searchPath) {
             }
         });
 
-        const files = fs.readdirSync(searchPath, {withFileTypes: true}).filter((d) => d.isFile()).filter((d) => d.name.split('.').pop() === 'mp3').map((d) => d.name);
+        const files = fs.readdirSync(
+            searchPath,
+            {withFileTypes: true},
+        ).filter((d) =>
+            d.isFile()).filter((d) =>
+            d.name.split('.').pop() === 'mp3').map((d) => d.name);
         files.forEach((f) => ret.push(path.join(searchPath, f)));
 
         return ret;
@@ -380,19 +393,24 @@ function recursiveSearchAtPath(searchPath) {
     }
 }
 
+/**
+ * @name cullShortAudio
+ * @memberOf fsAPI
+ *
+ */
 function cullShortAudio() {
-    let songs = getSongs();
-    const remove = [ ];
-    Object.keys(songs).forEach(song => {
-        console.log(songs[song])
+    const songs = getSongs();
+    const remove = [];
+    Object.keys(songs).forEach((song) => {
+        console.log(!songs[song]);
         if (!songs[song] ||
             !songs[song]['format'] ||
             !songs[song]['format']['duration'] ||
-            !(song[song]['format']['duration'] > 10)) {
+            !(parseInt(songs[song]['format']['duration']) > 10)) {
             remove.push(song);
         }
     });
-    songs = songs.filter(e => !remove.includes(e));
+    remove.forEach((r) => delete songs[r]);
     writeSongs(songs);
 }
 
@@ -417,5 +435,5 @@ module.exports = {
     fsInit,
     devClear,
     recursiveSearchAtPath,
-    cullShortAudio
+    cullShortAudio,
 };

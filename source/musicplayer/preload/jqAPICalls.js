@@ -10,7 +10,7 @@ const htmlFilePath = './../html';
 /**
  * @name htmlFromRenderer
  * @description Gets a filepath corresponding to the actual html file path from a renderer process.
- * @param htmlFile {string} The name of the html file to get.
+ * @param {string} htmlFile The name of the html file to get.
  * @return {string} The actual path to the html file from a renderer process.
  */
 function htmlFromRenderer(htmlFile) {
@@ -21,9 +21,9 @@ function htmlFromRenderer(htmlFile) {
  * @name loadPage
  * @memberOf jqAPI
  * @description Loads a html page into an element using JQuery.
- * @param targetID {string} The ID of the element to load a html page into.
- * @param htmlFile {string} The name of the html file to load.
- * @param callback {function | undefined} An optional callback to execute.
+ * @param {string} targetID The ID of the element to load a html page into.
+ * @param {string} htmlFile The name of the html file to load.
+ * @param {function | undefined} callback An optional callback to execute.
  */
 function loadPage(targetID, htmlFile, callback = undefined) {
     // this is the solution? fixes a crazy annoying bug, do not declare at top of file.
@@ -36,10 +36,10 @@ function loadPage(targetID, htmlFile, callback = undefined) {
 /**
  * @name onEvent
  * @memberOf jqAPI
- * @param homeElement {string} The element to load jquery with.
- * @param event {string} The event to hook into.
- * @param targetID {string}The ID of the target to add an event to.
- * @param func {function(HTMLElement)} The function to run.
+ * @param {string} homeElement The element to load jquery with.
+ * @param {string} event The event to hook into.
+ * @param {string} targetID The ID of the target to add an event to.
+ * @param {function(HTMLElement)} func The function to run.
  */
 function onEvent(homeElement, event, targetID, func) {
     const $ = require('jquery/dist/jquery.min');

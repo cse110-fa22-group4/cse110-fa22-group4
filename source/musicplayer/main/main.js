@@ -71,5 +71,5 @@ ipcMain.handle('managedChildCheck', (event, args) => {
     return true;
 });
 ipcMain.handle('openDialog', async (event, args) => {
-   return JSON.stringify(await dialog.showOpenDialog(args));
+    return JSON.stringify(await dialog.showOpenDialog(args));
 });

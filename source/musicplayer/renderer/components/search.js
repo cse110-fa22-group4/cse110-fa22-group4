@@ -8,7 +8,7 @@ window.addEventListener('searchbarSearch', async (event) => {
  * This is a reference to an ongoing async filter process, which can be cancelled and overwritten.
  * @type {function}
  */
-let ongoingSearchProcess
+let ongoingSearchProcess;
 /**
  *
  * @param {string} query query to find
@@ -23,24 +23,25 @@ let ongoingSearchProcess
  * @todo this entire function needs to be redone for many reasons.
  */
 async function findCategories(query, categories, tagCategories) {
-    let songs = fsAPI.getSongs();
-    let results = { };
-    for (let i in songs) {
-        let song = songs[i];
-        let data = song['format'];
+    const songs = fsAPI.getSongs();
+    const results = { };
+    for (const i in songs) {
+        if (!i) continue;
+        const song = songs[i];
+        const data = song['format'];
         if (data === undefined) continue;
-        categories.forEach(cat =>  {
+        categories.forEach((cat) => {
             if (data[cat]) {
                 if (!results[cat]) results[cat] = [];
                 if (!(data[cat] in results[cat])) {
                     if (data[cat].includes(query)) {
-                        results[cat].push(data[cat]); //mimic set functionality
+                        results[cat].push(data[cat]); // mimic set functionality
                     }
                 }
             }
         });
         if (!data['tags']) continue;
-        tagCategories.forEach(tcat =>  {
+        tagCategories.forEach((tcat) => {
             if (data['tags'][tcat]) {
                 if (!results[tcat]) results[tcat] = [];
                 if (!(data['tags'][tcat] in results[tcat])) {

@@ -8,11 +8,12 @@ const establishedEvents = {};
  * @name managedSetHTML
  * @memberOf domAPI
  * @description Sets the inner html of an element, if it is deemed 'safe.'
- * @param domID {string} The 'id' tag that the element has in the html.
- * @param html {string} The html to set to for the element.
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} html The html to set to for the element.
  */
 function managedSetHTML(domID, html) {
-    const isAttributeSafe = ipcRenderer.invoke('managedAttributeCheck', domID, 'innerHTML');
+    const isAttributeSafe = ipcRenderer.invoke(
+        'managedAttributeCheck', domID, 'innerHTML');
     if (isAttributeSafe) {
         document.getElementById(domID).innerHTML = html;
     }
@@ -21,13 +22,15 @@ function managedSetHTML(domID, html) {
 /**
  * @name managedAddEventListener
  * @memberOf domAPI
- * @description Adds an event listener to an element, if it exists and is deemed 'safe.'
+ * @description Adds an event listener to an element, if it exists and is
+ * deemed 'safe.'
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} event The event that is to be assigned.
  * @param {function} func The function that will run when the event triggers.
  */
 function managedAddEventListener(domID, event, func) {
-    const isEventSafe = ipcRenderer.invoke('managedAddEventListenerCheck', domID, event);
+    const isEventSafe = ipcRenderer.invoke(
+        'managedAddEventListenerCheck', domID, event);
     const element = document.getElementById(domID);
     if (!(domID in establishedEvents)) {
         establishedEvents[domID] = [];
@@ -43,14 +46,17 @@ function managedAddEventListener(domID, event, func) {
 /**
  * @name managedGetAttribute
  * @memberOf domAPI
- * @description Gets the attribute of a given domID, if it exists and is deemed 'safe.'
+ * @description Gets the attribute of a given domID, if it exists and is
+ * deemed 'safe.'
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} attribute The attribute to get from the element.
- * @return {object | undefined} The attribute if the getter is successful, else undefined if either the attribute or element does not exist,
+ * @return {object | undefined} The attribute if the getter is successful,
+ * else undefined if either the attribute or element does not exist,
  *          or if the attribute is deemed 'unsafe.'
  */
 function managedGetAttribute(domID, attribute) {
-    const isAttributeSafe = ipcRenderer.invoke('managedAttributeCheck', domID, attribute);
+    const isAttributeSafe = ipcRenderer.invoke(
+        'managedAttributeCheck', domID, attribute);
     if (isAttributeSafe) {
         return document.getElementById(domID).getAttribute(attribute);
     } else {
@@ -61,13 +67,15 @@ function managedGetAttribute(domID, attribute) {
 /**
  * @name managedSetAttribute
  * @memberOf domAPI
- * @description Sets the attribute of a given domID, if it exists and is deemed 'safe.'
+ * @description Sets the attribute of a given domID, if it exists and is
+ * deemed 'safe.'
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} attribute The attribute to set on the element.
  * @param {string} value The value to set the attribute to.
  */
 function managedSetAttribute(domID, attribute, value) {
-    const isAttributeSafe = ipcRenderer.invoke('managedAttributeCheck', domID, attribute);
+    const isAttributeSafe = ipcRenderer.invoke(
+        'managedAttributeCheck', domID, attribute);
     if (isAttributeSafe) {
         document.getElementById(domID).setAttribute(attribute, value);
     }
@@ -91,9 +99,9 @@ function managedAddChild(domID, child) {
  * @name managedSetStyle
  * @memberOf domAPI
  * @description Sets a css style to a given value if it is deemed 'safe.'
- * @param domID {string} The 'id' tag that the element has in the html.
- * @param style {string} The style to change.
- * @param value {string} The value to set the style to.
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} style The style to change.
+ * @param {string} value The value to set the style to.
  */
 function managedSetStyle(domID, style, value) {
     const isChildSafe = ipcRenderer.invoke('managedChildCheck', domID);
@@ -105,10 +113,12 @@ function managedSetStyle(domID, style, value) {
 /**
  * @name managedGetValue
  * @memberOf domAPI
- * @description Gets the value of a given domID, if it exists and is deemed 'safe.'
+ * @description Gets the value of a given domID, if it exists and
+ * is deemed 'safe.'
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} value The value to get from the element.
- * @return {object | undefined} The value if the getter is successful, else undefined if either the value or element does not exist,
+ * @return {object | undefined} The value if the getter is successful, else
+ * undefined if either the value or element does not exist,
  *          or if the value is deemed 'unsafe.'
  *
  */
@@ -124,79 +134,80 @@ function managedGetValue(domID, value) {
 /**
  * @name createLibraryEntry
  * @memberOf domAPI
- * @description Creates a HTML element that contains all style and syntax for a custom line in the library homepage.
- * @param divID {string}
- * @param title {string}
- * @param artist {string}
- * @param album {string}
- * @param duration {string}
- * @param year {string}
- * @param genre {string}
- * @param writer {string}
- * @param producer {string}
- * @param tags {string}
+ * @description Creates a HTML element that contains all style and syntax
+ * for a custom line in the library homepage.
+ * @param {string} divID
+ * @param {string} title
+ * @param {string} artist
+ * @param {string} album
+ * @param {string} duration
+ * @param {string} year
+ * @param {string} genre
+ * @param {string} writer
+ * @param {string} producer
+ * @param {string} tags
  * @return {HTMLElement} The library line HTML element.
  *
  * @todo: This should be a HTML template file!
  */
 function createLibraryEntry(divID = '',
-                            title = '',
-                            artist = '',
-                            album = '',
-                            duration = '',
-                            year = '',
-                            genre = '',
-                            writer = '',
-                            producer = '',
-                            tags = '') {
-    let elem = document.createElement('div');
+    title = '',
+    artist = '',
+    album = '',
+    duration = '',
+    year = '',
+    genre = '',
+    writer = '',
+    producer = '',
+    tags = '') {
+    const elem = document.createElement('div');
     elem.setAttribute('class', 'library-track');
 
-    let trackNum = document.createElement('div');
+    const trackNum = document.createElement('div');
     trackNum.setAttribute('class', 'library-track-num');
     elem.appendChild(trackNum);
 
-    let trackTitle = document.createElement('div');
+    const trackTitle = document.createElement('div');
     trackTitle.setAttribute('class', 'library-track-title');
     trackTitle.innerHTML = title;
     elem.appendChild(trackTitle);
 
-    let trackArtist = document.createElement('div');
+    const trackArtist = document.createElement('div');
     trackArtist.setAttribute('class', 'library-track-artist');
     trackArtist.innerHTML = artist;
     elem.appendChild(trackArtist);
 
-    let trackAlbum = document.createElement('div');
+    const trackAlbum = document.createElement('div');
     trackAlbum.setAttribute('class', 'library-track-album');
     trackAlbum.innerHTML = album;
     elem.appendChild(trackAlbum);
 
-    let trackDuration = document.createElement('div');
+    const trackDuration = document.createElement('div');
     trackDuration.setAttribute('class', 'library-track-duration');
     trackDuration.innerHTML = duration;
     elem.appendChild(trackDuration);
 
-    let trackYear = document.createElement('div');
+    const trackYear = document.createElement('div');
     trackYear.setAttribute('class', 'library-track-year');
     trackYear.innerHTML = year;
     elem.appendChild(trackYear);
 
-    let trackGenre = document.createElement('div');
+    const trackGenre = document.createElement('div');
     trackGenre.setAttribute('class', 'library-track-genre');
     trackGenre.innerHTML = genre;
     elem.appendChild(trackGenre);
 
-    let trackWriter = document.createElement('div');
+    const trackWriter = document.createElement('div');
     trackWriter.setAttribute('class', 'library-track-writer');
     trackWriter.innerHTML = writer;
     elem.appendChild(trackWriter);
 
-    let trackProducer = document.createElement('div');
+    const trackProducer = document.createElement('div');
     trackProducer.setAttribute('class', 'library-track-producer');
     trackProducer.innerHTML = producer;
     elem.appendChild(trackProducer);
 
-    let trackTags = document.createElement('div');
+    const trackTags = document.createElement('div');
     trackTags.setAttribute('class', 'library-track-tags');
     trackTags.innerHTML = tags;
     elem.appendChild(trackTags);
@@ -212,5 +223,5 @@ module.exports = {
     managedSetHTML,
     managedSetStyle,
     managedGetValue,
-    createLibraryEntry
+    createLibraryEntry,
 };

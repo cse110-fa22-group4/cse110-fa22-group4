@@ -2,12 +2,15 @@ window.addEventListener('library-loaded', () => {
     onLibraryLoad();
 });
 
-
+/**
+ * Function that is called on library load.
+ */
 function onLibraryLoad() {
     const libraryDivID = 'library-track-container';
     const songs = fsAPI.getSongs();
-    for (let i in songs) {
-        let song = songs[i];
+    for (const i in songs) {
+        if (!i) continue;
+        const song = songs[i];
         const data = song['format']['tags'];
         if (data === undefined) continue;
         const title = data['title'] ? data['title'] : '---------';

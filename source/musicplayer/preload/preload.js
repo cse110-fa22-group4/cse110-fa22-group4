@@ -14,7 +14,7 @@ const {
     managedSetHTML,
     managedSetStyle,
     managedGetValue,
-    createLibraryEntry
+    createLibraryEntry,
 } = require('./domAPICalls.js');
 
 const {
@@ -35,7 +35,7 @@ const {
 
 const {
     debugLog,
-    openDialog
+    openDialog,
 } = require('./genAPICalls.js');
 
 /**
@@ -99,7 +99,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 contextBridge.exposeInMainWorld('genAPI', {
     debugLog: debugLog,
-    openDialog: openDialog
+    openDialog: openDialog,
 });
 
 contextBridge.exposeInMainWorld('jqAPI', {
@@ -115,7 +115,7 @@ contextBridge.exposeInMainWorld('domAPI', {
     managedSetHTML: managedSetHTML,
     managedSetStyle: managedSetStyle,
     managedGetValue: managedGetValue,
-    createLibraryEntry: createLibraryEntry
+    createLibraryEntry: createLibraryEntry,
 
 });
 
@@ -123,7 +123,7 @@ contextBridge.exposeInMainWorld('ffmpegAPI', {
     readMetadata: ffmpegRead,
     writeMetadata: ffmpegWrite,
     setBinPath: setPath,
-    getMetadataRecursive : getMetadataRecursive,
+    getMetadataRecursive: getMetadataRecursive,
 });
 
 contextBridge.exposeInMainWorld('fsAPI', {
@@ -145,5 +145,5 @@ contextBridge.exposeInMainWorld('fsAPI', {
     writePlaylist: writePlaylist,
     getSRCString: getSRCString,
     recursiveSearchAtPath: recursiveSearchAtPath,
-    cullShortAudio: cullShortAudio
+    cullShortAudio: cullShortAudio,
 });
