@@ -1,6 +1,5 @@
 const path = require('path');
 const {ipcRenderer} = require('electron');
-const childProcess = require('child_process');
 const {
     getSettings,
     writeSettings,
@@ -10,6 +9,8 @@ const {
 
 let ffProbePath = '';
 let ffmpegPath = '';
+let ffplayPath = '';
+let psSuspend = '';
 
 /**
  *
@@ -48,6 +49,7 @@ function getWriteCMD(filepath, options) {
  * @return {Promise<string>} A JSON string of the metadata of the file
  */
 async function ffmpegRead(filepath) {
+    const childProcess = require('child_process');
     const res = await new Promise((resolve, reject) => {
         childProcess.exec(getReadCMD(filepath), (error, stdout, stderr) => {
             resolve(stdout);
@@ -55,6 +57,7 @@ async function ffmpegRead(filepath) {
     });
     return JSON.parse(res.toString());
 }
+
 /**
  * @name ffmpegWrite
  * @description Performs an FFmpeg metadata write operation on the command line.
@@ -63,6 +66,7 @@ async function ffmpegRead(filepath) {
  * @param {object} options A dictionary of tags to modify
  */
 function ffmpegWrite(filepath, options) {
+    const childProcess = require('child_process');
     childProcess.execSync(getWriteCMD(filepath, options)).toString();
     if (process.platform === 'win32') {
         childProcess.execSync('move /y out.' +
@@ -72,6 +76,7 @@ function ffmpegWrite(filepath, options) {
             filepath.split('.').pop() + ' ' + filepath);
     }
 }
+
 /**
  * @name binPath
  * @description Sets a path to ffprobe and ffmpeg, if it already exists on
@@ -96,9 +101,13 @@ function setPath(binPath = undefined) {
     if (process.platform === 'win32') {
         ffProbePath = path.join(binPath, '/ffprobe.exe');
         ffmpegPath = path.join(binPath, '/ffmpeg.exe');
+        ffplayPath = path.join(binPath, '/ffplay.exe');
+        psSuspend = path.join(binPath, '/pssuspend.exe');
     } else {
         ffProbePath = path.join(binPath, '/ffprobe');
         ffmpegPath = path.join(binPath, '/ffmpeg');
+        ffplayPath = path.join(binPath, '/ffplay');
+        // why is windows such a pita?
     }
     settings['ffmpegPath'] = binPath;
     writeSettings(settings);
@@ -112,7 +121,7 @@ function setPath(binPath = undefined) {
  * @todo Do we have to store ALL of the metadata for the tags?
  */
 async function getMetadataRecursive(folderPath) {
-    const songObj = { };
+    const songObj = {};
     const listOfSongs = recursiveSearchAtPath(folderPath);
     const totalLength = listOfSongs.length;
     const promiseArr = [];
@@ -133,9 +142,77 @@ async function getMetadataRecursive(folderPath) {
     appendSongs(songObj);
 }
 
+/**
+ * @type {string}
+ */
+let pausePath = '';
+/**
+ * @type {number}
+ */
+let pauseTime = 0;
+/**
+ * @type {number}
+ */
+let pauseVol = 100;
+/**
+ * @type {ChildProcessWithoutNullStreams}
+ */
+let songInstance = undefined;
+/**
+ * @memberOf ffmpegAPI
+ * @name playSong
+ * @description Plays a song, starting at the given seek value with the given volume.
+ * @param {string} songPath The path to the song.
+ * @param {number} volume The volume of the song.
+ * @param {number} seekVal The starting time of the song.
+ */
+function playSong(songPath, volume = 100, seekVal = 0) {
+    songInstance = require('child_process').spawn(ffplayPath,
+        [
+            '-nodisp',
+            `-ss ${seekVal}`,
+            `-volume ${volume}`,
+            songPath,
+        ], {shell: true});
+    pauseVol = volume;
+    pausePath = songPath;
+    ipcRenderer.on('window-closed', stopSong);
+}
+
+/**
+ * @memberOf ffmpegAPI
+ * @name playSong
+ * @description Stops playing a song, given the song instance returned from playSong.
+ */
+function stopSong() {
+    if (!songInstance) return;
+    require('child_process').spawn('taskkill', ['/pid', songInstance.pid, '/f', '/t']);
+    songInstance = undefined;
+}
+
+/**
+ *
+ */
+function pauseSong() {
+    const data = songInstance.stderr.read().toString().split(' ');
+    pauseTime = data[data.length - 26];
+    stopSong();
+}
+
+/**
+ *
+ */
+function resumeSong() {
+    playSong(pausePath, pauseVol, pauseTime);
+}
+
 module.exports = {
     ffmpegRead,
     ffmpegWrite,
     setPath,
     getMetadataRecursive,
+    playSong,
+    stopSong,
+    pauseSong,
+    resumeSong,
 };

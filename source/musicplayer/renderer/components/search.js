@@ -54,3 +54,5 @@ async function findCategories(query, categories, tagCategories) {
     }
     return results;
 }
+
+

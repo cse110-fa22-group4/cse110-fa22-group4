@@ -22,6 +22,8 @@ const {
     ffmpegWrite,
     setPath,
     getMetadataRecursive,
+    playSong, stopSong,
+    pauseSong, resumeSong
 } = require('./ffmpegAPICalls.js');
 
 const {
@@ -124,6 +126,10 @@ contextBridge.exposeInMainWorld('ffmpegAPI', {
     writeMetadata: ffmpegWrite,
     setBinPath: setPath,
     getMetadataRecursive: getMetadataRecursive,
+    playSong: playSong,
+    stopSong: stopSong,
+    pauseSong: pauseSong,
+    resumeSong: resumeSong
 });
 
 contextBridge.exposeInMainWorld('fsAPI', {

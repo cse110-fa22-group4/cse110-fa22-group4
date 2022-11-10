@@ -52,6 +52,7 @@ function homeClick(element) {
  */
 function overviewClick(element) {
     jqAPI.loadPage('#top-container-extended', 'pages/overviewExtended.html');
+    const instance = ffmpegAPI.playSong('C:\\Users\\Liam\\Desktop\\bin\\songs.mp3', 100, 20);
     topExtensionOn();
 }
 

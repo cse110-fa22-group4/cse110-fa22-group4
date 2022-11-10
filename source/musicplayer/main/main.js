@@ -24,6 +24,9 @@ const createWindow = async () => {
 
     // and load the index.html of the app.
     await mainWindow.loadFile(path.join(__dirname, '/../html/index.html'));
+    mainWindow.on('closed', () => {
+        ipcMain.emit('window-closed');
+    });
 
 
     // Open the DevTools.
@@ -46,6 +49,9 @@ app.whenReady().then(async () => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
+app.on('before-quit', () => {
+    ipcMain.emit('window-closed');
+});
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
 });
