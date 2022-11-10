@@ -26,7 +26,7 @@ const {
 
 const {
     getSettings, writeSettings, writeToSetting, deleteSetting, getSetting,
-    getSongs, writeSongs, appendSong, removeSong,
+    getSongs, writeSongs, appendSong, removeSong, appendSongs,
     getStats, writeStats, writeToStat, deleteStat,
     getAllPlaylists, removePlaylist, writePlaylist,
     recursiveSearchAtPath, cullShortAudio,
@@ -133,8 +133,9 @@ contextBridge.exposeInMainWorld('fsAPI', {
     deleteSetting: deleteSetting,
     getSetting: getSetting,
     getSongs: getSongs,
-    writeSongs: writeSongs,
-    appendSongs: appendSong,
+    appendSongs: appendSongs,
+    writeSong: writeSongs,
+    appendSong: appendSong,
     removeSong: removeSong,
     getStats: getStats,
     writeStats: writeStats,

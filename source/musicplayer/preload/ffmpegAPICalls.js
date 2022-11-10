@@ -5,7 +5,7 @@ const {
     getSettings,
     writeSettings,
     recursiveSearchAtPath,
-    writeSongs,
+    appendSongs,
 } = require('./fsAPICalls.js');
 
 let ffProbePath = '';
@@ -45,10 +45,14 @@ function getWriteCMD(filepath, options) {
  * @description Performs an FFmpeg metadata read operation on the command line.
  * @memberOf ffmpegAPI
  * @param {string} filepath The path to the file to modify.
- * @return {string} A JSON string of the metadata of the file
+ * @return {Promise<string>} A JSON string of the metadata of the file
  */
-function ffmpegRead(filepath) {
-    const res = childProcess.execSync(getReadCMD(filepath));
+async function ffmpegRead(filepath) {
+    const res = await new Promise((resolve, reject) => {
+        childProcess.exec(getReadCMD(filepath), (error, stdout, stderr) => {
+            resolve(stdout);
+        });
+    });
     return JSON.parse(res.toString());
 }
 /**
@@ -107,16 +111,26 @@ function setPath(binPath = undefined) {
  * @param {string} folderPath path to folder where we want to recursively search
  * @todo Do we have to store ALL of the metadata for the tags?
  */
-function getMetadataRecursive(folderPath) {
+async function getMetadataRecursive(folderPath) {
     const songObj = { };
     const listOfSongs = recursiveSearchAtPath(folderPath);
     const totalLength = listOfSongs.length;
-    listOfSongs.forEach((song, index) => {
+    const promiseArr = [];
+    for (const song of listOfSongs) {
+        const index = listOfSongs.indexOf(song);
         console.log(index / totalLength);
-        songObj[song] = ffmpegRead(song);
+        promiseArr.push(new Promise((resolve, reject) => {
+            ffmpegRead(song).then((res) => resolve(res));
+        }));
+    }
+    await Promise.all(promiseArr).then((results) => {
+        results.forEach((result) => {
+            if (!result['format'] || !result['format']['filename']) return;
+            songObj[result['format']['filename']] = result;
+        });
     });
     console.log(songObj);
-    writeSongs(songObj);
+    appendSongs(songObj);
 }
 
 module.exports = {

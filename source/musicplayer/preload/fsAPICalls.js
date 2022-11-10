@@ -190,6 +190,21 @@ function appendSong(newSong) {
 }
 
 /**
+ * @name appendSongs
+ * @description Appends multiple songs to the songs.json file.
+ * @param {object[]} newSongs An array of new songs to be appended.
+ * @return {void}
+ */
+function appendSongs(newSongs) {
+    const songs = getSongs();
+    for (const song in newSongs) {
+        if (!song) continue;
+        songs[song] = newSongs[song];
+    }
+    writeSongs(songs);
+}
+
+/**
  * @name removeSong
  * @description Removes a song from the songs.json folder
  * @memberOf fsAPI
@@ -423,6 +438,7 @@ module.exports = {
     getSongs,
     writeSongs,
     appendSong,
+    appendSongs,
     removeSong,
     getStats,
     writeStats,

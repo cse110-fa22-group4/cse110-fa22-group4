@@ -7,17 +7,14 @@ window.addEventListener('DOMContentLoaded', ()=> {
  * @description OnClick event handler for the settings rescan button.
  * @param {HTMLElement} element
  */
-function rescanClick(element) {
+async function rescanClick(element) {
     ffmpegAPI.setBinPath();
     const scannedSongs = { };
     const settings = fsAPI.getSetting('watchedDir');
     if (settings === undefined) return;
-    settings.forEach((path) => {
-        const songs = fsAPI.recursiveSearchAtPath(path[0]);
-        songs.forEach((s) => {
-            scannedSongs[s] = ffmpegAPI.readMetadata(s);
-        });
-    });
+    for (const path of settings) {
+        await ffmpegAPI.getMetadataRecursive(path);
+    }
     fsAPI.writeSongs(scannedSongs);
     console.log(scannedSongs);
 }
