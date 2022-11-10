@@ -1,11 +1,15 @@
 window.addEventListener('searchbarSearch', async (event) => {
     const query = event.detail;
-    console.log(await findCategories(query, ['duration'], ['title', 'album_artist', 'genre']));
+    const cat = ['duration'];
+    const tCat = ['title', 'album_artist', 'genre'];
+    const ret = await findCategories(query, cat, tCat);
+    console.log(ret);
 });
 
 
 /**
- * This is a reference to an ongoing async filter process, which can be cancelled and overwritten.
+ * This is a reference to an ongoing async filter process,
+ * which can be cancelled and overwritten.
  * @type {function}
  */
 let ongoingSearchProcess;
@@ -14,12 +18,14 @@ let ongoingSearchProcess;
  * @param {string} query query to find
  * @param {object} categories top level categories to search
  * @param {object} tagCategories tag categories to search
- * @description this entire function is garbage. categories should not be separate, query should be a list of queries
- * (or a single query that is a string of space separated queries, we should search each word separately)
- * and should prioritize more matches (2 matches in 3 queries > 1 match in 3 queries)
- * filters should be: <br> minimal distance between matches (optional) > # matches > location of match
- * (index % of length) > alphabetical order <br> these filters can be easily accomplished by nesting arrays
- * (alphabetical order is separate)
+ * @description this entire function is garbage. categories should not be
+ * separate, query should be a list of queries (or a single query that is a
+ * string of space separated queries, we should search each word separately)
+ * and should prioritize more matches (2 matches in 3 queries > 1 match
+ * in 3 queries) filters should be: <br> minimal distance between matches
+ * (optional) > # matches > location of match (index % of length) >
+ * alphabetical order <br> these filters can be easily accomplished by
+ * nesting arrays (alphabetical order is separate)
  * @todo this entire function needs to be redone for many reasons.
  */
 async function findCategories(query, categories, tagCategories) {

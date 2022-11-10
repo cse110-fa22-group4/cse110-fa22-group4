@@ -42,20 +42,28 @@ function getWriteCMD(filepath, options) {
 }
 
 /**
- * @name ffmpegRead
- * @description Performs an FFmpeg metadata read operation on the command line.
- * @memberOf ffmpegAPI
- * @param {string} filepath The path to the file to modify.
- * @return {Promise<string>} A JSON string of the metadata of the file
+ *
+ * @param {string} filepath
+ * @return {Promise<string>}
  */
-async function ffmpegRead(filepath) {
+async function ffmpegReadPromise(filepath) {
     const childProcess = require('child_process');
-    const res = await new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         childProcess.exec(getReadCMD(filepath), (error, stdout, stderr) => {
             resolve(stdout);
         });
     });
-    return JSON.parse(res.toString());
+}
+
+/**
+ * @name ffmpegRead
+ * @description Performs an FFmpeg metadata read operation on the command line.
+ * @memberOf ffmpegAPI
+ * @param {string} filepath The path to the file to modify.
+ * @return {Object} A json object of the read metadata
+ */
+async function ffmpegRead(filepath) {
+    return JSON.parse(await ffmpegReadPromise(filepath));
 }
 
 /**
@@ -129,11 +137,12 @@ async function getMetadataRecursive(folderPath) {
         const index = listOfSongs.indexOf(song);
         console.log(index / totalLength);
         promiseArr.push(new Promise((resolve, reject) => {
-            ffmpegRead(song).then((res) => resolve(res));
+            ffmpegReadPromise(song).then((res) => resolve(res));
         }));
     }
     await Promise.all(promiseArr).then((results) => {
-        results.forEach((result) => {
+        results.forEach((unparsedResult) => {
+            const result = JSON.parse(unparsedResult);
             if (!result['format'] || !result['format']['filename']) return;
             songObj[result['format']['filename']] = result;
         });

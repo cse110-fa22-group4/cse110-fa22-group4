@@ -23,7 +23,7 @@ const {
     setPath,
     getMetadataRecursive,
     playSong, stopSong,
-    pauseSong, resumeSong
+    pauseSong, resumeSong,
 } = require('./ffmpegAPICalls.js');
 
 const {
@@ -129,7 +129,7 @@ contextBridge.exposeInMainWorld('ffmpegAPI', {
     playSong: playSong,
     stopSong: stopSong,
     pauseSong: pauseSong,
-    resumeSong: resumeSong
+    resumeSong: resumeSong,
 });
 
 contextBridge.exposeInMainWorld('fsAPI', {
