@@ -1,9 +1,9 @@
 # Meeting Minutes
 ## Meeting Information
-**Meeting Date/Time:** 11/1/22, 11:45am, 12:20pm   
+**Meeting Date/Time:** 11/8/22, 2:10 - 2:30pm
 **Meeting Location:** Zoom   
 **Note Taker:** Jeremy  
-**Objective Statement:** Give pitch
+**Objective Statement:** TA Meeting
 
 ## Required Attendees
 - [x] Sourabh
@@ -11,13 +11,9 @@
 - [x] Jeremy
 
 ## Others
-- Alvin
-- Xuying
-- Brian
-- Jiseung
+- Did not catch who was there
 
 # Information
-- We did a good job on the pitch!
-- We need to ultimately give a link for the submission of the project
-  - Whoops, we kind of forgot about this. Should discuss with team
-  - One solution would be to host a VM and give link to that
+- We are doing well as we are far ahead of other groups
+- We can submit a link to a download for our project
+- We should make sure to work on github actions and state of the repo
