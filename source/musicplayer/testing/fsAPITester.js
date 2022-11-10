@@ -50,7 +50,7 @@ function testSongs() {
 }
 
 function testAll() {
-    fs.setStoragePath('user/data');
+    fs.setStoragePath('user_1/data');
     
     // read songs from songs folder and write their paths to songs.json.
     // Check if song names are as expected
