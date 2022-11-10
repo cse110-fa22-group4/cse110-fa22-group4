@@ -11,7 +11,7 @@
     "webpack-rebuild": "npm run clean & npm run update && npm run webpack-build",
     "webpack-rebuild-win": "npm run clean-win & npm run update && npm run webpack-build",
     "webpack-test": "npm run webpack-build && electron ./dist/main.js",
-    "test": "electron main/main.js",
+    "test": "electron main/main.js -g",
     "start": "electron main/main.js",
     "lint-project": "npx eslint ."
   },
