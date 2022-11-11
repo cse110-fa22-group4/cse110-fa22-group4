@@ -3,7 +3,7 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const path = require('path');
-const { argv } = require('process');
+const {argv} = require('process');
 const htmlPath = __dirname + '/source/musicplayer/html';
 const fsAPITester = require('../testing/fsAPITester.js');
 
@@ -35,11 +35,9 @@ const createWindow = async () => {
     // mainWindow.webContents.openDevTools()
 
     // Check for testing flag to run tests (npm run test)
-    if(argv.length == 3  && argv[2] == '-g') {
+    if (argv.length == 3 && argv[2] == '-g') {
         fsAPITester.testAll();
     }
-        
-
 };
 
 // This method will be called when Electron has finished
@@ -55,8 +53,6 @@ app.whenReady().then(async () => {
     });
 
     //
-
-
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

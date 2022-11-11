@@ -1,57 +1,86 @@
 const path = require('path');
-const fs = require('../preload/fsAPICalls');
+const {
+    getSettings,
+    writeToSetting,
+    deleteSetting,
+    writeSettings,
+} = require('../preload/fs/settings/settingsAPICalls');
 
+const {
+    getSongs,
+    appendSong,
+    appendSongs,
+    writeSongs,
+    removeSong,
+} = require('../preload/fs/songs/songsAPICalls');
+
+const {
+    recursiveSearchAtPath,
+    getSourceFolder,
+    setStoragePath,
+} = require('../preload/fs/fsAPICalls');
+
+/**
+ * @description Tests the settings API.
+ */
 function testSettings() {
-    settings = fs.getSettings();
+    const settings = getSettings();
 
-    fs.writeToSetting('testingStatus', 'inProgress')
+    writeToSetting('testingStatus', 'inProgress');
 
-    console.log('Settings contents: ' + JSON.stringify(fs.getSettings()));
-    fs.deleteSetting('testingStatus');
+    console.log('Settings contents: ' + getSettings());
+    deleteSetting('testingStatus');
 
-    console.log('Settings match after add and delete: ' + (JSON.stringify(settings) == JSON.stringify(fs.getSettings())));
-    
-    fs.writeSettings((fs.getSettings()));
+    console.log('Settings match after add and delete: ' + (JSON.stringify(settings) === JSON.stringify(getSettings())));
 
-    console.log('Settings match after rewrite: ' + (JSON.stringify(settings) == JSON.stringify(fs.getSettings())));
+    writeSettings((getSettings()));
+
+    console.log('Settings match after rewrite: ' + (JSON.stringify(settings) === JSON.stringify(getSettings())));
 }
 
+/**
+ * @description Tests the songs API.
+ */
 function testSongs() {
+    let songs = getSongs();
 
-    let songs = fs.getSongs();
-
-    const songPaths = fs.recursiveSearchAtPath(path.join(fs.getSourceFolder(), 'user/songs'));
-    let songList = {};
-    for (song in songPaths) {
+    const songPaths = recursiveSearchAtPath(path.join(getSourceFolder(), 'user/songs'));
+    const songList = {};
+    for (const song in songPaths) {
+        if (!song) continue;
         songList[songPaths[song].split('\\').pop().split('/').pop()] = songPaths[song];
     }
-    fs.writeSongs(songList);
-    
-    console.log('Songs match after reload: ' + (JSON.stringify(songs) == JSON.stringify(fs.getSongs())));
-    
-    let names = Object.keys(songList);
-    if(names[0] == 'Tobu - Hope [NCS Release].mp3' &&
-    names[1] == 'Tobu - Infectious [NCS Release].mp3' &&
-    names[2] == 'Different Heaven & EH!DE - My Heart [NCS Release].mp3') {
-        console.log("Songs loaded in correctly!");
+    writeSongs(songList);
+
+    console.log('Songs match after reload: ' + (JSON.stringify(songs) === JSON.stringify(getSongs())));
+
+    const names = Object.keys(songList);
+    if (
+        names[0] === 'Tobu - Hope [NCS Release].mp3' &&
+        names[1] === 'Tobu - Infectious [NCS Release].mp3' &&
+        names[2] === 'Different Heaven & EH!DE - My Heart [NCS Release].mp3') {
+        console.log('Songs loaded in correctly!');
+    } else {
+        console.log('Warning: songs not loaded in correctly');
     }
-    else
-        console.log("Warning: songs not loaded in correctly");
-    
-    songs = fs.getSongs();
 
-    testSongName = 'Alan Walker - Fade.mp3';
-    testSongPath = path.join(fs.getSourceFolder(), 'user/songs/Alan Walker - Fade.mp3');
-    fs.appendSong(testSongName, testSongPath);
-    fs.removeSong(testSongName);
-    
-    console.log('Songs match after remove and append: ' + (JSON.stringify(songs) == JSON.stringify(fs.getSongs())));
+    songs = getSongs();
 
+    const testSongName = 'Alan Walker - Fade.mp3';
+    const testSongPath = path.join(getSourceFolder(), 'user/songs/Alan Walker - Fade.mp3');
+    appendSong(testSongName, testSongPath);
+    removeSong(testSongName);
+
+    console.log('Songs match after remove and append: ' + (JSON.stringify(songs) === JSON.stringify(getSongs())));
 }
 
-function testAll() {
-    fs.setStoragePath('user/data');
-    
+/**
+ * @description Runs all of the unit tests for APIs.
+ * @returns {Promise<void>}
+ */
+async function testAll() {
+    await setStoragePath('user/data');
+
     // read songs from songs folder and write their paths to songs.json.
     // Check if song names are as expected
     testSongs();
@@ -62,5 +91,5 @@ function testAll() {
 
 
 module.exports = {
-    testAll
-}
+    testAll,
+};
