@@ -199,7 +199,7 @@ function writeSongs(songs) {
  */
 function appendSong(newSong) {
     const songs = getSongs();
-    songs[newSong] = newSong;
+    songs.push(newSong);
     writeSongs(songs);
 }
 
