@@ -20,45 +20,45 @@ const {
     setStoragePath,
 } = require('../preload/fs/fsAPICalls');
 
-function testSettings() {
+async function testSettings() {
 
     let settingName = 'testingStatus';
-    testGetSettings();
+    await testGetSettings();
 
     // run twice to test override
-    testWriteToSetting(settingName);
-    testWriteToSetting(settingName);
+    await testWriteToSetting(settingName);
+    await testWriteToSetting(settingName);
 
     // run twice to test deleting non-existent setting
-    testDeleteSetting(settingName);
-    testDeleteSetting(settingName);
+    await testDeleteSetting(settingName);
+    await testDeleteSetting(settingName);
 
-    settings = fs.getSettings();
-    testWriteSettings(settings);
+    settings = await getSettings();
+    await testWriteSettings(settings);
 
 }
 
-function testGetSettings() {
-    settings = fs.getSettings();
+async function testGetSettings() {
+    settings = await getSettings();
     console.log('settings file: ' + JSON.stringify(settings));
 }
 
-function testWriteToSetting(name) {
+async function testWriteToSetting(name) {
     let val = true;
-    fs.writeToSetting(name, val);
-    setting = JSON.parse(fs.getSettings()[name]);
+    await writeToSetting(name, val);
+    setting = JSON.parse(await getSettings()[name]);
     console.log('Write to Setting Test Passed: ' + (setting==val));
 }
 
-function testDeleteSetting(name) {
-    fs.deleteSetting(name);
-    settings = fs.getSettings();
+async function testDeleteSetting(name) {
+    await deleteSetting(name);
+    settings = await getSettings();
     console.log("Setting 'testingStatus' successfully removed: " + (settings['testingStatus']==null));
 }
 
-function testWriteSettings(settings) {
-    fs.writeSettings(settings);
-    settingsNew = fs.getSettings();
+async function testWriteSettings(settings) {
+    await writeSettings(settings);
+    settingsNew = await getSettings();
     console.log('WriteSettings successful: ' + (JSON.stringify(settings) == JSON.stringify(settingsNew)));
 }
 
@@ -120,17 +120,17 @@ function testWriteSong() {
 async function testAll() {
     await setStoragePath('user_1/data');
     let folderPath = 'user_1/songs';
-    testSettings();
+    await testSettings();
     //testSongs(folderPath);
 
     await setStoragePath('user_2/data');
     folderPath = 'user_2/songs';
-    testSettings();
+    await testSettings();
     //testSongs(folderPath);
 
     await setStoragePath('user_3/data');
     folderPath = 'user_3/songs';
-    testSettings();
+    await testSettings();
     //testSongs(folderPath);
 
     //reset testing environment
