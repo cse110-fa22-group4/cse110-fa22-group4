@@ -19,8 +19,9 @@ const debug = true;
  * @param {object} source The caller of this method. Should be called with
  * 'this'.
  * @param {boolean} force Force the print to go through. Defaults to false.
+ * @return {Promise<void>}
  */
-function debugLog(message, source, force = false) {
+async function debugLog(message, source, force = false) {
     if (debug && !force) {
         console.log(message);
     }

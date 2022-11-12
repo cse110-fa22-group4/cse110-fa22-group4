@@ -81,68 +81,22 @@ async function testSongs(songFolderPaths) {
         //songPaths.push(recursiveSearchAtPath(path.join(localPath, songFolderPaths[songFolderPath])));
         lol = recursiveSearchAtPath(path.join(localPath, "users/user_1/songs"));
     }
-/*
-    const songList = {};
-    for (const song in songPaths) {
-        if (!song) continue;
-            songList[songPaths[song].split('\\').pop().split('/').pop()] = songPaths[song];
-    }
-    writeSongs(songList);
-
-    console.log('Songs match after reload: ' + (JSON.stringify(songs) === JSON.stringify(getSongs())));
-
-    const names = Object.keys(songList);
-    if (
-        names[0] === 'Tobu - Hope [NCS Release].mp3' &&
-        names[1] === 'Tobu - Infectious [NCS Release].mp3' &&
-        names[2] === 'Different Heaven & EH!DE - My Heart [NCS Release].mp3') {
-        console.log('Songs loaded in correctly!');
-    }
-    else
-        console.log("Warning: songs not loaded in correctly");
-    
-    songs = fs.getSongs();
-
-    testSongName = 'Alan Walker - Fade.mp3';
-    testSongPath = path.join(fs.getSourceFolder(), 'user/songs/Alan Walker - Fade.mp3');
-    //fs.appendSong(testSongName, testSongPath);
-    //fs.removeSong(testSongName);
-    
-    console.log('Songs match after remove and append: ' + (JSON.stringify(songs) == JSON.stringify(fs.getSongs())));
-
-    songs = getSongs();
-
-    const testSongName = 'Alan Walker - Fade.mp3';
-    const testSongPath = path.join(getSourceFolder(), 'user/songs/Alan Walker - Fade.mp3');
-    appendSong(testSongName, testSongPath);
-    removeSong(testSongName);
-
-    console.log('Songs match after remove and append: ' + (JSON.stringify(songs) === JSON.stringify(getSongs())));
-*/
 }
 
 /*async function testGetSong() {
-    settings = await getSettings();
-    console.log('settings file: ' + JSON.stringify(settings));
+    
 }
 
 async function testAppendSong() {
-    let val = true;
-    await writeToSetting(name, val);
-    setting = JSON.parse(await getSettings()[name]);
-    console.log('Write to Setting Test Passed: ' + (setting==val));
+    
 }
 
 async function testDeleteSong() {
-    await deleteSetting(name);
-    settings = await getSettings();
-    console.log("Setting 'testingStatus' successfully removed: " + (settings['testingStatus']==null));
+    
 }
 
 async function testWriteSongs(songs) {
-    await writeSettings(settings);
-    settingsNew = await getSettings();
-    console.log('WriteSettings successful: ' + (JSON.stringify(settings) == JSON.stringify(settingsNew)));
+    
 }*/
 
 /**
@@ -167,7 +121,6 @@ async function testAll() {
     //testSongs(folderPath);
 
     //reset testing environment*/
-
 }
 
 

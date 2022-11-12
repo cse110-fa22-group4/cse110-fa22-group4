@@ -7,7 +7,7 @@ const {getStoragePath} = require('../fsAPICalls');
  * @description Gets the JSON formatted object that contains all songs and
  *                  their paths.
  * @memberOf fsAPI
- * @return {object} A JSON formatted object containing all songs.
+ * @return {Promise<object>} A JSON formatted object containing all songs.
  */
 async function getSongs() {
     let storagePath = await getStoragePath();
@@ -27,7 +27,7 @@ async function getSongs() {
  *              modify a single song, use writeSongs() or readSongs()!
  * @memberOf fsAPI
  * @param {object} songs The JSON formatted object to write to songs.json
- * @return {void}
+ * @return {Promise<void>}
  */
 async function writeSongs(songs) {
     let storagePath = await getStoragePath();
@@ -44,7 +44,7 @@ async function writeSongs(songs) {
  * @memberOf fsAPI
  * @param {object} newSong The path of the new song file as a key, and
  *                          metadata as a value.
- * @return {void}
+ * @return {Promise<void>}
  */
 async function appendSong(newSong) {
     const songs = await getSongs();
@@ -56,7 +56,7 @@ async function appendSong(newSong) {
  * @name appendSongs
  * @description Appends multiple songs to the songs.json file.
  * @param {object[]} newSongs An array of new songs to be appended.
- * @return {void}
+ * @return {Promise<void>}
  */
 async function appendSongs(newSongs) {
     const songs = await getSongs();
@@ -72,7 +72,7 @@ async function appendSongs(newSongs) {
  * @description Removes a song from the songs.json folder
  * @memberOf fsAPI
  * @param {string} oldSong The name of the old song.
- * @return {void}
+ * @return {Promise<void>}
  */
 async function removeSong(oldSong) {
     const songs = await getSongs();
@@ -83,7 +83,7 @@ async function removeSong(oldSong) {
 /**
  * @name cullShortAudio
  * @memberOf fsAPI
- *
+ * @return {Promise<void>}
  */
 async function cullShortAudio() {
     const songs = await getSongs();

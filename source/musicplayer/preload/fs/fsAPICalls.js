@@ -7,7 +7,7 @@ var storagePath = '';
 /**
  * @description MUST BE CALLED ON STARTUP. Sets the path to userData, which can
  * only be done from main.js.
- * @return {void}
+ * @return {Promise<void>}
  */
 async function fsInit() {
     storagePath = await ipcRenderer.invoke('getUserData');
@@ -26,6 +26,7 @@ async function fsInit() {
 /**
  *
  * @param {string} newStoragePath
+ * @return {Promise<void>}
  */
 async function setStoragePath(newStoragePath) {
     const localPath = await getSourceFolder();
@@ -57,7 +58,7 @@ async function getSourceFolder() {
  * @memberOf fsAPI
  * @param {object} caller A reference to the caller. This function can only be
  *                      called from whitelisted callers.
- * @return {void}
+ * @return {Promise<void>}
  */
 async function devClear(caller) {
     const settingPath = path.join(storagePath, 'settings.json');
@@ -95,6 +96,7 @@ async function devClear(caller) {
  * @description Checks if a folder, and if not creates it.
  * @memberOf fsAPI
  * @param {string} folder The folder to be checked for.
+ * @return {Promise<void>}
  */
 async function makeDirIfNotExists(folder) {
     await fs.opendir(folder, async (err, dir) => {
@@ -113,7 +115,7 @@ async function makeDirIfNotExists(folder) {
  * element will play the sound.
  * @memberOf fsAPI
  * @param {string} path The path to an audio file on the computer
- * @return {string} A HTML Audio compatible src string.
+ * @return {Promise<string>} A HTML Audio compatible src string.
  * @todo May not work on all (or any) OS! May need to give filesystem access!
  */
 async function getSRCString(path) {
@@ -128,11 +130,11 @@ async function getSRCString(path) {
  * to return every song.
  * @memberOf fsAPI
  * @param {string} searchPath The pat at which to recursively search
- * @return {string[]}  An array of every song path that exists recursively
+ * @return {Promise<string[]>}  An array of every song path that exists recursively
  * within the directory.
  *
  */
-function recursiveSearchAtPath(searchPath) {
+async function recursiveSearchAtPath(searchPath) {
     // try and catch to take care of illegal folders/files
     try {
         const ret = [];
@@ -141,13 +143,13 @@ function recursiveSearchAtPath(searchPath) {
             {withFileTypes: true},
         ).filter((d) => d.isDirectory()).map((d) => d.name);
 
-        dirs.forEach((dir) => {
+        for (const dir of dirs) {
             const dirPath = path.join(searchPath, dir);
             if (fs.existsSync(dirPath)) {
-                const paths = recursiveSearchAtPath(dirPath);
+                const paths = await recursiveSearchAtPath(dirPath);
                 paths.forEach((p) => ret.push(p));
             }
-        });
+        }
 
         const files = fs.readdirSync(
             searchPath,

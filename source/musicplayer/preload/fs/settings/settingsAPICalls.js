@@ -6,7 +6,7 @@ const {getStoragePath} = require('../fsAPICalls');
  * @name getSettings
  * @description Gets the full settings as an object in JSON format.
  * @memberOf fsAPI
- * @return {object} A JSON formatted object of all the current settings
+ * @return {Promise<object>} A JSON formatted object of all the current settings
  */
 async function getSettings() {
     let storagePath = await getStoragePath();
@@ -23,7 +23,7 @@ async function getSettings() {
  * @memberOf fsAPI
  * @description Gets a setting if it exists, and returns undefined otherwise.
  * @param {string} setting
- * @return {object | undefined} The setting if it exists, else undefined.
+ * @return {Promise<object> | undefined} The setting if it exists, else undefined.
  */
 async function getSetting(setting) {
     const settings = await getSettings();
@@ -40,7 +40,7 @@ async function getSetting(setting) {
  * use writeToSetting()!
  * @memberOf fsAPI
  * @param {object} settings The new settings to set, in JSON format.
- * @return {void}
+ * @return {Promise<void>}
  */
 async function writeSettings(settings) {
     let storagePath = await getStoragePath();
@@ -57,7 +57,7 @@ async function writeSettings(settings) {
  * @memberOf fsAPI
  * @param {string} setting The name of the setting to write to.
  * @param {object} val The value to set the setting to.
- * @return {void}
+ * @return {Promise<void>}
  */
 async function writeToSetting(setting, val) {
     const settings = await getSettings();
@@ -71,7 +71,7 @@ async function writeToSetting(setting, val) {
  * @memberOf fsAPI
  * @param {string} setting The name of the setting to remove from the settings
  * file.
- * @return {void}
+ * @return {Promise<void>}
  */
 async function deleteSetting(setting) {
     const settings = await getSettings();

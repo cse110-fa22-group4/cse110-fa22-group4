@@ -6,7 +6,7 @@ const {getStoragePath, makeDirIfNotExists} = require('../fsAPICalls');
  * @name getAllPlaylists
  * @description Gets an array that contains the names of every playlist.
  * @memberOf fsAPI
- * @return {object} An array of strings containing the name of every playlist.
+ * @return {Promise<object>} An array of strings containing the name of every playlist.
  */
 async function getAllPlaylists() {
     let storagePath = await getStoragePath();
@@ -21,7 +21,7 @@ async function getAllPlaylists() {
  * @description Gets a single playlist by name.
  * @memberOf fsAPI
  * @param {string} playlist The name of the playlist to get.
- * @return {Object} A JSON formatted object that represents a playlist.
+ * @return {Promise<Object>} A JSON formatted object that represents a playlist.
  */
 async function getPlaylist(playlist) {
     let storagePath = await getStoragePath();
@@ -40,7 +40,7 @@ async function getPlaylist(playlist) {
  * @description Deletes a playlist by name.
  * @memberOf fsAPI
  * @param {string} playlistName The name of the playlist to delete
- * @return {void}
+ * @return {Promise<void>}
  */
 async function removePlaylist(playlistName) {
     let storagePath = await getStoragePath();
@@ -58,7 +58,7 @@ async function removePlaylist(playlistName) {
  * @param {string} playlistName The name of the playlist to write to.
  * @param {object} playlist A JSON formatted object containing the playlist
  * information.
- * @return {void}
+ * @return {Promise<void>}
  */
 async function writePlaylist(playlistName, playlist) {
     let storagePath = await getStoragePath();
