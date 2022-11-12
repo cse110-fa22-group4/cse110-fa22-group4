@@ -21,6 +21,10 @@ People who attended:
 People absent:
 - none
 
+## UI implementation
+![page1](/admin/misc/images/app1.png)
+![page2](/admin/misc/images/app2.png)
+
 ## Things accomplished
 <table>
   <tr>
