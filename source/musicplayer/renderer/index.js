@@ -1,37 +1,37 @@
 /* GLOBAL VARS */
 let topContainerIsExtended = false; // to toggle extended view of top container
-const searchQuery = ''; // the current query entered in the search bar
+const searchQuery = ''; // the current query entered into the search bar
 let currentTrack; // object? of the currently playing track
 let currentSearchCategory;
 
 /* GENERATE HOME PAGE */
-window.addEventListener('DOMContentLoaded', () => {
-    domAPI.managedSetStyle('top-container-extended', 'visibility', 'hidden');
-    jqAPI.loadPage('#sidebar-container', 'components/sidebar.html');
-    jqAPI.loadPage('#overview-container', 'components/overview.html');
-    jqAPI.loadPage('#main-header-container', 'components/mainHeader.html');
-    jqAPI.loadPage('#main-container', 'pages/home.html');
-    jqAPI.loadPage('#playback-container', 'components/playback.html');
-    jqAPI.loadPage('#searchbar-container', 'components/searchbar.html');
-    jqAPI.onEvent('body', 'click', '#btn-home', homeClick);
-    jqAPI.onEvent('body', 'click', '#btn-overview', overviewClick);
-    jqAPI.onEvent('body', 'click', '#btn-library', libraryClick);
-    jqAPI.onEvent('body', 'click', '#btn-library-artists', libraryArtistsClick);
-    jqAPI.onEvent('body', 'click', '#btn-library-albums', libraryAlbumsClick);
-    jqAPI.onEvent('body', 'click', '#btn-library-genres', libraryGenresClick);
-    jqAPI.onEvent('body', 'click', '#btn-library-tags', libraryTagsClick);
-    jqAPI.onEvent('body', 'click', '#btn-playlists', playlistsClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-tracks', searchTracksClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-artists', searchArtistsClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-albums', searchAlbumsClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-genres', searchGenresClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-playlists', searchPlaylistsClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-tags', searchTagsClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-all', searchAllClick);
-    jqAPI.onEvent('body', 'click', '#btn-settings', settingsClick);
-    jqAPI.onEvent('body', 'click', '#btn-queue', ovExQueueClick);
-    jqAPI.onEvent('body', 'click', '#btn-track', ovExTrackClick);
-    jqAPI.onEvent('body', 'click', '#btn-lyrics', ovExLyricsClick);
+window.addEventListener('DOMContentLoaded', async () => {
+    domAPI.setStyle('top-container-extended', 'visibility', 'hidden');
+    await domAPI.loadPage('sidebar-container', 'components/sidebar.html');
+    await domAPI.loadPage('overview-container', 'components/overview.html');
+    await domAPI.loadPage('main-header-container', 'components/mainHeader.html');
+    await domAPI.loadPage('main-container', 'pages/home.html');
+    await domAPI.loadPage('playback-container', 'components/playback.html');
+    await domAPI.loadPage('searchbar-container', 'components/searchbar.html');
+    domAPI.addEventListener('btn-home', 'click', homeClick);
+    domAPI.addEventListener( 'btn-overview', 'click', overviewClick);
+    domAPI.addEventListener( 'btn-library', 'click', libraryClick);
+    domAPI.addEventListener( 'btn-library-artists', 'click', libraryArtistsClick);
+    domAPI.addEventListener( 'btn-library-albums', 'click', libraryAlbumsClick);
+    domAPI.addEventListener( 'btn-library-genres', 'click', libraryGenresClick);
+    domAPI.addEventListener( 'btn-library-tags', 'click', libraryTagsClick);
+    domAPI.addEventListener( 'btn-playlists', 'click', playlistsClick);
+    domAPI.addEventListener( 'btn-search-tracks', 'click', searchTracksClick);
+    domAPI.addEventListener( 'btn-search-artists', 'click', searchArtistsClick);
+    domAPI.addEventListener( 'btn-search-albums', 'click', searchAlbumsClick);
+    domAPI.addEventListener( 'btn-search-genres', 'click', searchGenresClick);
+    domAPI.addEventListener( 'btn-search-playlists', 'click', searchPlaylistsClick);
+    domAPI.addEventListener( 'btn-search-tags', 'click', searchTagsClick);
+    domAPI.addEventListener( 'btn-search-all', 'click', searchAllClick);
+    domAPI.addEventListener( 'btn-settings', 'click', settingsClick);
+    domAPI.addEventListener( 'btn-queue', 'click', ovExQueueClick);
+    domAPI.addEventListener( 'btn-track', 'click', ovExTrackClick);
+    domAPI.addEventListener( 'btn-lyrics', 'click', ovExLyricsClick);
 });
 
 /* SIDEBAR NAVIGATION */
@@ -40,9 +40,9 @@ window.addEventListener('DOMContentLoaded', () => {
  * Navigate to Home view
  * @param {HTMLElement} element
  */
-function homeClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/home.html');
-    domAPI.managedSetHTML('main-header', '<h1>Home</h1>');
+async function homeClick(element) {
+    await domAPI.loadPage('main-container', 'pages/home.html');
+    domAPI.setHTML('main-header', '<h1>Home</h1>');
     topExtensionOff();
 }
 
@@ -50,8 +50,8 @@ function homeClick(element) {
  * Navigate to Overview (Now Playing) view
  * @param {HTMLElement} element
  */
-function overviewClick(element) {
-    jqAPI.loadPage('#top-container-extended', 'pages/overviewExtended.html');
+async function overviewClick(element) {
+    await domAPI.loadPage('top-container-extended', 'pages/overviewExtended.html');
     const instance = ffmpegAPI.playSong('C:\\Users\\Liam\\Desktop\\bin\\songs.mp3', 100, 20);
     topExtensionOn();
 }
@@ -60,9 +60,9 @@ function overviewClick(element) {
  * Navigate to Library view
  * @param {HTMLElement} element
  */
-function libraryClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/library.html', postLibraryLoad);
-    domAPI.managedSetHTML('main-header', '<h1>Library</h1>');
+async function libraryClick(element) {
+    await domAPI.loadPage('main-container', 'pages/library.html', postLibraryLoad);
+    domAPI.setHTML('main-header', '<h1>Library</h1>');
     topExtensionOff();
 }
 
@@ -77,9 +77,9 @@ function postLibraryLoad() {
  * Navigate to Library > Artists view
  * @param {HTMLElement} element
  */
-function libraryArtistsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/libraryArtists.html');
-    domAPI.managedSetHTML('main-header', '<h1>Artists</h1>');
+async function libraryArtistsClick(element) {
+    await domAPI.loadPage('main-container', 'pages/libraryArtists.html');
+    domAPI.setHTML('main-header', '<h1>Artists</h1>');
     topExtensionOff();
 }
 
@@ -87,9 +87,9 @@ function libraryArtistsClick(element) {
  * Navigate to Library > Albums view
  * @param {HTMLElement} element
  */
-function libraryAlbumsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/libraryAlbums.html');
-    domAPI.managedSetHTML('main-header', '<h1>Albums</h1>');
+async function libraryAlbumsClick(element) {
+    await domAPI.loadPage('main-container', 'pages/libraryAlbums.html');
+    domAPI.setHTML('main-header', '<h1>Albums</h1>');
     topExtensionOff();
 }
 
@@ -97,9 +97,9 @@ function libraryAlbumsClick(element) {
  * Navigate to Library > Genres view
  * @param {HTMLElement} element
  */
-function libraryGenresClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/libraryGenres.html');
-    domAPI.managedSetHTML('main-header', '<h1>Genres</h1>');
+async function libraryGenresClick(element) {
+    await domAPI.loadPage('main-container', 'pages/libraryGenres.html');
+    domAPI.setHTML('main-header', '<h1>Genres</h1>');
     topExtensionOff();
 }
 
@@ -107,9 +107,9 @@ function libraryGenresClick(element) {
  * Navigate to Library > Tags view
  * @param {HTMLElement} element
  */
-function libraryTagsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/libraryTags.html');
-    domAPI.managedSetHTML('main-header', '<h1>Tags</h1>');
+async function libraryTagsClick(element) {
+    await domAPI.loadPage('main-container', 'pages/libraryTags.html');
+    domAPI.setHTML('main-header', '<h1>Tags</h1>');
     topExtensionOff();
 }
 
@@ -117,9 +117,9 @@ function libraryTagsClick(element) {
  * Navigate to Playlists view
  * @param {HTMLElement} element
  */
-function playlistsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/playlists.html');
-    domAPI.managedSetHTML('main-header', '<h1>Playlists</h1>');
+async function playlistsClick(element) {
+    await domAPI.loadPage('main-container', 'pages/playlists.html');
+    domAPI.setHTML('main-header', '<h1>Playlists</h1>');
     topExtensionOff();
 }
 
@@ -127,9 +127,9 @@ function playlistsClick(element) {
  * Navigate to Search results extended view > Tracks
  * @param {HTMLElement} element
  */
-function searchTracksClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-    domAPI.managedSetHTML('main-header', `<h1>Track results for: '${searchQuery}'</h1>`);
+async function searchTracksClick(element) {
+    await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+    domAPI.setHTML('main-header', `<h1>Track results for: '${searchQuery}'</h1>`);
     currentSearchCategory = 'tracks';
     topExtensionOff();
 }
@@ -138,9 +138,9 @@ function searchTracksClick(element) {
  * Navigate to Search results extended view > Artists
  * @param {HTMLElement} element
  */
-function searchArtistsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-    domAPI.managedSetHTML('main-header', `<h1>Artist results for: '${searchQuery}'</h1>`);
+async function searchArtistsClick(element) {
+    await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+    domAPI.setHTML('main-header', `<h1>Artist results for: '${searchQuery}'</h1>`);
     currentSearchCategory = 'artists';
     topExtensionOff();
 }
@@ -149,9 +149,9 @@ function searchArtistsClick(element) {
  * Navigate to Search results extended view > Albums
  * @param {HTMLElement} element
  */
-function searchAlbumsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-    domAPI.managedSetHTML('main-header', `<h1>Album results for: '${searchQuery}'</h1>`);
+async function searchAlbumsClick(element) {
+    await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+    domAPI.setHTML('main-header', `<h1>Album results for: '${searchQuery}'</h1>`);
     currentSearchCategory = 'albums';
     topExtensionOff();
 }
@@ -160,9 +160,9 @@ function searchAlbumsClick(element) {
  * Navigate to Search results extended view > Genres
  * @param {HTMLElement} element
  */
-function searchGenresClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-    domAPI.managedSetHTML('main-header', `<h1>Genre results for: '${searchQuery}'</h1>`);
+async function searchGenresClick(element) {
+    await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+    domAPI.stHTML('main-header', `<h1>Genre results for: '${searchQuery}'</h1>`);
     currentSearchCategory = 'genres';
     topExtensionOff();
 }
@@ -171,9 +171,9 @@ function searchGenresClick(element) {
  * Navigate to Search results extended view > Playlists
  * @param {HTMLElement} element
  */
-function searchPlaylistsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-    domAPI.managedSetHTML('main-header', `<h1>Playlist results for: '${searchQuery}'</h1>`);
+async function searchPlaylistsClick(element) {
+    await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+    domAPI.setHTML('main-header', `<h1>Playlist results for: '${searchQuery}'</h1>`);
     currentSearchCategory = 'playlists';
     topExtensionOff();
 }
@@ -182,9 +182,9 @@ function searchPlaylistsClick(element) {
  * Navigate to Search results extended view > Tags
  * @param {HTMLElement} element
  */
-function searchTagsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-    domAPI.managedSetHTML('main-header', `<h1>Tag results for: '${searchQuery}'</h1>`);
+async function searchTagsClick(element) {
+    await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+    domAPI.setHTML('main-header', `<h1>Tag results for: '${searchQuery}'</h1>`);
     currentSearchCategory = 'tags';
     topExtensionOff();
 }
@@ -193,9 +193,9 @@ function searchTagsClick(element) {
  * Navigate to Search results extended view > All
  * @param {HTMLElement} element
  */
-function searchAllClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-    domAPI.managedSetHTML('main-header', `<h1>All results for: '${searchQuery}'</h1>`);
+async function searchAllClick(element) {
+    await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+    domAPI.setHTML('main-header', `<h1>All results for: '${searchQuery}'</h1>`);
     currentSearchCategory = 'all';
     topExtensionOff();
 }
@@ -204,8 +204,8 @@ function searchAllClick(element) {
  * Navigate to Search results extended view > All
  * @param {HTMLElement} element
  */
-function settingsClick(element) {
-    jqAPI.loadPage('#top-container-extended', 'pages/settings.html');
+async function settingsClick(element) {
+    await domAPI.loadPage('top-container-extended', 'pages/settings.html');
     topExtensionOn();
 }
 
@@ -214,8 +214,8 @@ function settingsClick(element) {
  */
 function topExtensionOff() {
     if (topContainerIsExtended) {
-        domAPI.managedSetStyle('top-container', 'visibility', 'visible');
-        domAPI.managedSetStyle('top-container-extended', 'visibility', 'hidden');
+        domAPI.setStyle('top-container', 'visibility', 'visible');
+        domAPI.setStyle('top-container-extended', 'visibility', 'hidden');
         topContainerIsExtended = false;
     }
 }
@@ -225,8 +225,8 @@ function topExtensionOff() {
  */
 function topExtensionOn() {
     if (!topContainerIsExtended) {
-        domAPI.managedSetStyle('top-container', 'visibility', 'hidden');
-        domAPI.managedSetStyle('top-container-extended', 'visibility', 'visible');
+        domAPI.setStyle('top-container', 'visibility', 'hidden');
+        domAPI.setStyle('top-container-extended', 'visibility', 'visible');
         topContainerIsExtended = true;
     }
 }
@@ -235,8 +235,8 @@ function topExtensionOn() {
  * Navigate to Overview extended > Queue view
  * @param {HTMLElement} element
  */
-function ovExQueueClick(element) {
-    jqAPI.loadPage('#top-container-extended', 'pages/overviewExtended.html');
+async function ovExQueueClick(element) {
+    await domAPI.loadPage('top-container-extended', 'pages/overviewExtended.html');
     topExtensionOn();
 }
 
@@ -244,8 +244,8 @@ function ovExQueueClick(element) {
  * Navigate to Overview extended > Lyrics view
  * @param {HTMLElement} element
  */
-function ovExLyricsClick(element) {
-    jqAPI.loadPage('#top-container-extended', 'pages/ovExLyrics.html');
+async function ovExLyricsClick(element) {
+    await domAPI.loadPage('top-container-extended', 'pages/ovExLyrics.html');
     topExtensionOn();
 }
 
@@ -253,7 +253,7 @@ function ovExLyricsClick(element) {
  * Navigate to Overview extended > Track view
  * @param {HTMLElement} element
  */
-function ovExTrackClick(element) {
-    jqAPI.loadPage('#top-container-extended', 'pages/ovExTrack.html');
+async function ovExTrackClick(element) {
+    await domAPI.loadPage('top-container-extended', 'pages/ovExTrack.html');
     topExtensionOn();
 }

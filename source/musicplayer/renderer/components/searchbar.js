@@ -1,24 +1,24 @@
 window.addEventListener('DOMContentLoaded', () => {
-    jqAPI.onEvent('body', 'submit', '#search-form', submitSearch);
+    domAPI.addEventListener('search-form', 'submit', submitSearch);
 });
 
 /**
  * Handles search
  * @param {HTMLElement} element
  */
-function submitSearch(element) {
+async function submitSearch(element) {
     event.preventDefault();
 
     // Set global var for search query input
-    const searchQuery = domAPI.managedGetValue('input-search', 'value');
+    const searchQuery = domAPI.getValue('input-search', 'value');
     if (searchQuery === undefined) return;
 
     if (searchQuery.length !== 0) {
         // Switch to search results page
-        jqAPI.loadPage('#main-container', 'pages/search.html');
+        await domAPI.loadPage('main-container', 'pages/search.html');
 
         // Change main header to match search query
-        domAPI.managedSetHTML('main-header', `<h1>Top results for: '${searchQuery}'</h1>`);
+        domAPI.setHTML('main-header', `<h1>Top results for: '${searchQuery}'</h1>`);
         window.dispatchEvent(new CustomEvent('searchbarSearch', {detail: searchQuery}));
     }
 

@@ -26,11 +26,23 @@ const {
  * @return {Promise<string>}
  */
 async function ffmpegReadPromise(filepath) {
-    const childProcess = require('child_process');
+    const data = getReadCMDForSpawn(filepath);
+    const cmd = spawn(data.cmd, data.args);
+    for await (const d of cmd.stdout) {
+        return d;
+    }
     return new Promise((resolve, reject) => {
-        childProcess.exec(getReadCMD(filepath), (error, stdout, stderr) => {
-            resolve(stdout);
-        });
+        try {
+            const cmd = spawn(data.cmd, data.args, {shell: false});
+            cmd.stdout.on('data', (data) => {
+                resolve(data.toString());
+            });
+            cmd.on('error', (err) => {
+                reject(err);
+            });
+        } catch (e) {
+            reject(e);
+        }
     });
 }
 
@@ -75,14 +87,16 @@ async function getMetadataRecursive(folderPath) {
     const songObj = {};
     const listOfSongs = recursiveSearchAtPath(folderPath);
     const totalLength = listOfSongs.length;
-    const promiseArr = [];
-    for (const song of listOfSongs) {
-        const index = listOfSongs.indexOf(song);
-        console.log(index / totalLength);
-        promiseArr.push(new Promise((resolve, reject) => {
-            ffmpegReadPromise(song).then((res) => resolve(res));
-        }));
+    const promiseArr = Array(listOfSongs.length);
+    const time1 = Date.now();
+    console.log('Started');
+    for (let i = 0; i < listOfSongs.length; i++) {
+        promiseArr[i] = ffmpegReadPromise(listOfSongs[i]);
+        console.log(promiseArr[i]);
     }
+    const time2 = Date.now();
+    console.log('for loop: ');
+    console.log(time2 - time1);
     await Promise.all(promiseArr).then((results) => {
         results.forEach((unparsedResult) => {
             const result = JSON.parse(unparsedResult);
@@ -90,6 +104,8 @@ async function getMetadataRecursive(folderPath) {
             songObj[result['format']['filename']] = result;
         });
     });
+    console.log('done: ');
+    console.log(Date.now() - time2);
     console.log(songObj);
     appendSongs(songObj);
 }
