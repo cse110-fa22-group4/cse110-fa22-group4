@@ -273,3 +273,6 @@ People absent:
 * Major refactoring incoming to replace JQuery and Dom API
 * Create website for documenting code base
 * Add generating jsDoc to CI/CD pipeline
+
+## Links to other page
+[Retrospective](111222-retrospective.md)
