@@ -221,6 +221,8 @@ People absent:
 <li>Finished code styling guides
 
 <li>Documentation of the codes
+  
+<li>Changes to linter based on styling guides
 
 <li>Created framework of the website (keeping all JSdoc files)
 </li>
