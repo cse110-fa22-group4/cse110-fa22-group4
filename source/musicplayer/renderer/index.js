@@ -65,12 +65,11 @@ async function libraryClick(element) {
     domAPI.setHTML('main-header', '<h1>Library</h1>');
     topExtensionOff();
 }
-
 /**
  * Post library loading function callback.
  */
-function postLibraryLoad() {
-    window.dispatchEvent(new Event('library-loaded'));
+async function postLibraryLoad() {
+
 }
 
 /**

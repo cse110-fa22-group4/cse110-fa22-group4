@@ -1,4 +1,4 @@
-window.addEventListener('DOMContentLoaded', ()=> {
+window.addEventListener('settings-loaded', ()=> {
     domAPI.addEventListener('settings-rescan', 'click', rescanClick);
     domAPI.addEventListener('add-paths-button', 'click', addPath);
 });

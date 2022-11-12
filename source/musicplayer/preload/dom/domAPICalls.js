@@ -27,8 +27,10 @@ async function htmlFromRenderer(htmlFile) {
 async function loadPage(targetID, htmlFile, callback = undefined) {
     const html = require('fs').readFileSync(await htmlFromRenderer(htmlFile)).toString();
     setHTML(targetID, html);
+    const filename = htmlFile.split('.').pop().split('\\').pop();
+    window.dispatchEvent(new Event(`${filename}-loaded`));
     if (callback) {
-        callback(document.getElementById(targetID));
+        await callback(document.getElementById(targetID));
     }
 }
 

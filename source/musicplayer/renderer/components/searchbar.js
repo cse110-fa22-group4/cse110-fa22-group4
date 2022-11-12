@@ -1,4 +1,4 @@
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('searchbar-loaded', () => {
     domAPI.addEventListener('search-form', 'submit', submitSearch);
 });
 
