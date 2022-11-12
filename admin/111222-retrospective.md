@@ -10,3 +10,5 @@
 * Working unit tests for the settings file
 * Fairly early on, pipeline is able to check styling and code dependencies
 * jsDocs can be generated and build tutorial created
+
+[Sprint Meeting](111222-sprint-meeting.md)
