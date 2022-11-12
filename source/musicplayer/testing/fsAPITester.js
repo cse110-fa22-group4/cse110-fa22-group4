@@ -46,7 +46,7 @@ async function testGetSettings() {
 async function testWriteToSetting(name) {
     let val = true;
     await writeToSetting(name, val);
-    setting = JSON.parse(await getSettings()[name]);
+    setting = JSON.parse((await getSettings())[name]);
     console.log('Write to Setting Test Passed: ' + (setting==val));
 }
 
@@ -67,10 +67,14 @@ async function testWriteSettings(settings) {
 /**
  * @description Tests the songs API.
  */
-function testSongs() {
-    let songs = getSongs();
+function testSongs(songFolderPaths) {
+    //songfolderpaths
+    songPaths = []
 
-    const songPaths = recursiveSearchAtPath(path.join(getSourceFolder(), 'user/songs'));
+    for (songFolderPath in songFolderPaths) {
+        songPaths.push(recursiveSearchAtPath(path.join(getSourceFolder(), songFolderPath)));
+    }
+/*
     const songList = {};
     for (const song in songPaths) {
         if (!song) continue;
@@ -107,11 +111,32 @@ function testSongs() {
     removeSong(testSongName);
 
     console.log('Songs match after remove and append: ' + (JSON.stringify(songs) === JSON.stringify(getSongs())));
+*/
 }
 
-function testWriteSong() {
-
+/*async function testGetSong() {
+    settings = await getSettings();
+    console.log('settings file: ' + JSON.stringify(settings));
 }
+
+async function testAppendSong() {
+    let val = true;
+    await writeToSetting(name, val);
+    setting = JSON.parse(await getSettings()[name]);
+    console.log('Write to Setting Test Passed: ' + (setting==val));
+}
+
+async function testDeleteSong() {
+    await deleteSetting(name);
+    settings = await getSettings();
+    console.log("Setting 'testingStatus' successfully removed: " + (settings['testingStatus']==null));
+}
+
+async function testWriteSongs(songs) {
+    await writeSettings(settings);
+    settingsNew = await getSettings();
+    console.log('WriteSettings successful: ' + (JSON.stringify(settings) == JSON.stringify(settingsNew)));
+}*/
 
 /**
  * @description Runs all of the unit tests for APIs.
@@ -119,7 +144,8 @@ function testWriteSong() {
  */
 async function testAll() {
     await setStoragePath('user_1/data');
-    let folderPath = 'user_1/songs';
+    let folderPath = [];
+    //folderPath.push('user_1/songs');
     await testSettings();
     //testSongs(folderPath);
 
