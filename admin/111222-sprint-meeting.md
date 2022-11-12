@@ -25,7 +25,7 @@ People absent:
 
 | Name  | Description         |
 |-------|---------------------|
-| Alvin | • <br> CI/CD Pipeline - Github Action through Lint • <br>• <br>• |
+| Alvin | • <br>CI/CD Pipeline - Github Action through Lint • <br>• <br>• |
 | Andrew | • <br>• <br>• <br>• |
 | Brian | • <br>• <br>• <br>• |
 | Chi | • <br>• <br>• <br>• |
