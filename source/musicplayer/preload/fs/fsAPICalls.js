@@ -28,7 +28,7 @@ async function fsInit() {
  * @param {string} newStoragePath
  */
 async function setStoragePath(newStoragePath) {
-    const localPath = getSourceFolder();
+    const localPath = await getSourceFolder();
     storagePath = path.join(localPath, newStoragePath);
     await makeDirIfNotExists(storagePath);
     console.log('UserData Storage Path: ' + storagePath);
@@ -36,7 +36,7 @@ async function setStoragePath(newStoragePath) {
 
 /**
  *
- * @return {string}
+ * @return {Promise<string>}
  */
 async function getSourceFolder() {
     return __dirname + '/../..';
@@ -147,7 +147,7 @@ function recursiveSearchAtPath(searchPath) {
         ).filter((d) =>
             d.isFile()).filter((d) =>
             d.name.split('.').pop() === 'mp3').map((d) => d.name);
-        files.forEach((f) => ret.push(path.join(searchPath, f)));
+        files.forEach((f) => ret.push(path.join(searchPath, f).split(path.sep).join(path.posix.sep)));
 
         return ret;
     } catch (e) {

@@ -1,11 +1,14 @@
 const path = require('path');
 const {ipcRenderer} = require('electron');
 const {
+    recursiveSearchAtPath,
+} = require('../fs/fsAPICalls.js');
+
+const {
     getSettings,
     writeSettings,
-    recursiveSearchAtPath,
-    appendSongs,
-} = require('../fs/fsAPICalls.js');
+} = require('../fs/settings/settingsAPICalls');
+
 
 let ffProbePath = '';
 let ffmpegPath = '';
@@ -20,6 +23,23 @@ let multiPath = '';
 function getReadCMD(filepath) {
     return ffProbePath + ' -hide_banner -print_format json -show_format -i "' +
         filepath.split(path.sep).join(path.posix.sep) + '"';
+}
+
+/**
+ *
+ * @param {string} filepath
+ * @return {{args: string[], cmd: string}} args
+ */
+function getReadCMDForSpawn(filepath) {
+    return {
+        cmd: ffProbePath,
+        args: [
+            '-hide_banner',
+            '-print_format json',
+            'show_format',
+            `-i "${filepath.split(path.sep).join(path.posix.sep)}"`,
+        ],
+    };
 }
 
 /**
@@ -44,7 +64,7 @@ function getWriteCMD(filepath, options) {
 function getMultiCMD(paths) {
     let cmd = '';
     cmd += multiPath;
-    paths.forEach(p => cmd += ` ${p}`);
+    paths.forEach((p) => cmd += ` ${p}`);
     return cmd;
 }
 
@@ -92,4 +112,5 @@ module.exports = {
     getReadCMD,
     getWriteCMD,
     getMultiCMD,
+    getReadCMDForSpawn,
 };

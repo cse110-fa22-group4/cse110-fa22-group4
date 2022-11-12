@@ -1,8 +1,8 @@
 window.addEventListener('DOMContentLoaded', () => {
-    jqAPI.onEvent('body', 'change', '#btn-file', getFile);
-    jqAPI.onEvent('body', 'click', '#btn-playlist-create', createPlaylist);
-    jqAPI.onEvent('body', 'click', '#btn-playlist-add', addToPlaylist);
-    jqAPI.onEvent('body', 'click', '#btn-meta', editMetaData);
+    domAPI.addEventListener('btn-file', 'change', getFile);
+    domAPI.addEventListener('btn-playlist-create', 'click', createPlaylist);
+    domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
+    domAPI.addEventListener('btn-meta', 'click', editMetaData);
 });
 
 /**

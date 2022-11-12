@@ -1,17 +1,45 @@
 const {ipcRenderer} = require('electron');
+const path = require('path');
 
 // Ensures that an event is not established multiple times by accident.
 const establishedEvents = {};
 
 
 /**
- * @name managedSetHTML
+ * @name htmlFromRenderer
+ * @description Gets a filepath corresponding to the actual html file path from a renderer process.
+ * @param {string} htmlFile The name of the html file to get.
+ * @return {Promise<string>} The actual path to the html file from a renderer process.
+ */
+async function htmlFromRenderer(htmlFile) {
+    const htmlFilePath = await ipcRenderer.invoke('getAppPath');
+    return path.join(htmlFilePath, '/../html/', htmlFile);
+}
+
+/**
+ * @name loadPage
+ * @memberOf domAPI
+ * @description Loads a html page into an element using JQuery.
+ * @param {string} targetID The ID of the element to load a html page into.
+ * @param {string} htmlFile The name of the html file to load.
+ * @param {function | undefined} callback An optional callback to execute.
+ */
+async function loadPage(targetID, htmlFile, callback = undefined) {
+    const html = require('fs').readFileSync(await htmlFromRenderer(htmlFile)).toString();
+    setHTML(targetID, html);
+    if (callback) {
+        callback(document.getElementById(targetID));
+    }
+}
+
+/**
+ * @name setHTML
  * @memberOf domAPI
  * @description Sets the inner html of an element, if it is deemed 'safe.'
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} html The html to set to for the element.
  */
-function managedSetHTML(domID, html) {
+function setHTML(domID, html) {
     const isAttributeSafe = ipcRenderer.invoke(
         'managedAttributeCheck', domID, 'innerHTML');
     if (isAttributeSafe) {
@@ -20,7 +48,7 @@ function managedSetHTML(domID, html) {
 }
 
 /**
- * @name managedAddEventListener
+ * @name addEventListener
  * @memberOf domAPI
  * @description Adds an event listener to an element, if it exists and is
  * deemed 'safe.'
@@ -28,7 +56,7 @@ function managedSetHTML(domID, html) {
  * @param {string} event The event that is to be assigned.
  * @param {function} func The function that will run when the event triggers.
  */
-function managedAddEventListener(domID, event, func) {
+function addEventListener(domID, event, func) {
     const isEventSafe = ipcRenderer.invoke(
         'managedAddEventListenerCheck', domID, event);
     const element = document.getElementById(domID);
@@ -36,15 +64,15 @@ function managedAddEventListener(domID, event, func) {
         establishedEvents[domID] = [];
     }
     if (isEventSafe && !(event in establishedEvents[domID])) {
-        element.addEventListener(event, () => {
-            func(element);
+        element.addEventListener(event, async () => {
+            await func(element);
         }, false);
         establishedEvents[domID].push(event);
     }
 }
 
 /**
- * @name managedGetAttribute
+ * @name getAttribute
  * @memberOf domAPI
  * @description Gets the attribute of a given domID, if it exists and is
  * deemed 'safe.'
@@ -54,7 +82,7 @@ function managedAddEventListener(domID, event, func) {
  * else undefined if either the attribute or element does not exist,
  *          or if the attribute is deemed 'unsafe.'
  */
-function managedGetAttribute(domID, attribute) {
+function getAttribute(domID, attribute) {
     const isAttributeSafe = ipcRenderer.invoke(
         'managedAttributeCheck', domID, attribute);
     if (isAttributeSafe) {
@@ -65,7 +93,7 @@ function managedGetAttribute(domID, attribute) {
 }
 
 /**
- * @name managedSetAttribute
+ * @name getAttribute
  * @memberOf domAPI
  * @description Sets the attribute of a given domID, if it exists and is
  * deemed 'safe.'
@@ -73,7 +101,7 @@ function managedGetAttribute(domID, attribute) {
  * @param {string} attribute The attribute to set on the element.
  * @param {string} value The value to set the attribute to.
  */
-function managedSetAttribute(domID, attribute, value) {
+function setAttribute(domID, attribute, value) {
     const isAttributeSafe = ipcRenderer.invoke(
         'managedAttributeCheck', domID, attribute);
     if (isAttributeSafe) {
@@ -82,13 +110,13 @@ function managedSetAttribute(domID, attribute, value) {
 }
 
 /**
- * @name managedAddChild
+ * @name addChild
  * @memberOf domAPI
  * @description Adds a child to the given element with the domID.
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {HTMLElement} child The child html element to add.
  */
-function managedAddChild(domID, child) {
+function addChild(domID, child) {
     const isChildSafe = ipcRenderer.invoke('managedChildCheck', domID);
     if (isChildSafe) {
         document.getElementById(domID).appendChild(child);
@@ -96,14 +124,14 @@ function managedAddChild(domID, child) {
 }
 
 /**
- * @name managedSetStyle
+ * @name setStyle
  * @memberOf domAPI
  * @description Sets a css style to a given value if it is deemed 'safe.'
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} style The style to change.
  * @param {string} value The value to set the style to.
  */
-function managedSetStyle(domID, style, value) {
+function setStyle(domID, style, value) {
     const isChildSafe = ipcRenderer.invoke('managedChildCheck', domID);
     if (isChildSafe) {
         document.getElementById(domID).style[style] = value;
@@ -111,7 +139,7 @@ function managedSetStyle(domID, style, value) {
 }
 
 /**
- * @name managedGetValue
+ * @name getValue
  * @memberOf domAPI
  * @description Gets the value of a given domID, if it exists and
  * is deemed 'safe.'
@@ -122,7 +150,7 @@ function managedSetStyle(domID, style, value) {
  *          or if the value is deemed 'unsafe.'
  *
  */
-function managedGetValue(domID, value) {
+function getValue(domID, value) {
     const isValueSafe = ipcRenderer.invoke('managedValueCheck', domID, value);
     if (isValueSafe) {
         return document.getElementById(domID).value;
@@ -131,97 +159,13 @@ function managedGetValue(domID, value) {
     }
 }
 
-/**
- * @name createLibraryEntry
- * @memberOf domAPI
- * @description Creates a HTML element that contains all style and syntax
- * for a custom line in the library homepage.
- * @param {string} divID
- * @param {string} title
- * @param {string} artist
- * @param {string} album
- * @param {string} duration
- * @param {string} year
- * @param {string} genre
- * @param {string} writer
- * @param {string} producer
- * @param {string} tags
- * @return {HTMLElement} The library line HTML element.
- *
- * @todo: This should be a HTML template file!
- */
-function createLibraryEntry(divID = '',
-    title = '',
-    artist = '',
-    album = '',
-    duration = '',
-    year = '',
-    genre = '',
-    writer = '',
-    producer = '',
-    tags = '') {
-    const elem = document.createElement('div');
-    elem.setAttribute('class', 'library-track');
-
-    const trackNum = document.createElement('div');
-    trackNum.setAttribute('class', 'library-track-num');
-    elem.appendChild(trackNum);
-
-    const trackTitle = document.createElement('div');
-    trackTitle.setAttribute('class', 'library-track-title');
-    trackTitle.innerHTML = title;
-    elem.appendChild(trackTitle);
-
-    const trackArtist = document.createElement('div');
-    trackArtist.setAttribute('class', 'library-track-artist');
-    trackArtist.innerHTML = artist;
-    elem.appendChild(trackArtist);
-
-    const trackAlbum = document.createElement('div');
-    trackAlbum.setAttribute('class', 'library-track-album');
-    trackAlbum.innerHTML = album;
-    elem.appendChild(trackAlbum);
-
-    const trackDuration = document.createElement('div');
-    trackDuration.setAttribute('class', 'library-track-duration');
-    trackDuration.innerHTML = duration;
-    elem.appendChild(trackDuration);
-
-    const trackYear = document.createElement('div');
-    trackYear.setAttribute('class', 'library-track-year');
-    trackYear.innerHTML = year;
-    elem.appendChild(trackYear);
-
-    const trackGenre = document.createElement('div');
-    trackGenre.setAttribute('class', 'library-track-genre');
-    trackGenre.innerHTML = genre;
-    elem.appendChild(trackGenre);
-
-    const trackWriter = document.createElement('div');
-    trackWriter.setAttribute('class', 'library-track-writer');
-    trackWriter.innerHTML = writer;
-    elem.appendChild(trackWriter);
-
-    const trackProducer = document.createElement('div');
-    trackProducer.setAttribute('class', 'library-track-producer');
-    trackProducer.innerHTML = producer;
-    elem.appendChild(trackProducer);
-
-    const trackTags = document.createElement('div');
-    trackTags.setAttribute('class', 'library-track-tags');
-    trackTags.innerHTML = tags;
-    elem.appendChild(trackTags);
-
-    return elem;
-}
-
 module.exports = {
-    managedAddEventListener,
-    managedGetAttribute,
-    managedSetAttribute,
-    managedAddChild,
-    managedSetHTML,
-    managedSetStyle,
-    managedGetValue,
-    createLibraryEntry,
+    loadPage,
+    addEventListener,
+    getAttribute,
+    setAttribute,
+    addChild,
+    setHTML,
+    setStyle,
+    getValue,
 };

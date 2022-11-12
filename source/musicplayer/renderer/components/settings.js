@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', ()=> {
-    jqAPI.onEvent('body', 'click', '#settings-rescan', rescanClick);
-    jqAPI.onEvent('body', 'click', '#add-paths-button', addPath);
+    domAPI.addEventListener('settings-rescan', 'click', rescanClick);
+    domAPI.addEventListener('add-paths-button', 'click', addPath);
 });
 
 /**
