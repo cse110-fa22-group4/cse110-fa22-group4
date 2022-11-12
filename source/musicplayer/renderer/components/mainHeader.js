@@ -1,4 +1,4 @@
-window.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener('mainHeader-loaded', async () => {
     await domAPI.addEventListener('btn-file', 'change', getFile);
     await domAPI.addEventListener('btn-playlist-create', 'click', createPlaylist);
     await domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);

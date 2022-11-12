@@ -84,6 +84,10 @@ async function addEventListener(domID, event, func) {
     const isEventSafe = await ipcRenderer.invoke(
         'managedAddEventListenerCheck', domID, event);
     const element = document.getElementById(domID);
+    if (element === undefined || element === null) {
+        console.log(`Failed to find ID: ${domID}`);
+        return;
+    }
     if (!(domID in establishedEvents)) {
         establishedEvents[domID] = [];
     }
