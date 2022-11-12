@@ -20,75 +20,107 @@ const {
     setStoragePath,
 } = require('../preload/fs/fsAPICalls');
 
-/**
- * @description Tests the settings API.
- */
 async function testSettings() {
-    const settings = getSettings();
 
-    await writeToSetting('testingStatus', 'inProgress');
+    let settingName = 'testingStatus';
+    await testGetSettings();
+    await testGetSettings();
 
-    console.log('Settings contents: ' + await getSettings());
-    await deleteSetting('testingStatus');
+    // run twice to test override
+    await testWriteToSetting(settingName);
+    await testWriteToSetting(settingName);
 
-    console.log(
-        'Settings match after add and delete: ' +
-        (JSON.stringify(settings) === JSON.stringify(await getSettings())));
+    await testGetSettings();
 
-    await writeSettings((getSettings()));
+    // run twice to test deleting non-existent setting
+    await testDeleteSetting(settingName);
+    await testDeleteSetting(settingName);
 
-    console.log('Settings match after rewrite: ' + (JSON.stringify(settings) === JSON.stringify(await getSettings())));
+    settings = await getSettings();
+    await testWriteSettings(settings);
+
 }
+
+async function testGetSettings() {
+    settings = await getSettings();
+    console.log('settings file: ' + JSON.stringify(settings));
+}
+
+async function testWriteToSetting(name) {
+    let val = true;
+    await writeToSetting(name, val);
+    setting = JSON.parse((await getSettings())[name]);
+    //could be better check
+    console.log('Write to Setting Test Passed: ' + (setting==val));
+}
+
+async function testDeleteSetting(name) {
+    await deleteSetting(name);
+    settings = await getSettings();
+    //could be better check
+    console.log("Setting 'testingStatus' successfully removed: " + (settings['testingStatus']==null));
+}
+
+async function testWriteSettings(settings) {
+    await writeSettings(settings);
+    settingsNew = await getSettings();
+    console.log('WriteSettings successful: ' + (JSON.stringify(settings) == JSON.stringify(settingsNew)));
+}
+
+
 
 /**
  * @description Tests the songs API.
  */
-async function testSongs() {
-    let songs = await getSongs();
+async function testSongs(songFolderPaths) {
+    //songfolderpaths
+    songPaths = []
 
-    const songPaths = recursiveSearchAtPath(path.join(await getSourceFolder(), 'user/songs'));
-    const songList = {};
-    for (const song in songPaths) {
-        if (!song) continue;
-        songList[songPaths[song].split('\\').pop().split('/').pop()] = songPaths[song];
+    for (songFolderPath in songFolderPaths) {
+        const localPath = await getSourceFolder();
+        //songPaths.push(recursiveSearchAtPath(path.join(localPath, songFolderPaths[songFolderPath])));
+        lol = recursiveSearchAtPath(path.join(localPath, "users/user_1/songs"));
     }
-    await writeSongs(songList);
-
-    console.log('Songs match after reload: ' + (JSON.stringify(songs) === JSON.stringify(await getSongs())));
-
-    const names = Object.keys(songList);
-    if (
-        names[0] === 'Tobu - Hope [NCS Release].mp3' &&
-        names[1] === 'Tobu - Infectious [NCS Release].mp3' &&
-        names[2] === 'Different Heaven & EH!DE - My Heart [NCS Release].mp3') {
-        console.log('Songs loaded in correctly!');
-    } else {
-        console.log('Warning: songs not loaded in correctly');
-    }
-
-    songs = await getSongs();
-
-    const testSongName = 'Alan Walker - Fade.mp3';
-    const testSongPath = path.join(await getSourceFolder(), 'user/songs/Alan Walker - Fade.mp3');
-    await appendSong(testSongName, testSongPath);
-    await removeSong(testSongName);
-
-    console.log('Songs match after remove and append: ' + (JSON.stringify(songs) === JSON.stringify(await getSongs())));
 }
+
+/*async function testGetSong() {
+    
+}
+
+async function testAppendSong() {
+    
+}
+
+async function testDeleteSong() {
+    
+}
+
+async function testWriteSongs(songs) {
+    
+}*/
 
 /**
  * @description Runs all of the unit tests for APIs.
  * @return {Promise<void>}
  */
 async function testAll() {
-    await setStoragePath('user/data');
-
-    // read songs from songs folder and write their paths to songs.json.
-    // Check if song names are as expected
-    await testSongs();
-
-    // tests reading, writing, and deleting in settings
+    await setStoragePath('users/user_1/data');
+    let folderPath = [];
+    //folderPath.push('users/user_1/songs');
     await testSettings();
+    //await testSongs(folderPath);
+/*
+    await setStoragePath('users/user_2/data');
+    folderPath = 'users/user_2/songs';
+    await testSettings();
+    //testSongs(folderPath);
+
+    await setStoragePath('users/user_3/data');
+    folderPath = 'users/user_3/songs';
+    await testSettings();
+    //testSongs(folderPath);
+
+    //reset testing environment*/
 }
 
 

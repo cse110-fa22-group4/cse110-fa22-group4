@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const {storagePath} = require('../fsAPICalls');
+const {getStoragePath} = require('../fsAPICalls');
 
 /**
  * @name getSettings
@@ -9,6 +9,7 @@ const {storagePath} = require('../fsAPICalls');
  * @return {Promise<object>} A JSON formatted object of all the current settings
  */
 async function getSettings() {
+    let storagePath = await getStoragePath();
     const settingsPath = path.join(storagePath, 'settings.json');
     if (!fs.existsSync(settingsPath)) {
         fs.closeSync(fs.openSync(settingsPath, 'w'));
@@ -42,6 +43,7 @@ async function getSetting(setting) {
  * @return {Promise<void>}
  */
 async function writeSettings(settings) {
+    let storagePath = await getStoragePath();
     const settingsPath = path.join(storagePath, 'settings.json');
     if (!fs.existsSync(settingsPath)) {
         fs.closeSync(fs.openSync(settingsPath, 'w'));
