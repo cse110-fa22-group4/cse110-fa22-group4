@@ -23,36 +23,38 @@ const {
 /**
  * @description Tests the settings API.
  */
-function testSettings() {
+async function testSettings() {
     const settings = getSettings();
 
-    writeToSetting('testingStatus', 'inProgress');
+    await writeToSetting('testingStatus', 'inProgress');
 
-    console.log('Settings contents: ' + getSettings());
-    deleteSetting('testingStatus');
+    console.log('Settings contents: ' + await getSettings());
+    await deleteSetting('testingStatus');
 
-    console.log('Settings match after add and delete: ' + (JSON.stringify(settings) === JSON.stringify(getSettings())));
+    console.log(
+        'Settings match after add and delete: ' +
+        (JSON.stringify(settings) === JSON.stringify(await getSettings())));
 
-    writeSettings((getSettings()));
+    await writeSettings((getSettings()));
 
-    console.log('Settings match after rewrite: ' + (JSON.stringify(settings) === JSON.stringify(getSettings())));
+    console.log('Settings match after rewrite: ' + (JSON.stringify(settings) === JSON.stringify(await getSettings())));
 }
 
 /**
  * @description Tests the songs API.
  */
-function testSongs() {
-    let songs = getSongs();
+async function testSongs() {
+    let songs = await getSongs();
 
-    const songPaths = recursiveSearchAtPath(path.join(getSourceFolder(), 'user/songs'));
+    const songPaths = recursiveSearchAtPath(path.join(await getSourceFolder(), 'user/songs'));
     const songList = {};
     for (const song in songPaths) {
         if (!song) continue;
         songList[songPaths[song].split('\\').pop().split('/').pop()] = songPaths[song];
     }
-    writeSongs(songList);
+    await writeSongs(songList);
 
-    console.log('Songs match after reload: ' + (JSON.stringify(songs) === JSON.stringify(getSongs())));
+    console.log('Songs match after reload: ' + (JSON.stringify(songs) === JSON.stringify(await getSongs())));
 
     const names = Object.keys(songList);
     if (
@@ -64,14 +66,14 @@ function testSongs() {
         console.log('Warning: songs not loaded in correctly');
     }
 
-    songs = getSongs();
+    songs = await getSongs();
 
     const testSongName = 'Alan Walker - Fade.mp3';
-    const testSongPath = path.join(getSourceFolder(), 'user/songs/Alan Walker - Fade.mp3');
-    appendSong(testSongName, testSongPath);
-    removeSong(testSongName);
+    const testSongPath = path.join(await getSourceFolder(), 'user/songs/Alan Walker - Fade.mp3');
+    await appendSong(testSongName, testSongPath);
+    await removeSong(testSongName);
 
-    console.log('Songs match after remove and append: ' + (JSON.stringify(songs) === JSON.stringify(getSongs())));
+    console.log('Songs match after remove and append: ' + (JSON.stringify(songs) === JSON.stringify(await getSongs())));
 }
 
 /**
@@ -83,10 +85,10 @@ async function testAll() {
 
     // read songs from songs folder and write their paths to songs.json.
     // Check if song names are as expected
-    testSongs();
+    await testSongs();
 
     // tests reading, writing, and deleting in settings
-    testSettings();
+    await testSettings();
 }
 
 

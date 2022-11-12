@@ -44,7 +44,7 @@ async function pauseSong() {
 }
 
 /**
- * @memebrOf ffmpegAPI
+ * @memberOf ffmpegAPI
  * @description Resumes the song.
  * @return {Promise<void>}
  */

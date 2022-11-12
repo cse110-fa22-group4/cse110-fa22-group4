@@ -1,5 +1,5 @@
-window.addEventListener('searchbar-loaded', () => {
-    domAPI.addEventListener('search-form', 'submit', submitSearch);
+window.addEventListener('searchbar-loaded', async () => {
+    await domAPI.addEventListener('search-form', 'submit', submitSearch);
 });
 
 /**
@@ -18,7 +18,7 @@ async function submitSearch(element) {
         await domAPI.loadPage('main-container', 'pages/search.html');
 
         // Change main header to match search query
-        domAPI.setHTML('main-header', `<h1>Top results for: '${searchQuery}'</h1>`);
+        await domAPI.setHTML('main-header', `<h1>Top results for: '${searchQuery}'</h1>`);
         window.dispatchEvent(new CustomEvent('searchbarSearch', {detail: searchQuery}));
     }
 

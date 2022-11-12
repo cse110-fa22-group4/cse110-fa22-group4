@@ -18,9 +18,9 @@ let multiPath = '';
 /**
  *
  * @param {string} filepath The path of the file to modify
- * @return {string} The command to execute
+ * @return {Promise<string>} The command to execute
  */
-function getReadCMD(filepath) {
+async function getReadCMD(filepath) {
     return ffProbePath + ' -hide_banner -print_format json -show_format -i "' +
         filepath.split(path.sep).join(path.posix.sep) + '"';
 }
@@ -28,9 +28,9 @@ function getReadCMD(filepath) {
 /**
  *
  * @param {string} filepath
- * @return {{args: string[], cmd: string}} args
+ * @return {Promise<{args: string[], cmd: string}>} args
  */
-function getReadCMDForSpawn(filepath) {
+async function getReadCMDForSpawn(filepath) {
     return {
         cmd: ffProbePath,
         args: [
@@ -46,9 +46,9 @@ function getReadCMDForSpawn(filepath) {
  *
  * @param {string} filepath The path of the file to modify
  * @param {object} options The tags to modify
- * @return {string} The command to execute
+ * @return {Promise<string>} The command to execute
  */
-function getWriteCMD(filepath, options) {
+async function getWriteCMD(filepath, options) {
     let cmd = '';
     cmd += ffmpegPath + ' -i "' +
         filepath.split(path.sep).join(path.posix.sep) + '"';
@@ -61,7 +61,11 @@ function getWriteCMD(filepath, options) {
     return cmd;
 }
 
-function getMultiCMD(paths) {
+/**
+ * @param {string} paths
+ * @return {Promise<string>}
+ */
+async function getMultiCMD(paths) {
     let cmd = '';
     cmd += multiPath;
     paths.forEach((p) => cmd += ` ${p}`);
@@ -75,9 +79,10 @@ function getMultiCMD(paths) {
  * settings.
  * @memberOf ffmpegAPI
  * @param {string} binPath The path to ffprobe and ffmpeg.
+ * @return {Promise<void>}
  */
-function setPath(binPath = undefined) {
-    const settings = getSettings();
+async function setPath(binPath = undefined) {
+    const settings = await getSettings();
 
     if (binPath === undefined) {
         if (settings['ffmpegPath'] !== undefined) {
@@ -101,7 +106,7 @@ function setPath(binPath = undefined) {
         // why is windows such a pita?
     }
     settings['ffmpegPath'] = binPath;
-    writeSettings(settings);
+    await writeSettings(settings);
 }
 
 module.exports = {

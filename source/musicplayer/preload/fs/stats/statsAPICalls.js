@@ -6,9 +6,9 @@ const {storagePath} = require('../fsAPICalls');
  * @name getStats
  * @description Gets the stats as a JSON formatted object.
  * @memberOf fsAPI
- * @return {object} A JSON formatted object representing the stats.
+ * @return {Promise<object>} A JSON formatted object representing the stats.
  */
-function getStats() {
+async function getStats() {
     const statsPath = path.join(storagePath, 'stats.json');
     if (!fs.existsSync(statsPath)) {
         fs.closeSync(fs.openSync(statsPath, 'w'));
@@ -24,9 +24,9 @@ function getStats() {
  * @memberOf fsAPI
  * @param {object} stats A JSON formatted object representing the entire
  * stats file.
- * @return {void}
+ * @return {Promise<void>}
  */
-function writeStats(stats) {
+async function writeStats(stats) {
     const statsPath = path.join(storagePath, 'stats.json');
     if (!fs.existsSync(statsPath)) {
         fs.closeSync(fs.openSync(statsPath, 'w'));
@@ -40,12 +40,12 @@ function writeStats(stats) {
  * @memberOf fsAPI
  * @param {string} stat The stat to write to.
  * @param {string} val The value of the stat to set.
- * @return {void}
+ * @return {Promise<void>}
  */
-function writeToStat(stat, val) {
-    const stats = getStats();
+async function writeToStat(stat, val) {
+    const stats = await getStats();
     stats[stat] = val;
-    writeStats(stats);
+    await writeStats(stats);
 }
 
 /**
@@ -53,12 +53,12 @@ function writeToStat(stat, val) {
  * @description Removes a stat from stats.json
  * @memberOf fsAPI
  * @param {string} stat The name of the stat to remove.
- * @return {void}
+ * @return {Promise<void>}
  */
-function deleteStat(stat) {
-    const stats = getStats();
+async function deleteStat(stat) {
+    const stats = await getStats();
     delete stats[stat];
-    writeStats(stats);
+    await writeStats(stats);
 }
 
 module.exports = {

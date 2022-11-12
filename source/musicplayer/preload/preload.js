@@ -5,6 +5,7 @@ const {
     addEventListener, getAttribute,
     setAttribute, addChild, setHTML,
     setStyle, getValue, loadPage,
+    addGrid,
 } = require('./dom/domAPICalls.js');
 
 const {
@@ -97,7 +98,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     await fsInit();
-    setPath();
+    await setPath();
 });
 
 contextBridge.exposeInMainWorld('genAPI', {
@@ -114,6 +115,7 @@ contextBridge.exposeInMainWorld('domAPI', {
     setStyle: setStyle,
     getValue: getValue,
     loadPage: loadPage,
+    addGrid: addGrid,
 
 });
 

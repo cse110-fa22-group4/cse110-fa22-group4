@@ -1,8 +1,8 @@
-window.addEventListener('DOMContentLoaded', () => {
-    domAPI.addEventListener('btn-file', 'change', getFile);
-    domAPI.addEventListener('btn-playlist-create', 'click', createPlaylist);
-    domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
-    domAPI.addEventListener('btn-meta', 'click', editMetaData);
+window.addEventListener('DOMContentLoaded', async () => {
+    await domAPI.addEventListener('btn-file', 'change', getFile);
+    await domAPI.addEventListener('btn-playlist-create', 'click', createPlaylist);
+    await domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
+    await domAPI.addEventListener('btn-meta', 'click', editMetaData);
 });
 
 /**

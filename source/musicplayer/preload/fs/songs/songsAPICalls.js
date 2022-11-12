@@ -7,9 +7,9 @@ const {storagePath} = require('../fsAPICalls');
  * @description Gets the JSON formatted object that contains all songs and
  *                  their paths.
  * @memberOf fsAPI
- * @return {object} A JSON formatted object containing all songs.
+ * @return {Promise<object>} A JSON formatted object containing all songs.
  */
-function getSongs() {
+async function getSongs() {
     const songPath = path.join(storagePath, 'songs.json');
     if (!fs.existsSync(songPath)) {
         fs.closeSync(fs.openSync(songPath, 'w'));
@@ -26,9 +26,9 @@ function getSongs() {
  *              modify a single song, use writeSongs() or readSongs()!
  * @memberOf fsAPI
  * @param {object} songs The JSON formatted object to write to songs.json
- * @return {void}
+ * @return {Promise<void>}
  */
-function writeSongs(songs) {
+async function writeSongs(songs) {
     const songPath = path.join(storagePath, 'songs.json');
     if (!fs.existsSync(songPath)) {
         fs.closeSync(fs.openSync(songPath, 'w'));
@@ -42,27 +42,27 @@ function writeSongs(songs) {
  * @memberOf fsAPI
  * @param {object} newSong The path of the new song file as a key, and
  *                          metadata as a value.
- * @return {void}
+ * @return {Promise<void>}
  */
-function appendSong(newSong) {
-    const songs = getSongs();
+async function appendSong(newSong) {
+    const songs = await getSongs();
     songs.push(newSong);
-    writeSongs(songs);
+    await writeSongs(songs);
 }
 
 /**
  * @name appendSongs
  * @description Appends multiple songs to the songs.json file.
  * @param {object[]} newSongs An array of new songs to be appended.
- * @return {void}
+ * @return {Promise<void>}
  */
-function appendSongs(newSongs) {
-    const songs = getSongs();
+async function appendSongs(newSongs) {
+    const songs = await getSongs();
     for (const song in newSongs) {
         if (!song) continue;
         songs[song] = newSongs[song];
     }
-    writeSongs(songs);
+    await writeSongs(songs);
 }
 
 /**
@@ -70,21 +70,21 @@ function appendSongs(newSongs) {
  * @description Removes a song from the songs.json folder
  * @memberOf fsAPI
  * @param {string} oldSong The name of the old song.
- * @return {void}
+ * @return {Promise<void>}
  */
-function removeSong(oldSong) {
-    const songs = getSongs();
+async function removeSong(oldSong) {
+    const songs = await getSongs();
     delete songs[oldSong];
-    writeSongs(songs);
+    await writeSongs(songs);
 }
 
 /**
  * @name cullShortAudio
  * @memberOf fsAPI
- *
+ * @return {Promise<void>}
  */
-function cullShortAudio() {
-    const songs = getSongs();
+async function cullShortAudio() {
+    const songs = await getSongs();
     const remove = [];
     Object.keys(songs).forEach((song) => {
         console.log(!songs[song]);
@@ -96,7 +96,7 @@ function cullShortAudio() {
         }
     });
     remove.forEach((r) => delete songs[r]);
-    writeSongs(songs);
+    await writeSongs(songs);
 }
 
 module.exports = {
