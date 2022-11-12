@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const {storagePath} = require('../fsAPICalls');
+const {getStoragePath} = require('../fsAPICalls');
 
 /**
  * @name getSettings
@@ -8,7 +8,8 @@ const {storagePath} = require('../fsAPICalls');
  * @memberOf fsAPI
  * @return {object} A JSON formatted object of all the current settings
  */
-function getSettings() {
+async function getSettings() {
+    let storagePath = await getStoragePath();
     const settingsPath = path.join(storagePath, 'settings.json');
     if (!fs.existsSync(settingsPath)) {
         fs.closeSync(fs.openSync(settingsPath, 'w'));
@@ -24,8 +25,8 @@ function getSettings() {
  * @param {string} setting
  * @return {object | undefined} The setting if it exists, else undefined.
  */
-function getSetting(setting) {
-    const settings = getSettings();
+async function getSetting(setting) {
+    const settings = await getSettings();
     if (setting in settings) {
         return JSON.parse(settings[setting]);
     }
@@ -41,7 +42,8 @@ function getSetting(setting) {
  * @param {object} settings The new settings to set, in JSON format.
  * @return {void}
  */
-function writeSettings(settings) {
+async function writeSettings(settings) {
+    let storagePath = await getStoragePath();
     const settingsPath = path.join(storagePath, 'settings.json');
     if (!fs.existsSync(settingsPath)) {
         fs.closeSync(fs.openSync(settingsPath, 'w'));
@@ -57,10 +59,10 @@ function writeSettings(settings) {
  * @param {object} val The value to set the setting to.
  * @return {void}
  */
-function writeToSetting(setting, val) {
-    const settings = getSettings();
+async function writeToSetting(setting, val) {
+    const settings = await getSettings();
     settings[setting] = JSON.stringify(val);
-    writeSettings(settings);
+    await writeSettings(settings);
 }
 
 /**
@@ -71,10 +73,10 @@ function writeToSetting(setting, val) {
  * file.
  * @return {void}
  */
-function deleteSetting(setting) {
-    const settings = getSettings();
+async function deleteSetting(setting) {
+    const settings = await getSettings();
     delete settings[setting];
-    writeSettings(settings);
+    await writeSettings(settings);
 }
 
 module.exports = {

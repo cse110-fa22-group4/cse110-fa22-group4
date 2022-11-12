@@ -1,6 +1,6 @@
 const {path} = require('path');
 const {fs} = require('fs');
-const {storagePath} = require('../fsAPICalls');
+const {getStoragePath} = require('../fsAPICalls');
 
 /**
  * @name getSongs
@@ -9,7 +9,8 @@ const {storagePath} = require('../fsAPICalls');
  * @memberOf fsAPI
  * @return {object} A JSON formatted object containing all songs.
  */
-function getSongs() {
+async function getSongs() {
+    let storagePath = await getStoragePath();
     const songPath = path.join(storagePath, 'songs.json');
     if (!fs.existsSync(songPath)) {
         fs.closeSync(fs.openSync(songPath, 'w'));
@@ -28,7 +29,8 @@ function getSongs() {
  * @param {object} songs The JSON formatted object to write to songs.json
  * @return {void}
  */
-function writeSongs(songs) {
+async function writeSongs(songs) {
+    let storagePath = await getStoragePath();
     const songPath = path.join(storagePath, 'songs.json');
     if (!fs.existsSync(songPath)) {
         fs.closeSync(fs.openSync(songPath, 'w'));
@@ -44,10 +46,10 @@ function writeSongs(songs) {
  *                          metadata as a value.
  * @return {void}
  */
-function appendSong(newSong) {
-    const songs = getSongs();
+async function appendSong(newSong) {
+    const songs = await getSongs();
     songs.push(newSong);
-    writeSongs(songs);
+    await writeSongs(songs);
 }
 
 /**
@@ -56,13 +58,13 @@ function appendSong(newSong) {
  * @param {object[]} newSongs An array of new songs to be appended.
  * @return {void}
  */
-function appendSongs(newSongs) {
-    const songs = getSongs();
+async function appendSongs(newSongs) {
+    const songs = await getSongs();
     for (const song in newSongs) {
         if (!song) continue;
         songs[song] = newSongs[song];
     }
-    writeSongs(songs);
+    await writeSongs(songs);
 }
 
 /**
@@ -72,10 +74,10 @@ function appendSongs(newSongs) {
  * @param {string} oldSong The name of the old song.
  * @return {void}
  */
-function removeSong(oldSong) {
-    const songs = getSongs();
+async function removeSong(oldSong) {
+    const songs = await getSongs();
     delete songs[oldSong];
-    writeSongs(songs);
+    await writeSongs(songs);
 }
 
 /**
@@ -83,8 +85,8 @@ function removeSong(oldSong) {
  * @memberOf fsAPI
  *
  */
-function cullShortAudio() {
-    const songs = getSongs();
+async function cullShortAudio() {
+    const songs = await getSongs();
     const remove = [];
     Object.keys(songs).forEach((song) => {
         console.log(!songs[song]);
@@ -96,7 +98,7 @@ function cullShortAudio() {
         }
     });
     remove.forEach((r) => delete songs[r]);
-    writeSongs(songs);
+    await writeSongs(songs);
 }
 
 module.exports = {

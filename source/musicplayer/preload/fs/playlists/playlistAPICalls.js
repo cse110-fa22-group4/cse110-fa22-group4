@@ -1,6 +1,6 @@
 const {path} = require('path');
 const {fs} = require('fs');
-const {storagePath, makeDirIfNotExists} = require('../fsAPICalls');
+const {getStoragePath, makeDirIfNotExists} = require('../fsAPICalls');
 
 /**
  * @name getAllPlaylists
@@ -9,6 +9,7 @@ const {storagePath, makeDirIfNotExists} = require('../fsAPICalls');
  * @return {object} An array of strings containing the name of every playlist.
  */
 async function getAllPlaylists() {
+    let storagePath = await getStoragePath();
     const playlistPath = path.join(storagePath, 'playlists');
 
     await makeDirIfNotExists('playlists');
@@ -23,6 +24,7 @@ async function getAllPlaylists() {
  * @return {Object} A JSON formatted object that represents a playlist.
  */
 async function getPlaylist(playlist) {
+    let storagePath = await getStoragePath();
     const playlistPath = path.join(storagePath, 'playlists', playlist);
 
     await makeDirIfNotExists('playlists');
@@ -41,6 +43,7 @@ async function getPlaylist(playlist) {
  * @return {void}
  */
 async function removePlaylist(playlistName) {
+    let storagePath = await getStoragePath();
     const playlistPath = path.join(storagePath, 'playlists', playlistName);
     await makeDirIfNotExists('playlists');
     if (!fs.existsSync(playlistPath)) return;
@@ -58,6 +61,7 @@ async function removePlaylist(playlistName) {
  * @return {void}
  */
 async function writePlaylist(playlistName, playlist) {
+    let storagePath = await getStoragePath();
     const playlistPath = path.join(storagePath, 'playlists', playlistName);
     await makeDirIfNotExists('playlists');
     if (!fs.existsSync(playlistPath)) {

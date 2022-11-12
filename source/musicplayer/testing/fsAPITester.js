@@ -24,10 +24,13 @@ async function testSettings() {
 
     let settingName = 'testingStatus';
     await testGetSettings();
+    await testGetSettings();
 
     // run twice to test override
     await testWriteToSetting(settingName);
     await testWriteToSetting(settingName);
+
+    await testGetSettings();
 
     // run twice to test deleting non-existent setting
     await testDeleteSetting(settingName);
@@ -47,12 +50,14 @@ async function testWriteToSetting(name) {
     let val = true;
     await writeToSetting(name, val);
     setting = JSON.parse((await getSettings())[name]);
+    //could be better check
     console.log('Write to Setting Test Passed: ' + (setting==val));
 }
 
 async function testDeleteSetting(name) {
     await deleteSetting(name);
     settings = await getSettings();
+    //could be better check
     console.log("Setting 'testingStatus' successfully removed: " + (settings['testingStatus']==null));
 }
 
@@ -67,12 +72,14 @@ async function testWriteSettings(settings) {
 /**
  * @description Tests the songs API.
  */
-function testSongs(songFolderPaths) {
+async function testSongs(songFolderPaths) {
     //songfolderpaths
     songPaths = []
 
     for (songFolderPath in songFolderPaths) {
-        songPaths.push(recursiveSearchAtPath(path.join(getSourceFolder(), songFolderPath)));
+        const localPath = await getSourceFolder();
+        //songPaths.push(recursiveSearchAtPath(path.join(localPath, songFolderPaths[songFolderPath])));
+        lol = recursiveSearchAtPath(path.join(localPath, "users/user_1/songs"));
     }
 /*
     const songList = {};
@@ -147,8 +154,8 @@ async function testAll() {
     let folderPath = [];
     //folderPath.push('users/user_1/songs');
     await testSettings();
-    //testSongs(folderPath);
-
+    //await testSongs(folderPath);
+/*
     await setStoragePath('users/user_2/data');
     folderPath = 'users/user_2/songs';
     await testSettings();
@@ -159,9 +166,7 @@ async function testAll() {
     await testSettings();
     //testSongs(folderPath);
 
-    //reset testing environment
-
-
+    //reset testing environment*/
 
 }
 

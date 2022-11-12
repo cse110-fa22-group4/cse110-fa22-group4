@@ -2,7 +2,7 @@ const fs = require('fs');
 const {ipcRenderer} = require('electron');
 const path = require('path');
 
-let storagePath = '';
+var storagePath = '';
 
 /**
  * @description MUST BE CALLED ON STARTUP. Sets the path to userData, which can
@@ -38,8 +38,16 @@ async function setStoragePath(newStoragePath) {
  *
  * @return {Promise<string>}
  */
+ async function getStoragePath() {
+    return storagePath;
+}
+
+/**
+ *
+ * @return {Promise<string>}
+ */
 async function getSourceFolder() {
-    return __dirname + '/../..';
+    return __dirname + '/../../..';
 }
 
 /**
@@ -157,7 +165,7 @@ function recursiveSearchAtPath(searchPath) {
 }
 
 module.exports = {
-    storagePath,
+    getStoragePath,
     makeDirIfNotExists,
     getSRCString,
     fsInit,
