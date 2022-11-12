@@ -1,6 +1,6 @@
-#Retrospective
+# Retrospective
 
-##Retrospective Activity through Miro
+## Retrospective Activity through Miro
 ![Miro Page](/admin/misc/images/Miro.png "Retrospective")
 
 
