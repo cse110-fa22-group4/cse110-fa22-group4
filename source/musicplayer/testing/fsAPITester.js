@@ -143,19 +143,19 @@ async function testWriteSongs(songs) {
  * @return {Promise<void>}
  */
 async function testAll() {
-    await setStoragePath('user_1/data');
+    await setStoragePath('users/user_1/data');
     let folderPath = [];
-    //folderPath.push('user_1/songs');
+    //folderPath.push('users/user_1/songs');
     await testSettings();
     //testSongs(folderPath);
 
-    await setStoragePath('user_2/data');
-    folderPath = 'user_2/songs';
+    await setStoragePath('users/user_2/data');
+    folderPath = 'users/user_2/songs';
     await testSettings();
     //testSongs(folderPath);
 
-    await setStoragePath('user_3/data');
-    folderPath = 'user_3/songs';
+    await setStoragePath('users/user_3/data');
+    folderPath = 'users/user_3/songs';
     await testSettings();
     //testSongs(folderPath);
 
