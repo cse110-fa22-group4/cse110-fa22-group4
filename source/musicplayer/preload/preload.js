@@ -4,41 +4,55 @@ const {ipcRenderer, contextBridge, app} = require('electron');
 const {
     onEvent,
     loadPage,
-} = require('./jqAPICalls.js');
+} = require('./jquery/jqAPICalls.js');
 
 const {
-    managedAddEventListener,
-    managedGetAttribute,
-    managedSetAttribute,
-    managedAddChild,
-    managedSetHTML,
-    managedSetStyle,
-    managedGetValue,
-    createLibraryEntry,
-} = require('./domAPICalls.js');
+    managedAddEventListener, managedGetAttribute,
+    managedSetAttribute, managedAddChild, managedSetHTML,
+    managedSetStyle, managedGetValue, createLibraryEntry,
+} = require('./dom/domAPICalls.js');
 
 const {
-    ffmpegRead,
-    ffmpegWrite,
     setPath,
+} = require('./ffmpeg/ffmpegAPICalls.js');
+
+const {
+    ffmpegRead, ffmpegWrite,
     getMetadataRecursive,
-    playSong, stopSong,
-    pauseSong, resumeSong,
-} = require('./ffmpegAPICalls.js');
+    useMultiFFmpeg,
+} = require('./ffmpeg/metadata/ffMetaAPICalls');
 
 const {
-    getSettings, writeSettings, writeToSetting, deleteSetting, getSetting,
-    getSongs, writeSongs, appendSong, removeSong, appendSongs,
-    getStats, writeStats, writeToStat, deleteStat,
-    getAllPlaylists, removePlaylist, writePlaylist,
-    recursiveSearchAtPath, cullShortAudio,
-    getSRCString, fsInit, devClear,
-} = require('./fsAPICalls');
+    pauseSong, playSong, stopSong, resumeSong,
+} = require('./ffmpeg/play/playSongAPICalls');
 
 const {
-    debugLog,
-    openDialog,
-} = require('./genAPICalls.js');
+    recursiveSearchAtPath, getSRCString,
+    fsInit, devClear,
+} = require('./fs/fsAPICalls');
+
+const {
+    getAllPlaylists, getPlaylist,
+    removePlaylist, writePlaylist,
+} = require('./fs/playlists/playlistAPICalls');
+
+const {
+    appendSong, appendSongs, cullShortAudio,
+    getSongs, removeSong, writeSongs,
+} = require('./fs/songs/songsAPICalls');
+
+const {
+    deleteSetting, getSetting, getSettings,
+    writeSettings, writeToSetting,
+} = require('./fs/settings/settingsAPICalls');
+
+const {
+    deleteStat, getStats, writeStats, writeToStat,
+} = require('./fs/stats/statsAPICalls');
+
+const {
+    debugLog, openDialog,
+} = require('./general/genAPICalls.js');
 
 /**
  * @namespace domAPI
@@ -130,6 +144,7 @@ contextBridge.exposeInMainWorld('ffmpegAPI', {
     stopSong: stopSong,
     pauseSong: pauseSong,
     resumeSong: resumeSong,
+    useMultiFFmpeg: useMultiFFmpeg,
 });
 
 contextBridge.exposeInMainWorld('fsAPI', {
