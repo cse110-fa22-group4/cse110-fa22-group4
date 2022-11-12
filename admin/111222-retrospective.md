@@ -4,7 +4,7 @@
 ![Miro Page](/admin/misc/images/Miro.png "Retrospective")
 
 
-##High Points
+## High Points
 * Nearly the entirety of the ui is complete matching closely to Figma frames
 * Having a stable electron boilerplate which runs and works with debugger
 * Working unit tests for the settings file
