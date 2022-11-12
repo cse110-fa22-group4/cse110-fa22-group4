@@ -9,12 +9,16 @@ const {
     childProcess,
 } = require('child_process');
 const {
+    recursiveSearchAtPath,
+} = require('../../fs/fsAPICalls');
+
+const {
+    getMultiCMD,
     ffplayPath,
     ffProbePath,
     getReadCMD,
     getWriteCMD,
-    recursiveSearchAtPath,
-} = require('../../fs/fsAPICalls');
+} = require('../ffmpegAPICalls');
 
 /**
  *
@@ -90,8 +94,18 @@ async function getMetadataRecursive(folderPath) {
     appendSongs(songObj);
 }
 
+async function useMultiFFmpeg(paths) {
+    const childProcess = require('child_process');
+    return new Promise((resolve, reject) => {
+        childProcess.exec(getMultiCMD(paths), (error, stdout, stderr) => {
+            resolve(stdout);
+        });
+    });
+}
+
 module.exports = {
     ffmpegRead,
     ffmpegWrite,
     getMetadataRecursive,
+    useMultiFFmpeg,
 };

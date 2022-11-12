@@ -76,7 +76,7 @@ function testSongs() {
 
 /**
  * @description Runs all of the unit tests for APIs.
- * @returns {Promise<void>}
+ * @return {Promise<void>}
  */
 async function testAll() {
     await setStoragePath('user/data');

@@ -10,6 +10,7 @@ const {
 let ffProbePath = '';
 let ffmpegPath = '';
 let ffplayPath = '';
+let multiPath = '';
 
 /**
  *
@@ -40,6 +41,13 @@ function getWriteCMD(filepath, options) {
     return cmd;
 }
 
+function getMultiCMD(paths) {
+    let cmd = '';
+    cmd += multiPath;
+    paths.forEach(p => cmd += ` ${p}`);
+    return cmd;
+}
+
 /**
  * @name binPath
  * @description Sets a path to ffprobe and ffmpeg, if it already exists on
@@ -65,6 +73,7 @@ function setPath(binPath = undefined) {
         ffProbePath = path.join(binPath, '/ffprobe.exe');
         ffmpegPath = path.join(binPath, '/ffmpeg.exe');
         ffplayPath = path.join(binPath, '/ffplay.exe');
+        multiPath = 'C:/Users/LPG/source/repos/multi_ffmpeg/bin/debug/net6.0/multi_ffmpeg.exe';
     } else {
         ffProbePath = path.join(binPath, '/ffprobe');
         ffmpegPath = path.join(binPath, '/ffmpeg');
@@ -82,4 +91,5 @@ module.exports = {
     setPath,
     getReadCMD,
     getWriteCMD,
+    getMultiCMD,
 };

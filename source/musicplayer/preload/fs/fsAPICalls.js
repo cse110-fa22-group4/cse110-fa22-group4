@@ -120,11 +120,11 @@ async function getSRCString(path) {
  * to return every song.
  * @memberOf fsAPI
  * @param {string} searchPath The pat at which to recursively search
- * @return {Promise<string>[]}  An array of every song path that exists recursively
+ * @return {string[]}  An array of every song path that exists recursively
  * within the directory.
  *
  */
-async function recursiveSearchAtPath(searchPath) {
+function recursiveSearchAtPath(searchPath) {
     // try and catch to take care of illegal folders/files
     try {
         const ret = [];
