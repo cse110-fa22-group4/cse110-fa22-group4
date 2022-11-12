@@ -27,7 +27,9 @@ async function htmlFromRenderer(htmlFile) {
 async function loadPage(targetID, htmlFile, callback = undefined) {
     const html = require('fs').readFileSync(await htmlFromRenderer(htmlFile)).toString();
     setHTML(targetID, html);
-    const filename = htmlFile.split('.').pop().split('\\').pop();
+    const temp = htmlFile.split('.');
+    const filename = temp[temp.length -2].split('/').pop();
+    console.log(`Broadcasting event: ${filename}-loaded`);
     window.dispatchEvent(new Event(`${filename}-loaded`));
     if (callback) {
         await callback(document.getElementById(targetID));
