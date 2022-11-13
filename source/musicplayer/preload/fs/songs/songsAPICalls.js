@@ -10,7 +10,7 @@ const {getStoragePath} = require('../fsAPICalls');
  * @return {Promise<object>} A JSON formatted object containing all songs.
  */
 async function getSongs() {
-    let storagePath = await getStoragePath();
+    const storagePath = await getStoragePath();
     const songPath = path.join(storagePath, 'songs.json');
     if (!fs.existsSync(songPath)) {
         fs.closeSync(fs.openSync(songPath, 'w'));
@@ -30,7 +30,7 @@ async function getSongs() {
  * @return {Promise<void>}
  */
 async function writeSongs(songs) {
-    let storagePath = await getStoragePath();
+    const storagePath = await getStoragePath();
     const songPath = path.join(storagePath, 'songs.json');
     if (!fs.existsSync(songPath)) {
         fs.closeSync(fs.openSync(songPath, 'w'));

@@ -36,9 +36,9 @@ let currFileList;
  * Calllback function for when a file is passed into the input.
  * @param {HTMLElement} element
  */
-function getFile(element) {
+async function getFile(element) {
     currFileList = element.target.files;
-    console.log(currFileList);
+    await genAPI.debugLog(currFileList, 'main-header-callbacks');
 }
 
 // TODO: Use file to add to app library

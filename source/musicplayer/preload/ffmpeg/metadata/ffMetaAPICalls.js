@@ -25,6 +25,7 @@ const {
     spawn,
 } = require('child_process');
 
+// noinspection LoopStatementThatDoesntLoopJS
 /**
  *
  * @param {string} filepath
@@ -33,6 +34,9 @@ const {
 async function ffmpegReadPromise(filepath) {
     const data = await getReadCMDForSpawn(filepath);
     const cmd = spawn(data.cmd, data.args);
+    // not sure why this is here, we need to stop using this function anyways.
+    // todo: finish homemade cli app to replace this promise nightmare - liam
+    // noinspection LoopStatementThatDoesntLoopJS
     for await (const d of cmd.stdout) {
         return d;
     }
@@ -94,14 +98,11 @@ async function getMetadataRecursive(folderPath) {
     const totalLength = listOfSongs.length;
     const promiseArr = Array(listOfSongs.length);
     const time1 = Date.now();
-    console.log('Started');
     for (let i = 0; i < listOfSongs.length; i++) {
         promiseArr[i] = ffmpegReadPromise(listOfSongs[i]);
         console.log(promiseArr[i]);
     }
     const time2 = Date.now();
-    console.log('for loop: ');
-    console.log(time2 - time1);
     await Promise.all(promiseArr).then((results) => {
         results.forEach((unparsedResult) => {
             const result = JSON.parse(unparsedResult);
@@ -109,9 +110,6 @@ async function getMetadataRecursive(folderPath) {
             songObj[result['format']['filename']] = result;
         });
     });
-    console.log('done: ');
-    console.log(Date.now() - time2);
-    console.log(songObj);
     await appendSongs(songObj);
 }
 

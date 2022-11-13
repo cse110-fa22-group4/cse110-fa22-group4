@@ -1,8 +1,9 @@
 const fs = require('fs');
 const {ipcRenderer} = require('electron');
 const path = require('path');
+const {debugLog} = require('../general/genAPICalls');
 
-var storagePath = '';
+let storagePath = '';
 
 /**
  * @description MUST BE CALLED ON STARTUP. Sets the path to userData, which can
@@ -13,14 +14,7 @@ async function fsInit() {
     storagePath = await ipcRenderer.invoke('getUserData');
     storagePath = path.join(storagePath, 'MixMatch');
     await makeDirIfNotExists(storagePath);
-    /**
-     * Bro this function can't call any APIs since it is used before the
-     * initialization of the APIs, so we don't get any custom debug log
-     * functions.
-     * @todo try to find a workaround and uncomment the following line of code.
-     */
-    // genAPI.debugLog("UserData Storage Path: " + storagePath, this);
-    console.log('UserData Storage Path: ' + storagePath);
+    await debugLog('UserData Storage Path: ' + storagePath, 'fs-general');
 }
 
 /**
@@ -32,14 +26,14 @@ async function setStoragePath(newStoragePath) {
     const localPath = await getSourceFolder();
     storagePath = path.join(localPath, newStoragePath);
     await makeDirIfNotExists(storagePath);
-    console.log('UserData Storage Path: ' + storagePath);
+    await debugLog('UserData Storage Path: ' + storagePath, 'fs-general');
 }
 
 /**
  *
  * @return {Promise<string>}
  */
- async function getStoragePath() {
+async function getStoragePath() {
     return storagePath;
 }
 

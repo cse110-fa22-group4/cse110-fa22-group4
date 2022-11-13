@@ -3,6 +3,9 @@ const {ipcRenderer} = require('electron');
 const {
     recursiveSearchAtPath,
 } = require('../fs/fsAPICalls.js');
+const {
+    debugLog,
+} = require('../general/genAPICalls');
 
 const {
     getSettings,
@@ -87,7 +90,7 @@ async function setPath(binPath = undefined) {
     if (binPath === undefined) {
         if (settings['ffmpegPath'] !== undefined) {
             binPath = settings['ffmpegPath'];
-            console.log('Found Path!');
+            await debugLog('Found ffmpeg Path!', 'fs-general');
         } else {
             return;
         }

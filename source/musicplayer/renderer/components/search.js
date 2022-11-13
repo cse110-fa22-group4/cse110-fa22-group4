@@ -3,7 +3,7 @@ window.addEventListener('searchbarSearch', async (event) => {
     const cat = ['duration'];
     const tCat = ['title', 'album_artist', 'genre'];
     const ret = await findCategories(query, cat, tCat);
-    console.log(ret);
+    await genAPI.debugLog(ret, 'test-searching');
 });
 
 

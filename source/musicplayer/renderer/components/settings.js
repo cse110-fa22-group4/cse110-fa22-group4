@@ -16,7 +16,7 @@ async function rescanClick(element) {
         await ffmpegAPI.getMetadataRecursive(path);
     }
     await fsAPI.writeSongs(scannedSongs);
-    console.log(scannedSongs);
+    await genAPI.debugLog(scannedSongs, 'settings-tests');
 }
 
 /**
@@ -26,7 +26,7 @@ async function rescanClick(element) {
  */
 async function addPath(element) {
     const dirs = await genAPI.openDialog({properties: ['openDirectory']});
-    console.log(dirs['filePaths']);
+    await genAPI.debugLog(dirs['filePaths'], 'settings-tests');
     let watched = await fsAPI.getSetting('watchedDir');
     if (watched === undefined) watched = [];
     watched.push(dirs['filePaths']);

@@ -1,6 +1,6 @@
 const {ipcRenderer} = require('electron');
 const {Grid} = require('gridjs');
-
+const {debugLog} = require('../general/genAPICalls');
 const path = require('path');
 
 // Ensures that an event is not established multiple times by accident.
@@ -32,7 +32,7 @@ async function loadPage(targetID, htmlFile, callback = undefined) {
     await setHTML(targetID, html);
     const temp = htmlFile.split('.');
     const filename = temp[temp.length -2].split('/').pop();
-    console.log(`Broadcasting event: ${filename}-loaded`);
+    await debugLog(`Broadcasting event: ${filename}-loaded`, 'broadcast-event');
     window.dispatchEvent(new Event(`${filename}-loaded`));
     if (callback) {
         await callback(document.getElementById(targetID));
@@ -85,7 +85,7 @@ async function addEventListener(domID, event, func) {
         'managedAddEventListenerCheck', domID, event);
     const element = document.getElementById(domID);
     if (element === undefined || element === null) {
-        console.log(`Failed to find ID: ${domID}`);
+        await debugLog(`Failed to find ID: ${domID}`, 'add-event-error');
         return;
     }
     if (!(domID in establishedEvents)) {
