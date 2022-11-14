@@ -1,5 +1,5 @@
 window.addEventListener('library-loaded', () => {
-    onLibraryLoad();
+	onLibraryLoad();
 });
 
 /**

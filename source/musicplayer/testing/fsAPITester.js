@@ -1,23 +1,23 @@
 const path = require('path');
 const {
-    getSettings,
-    writeToSetting,
-    deleteSetting,
-    writeSettings,
+	getSettings,
+	writeToSetting,
+	deleteSetting,
+	writeSettings,
 } = require('../preload/fs/settings/settingsAPICalls');
 
 const {
-    getSongs,
-    appendSong,
-    appendSongs,
-    writeSongs,
-    removeSong,
+	getSongs,
+	appendSong,
+	appendSongs,
+	writeSongs,
+	removeSong,
 } = require('../preload/fs/songs/songsAPICalls');
 
 const {
-    recursiveSearchAtPath,
-    getSourceFolder,
-    setStoragePath,
+	recursiveSearchAtPath,
+	getSourceFolder,
+	setStoragePath,
 } = require('../preload/fs/fsAPICalls');
 const {enableDebugLogTag} = require('../preload/general/genAPICalls');
 
@@ -26,22 +26,22 @@ const {enableDebugLogTag} = require('../preload/general/genAPICalls');
  * @return {Promise<void>}
  */
 async function testSettings() {
-    const settingName = 'testingStatus';
-    await testGetSettings();
-    await testGetSettings();
+	const settingName = 'testingStatus';
+	await testGetSettings();
+	await testGetSettings();
 
-    // run twice to test override
-    await testWriteToSetting(settingName);
-    await testWriteToSetting(settingName);
+	// run twice to test override
+	await testWriteToSetting(settingName);
+	await testWriteToSetting(settingName);
 
-    await testGetSettings();
+	await testGetSettings();
 
-    // run twice to test deleting non-existent setting
-    await testDeleteSetting(settingName);
-    await testDeleteSetting(settingName);
+	// run twice to test deleting non-existent setting
+	await testDeleteSetting(settingName);
+	await testDeleteSetting(settingName);
 
-    const settings = await getSettings();
-    await testWriteSettings(settings);
+	const settings = await getSettings();
+	await testWriteSettings(settings);
 }
 
 /**
@@ -49,8 +49,8 @@ async function testSettings() {
  * @return {Promise<void>}
  */
 async function testGetSettings() {
-    const settings = await getSettings();
-    await genAPI.debugLog('settings file: ' + JSON.stringify(settings), 'unit-tests');
+	const settings = await getSettings();
+	await genAPI.debugLog('settings file: ' + JSON.stringify(settings), 'unit-tests');
 }
 
 /**
@@ -59,11 +59,11 @@ async function testGetSettings() {
  * @return {Promise<void>}
  */
 async function testWriteToSetting(name) {
-    const val = true;
-    await writeToSetting(name, val);
-    const setting = JSON.parse((await getSettings())[name]);
-    // could be better check
-    await genAPI.debugLog('Write to Setting Test Passed: ' + (setting===val), 'unit-tests');
+	const val = true;
+	await writeToSetting(name, val);
+	const setting = JSON.parse((await getSettings())[name]);
+	// could be better check
+	await genAPI.debugLog('Write to Setting Test Passed: ' + (setting===val), 'unit-tests');
 }
 
 /**
@@ -72,12 +72,12 @@ async function testWriteToSetting(name) {
  * @return {Promise<void>}
  */
 async function testDeleteSetting(name) {
-    await deleteSetting(name);
-    const settings = await getSettings();
-    // could be better check
-    await genAPI.debugLog(
-        'Setting \'testingStatus\' successfully removed: ' + (settings['testingStatus']==null),
-        'unit-tests');
+	await deleteSetting(name);
+	const settings = await getSettings();
+	// could be better check
+	await genAPI.debugLog(
+		'Setting \'testingStatus\' successfully removed: ' + (settings['testingStatus']==null),
+		'unit-tests');
 }
 
 /**
@@ -86,11 +86,11 @@ async function testDeleteSetting(name) {
  * @return {Promise<void>}
  */
 async function testWriteSettings(settings) {
-    await writeSettings(settings);
-    const settingsNew = await getSettings();
-    await genAPI.debugLog(
-        'WriteSettings successful: ' + (JSON.stringify(settings) === JSON.stringify(settingsNew)),
-        'unit-tests');
+	await writeSettings(settings);
+	const settingsNew = await getSettings();
+	await genAPI.debugLog(
+		'WriteSettings successful: ' + (JSON.stringify(settings) === JSON.stringify(settingsNew)),
+		'unit-tests');
 }
 
 
@@ -100,15 +100,15 @@ async function testWriteSettings(settings) {
  * @return {Promise<void>}
  */
 async function testSongs(songFolderPaths) {
-    // songfolderpaths
-    const songPaths = [];
+	// songfolderpaths
+	const songPaths = [];
 
-    for (const songFolderPath in songFolderPaths) {
-        if (!songFolderPath) continue;
-        const localPath = await getSourceFolder();
-        // songPaths.push(recursiveSearchAtPath(path.join(localPath, songFolderPaths[songFolderPath])));
-        const lol = await recursiveSearchAtPath(path.join(localPath, 'users/user_1/songs'));
-    }
+	for (const songFolderPath in songFolderPaths) {
+		if (!songFolderPath) continue;
+		const localPath = await getSourceFolder();
+		// songPaths.push(recursiveSearchAtPath(path.join(localPath, songFolderPaths[songFolderPath])));
+		const lol = await recursiveSearchAtPath(path.join(localPath, 'users/user_1/songs'));
+	}
 }
 
 /* async function testGetSong() {
@@ -132,11 +132,11 @@ async function testWriteSongs(songs) {
  * @return {Promise<void>}
  */
 async function testAll() {
-    await setStoragePath('users/user_1/data');
-    const folderPath = [];
-    // folderPath.push('users/user_1/songs');
-    await testSettings();
-    // await testSongs(folderPath);
+	await setStoragePath('users/user_1/data');
+	const folderPath = [];
+	// folderPath.push('users/user_1/songs');
+	await testSettings();
+	// await testSongs(folderPath);
 /*
     await setStoragePath('users/user_2/data');
     folderPath = 'users/user_2/songs';
@@ -153,5 +153,5 @@ async function testAll() {
 
 
 module.exports = {
-    testAll,
+	testAll,
 };

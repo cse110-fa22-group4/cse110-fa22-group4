@@ -1,6 +1,6 @@
 window.addEventListener('settings-loaded', async ()=> {
-    await domAPI.addEventListener('settings-rescan', 'click', rescanClick);
-    await domAPI.addEventListener('add-paths-button', 'click', addPath);
+	await domAPI.addEventListener('settings-rescan', 'click', rescanClick);
+	await domAPI.addEventListener('add-paths-button', 'click', addPath);
 });
 
 /**
@@ -8,15 +8,15 @@ window.addEventListener('settings-loaded', async ()=> {
  * @param {HTMLElement} element
  */
 async function rescanClick(element) {
-    await ffmpegAPI.setBinPath();
-    const scannedSongs = { };
-    const settings = await fsAPI.getSetting('watchedDir');
-    if (settings === undefined) return;
-    for (const path of settings) {
-        // todo: implement cli app
-    }
-    await fsAPI.writeSongs(scannedSongs);
-    await genAPI.debugLog(scannedSongs, 'settings-tests');
+	await ffmpegAPI.setBinPath();
+	const scannedSongs = { };
+	const settings = await fsAPI.getSetting('watchedDir');
+	if (settings === undefined) return;
+	for (const path of settings) {
+		// todo: implement cli app
+	}
+	await fsAPI.writeSongs(scannedSongs);
+	await genAPI.debugLog(scannedSongs, 'settings-tests');
 }
 
 /**
@@ -25,10 +25,10 @@ async function rescanClick(element) {
  * @return {Promise<void>}
  */
 async function addPath(element) {
-    const dirs = await genAPI.openDialog({properties: ['openDirectory']});
-    await genAPI.debugLog(dirs['filePaths'], 'settings-tests');
-    let watched = await fsAPI.getSetting('watchedDir');
-    if (watched === undefined) watched = [];
-    watched.push(dirs['filePaths']);
-    await fsAPI.writeToSetting('watchedDir', watched);
+	const dirs = await genAPI.openDialog({properties: ['openDirectory']});
+	await genAPI.debugLog(dirs['filePaths'], 'settings-tests');
+	let watched = await fsAPI.getSetting('watchedDir');
+	if (watched === undefined) watched = [];
+	watched.push(dirs['filePaths']);
+	await fsAPI.writeToSetting('watchedDir', watched);
 }

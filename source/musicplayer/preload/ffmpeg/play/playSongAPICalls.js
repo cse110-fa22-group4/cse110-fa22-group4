@@ -15,18 +15,18 @@ let instance = undefined;
  * @return {Promise<void>}
  */
 async function playSong(songPath, volume = 100, seekVal = 0) {
-    vol = volume;
-    pauseTime = seekVal;
-    paused = false;
-    path = songPath;
+	vol = volume;
+	pauseTime = seekVal;
+	paused = false;
+	path = songPath;
 
-    instance = await require('child_process').spawn(ffplayPath,
-        [
-            '-nodisp',
-            `-ss ${seekVal}`,
-            `-volume ${volume}`,
-            songPath,
-        ], {shell: true});
+	instance = await require('child_process').spawn(ffplayPath,
+		[
+			'-nodisp',
+			`-ss ${seekVal}`,
+			`-volume ${volume}`,
+			songPath,
+		], {shell: true});
 }
 
 /**
@@ -35,12 +35,12 @@ async function playSong(songPath, volume = 100, seekVal = 0) {
  * @return {Promise<void>}
  */
 async function pauseSong() {
-    if (!instance) return;
-    const data = instance.stderr.read().toString().split(' ');
-    // The number 26 is a constant that emerges as a consequence of ffPlay's implementation of
-    // console data visualization.
-    pauseTime = data[data.length - 26];
-    await stopSong();
+	if (!instance) return;
+	const data = instance.stderr.read().toString().split(' ');
+	// The number 26 is a constant that emerges as a consequence of ffPlay's implementation of
+	// console data visualization.
+	pauseTime = data[data.length - 26];
+	await stopSong();
 }
 
 /**
@@ -49,7 +49,7 @@ async function pauseSong() {
  * @return {Promise<void>}
  */
 async function resumeSong() {
-    await playSong(path, vol, pauseTime);
+	await playSong(path, vol, pauseTime);
 }
 
 /**
@@ -58,21 +58,21 @@ async function resumeSong() {
  * @return {Promise<void>}
  */
 async function stopSong() {
-    if (!instance) return;
-    if (process.platform === 'win32') {
-        await require('child_process').spawn('taskkill', ['/pid', instance.pid, '/f', '/t']);
-    } else {
-        // use the macos version of kill process
-    }
-    instance = undefined;
-    vol = 100;
-    pauseTime = 0;
-    path = '';
+	if (!instance) return;
+	if (process.platform === 'win32') {
+		await require('child_process').spawn('taskkill', ['/pid', instance.pid, '/f', '/t']);
+	} else {
+		// use the macos version of kill process
+	}
+	instance = undefined;
+	vol = 100;
+	pauseTime = 0;
+	path = '';
 }
 
 module.exports = {
-    playSong,
-    pauseSong,
-    resumeSong,
-    stopSong,
+	playSong,
+	pauseSong,
+	resumeSong,
+	stopSong,
 };

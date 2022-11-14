@@ -6,14 +6,14 @@ const {ipcRenderer} = require('electron');
  * @type {string[]}
  */
 const enabledTags =
-    [
-        'add-event-error',
-        'broadcast-event',
-        'fs-general',
-        'unit-tests',
-        'multi-ffmpeg-loading-progress',
-        // 'settings-test',
-    ];
+	[
+		'add-event-error',
+		'broadcast-event',
+		'fs-general',
+		'unit-tests',
+		'multi-ffmpeg-loading-progress',
+		// 'settings-test',
+	];
 
 /**
  * @name debugLog
@@ -27,9 +27,9 @@ const enabledTags =
  * @return {Promise<void>}
  */
 async function debugLog(message, tag) {
-    if (enabledTags.includes(tag)) {
-        console.log(message);
-    }
+	if (enabledTags.includes(tag)) {
+		console.log(message);
+	}
 }
 
 /**
@@ -40,12 +40,12 @@ async function debugLog(message, tag) {
  * @return {Promise<Electron.OpenDialogReturnValue>}
  */
 async function openDialog(opts) {
-    const {dialog} = require('electron');
-    return JSON.parse(await ipcRenderer.invoke('openDialog', opts));
+	const {dialog} = require('electron');
+	return JSON.parse(await ipcRenderer.invoke('openDialog', opts));
 }
 
 
 module.exports = {
-    debugLog,
-    openDialog,
+	debugLog,
+	openDialog,
 };

@@ -1,18 +1,18 @@
 const path = require('path');
 const {ipcRenderer} = require('electron');
 const {
-    recursiveSearchAtPath,
+	recursiveSearchAtPath,
 } = require('../fs/fsAPICalls.js');
 const {
-    debugLog,
+	debugLog,
 } = require('../general/genAPICalls');
 
 const {
-    getSettings,
-    writeSettings,
+	getSettings,
+	writeSettings,
 } = require('../fs/settings/settingsAPICalls');
 const {
-    getSongs,
+	getSongs,
 } = require('../fs/songs/songsAPICalls');
 
 
@@ -27,7 +27,7 @@ let multiPath = '';
  * @return {Promise<string>} The command to execute
  */
 async function getReadCMD(filepath) {
-    return ffProbePath + ' -hide_banner -print_format json -show_format -i "' +
+	return ffProbePath + ' -hide_banner -print_format json -show_format -i "' +
         filepath.split(path.sep).join(path.posix.sep) + '"';
 }
 
@@ -37,15 +37,15 @@ async function getReadCMD(filepath) {
  * @return {Promise<{args: string[], cmd: string}>} args
  */
 async function getReadCMDForSpawn(filepath) {
-    return {
-        cmd: ffProbePath,
-        args: [
-            '-hide_banner',
-            '-print_format json',
-            'show_format',
-            `-i "${filepath.split(path.sep).join(path.posix.sep)}"`,
-        ],
-    };
+	return {
+		cmd: ffProbePath,
+		args: [
+			'-hide_banner',
+			'-print_format json',
+			'show_format',
+			`-i "${filepath.split(path.sep).join(path.posix.sep)}"`,
+		],
+	};
 }
 
 /**
@@ -55,45 +55,45 @@ async function getReadCMDForSpawn(filepath) {
  * @return {Promise<string>} The command to execute
  */
 async function getWriteCMD(filepath, options) {
-    let cmd = '';
-    cmd += ffmpegPath + ' -i "' +
+	let cmd = '';
+	cmd += ffmpegPath + ' -i "' +
         filepath.split(path.sep).join(path.posix.sep) + '"';
-    Object.keys(options).forEach((tag) => {
-        cmd += ' -metadata ';
-        cmd += tag + '="' + options[tag] + '" ';
-    });
-    // a very smart answer from wallacer on stackoverflow. qid: 190852
-    cmd += ' out.' + filepath.split('.').pop();
-    return cmd;
+	Object.keys(options).forEach((tag) => {
+		cmd += ' -metadata ';
+		cmd += tag + '="' + options[tag] + '" ';
+	});
+	// a very smart answer from wallacer on stackoverflow. qid: 190852
+	cmd += ' out.' + filepath.split('.').pop();
+	return cmd;
 }
 
 /**
  * @return {Promise<{cmd: string, args: {input: string, output: string, probe:string}}>}
  */
 async function getMultiCMD() {
-    const fs = require('fs').promises;
-    const tempPath = path.join(await ipcRenderer.invoke('getTempPath'), 'songs_temp.txt');
-    const outPath = path.join(await ipcRenderer.invoke('getTempPath'), 'out_json.txt');
+	const fs = require('fs').promises;
+	const tempPath = path.join(await ipcRenderer.invoke('getTempPath'), 'songs_temp.txt');
+	const outPath = path.join(await ipcRenderer.invoke('getTempPath'), 'out_json.txt');
 
-    const songs = await getSongs();
-    let fileContents = '';
-    for (const songPath in songs) {
-        if (!songPath) continue;
-        fileContents += (songPath + '\n');
-    }
-    await fs.writeFile(tempPath, fileContents, (err) => {
-        if (err) {
-            console.log(err);
-        }
-    });
-    return {
-        cmd: multiPath,
-        args: {
-            input: tempPath,
-            output: outPath,
-            probe: ffProbePath,
-        },
-    };
+	const songs = await getSongs();
+	let fileContents = '';
+	for (const songPath in songs) {
+		if (!songPath) continue;
+		fileContents += (songPath + '\n');
+	}
+	await fs.writeFile(tempPath, fileContents, (err) => {
+		if (err) {
+			console.log(err);
+		}
+	});
+	return {
+		cmd: multiPath,
+		args: {
+			input: tempPath,
+			output: outPath,
+			probe: ffProbePath,
+		},
+	};
 }
 
 /**
@@ -101,19 +101,19 @@ async function getMultiCMD() {
  * @return {Promise<void>}
  */
 async function removeTempFile() {
-    const fs = require('fs');
-    const tempPath = path.join(await ipcRenderer.invoke('getTempPath'), 'songs_temp.txt');
-    const outPath = path.join(await ipcRenderer.invoke('getTempPath'), 'out_json.txt');
-    await fs.unlink(tempPath, (err) => {
-        if (err) {
-            return;
-        }
-    });
-    await fs.unlink(outPath, (err) => {
-        if (err) {
-            return;
-        }
-    });
+	const fs = require('fs');
+	const tempPath = path.join(await ipcRenderer.invoke('getTempPath'), 'songs_temp.txt');
+	const outPath = path.join(await ipcRenderer.invoke('getTempPath'), 'out_json.txt');
+	await fs.unlink(tempPath, async (err) => {
+		if (err) {
+			await debugLog(err, 'general-error');
+		}
+	});
+	await fs.unlink(outPath, async (err) => {
+		if (err) {
+			await debugLog(err, 'general-error');
+		}
+	});
 }
 
 /**
@@ -126,41 +126,41 @@ async function removeTempFile() {
  * @return {Promise<void>}
  */
 async function setPath(binPath = undefined) {
-    const settings = await getSettings();
+	const settings = await getSettings();
 
-    if (binPath === undefined) {
-        if (settings['ffmpegPath'] !== undefined) {
-            binPath = settings['ffmpegPath'];
-            await debugLog('Found ffmpeg Path!', 'fs-general');
-        } else {
-            return;
-        }
-    }
+	if (binPath === undefined) {
+		if (settings['ffmpegPath'] !== undefined) {
+			binPath = settings['ffmpegPath'];
+			await debugLog('Found ffmpeg Path!', 'fs-general');
+		} else {
+			return;
+		}
+	}
 
-    // Windows uses exe but mac and linux don't
-    if (process.platform === 'win32') {
-        ffProbePath = path.join(binPath, '/ffprobe.exe');
-        ffmpegPath = path.join(binPath, '/ffmpeg.exe');
-        ffplayPath = path.join(binPath, '/ffplay.exe');
-        multiPath = path.join(binPath, '/multi_ffmpeg.exe');
-    } else {
-        ffProbePath = path.join(binPath, '/ffprobe');
-        ffmpegPath = path.join(binPath, '/ffmpeg');
-        ffplayPath = path.join(binPath, '/ffplay');
-        // why is windows such a pita?
-    }
-    settings['ffmpegPath'] = binPath;
-    await writeSettings(settings);
+	// Windows uses exe but mac and linux don't
+	if (process.platform === 'win32') {
+		ffProbePath = path.join(binPath, '/ffprobe.exe');
+		ffmpegPath = path.join(binPath, '/ffmpeg.exe');
+		ffplayPath = path.join(binPath, '/ffplay.exe');
+		multiPath = path.join(binPath, '/multi_ffmpeg.exe');
+	} else {
+		ffProbePath = path.join(binPath, '/ffprobe');
+		ffmpegPath = path.join(binPath, '/ffmpeg');
+		ffplayPath = path.join(binPath, '/ffplay');
+		// why is windows such a pita?
+	}
+	settings['ffmpegPath'] = binPath;
+	await writeSettings(settings);
 }
 
 module.exports = {
-    ffplayPath,
-    ffProbePath,
-    ffmpegPath,
-    setPath,
-    getReadCMD,
-    getWriteCMD,
-    getMultiCMD,
-    removeTempFile,
-    getReadCMDForSpawn,
+	ffplayPath,
+	ffProbePath,
+	ffmpegPath,
+	setPath,
+	getReadCMD,
+	getWriteCMD,
+	getMultiCMD,
+	removeTempFile,
+	getReadCMDForSpawn,
 };

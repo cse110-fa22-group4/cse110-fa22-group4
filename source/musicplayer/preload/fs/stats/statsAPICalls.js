@@ -9,12 +9,12 @@ const {storagePath} = require('../fsAPICalls');
  * @return {Promise<object>} A JSON formatted object representing the stats.
  */
 async function getStats() {
-    const statsPath = path.join(storagePath, 'stats.json');
-    if (!fs.existsSync(statsPath)) {
-        fs.closeSync(fs.openSync(statsPath, 'w'));
-        fs.writeFileSync(statsPath, '{ }');
-    }
-    return JSON.parse(fs.readFileSync(statsPath, 'utf8'));
+	const statsPath = path.join(storagePath, 'stats.json');
+	if (!fs.existsSync(statsPath)) {
+		fs.closeSync(fs.openSync(statsPath, 'w'));
+		fs.writeFileSync(statsPath, '{ }');
+	}
+	return JSON.parse(fs.readFileSync(statsPath, 'utf8'));
 }
 
 /**
@@ -27,11 +27,11 @@ async function getStats() {
  * @return {Promise<void>}
  */
 async function writeStats(stats) {
-    const statsPath = path.join(storagePath, 'stats.json');
-    if (!fs.existsSync(statsPath)) {
-        fs.closeSync(fs.openSync(statsPath, 'w'));
-    }
-    fs.writeFileSync(statsPath, JSON.stringify(stats));
+	const statsPath = path.join(storagePath, 'stats.json');
+	if (!fs.existsSync(statsPath)) {
+		fs.closeSync(fs.openSync(statsPath, 'w'));
+	}
+	fs.writeFileSync(statsPath, JSON.stringify(stats));
 }
 
 /**
@@ -43,9 +43,9 @@ async function writeStats(stats) {
  * @return {Promise<void>}
  */
 async function writeToStat(stat, val) {
-    const stats = await getStats();
-    stats[stat] = val;
-    await writeStats(stats);
+	const stats = await getStats();
+	stats[stat] = val;
+	await writeStats(stats);
 }
 
 /**
@@ -56,14 +56,14 @@ async function writeToStat(stat, val) {
  * @return {Promise<void>}
  */
 async function deleteStat(stat) {
-    const stats = await getStats();
-    delete stats[stat];
-    await writeStats(stats);
+	const stats = await getStats();
+	delete stats[stat];
+	await writeStats(stats);
 }
 
 module.exports = {
-    getStats,
-    writeStats,
-    writeToStat,
-    deleteStat,
+	getStats,
+	writeStats,
+	writeToStat,
+	deleteStat,
 };

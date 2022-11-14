@@ -1,5 +1,5 @@
 window.addEventListener('searchbar-loaded', async () => {
-    await domAPI.addEventListener('search-form', 'submit', submitSearch);
+	await domAPI.addEventListener('search-form', 'submit', submitSearch);
 });
 
 /**
@@ -7,18 +7,22 @@ window.addEventListener('searchbar-loaded', async () => {
  * @param {HTMLElement} element
  */
 async function submitSearch(element) {
-    // Set global var for search query input
-    const searchQuery = await domAPI.getValue('input-search', 'value');
-    if (searchQuery === undefined) return;
+	// Set global var for search query input
+	/**
+	 * We literally await a Promise<Object>, idk why I have to specify this.
+	 * @type {Object}
+	 */
+	const searchQuery = await domAPI.getValue('input-search', 'value');
+	if (searchQuery === undefined) return;
 
-    if (searchQuery.length !== 0) {
-        // Switch to search results page
-        await domAPI.loadPage('main-container', 'pages/search.html');
+	if (searchQuery.length !== 0) {
+		// Switch to search results page
+		await domAPI.loadPage('main-container', 'pages/search.html');
 
-        // Change main header to match search query
-        await domAPI.setHTML('main-header', `<h1>Top results for: '${searchQuery}'</h1>`);
-        window.dispatchEvent(new CustomEvent('searchbarSearch', {detail: searchQuery}));
-    }
+		// Change main header to match search query
+		await domAPI.setHTML('main-header', `<h1>Top results for: '${searchQuery}'</h1>`);
+		window.dispatchEvent(new CustomEvent('searchbarSearch', {detail: searchQuery}));
+	}
 
-    // TODO: Use search query value for searching our app's library
+	// TODO: Use search query value for searching our app's library
 }
