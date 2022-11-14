@@ -14,7 +14,7 @@
     "test": "electron main/main.js -g",
     "start": "electron main/main.js",
     "lint-project": "npx eslint .",
-    "lint-fix": "npx eslint . --fix",
+    "lint-fix": "npx eslint . --fix"
   },
   "author": "Team Mariposa",
   "license": "ISC",
