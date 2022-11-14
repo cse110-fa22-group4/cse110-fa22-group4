@@ -7,10 +7,8 @@ window.addEventListener('searchbar-loaded', async () => {
  * @param {HTMLElement} element
  */
 async function submitSearch(element) {
-    event.preventDefault();
-
     // Set global var for search query input
-    const searchQuery = domAPI.getValue('input-search', 'value');
+    const searchQuery = await domAPI.getValue('input-search', 'value');
     if (searchQuery === undefined) return;
 
     if (searchQuery.length !== 0) {

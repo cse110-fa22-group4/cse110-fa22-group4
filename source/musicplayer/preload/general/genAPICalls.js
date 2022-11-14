@@ -11,6 +11,7 @@ const enabledTags =
         'broadcast-event',
         'fs-general',
         'unit-tests',
+        'multi-ffmpeg-loading-progress',
         // 'settings-test',
     ];
 

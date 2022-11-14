@@ -127,7 +127,8 @@ async function getAttribute(domID, attribute) {
  * deemed 'safe.'
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} attribute The attribute to set on the element.
- * @param {Promise<string>} value The value to set the attribute to.
+ * @param {string} value The value to set the attribute to.
+ * @return {Promise<void>}
  */
 async function setAttribute(domID, attribute, value) {
     const isAttributeSafe = await ipcRenderer.invoke(

@@ -11,6 +11,9 @@ const {
     getSettings,
     writeSettings,
 } = require('../fs/settings/settingsAPICalls');
+const {
+    getSongs,
+} = require('../fs/songs/songsAPICalls');
 
 
 let ffProbePath = '';
@@ -65,14 +68,52 @@ async function getWriteCMD(filepath, options) {
 }
 
 /**
- * @param {string} paths
- * @return {Promise<string>}
+ * @return {Promise<{cmd: string, args: {input: string, output: string, probe:string}}>}
  */
-async function getMultiCMD(paths) {
-    let cmd = '';
-    cmd += multiPath;
-    paths.forEach((p) => cmd += ` ${p}`);
-    return cmd;
+async function getMultiCMD() {
+    const fs = require('fs').promises;
+    const tempPath = path.join(await ipcRenderer.invoke('getTempPath'), 'songs_temp.txt');
+    const outPath = path.join(await ipcRenderer.invoke('getTempPath'), 'out_json.txt');
+
+    const songs = await getSongs();
+    let fileContents = '';
+    for (const songPath in songs) {
+        if (!songPath) continue;
+        fileContents += (songPath + '\n');
+    }
+    await fs.writeFile(tempPath, fileContents, (err) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+    return {
+        cmd: multiPath,
+        args: {
+            input: tempPath,
+            output: outPath,
+            probe: ffProbePath,
+        },
+    };
+}
+
+/**
+ * @description Removes the temp file from getMultiCMD.
+ * @return {Promise<void>}
+ */
+async function removeTempFile() {
+    const fs = require('fs');
+    const tempPath = path.join(await ipcRenderer.invoke('getTempPath'), 'songs_temp.txt');
+    const outPath = path.join(await ipcRenderer.invoke('getTempPath'), 'out_json.txt');
+    await fs.unlink(tempPath, (err) => {
+        if (err) {
+            return;
+        }
+    });
+    await fs.unlink(outPath, (err) => {
+        if (err) {
+            return;
+        }
+    });
 }
 
 /**
@@ -101,7 +142,7 @@ async function setPath(binPath = undefined) {
         ffProbePath = path.join(binPath, '/ffprobe.exe');
         ffmpegPath = path.join(binPath, '/ffmpeg.exe');
         ffplayPath = path.join(binPath, '/ffplay.exe');
-        multiPath = 'C:/Users/LPG/source/repos/multi_ffmpeg/bin/debug/net6.0/multi_ffmpeg.exe';
+        multiPath = path.join(binPath, '/multi_ffmpeg.exe');
     } else {
         ffProbePath = path.join(binPath, '/ffprobe');
         ffmpegPath = path.join(binPath, '/ffmpeg');
@@ -120,5 +161,6 @@ module.exports = {
     getReadCMD,
     getWriteCMD,
     getMultiCMD,
+    removeTempFile,
     getReadCMDForSpawn,
 };

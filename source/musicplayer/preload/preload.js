@@ -14,7 +14,6 @@ const {
 
 const {
     ffmpegRead, ffmpegWrite,
-    getMetadataRecursive,
     useMultiFFmpeg,
 } = require('./ffmpeg/metadata/ffMetaAPICalls');
 
@@ -121,7 +120,6 @@ contextBridge.exposeInMainWorld('ffmpegAPI', {
     readMetadata: ffmpegRead,
     writeMetadata: ffmpegWrite,
     setBinPath: setPath,
-    getMetadataRecursive: getMetadataRecursive,
     playSong: playSong,
     stopSong: stopSong,
     pauseSong: pauseSong,

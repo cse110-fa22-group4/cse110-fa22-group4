@@ -35,8 +35,8 @@ const createWindow = async () => {
     // mainWindow.webContents.openDevTools()
 
     // Check for testing flag to run tests (npm run test)
-    if (argv.length == 3 && argv[2] == '-g') {
-        fsAPITester.testAll();
+    if (argv.length === 3 && argv[2] === '-g') {
+        await fsAPITester.testAll();
     }
 };
 
@@ -81,6 +81,9 @@ ipcMain.handle('getUserData', (event, args) => {
 });
 ipcMain.handle('getAppPath', (event, args) => {
     return app.getAppPath();
+});
+ipcMain.handle('getTempPath', (event, args) => {
+    return app.getPath('temp');
 });
 ipcMain.handle('managedValueCheck', (event, args) => {
     return true; // TODO: Add security!

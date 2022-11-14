@@ -13,7 +13,7 @@ async function rescanClick(element) {
     const settings = await fsAPI.getSetting('watchedDir');
     if (settings === undefined) return;
     for (const path of settings) {
-        await ffmpegAPI.getMetadataRecursive(path);
+        // todo: implement cli app
     }
     await fsAPI.writeSongs(scannedSongs);
     await genAPI.debugLog(scannedSongs, 'settings-tests');

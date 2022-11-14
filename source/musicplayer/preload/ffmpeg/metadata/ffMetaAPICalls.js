@@ -14,6 +14,7 @@ const {
 
 const {
     getMultiCMD,
+    removeTempFile,
     ffplayPath,
     ffProbePath,
     getReadCMD,
@@ -24,6 +25,9 @@ const {
 const {
     spawn,
 } = require('child_process');
+const {debugLog} = require('../../general/genAPICalls');
+const {clipboard} = require('electron');
+const {promises: fs} = require('fs');
 
 // noinspection LoopStatementThatDoesntLoopJS
 /**
@@ -86,50 +90,67 @@ async function ffmpegWrite(filepath, options) {
 }
 
 /**
- * @name getMetadataRecursive
- * @description recursively searches the files and prints it to songs.json
- * @memberOf ffmpegAPI
- * @param {Promise<string>} folderPath path to folder where we want to recursively search
- * @todo Do we have to store ALL of the metadata for the tags?
+ * @return {Promise<object>}
  */
-async function getMetadataRecursive(folderPath) {
-    const songObj = {};
-    const listOfSongs = await recursiveSearchAtPath(folderPath);
-    const totalLength = listOfSongs.length;
-    const promiseArr = Array(listOfSongs.length);
-    const time1 = Date.now();
-    for (let i = 0; i < listOfSongs.length; i++) {
-        promiseArr[i] = ffmpegReadPromise(listOfSongs[i]);
-        console.log(promiseArr[i]);
-    }
-    const time2 = Date.now();
-    await Promise.all(promiseArr).then((results) => {
-        results.forEach((unparsedResult) => {
-            const result = JSON.parse(unparsedResult);
-            if (!result['format'] || !result['format']['filename']) return;
-            songObj[result['format']['filename']] = result;
-        });
+async function createMultiFFmpegPromise() {
+    const childProcess = require('child_process');
+    const fs = require('fs').promises;
+    const {debugLog} = require('../../general/genAPICalls');
+    const commands = await getMultiCMD();
+    return new Promise((resolve, reject) => {
+        try {
+            const proc = childProcess.spawn(
+                commands.cmd,
+                [
+                    '-i', commands.args.input,
+                    '-o', commands.args.output,
+                    '-p', commands.args.probe,
+                    '-t',
+                ]);
+            let errFlag = false;
+
+            proc.stdout.on('data', async (data)=> {
+                if (data) {
+                    await debugLog(data.toString(), 'multi-ffmpeg-loading-progress');
+                }
+            });
+
+            proc.stderr.on('data', async (data) => {
+                errFlag = true;
+                // await removeTempFile();
+                reject(data.toString());
+            });
+
+            proc.on('close', async (code) => {
+                if (!errFlag) {
+                    try {
+                        const fileData = await fs.readFile(commands.args.output);
+                        const stringData = fileData.toString();
+                        const data = JSON.parse(stringData);
+                        // await removeTempFile();
+                        resolve(data);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            });
+        } catch (e) {
+            console.log(e);
+            reject(e);
+        }
     });
-    await appendSongs(songObj);
 }
 
 /**
- * @param {string} paths
- * @return {Promise<unknown>}
+ *
+ * @return {Promise<Object>}
  */
-async function useMultiFFmpeg(paths) {
-    const childProcess = require('child_process');
-    const cmd = await getMultiCMD(paths);
-    return new Promise((resolve, reject) => {
-        childProcess.exec(cmd, (error, stdout, stderr) => {
-            resolve(stdout);
-        });
-    });
+async function useMultiFFmpeg() {
+    return await createMultiFFmpegPromise();
 }
 
 module.exports = {
     ffmpegRead,
     ffmpegWrite,
-    getMetadataRecursive,
     useMultiFFmpeg,
 };
