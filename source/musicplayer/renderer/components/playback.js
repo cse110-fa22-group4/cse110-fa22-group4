@@ -2,7 +2,6 @@
 let isPaused = true;      // track pause action
 let shuffleIsOn = false;  // track shuffle action
 let repeatIsOn = false;   // track repeat action
-let isMuted = false;      // track mute action
 
 window.addEventListener('playback-loaded', async () => {
   await domAPI.addEventListener('playback-artwork-container', 'click', artworkClick);
@@ -115,6 +114,8 @@ async function repeatToggle(element) {
  * @param {HTMLElement} element
  */
 async function changeTrackProgress(element) {
+  const currProgress = await domAPI.getValue('progress-bar', 'value');
+
     // TODO: implement track progress change function
     alert('*FUNCTION UNDER CONTRUCTION*');
 }
@@ -124,20 +125,17 @@ async function changeTrackProgress(element) {
  * @param {HTMLElement} element
  */
  async function changeVolume(element) {
-  if (!isMuted) {
+  const currVolume = await domAPI.getValue('volume-fader', 'value');
+  if (currVolume == 0) {
     await domAPI.setAttribute('icon-volume', 'src', '../img/icons/playback/muted.png');
 
     // TODO: implement volume change function
     alert('*FUNCTION UNDER CONTRUCTION*');
-
-    isMuted = true;
   } else {
     await domAPI.setAttribute('icon-volume', 'src', '../img/icons/playback/unmuted.png');
 
     // TODO: implement volume change function
     alert('*FUNCTION UNDER CONTRUCTION*');
-
-    isMuted = false;
   }
 }
 
