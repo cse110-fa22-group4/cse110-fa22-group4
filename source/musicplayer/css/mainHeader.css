@@ -2,15 +2,12 @@
 /* TOP CONTAINER > MAIN HEADER */
 #main-header-container {
   background-color: transparent;
-  color: var(--dark);
+  height: 35px;
+  padding: 10px 30px;
+
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
-  height: 50px;
-  padding-left: 30px;
-  padding-right: 30px;
+  justify-content: space-between;
 }
 
 #main-header-container button {

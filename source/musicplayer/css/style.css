@@ -6,6 +6,10 @@
 @import "searchbar.css";
 @import "search.css";
 @import "library.css";
+@import "main.css";
+
+/* @import "home.css"; */
+
 
 :root {
   font-family: 'Roboto', sans-serif;
@@ -27,45 +31,28 @@
 } */
 
 /* GENERAL */
-
 body {
-  display: flex;
-  flex-direction: row;
-
   height: 100vh;
-
   margin: 0;
   padding: 0;
-
-  background-color: var(--light);
 }
 
+button {
+  background-color: transparent;
+  border: none;
+}
 
 /* TOP CONTAINER */
 #top-container {
-  color: var(--light);
+  position: fixed;
+  left: 230px;
+  width: calc(100% - 230px);
+  height: calc(100% - 120px);
 
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 230px;
 }
 
-/* MAIN CONTAINER */
-#main-container {
-  color: var(--mid-dark);
-
-  overflow-y: auto;
-  margin-top: 37vh;
-  width: 100%;
-  padding-right: 30px;
-  padding-left: 30px;
-
-  margin-bottom: 110px;
-  margin-left: 230px;
-}
 
 
 /* This is just for testing settings.html*/

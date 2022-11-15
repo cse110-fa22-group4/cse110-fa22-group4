@@ -1,12 +1,12 @@
 
 /* SEARCHBAR + SETTINGS */
 #searchbar-container {
-  display: flex;
-  flex-direction: row;
   position: fixed;
   top: 30px;
   right: 30px;
 
+  display: flex;
+  flex-direction: row;
   justify-content: end;
   align-items: center;
 }

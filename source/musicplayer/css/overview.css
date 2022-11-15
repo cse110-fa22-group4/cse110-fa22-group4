@@ -1,13 +1,10 @@
 /* TOP CONTAINER > OVERVIEW > CURRENT TRACK */
 #overview-container {
   background-color: var(--dark);
-
-  display: flex;
-  flex: row;
-  height: 30vh;
-  max-height: 360px;
+  min-height: 33%;
+  max-height: 33%;
+  border-radius: 0 0 15px 15px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-  border-radius: 0px 0px 15px 15px;
 }
 
 .overview-artwork {
