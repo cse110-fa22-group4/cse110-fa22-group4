@@ -99,15 +99,6 @@
   overflow-y: auto;
 }
 
-thead {
-  font-weight: 800;
-  color: #767676;
-}
-
-table {
-  font-size: 13px;
-}
-
 .ovEx-track-info {}
 
 .ovEx-queue-info {
@@ -149,7 +140,7 @@ table {
 
 /* TABLES */
 
-th {
+/* th {
   background-color: #ffffff;
   color: rgb(148, 148, 148);
   position: sticky;
@@ -163,4 +154,4 @@ th {
 
 td {
   padding: 10px;
-}
+} */
