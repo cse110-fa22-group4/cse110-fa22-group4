@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: preload/ffmpeg/ffmpegAPICalls.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: preload/ffmpeg/ffmpegAPICalls.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const path = require('path');
+const {ipcRenderer} = require('electron');
+const {
+	recursiveSearchAtPath,
+} = require('../fs/fsAPICalls.js');
+const {
+	debugLog,
+} = require('../general/genAPICalls');
+
+const {
+	getSettings,
+	writeSettings,
+} = require('../fs/settings/settingsAPICalls');
+const {
+	getSongs,
+} = require('../fs/songs/songsAPICalls');
+
+
+let ffProbePath = '';
+let ffmpegPath = '';
+let ffplayPath = '';
+let multiPath = '';
+
+/**
+ *
+ * @param {string} filepath The path of the file to modify
+ * @return {Promise&lt;string>} The command to execute
+ */
+async function getReadCMD(filepath) {
+	return ffProbePath + ' -hide_banner -print_format json -show_format -i "' +
+        filepath.split(path.sep).join(path.posix.sep) + '"';
+}
+
+/**
+ *
+ * @param {string} filepath
+ * @return {Promise&lt;{args: string[], cmd: string}>} args
+ */
+async function getReadCMDForSpawn(filepath) {
+	return {
+		cmd: ffProbePath,
+		args: [
+			'-hide_banner',
+			'-print_format json',
+			'show_format',
+			`-i "${filepath.split(path.sep).join(path.posix.sep)}"`,
+		],
+	};
+}
+
+/**
+ *
+ * @param {string} filepath The path of the file to modify
+ * @param {object} options The tags to modify
+ * @return {Promise&lt;string>} The command to execute
+ */
+async function getWriteCMD(filepath, options) {
+	let cmd = '';
+	cmd += ffmpegPath + ' -i "' +
+        filepath.split(path.sep).join(path.posix.sep) + '"';
+	Object.keys(options).forEach((tag) => {
+		cmd += ' -metadata ';
+		cmd += tag + '="' + options[tag] + '" ';
+	});
+	// a very smart answer from wallacer on stackoverflow. qid: 190852
+	cmd += ' out.' + filepath.split('.').pop();
+	return cmd;
+}
+
+/**
+ * @return {Promise&lt;{cmd: string, args: {input: string, output: string, probe:string}}>}
+ */
+async function getMultiCMD() {
+	const fs = require('fs').promises;
+	const tempPath = path.join(await ipcRenderer.invoke('getTempPath'), 'songs_temp.txt');
+	const outPath = path.join(await ipcRenderer.invoke('getTempPath'), 'out_json.txt');
+
+	const songs = await getSongs();
+	let fileContents = '';
+	for (const songPath in songs) {
+		if (!songPath) continue;
+		fileContents += (songPath + '\n');
+	}
+	await fs.writeFile(tempPath, fileContents, (err) => {
+		if (err) {
+			console.log(err);
+		}
+	});
+	return {
+		cmd: multiPath,
+		args: {
+			input: tempPath,
+			output: outPath,
+			probe: ffProbePath,
+		},
+	};
+}
+
+/**
+ * @description Removes the temp file from getMultiCMD.
+ * @return {Promise&lt;void>}
+ */
+async function removeTempFile() {
+	const fs = require('fs');
+	const tempPath = path.join(await ipcRenderer.invoke('getTempPath'), 'songs_temp.txt');
+	const outPath = path.join(await ipcRenderer.invoke('getTempPath'), 'out_json.txt');
+	await fs.unlink(tempPath, async (err) => {
+		if (err) {
+			await debugLog(err, 'general-error');
+		}
+	});
+	await fs.unlink(outPath, async (err) => {
+		if (err) {
+			await debugLog(err, 'general-error');
+		}
+	});
+}
+
+/**
+ * @name binPath
+ * @description Sets a path to ffprobe and ffmpeg, if it already exists on
+ * the  system. If binPath is not passed in, will attempt to use path from
+ * settings.
+ * @memberOf ffmpegAPI
+ * @param {string} binPath The path to ffprobe and ffmpeg.
+ * @return {Promise&lt;void>}
+ */
+async function setPath(binPath = undefined) {
+	const settings = await getSettings();
+
+	if (binPath === undefined) {
+		if (settings['ffmpegPath'] !== undefined) {
+			binPath = settings['ffmpegPath'];
+			await debugLog('Found ffmpeg Path!', 'fs-general');
+		} else {
+			return;
+		}
+	}
+
+	// Windows uses exe but mac and linux don't
+	if (process.platform === 'win32') {
+		ffProbePath = path.join(binPath, '/ffprobe.exe');
+		ffmpegPath = path.join(binPath, '/ffmpeg.exe');
+		ffplayPath = path.join(binPath, '/ffplay.exe');
+		multiPath = path.join(binPath, '/multi_ffmpeg.exe');
+	} else {
+		ffProbePath = path.join(binPath, '/ffprobe');
+		ffmpegPath = path.join(binPath, '/ffmpeg');
+		ffplayPath = path.join(binPath, '/ffplay');
+		// why is windows such a pita?
+	}
+	settings['ffmpegPath'] = binPath;
+	await writeSettings(settings);
+}
+
+module.exports = {
+	ffplayPath,
+	ffProbePath,
+	ffmpegPath,
+	setPath,
+	getReadCMD,
+	getWriteCMD,
+	getMultiCMD,
+	removeTempFile,
+	getReadCMDForSpawn,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="domAPI.html">domAPI</a></li><li><a href="ffmpegAPI.html">ffmpegAPI</a></li><li><a href="fsAPI.html">fsAPI</a></li><li><a href="genAPI.html">genAPI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addGrid">addGrid</a></li><li><a href="global.html#addPath">addPath</a></li><li><a href="global.html#addToPlaylist">addToPlaylist</a></li><li><a href="global.html#appendSongs">appendSongs</a></li><li><a href="global.html#createMultiFFmpegPromise">createMultiFFmpegPromise</a></li><li><a href="global.html#createPlaylist">createPlaylist</a></li><li><a href="global.html#editMetaData">editMetaData</a></li><li><a href="global.html#enabledTags">enabledTags</a></li><li><a href="global.html#eventHandlerLoadPhase">eventHandlerLoadPhase</a></li><li><a href="global.html#ffmpegReadPromise">ffmpegReadPromise</a></li><li><a href="global.html#findCategories">findCategories</a></li><li><a href="global.html#fsInit">fsInit</a></li><li><a href="global.html#getFile">getFile</a></li><li><a href="global.html#getMultiCMD">getMultiCMD</a></li><li><a href="global.html#getReadCMD">getReadCMD</a></li><li><a href="global.html#getReadCMDForSpawn">getReadCMDForSpawn</a></li><li><a href="global.html#getSourceFolder">getSourceFolder</a></li><li><a href="global.html#getStoragePath">getStoragePath</a></li><li><a href="global.html#getWriteCMD">getWriteCMD</a></li><li><a href="global.html#homeClick">homeClick</a></li><li><a href="global.html#htmlFromRenderer">htmlFromRenderer</a></li><li><a href="global.html#libraryAlbumsClick">libraryAlbumsClick</a></li><li><a href="global.html#libraryArtistsClick">libraryArtistsClick</a></li><li><a href="global.html#libraryClick">libraryClick</a></li><li><a href="global.html#libraryGenresClick">libraryGenresClick</a></li><li><a href="global.html#libraryTagsClick">libraryTagsClick</a></li><li><a href="global.html#onLibraryLoad">onLibraryLoad</a></li><li><a href="global.html#overviewClick">overviewClick</a></li><li><a href="global.html#ovExLyricsClick">ovExLyricsClick</a></li><li><a href="global.html#ovExQueueClick">ovExQueueClick</a></li><li><a href="global.html#ovExTrackClick">ovExTrackClick</a></li><li><a href="global.html#playlistsClick">playlistsClick</a></li><li><a href="global.html#postInit">postInit</a></li><li><a href="global.html#postLibraryLoad">postLibraryLoad</a></li><li><a href="global.html#removeTempFile">removeTempFile</a></li><li><a href="global.html#rescanClick">rescanClick</a></li><li><a href="global.html#searchAlbumsClick">searchAlbumsClick</a></li><li><a href="global.html#searchAllClick">searchAllClick</a></li><li><a href="global.html#searchArtistsClick">searchArtistsClick</a></li><li><a href="global.html#searchGenresClick">searchGenresClick</a></li><li><a href="global.html#searchPlaylistsClick">searchPlaylistsClick</a></li><li><a href="global.html#searchTagsClick">searchTagsClick</a></li><li><a href="global.html#searchTracksClick">searchTracksClick</a></li><li><a href="global.html#setStoragePath">setStoragePath</a></li><li><a href="global.html#settingsClick">settingsClick</a></li><li><a href="global.html#submitSearch">submitSearch</a></li><li><a href="global.html#testAll">testAll</a></li><li><a href="global.html#testDeleteSetting">testDeleteSetting</a></li><li><a href="global.html#testGetSettings">testGetSettings</a></li><li><a href="global.html#testSettings">testSettings</a></li><li><a href="global.html#testSongs">testSongs</a></li><li><a href="global.html#testWriteSettings">testWriteSettings</a></li><li><a href="global.html#testWriteToSetting">testWriteToSetting</a></li><li><a href="global.html#topExtensionOff">topExtensionOff</a></li><li><a href="global.html#topExtensionOn">topExtensionOn</a></li><li><a href="global.html#useMultiFFmpeg">useMultiFFmpeg</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Tue Nov 15 2022 12:54:15 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

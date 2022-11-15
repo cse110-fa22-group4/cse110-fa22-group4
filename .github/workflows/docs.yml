@@ -1,0 +1,24 @@
+# This workflow will generate documentation using jsdoc and put the corresponding page in ./docs
+# WIP
+
+name: JSDoc Generation
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  generate:
+  
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: source/musicplayer    
+    steps:
+    - uses: actions/checkout@v3
+    - name: generate jsdoc files
+      run: npm install
+           # need to get jsdoc installed, and then can run this
+           # following command takes all js files in renderer, testing, preload, and main and generates their respective docs in ./docs
+           jsdoc -r renderer -r testing -r preload -r main -d ./../../docs

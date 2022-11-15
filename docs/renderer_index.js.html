@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: renderer/index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: renderer/index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* GLOBAL VARS */
+let topContainerIsExtended = false; // to toggle extended view of top container
+const searchQuery = ''; // the current query entered into the search bar
+let currentSearchCategory;
+
+/* GENERATE HOME PAGE */
+window.addEventListener('DOMContentLoaded', async () => {
+	await domAPI.setStyle('top-container-extended', 'visibility', 'hidden');
+	await domAPI.loadPage('sidebar-container', 'components/sidebar.html');
+	await domAPI.loadPage('overview-container', 'components/overview.html');
+	await domAPI.loadPage('main-header-container', 'components/mainHeader.html');
+	await domAPI.loadPage('main-container', 'pages/home.html');
+	await domAPI.loadPage('playback-container', 'components/playback.html');
+	await domAPI.loadPage('searchbar-container', 'components/searchbar.html');
+	await domAPI.addEventListener('btn-home', 'click', homeClick);
+	await domAPI.addEventListener( 'btn-overview', 'click', overviewClick);
+	await domAPI.addEventListener( 'btn-library', 'click', libraryClick);
+	await domAPI.addEventListener( 'btn-library-artists', 'click', libraryArtistsClick);
+	await domAPI.addEventListener( 'btn-library-albums', 'click', libraryAlbumsClick);
+	await domAPI.addEventListener( 'btn-library-genres', 'click', libraryGenresClick);
+	await domAPI.addEventListener( 'btn-library-tags', 'click', libraryTagsClick);
+	await domAPI.addEventListener( 'btn-playlists', 'click', playlistsClick);
+	await domAPI.addEventListener( 'btn-search-tracks', 'click', searchTracksClick);
+	await domAPI.addEventListener( 'btn-search-artists', 'click', searchArtistsClick);
+	await domAPI.addEventListener( 'btn-search-albums', 'click', searchAlbumsClick);
+	await domAPI.addEventListener( 'btn-search-genres', 'click', searchGenresClick);
+	await domAPI.addEventListener( 'btn-search-playlists', 'click', searchPlaylistsClick);
+	await domAPI.addEventListener( 'btn-search-tags', 'click', searchTagsClick);
+	await domAPI.addEventListener( 'btn-search-all', 'click', searchAllClick);
+	await domAPI.addEventListener( 'btn-settings', 'click', settingsClick);
+	await domAPI.addEventListener( 'btn-queue', 'click', ovExQueueClick);
+	await domAPI.addEventListener( 'btn-track', 'click', ovExTrackClick);
+	await domAPI.addEventListener( 'btn-lyrics', 'click', ovExLyricsClick);
+});
+
+/* SIDEBAR NAVIGATION */
+
+/**
+ * Navigate to Home view
+ * @param {HTMLElement} element
+ */
+async function homeClick(element) {
+	await domAPI.loadPage('main-container', 'pages/home.html');
+	await domAPI.setHTML('main-header', '&lt;h1>Home&lt;/h1>');
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Overview (Now Playing) view
+ * @param {HTMLElement} element
+ */
+async function overviewClick(element) {
+	await domAPI.loadPage('top-container-extended', 'pages/overviewExtended.html');
+	await topExtensionOn();
+}
+
+/**
+ * Navigate to Library view
+ * @param {HTMLElement} element
+ */
+async function libraryClick(element) {
+	await domAPI.loadPage('main-container', 'pages/library.html', postLibraryLoad);
+	await domAPI.setHTML('main-header', '&lt;h1>Library&lt;/h1>');
+	await topExtensionOff();
+}
+/**
+ * Post library loading function callback.
+ */
+async function postLibraryLoad() {
+
+}
+
+/**
+ * Navigate to Library > Artists view
+ * @param {HTMLElement} element
+ */
+async function libraryArtistsClick(element) {
+	await domAPI.loadPage('main-container', 'pages/libraryArtists.html');
+	await domAPI.setHTML('main-header', '&lt;h1>Artists&lt;/h1>');
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Library > Albums view
+ * @param {HTMLElement} element
+ */
+async function libraryAlbumsClick(element) {
+	await domAPI.loadPage('main-container', 'pages/libraryAlbums.html');
+	await domAPI.setHTML('main-header', '&lt;h1>Albums&lt;/h1>');
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Library > Genres view
+ * @param {HTMLElement} element
+ */
+async function libraryGenresClick(element) {
+	await domAPI.loadPage('main-container', 'pages/libraryGenres.html');
+	await domAPI.setHTML('main-header', '&lt;h1>Genres&lt;/h1>');
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Library > Tags view
+ * @param {HTMLElement} element
+ */
+async function libraryTagsClick(element) {
+	await domAPI.loadPage('main-container', 'pages/libraryTags.html');
+	await domAPI.setHTML('main-header', '&lt;h1>Tags&lt;/h1>');
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Playlists view
+ * @param {HTMLElement} element
+ */
+async function playlistsClick(element) {
+	await domAPI.loadPage('main-container', 'pages/playlists.html');
+	await domAPI.setHTML('main-header', '&lt;h1>Playlists&lt;/h1>');
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Search results extended view > Tracks
+ * @param {HTMLElement} element
+ */
+async function searchTracksClick(element) {
+	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+	await domAPI.setHTML('main-header', `&lt;h1>Track results for: '${searchQuery}'&lt;/h1>`);
+	currentSearchCategory = 'tracks';
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Search results extended view > Artists
+ * @param {HTMLElement} element
+ */
+async function searchArtistsClick(element) {
+	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+	await domAPI.setHTML('main-header', `&lt;h1>Artist results for: '${searchQuery}'&lt;/h1>`);
+	currentSearchCategory = 'artists';
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Search results extended view > Albums
+ * @param {HTMLElement} element
+ */
+async function searchAlbumsClick(element) {
+	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+	await domAPI.setHTML('main-header', `&lt;h1>Album results for: '${searchQuery}'&lt;/h1>`);
+	currentSearchCategory = 'albums';
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Search results extended view > Genres
+ * @param {HTMLElement} element
+ */
+async function searchGenresClick(element) {
+	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+	await domAPI.setHTML('main-header', `&lt;h1>Genre results for: '${searchQuery}'&lt;/h1>`);
+	currentSearchCategory = 'genres';
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Search results extended view > Playlists
+ * @param {HTMLElement} element
+ */
+async function searchPlaylistsClick(element) {
+	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+	await domAPI.setHTML('main-header', `&lt;h1>Playlist results for: '${searchQuery}'&lt;/h1>`);
+	currentSearchCategory = 'playlists';
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Search results extended view > Tags
+ * @param {HTMLElement} element
+ */
+async function searchTagsClick(element) {
+	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+	await domAPI.setHTML('main-header', `&lt;h1>Tag results for: '${searchQuery}'&lt;/h1>`);
+	currentSearchCategory = 'tags';
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Search results extended view > All
+ * @param {HTMLElement} element
+ */
+async function searchAllClick(element) {
+	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
+	await domAPI.setHTML('main-header', `&lt;h1>All results for: '${searchQuery}'&lt;/h1>`);
+	currentSearchCategory = 'all';
+	await topExtensionOff();
+}
+
+/**
+ * Navigate to Search results extended view > All
+ * @param {HTMLElement} element
+ */
+async function settingsClick(element) {
+	await domAPI.loadPage('top-container-extended', 'pages/settings.html');
+	await topExtensionOn();
+}
+
+/**
+ * Toggles the overview off.
+ */
+async function topExtensionOff() {
+	if (topContainerIsExtended) {
+		await domAPI.setStyle('top-container', 'visibility', 'visible');
+		await domAPI.setStyle('top-container-extended', 'visibility', 'hidden');
+		topContainerIsExtended = false;
+	}
+}
+
+/**
+ * Toggles the overview on.
+ */
+async function topExtensionOn() {
+	if (!topContainerIsExtended) {
+		await domAPI.setStyle('top-container', 'visibility', 'hidden');
+		await domAPI.setStyle('top-container-extended', 'visibility', 'visible');
+		topContainerIsExtended = true;
+	}
+}
+
+/**
+ * Navigate to Overview extended > Queue view
+ * @param {HTMLElement} element
+ */
+async function ovExQueueClick(element) {
+	await domAPI.loadPage('top-container-extended', 'pages/overviewExtended.html');
+	await topExtensionOn();
+}
+
+/**
+ * Navigate to Overview extended > Lyrics view
+ * @param {HTMLElement} element
+ */
+async function ovExLyricsClick(element) {
+	await domAPI.loadPage('top-container-extended', 'pages/ovExLyrics.html');
+	await topExtensionOn();
+}
+
+/**
+ * Navigate to Overview extended > Track view
+ * @param {HTMLElement} element
+ */
+async function ovExTrackClick(element) {
+	await domAPI.loadPage('top-container-extended', 'pages/ovExTrack.html');
+	await topExtensionOn();
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="domAPI.html">domAPI</a></li><li><a href="ffmpegAPI.html">ffmpegAPI</a></li><li><a href="fsAPI.html">fsAPI</a></li><li><a href="genAPI.html">genAPI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addGrid">addGrid</a></li><li><a href="global.html#addPath">addPath</a></li><li><a href="global.html#addToPlaylist">addToPlaylist</a></li><li><a href="global.html#appendSongs">appendSongs</a></li><li><a href="global.html#createMultiFFmpegPromise">createMultiFFmpegPromise</a></li><li><a href="global.html#createPlaylist">createPlaylist</a></li><li><a href="global.html#editMetaData">editMetaData</a></li><li><a href="global.html#enabledTags">enabledTags</a></li><li><a href="global.html#eventHandlerLoadPhase">eventHandlerLoadPhase</a></li><li><a href="global.html#ffmpegReadPromise">ffmpegReadPromise</a></li><li><a href="global.html#findCategories">findCategories</a></li><li><a href="global.html#fsInit">fsInit</a></li><li><a href="global.html#getFile">getFile</a></li><li><a href="global.html#getMultiCMD">getMultiCMD</a></li><li><a href="global.html#getReadCMD">getReadCMD</a></li><li><a href="global.html#getReadCMDForSpawn">getReadCMDForSpawn</a></li><li><a href="global.html#getSourceFolder">getSourceFolder</a></li><li><a href="global.html#getStoragePath">getStoragePath</a></li><li><a href="global.html#getWriteCMD">getWriteCMD</a></li><li><a href="global.html#homeClick">homeClick</a></li><li><a href="global.html#htmlFromRenderer">htmlFromRenderer</a></li><li><a href="global.html#libraryAlbumsClick">libraryAlbumsClick</a></li><li><a href="global.html#libraryArtistsClick">libraryArtistsClick</a></li><li><a href="global.html#libraryClick">libraryClick</a></li><li><a href="global.html#libraryGenresClick">libraryGenresClick</a></li><li><a href="global.html#libraryTagsClick">libraryTagsClick</a></li><li><a href="global.html#onLibraryLoad">onLibraryLoad</a></li><li><a href="global.html#overviewClick">overviewClick</a></li><li><a href="global.html#ovExLyricsClick">ovExLyricsClick</a></li><li><a href="global.html#ovExQueueClick">ovExQueueClick</a></li><li><a href="global.html#ovExTrackClick">ovExTrackClick</a></li><li><a href="global.html#playlistsClick">playlistsClick</a></li><li><a href="global.html#postInit">postInit</a></li><li><a href="global.html#postLibraryLoad">postLibraryLoad</a></li><li><a href="global.html#removeTempFile">removeTempFile</a></li><li><a href="global.html#rescanClick">rescanClick</a></li><li><a href="global.html#searchAlbumsClick">searchAlbumsClick</a></li><li><a href="global.html#searchAllClick">searchAllClick</a></li><li><a href="global.html#searchArtistsClick">searchArtistsClick</a></li><li><a href="global.html#searchGenresClick">searchGenresClick</a></li><li><a href="global.html#searchPlaylistsClick">searchPlaylistsClick</a></li><li><a href="global.html#searchTagsClick">searchTagsClick</a></li><li><a href="global.html#searchTracksClick">searchTracksClick</a></li><li><a href="global.html#setStoragePath">setStoragePath</a></li><li><a href="global.html#settingsClick">settingsClick</a></li><li><a href="global.html#submitSearch">submitSearch</a></li><li><a href="global.html#testAll">testAll</a></li><li><a href="global.html#testDeleteSetting">testDeleteSetting</a></li><li><a href="global.html#testGetSettings">testGetSettings</a></li><li><a href="global.html#testSettings">testSettings</a></li><li><a href="global.html#testSongs">testSongs</a></li><li><a href="global.html#testWriteSettings">testWriteSettings</a></li><li><a href="global.html#testWriteToSetting">testWriteToSetting</a></li><li><a href="global.html#topExtensionOff">topExtensionOff</a></li><li><a href="global.html#topExtensionOn">topExtensionOn</a></li><li><a href="global.html#useMultiFFmpeg">useMultiFFmpeg</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Tue Nov 15 2022 12:54:15 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

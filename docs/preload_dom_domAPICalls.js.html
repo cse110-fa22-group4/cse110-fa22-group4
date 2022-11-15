@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: preload/dom/domAPICalls.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: preload/dom/domAPICalls.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const {ipcRenderer} = require('electron');
+const {Grid} = require('gridjs');
+const {debugLog} = require('../general/genAPICalls');
+const path = require('path');
+
+// Ensures that an event is not established multiple times by accident.
+const establishedEvents = {};
+
+
+/**
+ * @name htmlFromRenderer
+ * @description Gets a filepath corresponding to the actual html file path from a renderer process.
+ * @param {string} htmlFile The name of the html file to get.
+ * @return {Promise&lt;string>} The actual path to the html file from a renderer process.
+ */
+async function htmlFromRenderer(htmlFile) {
+	const htmlFilePath = await ipcRenderer.invoke('getAppPath');
+	return path.join(htmlFilePath, '/../html/', htmlFile);
+}
+
+/**
+ * @name loadPage
+ * @memberOf domAPI
+ * @description Loads a html page into an element using JQuery.
+ * @param {string} targetID The ID of the element to load a html page into.
+ * @param {string} htmlFile The name of the html file to load.
+ * @param {function | undefined} callback An optional callback to execute.
+ * @return {Promise&lt;void>}
+ */
+async function loadPage(targetID, htmlFile, callback = undefined) {
+	const html = require('fs').readFileSync(await htmlFromRenderer(htmlFile)).toString();
+	await setHTML(targetID, html);
+	const temp = htmlFile.split('.');
+	const filename = temp[temp.length -2].split('/').pop();
+	await debugLog(`Broadcasting event: ${filename}-loaded`, 'broadcast-event');
+	window.dispatchEvent(new Event(`${filename}-loaded`));
+	if (callback) {
+		await callback(document.getElementById(targetID));
+	}
+}
+
+/**
+ * @name setHTML
+ * @memberOf domAPI
+ * @description Sets the inner html of an element, if it is deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} html The html to set to for the element.
+ * @return {Promise&lt;void>}
+ */
+async function setHTML(domID, html) {
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, 'innerHTML');
+	if (isAttributeSafe) {
+		document.getElementById(domID).innerHTML = html;
+	}
+}
+
+/**
+ * @param {string} domID The ID of the element to add this grid to.
+ * @param {any} columns The column headers as a string array.
+ * @param {any} data An array of string arrays that represent rows of data,
+ *                                              or a promise that returns one.
+ * @param {any} params Extra grid parameters to pass into the constructor.
+ * @return {Promise&lt;Grid>} Returns the grid created.
+ */
+async function addGrid(domID, columns, data, params = { }) {
+	return new Grid({
+		columns: columns,
+		data: data,
+	}).updateConfig(params).render(document.getElementById(domID));
+}
+
+/**
+ * @name addEventListener
+ * @memberOf domAPI
+ * @description Adds an event listener to an element, if it exists and is
+ * deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} event The event that is to be assigned.
+ * @param {function} func The function that will run when the event triggers.
+ * @return {Promise&lt;void>}
+ */
+async function addEventListener(domID, event, func) {
+	const isEventSafe = await ipcRenderer.invoke(
+		'managedAddEventListenerCheck', domID, event);
+	const element = document.getElementById(domID);
+	if (element === undefined || element === null) {
+		await debugLog(`Failed to find ID: ${domID}`, 'add-event-error');
+		return;
+	}
+	if (!(domID in establishedEvents)) {
+		establishedEvents[domID] = [];
+	}
+	if (isEventSafe &amp;&amp; !(event in establishedEvents[domID])) {
+		element.addEventListener(event, async () => {
+			await func(element);
+		}, false);
+		establishedEvents[domID].push(event);
+	}
+}
+
+/**
+ * @name getAttribute
+ * @memberOf domAPI
+ * @description Gets the attribute of a given domID, if it exists and is
+ * deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} attribute The attribute to get from the element.
+ * @return {Promise&lt;object> | undefined} The attribute if the getter is successful,
+ * else undefined if either the attribute or element does not exist,
+ *          or if the attribute is deemed 'unsafe.'
+ */
+async function getAttribute(domID, attribute) {
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, attribute);
+	if (isAttributeSafe) {
+		return document.getElementById(domID).getAttribute(attribute);
+	} else {
+		return undefined;
+	}
+}
+
+/**
+ * @name getAttribute
+ * @memberOf domAPI
+ * @description Sets the attribute of a given domID, if it exists and is
+ * deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} attribute The attribute to set on the element.
+ * @param {string} value The value to set the attribute to.
+ * @return {Promise&lt;void>}
+ */
+async function setAttribute(domID, attribute, value) {
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, attribute);
+	if (isAttributeSafe) {
+		document.getElementById(domID).setAttribute(attribute, value);
+	}
+}
+
+/**
+ * @name addChild
+ * @memberOf domAPI
+ * @description Adds a child to the given element with the domID.
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {HTMLElement} child The child html element to add.
+ * @return {Promise&lt;void>}
+ */
+async function addChild(domID, child) {
+	const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
+	if (isChildSafe) {
+		document.getElementById(domID).appendChild(child);
+	}
+}
+
+/**
+ * @name setStyle
+ * @memberOf domAPI
+ * @description Sets a css style to a given value if it is deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} style The style to change.
+ * @param {string} value The value to set the style to.
+ * @return {Promise&lt;void>}
+ */
+async function setStyle(domID, style, value) {
+	const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
+	if (isChildSafe) {
+		document.getElementById(domID).style[style] = value;
+	}
+}
+
+/**
+ * @name getValue
+ * @memberOf domAPI
+ * @description Gets the value of a given domID, if it exists and
+ * is deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} value The value to get from the element.
+ * @return {Promise&lt;object> | undefined} The value if the getter is successful, else
+ * undefined if either the value or element does not exist,
+ *          or if the value is deemed 'unsafe.'
+ *
+ */
+async function getValue(domID, value) {
+	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, value);
+	if (isValueSafe) {
+		return document.getElementById(domID).value;
+	} else {
+		return undefined;
+	}
+}
+
+module.exports = {
+	loadPage,
+	addEventListener,
+	getAttribute,
+	setAttribute,
+	addChild,
+	setHTML,
+	setStyle,
+	getValue,
+	addGrid,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="domAPI.html">domAPI</a></li><li><a href="ffmpegAPI.html">ffmpegAPI</a></li><li><a href="fsAPI.html">fsAPI</a></li><li><a href="genAPI.html">genAPI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addGrid">addGrid</a></li><li><a href="global.html#addPath">addPath</a></li><li><a href="global.html#addToPlaylist">addToPlaylist</a></li><li><a href="global.html#appendSongs">appendSongs</a></li><li><a href="global.html#createMultiFFmpegPromise">createMultiFFmpegPromise</a></li><li><a href="global.html#createPlaylist">createPlaylist</a></li><li><a href="global.html#editMetaData">editMetaData</a></li><li><a href="global.html#enabledTags">enabledTags</a></li><li><a href="global.html#eventHandlerLoadPhase">eventHandlerLoadPhase</a></li><li><a href="global.html#ffmpegReadPromise">ffmpegReadPromise</a></li><li><a href="global.html#findCategories">findCategories</a></li><li><a href="global.html#fsInit">fsInit</a></li><li><a href="global.html#getFile">getFile</a></li><li><a href="global.html#getMultiCMD">getMultiCMD</a></li><li><a href="global.html#getReadCMD">getReadCMD</a></li><li><a href="global.html#getReadCMDForSpawn">getReadCMDForSpawn</a></li><li><a href="global.html#getSourceFolder">getSourceFolder</a></li><li><a href="global.html#getStoragePath">getStoragePath</a></li><li><a href="global.html#getWriteCMD">getWriteCMD</a></li><li><a href="global.html#homeClick">homeClick</a></li><li><a href="global.html#htmlFromRenderer">htmlFromRenderer</a></li><li><a href="global.html#libraryAlbumsClick">libraryAlbumsClick</a></li><li><a href="global.html#libraryArtistsClick">libraryArtistsClick</a></li><li><a href="global.html#libraryClick">libraryClick</a></li><li><a href="global.html#libraryGenresClick">libraryGenresClick</a></li><li><a href="global.html#libraryTagsClick">libraryTagsClick</a></li><li><a href="global.html#onLibraryLoad">onLibraryLoad</a></li><li><a href="global.html#overviewClick">overviewClick</a></li><li><a href="global.html#ovExLyricsClick">ovExLyricsClick</a></li><li><a href="global.html#ovExQueueClick">ovExQueueClick</a></li><li><a href="global.html#ovExTrackClick">ovExTrackClick</a></li><li><a href="global.html#playlistsClick">playlistsClick</a></li><li><a href="global.html#postInit">postInit</a></li><li><a href="global.html#postLibraryLoad">postLibraryLoad</a></li><li><a href="global.html#removeTempFile">removeTempFile</a></li><li><a href="global.html#rescanClick">rescanClick</a></li><li><a href="global.html#searchAlbumsClick">searchAlbumsClick</a></li><li><a href="global.html#searchAllClick">searchAllClick</a></li><li><a href="global.html#searchArtistsClick">searchArtistsClick</a></li><li><a href="global.html#searchGenresClick">searchGenresClick</a></li><li><a href="global.html#searchPlaylistsClick">searchPlaylistsClick</a></li><li><a href="global.html#searchTagsClick">searchTagsClick</a></li><li><a href="global.html#searchTracksClick">searchTracksClick</a></li><li><a href="global.html#setStoragePath">setStoragePath</a></li><li><a href="global.html#settingsClick">settingsClick</a></li><li><a href="global.html#submitSearch">submitSearch</a></li><li><a href="global.html#testAll">testAll</a></li><li><a href="global.html#testDeleteSetting">testDeleteSetting</a></li><li><a href="global.html#testGetSettings">testGetSettings</a></li><li><a href="global.html#testSettings">testSettings</a></li><li><a href="global.html#testSongs">testSongs</a></li><li><a href="global.html#testWriteSettings">testWriteSettings</a></li><li><a href="global.html#testWriteToSetting">testWriteToSetting</a></li><li><a href="global.html#topExtensionOff">topExtensionOff</a></li><li><a href="global.html#topExtensionOn">topExtensionOn</a></li><li><a href="global.html#useMultiFFmpeg">useMultiFFmpeg</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Tue Nov 15 2022 12:54:15 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
