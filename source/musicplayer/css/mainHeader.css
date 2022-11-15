@@ -1,0 +1,111 @@
+
+/* TOP CONTAINER > MAIN HEADER */
+#main-header-container {
+  background-color: transparent;
+  color: var(--dark);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  height: 50px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+#main-header-container button {
+  
+  background-color: var(--dark);
+  color: var(--light);
+  border: none;
+  border-radius: 2.5px;
+  height: 22px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+}
+
+#main-buttons-search {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#main-header {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+#playlist-create-input {
+  height: 18px;
+  width: 200px;
+  font-size: 12px;
+  border-radius: 2.5px;
+  color: var(--mid-dark);
+  border: 1px solid var(--mid);
+}
+
+#playlist-create-input::placeholder {
+  color: var(--mid-dark);
+}
+
+
+
+#playlist-add {
+  height: 22px;
+  width: 200px;
+  font-size: 12px;
+  border-radius: 2.5px;
+  color: var(--mid-dark);
+  border: 1px solid var(--mid);
+}
+
+
+select {
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  font-weight: 100;
+}
+
+#btn-playlist-create {
+  display: none;
+}
+
+#btn-playlist-create+label {
+  background-color: var(--dark);
+  color: var(--light);
+  border: none;
+  border-radius: 2.5px;
+  padding: 4px 7px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+}
+
+#btn-file {
+  display: none;
+}
+
+#btn-file+label {
+  background-color: var(--dark);
+  color: var(--light);
+  border: none;
+  border-radius: 2.5px;
+  padding: 4px 7px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+}
+
+
+input {
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  font-weight: 100;
+}
+
+form {
+  display: inline;
+}

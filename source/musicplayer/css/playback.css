@@ -1,0 +1,18 @@
+/* PLAYBACK */
+#playback-container {
+  background-color: var(--light);
+  color: var(--dark);
+
+  min-height: 100px;
+  max-height: 100px;
+
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 230px;
+
+  padding-left: 30px;
+
+  box-shadow: 2px 0 4px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 15px 15px 0px 0px;
+}
