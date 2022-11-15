@@ -7,6 +7,8 @@
 @import "search.css";
 @import "library.css";
 @import "main.css";
+@import "metaEditor.css";
+
 
 /* @import "home.css"; */
 
@@ -53,6 +55,14 @@ button {
   flex-direction: column;
 }
 
+#mainMeta-container {
+  padding: 0 30px;
+  height: 60%;
+
+  display: grid;
+  grid-template-columns: 1fr 0fr;
+  column-gap: 30px;
+}
 
 
 /* This is just for testing settings.html*/

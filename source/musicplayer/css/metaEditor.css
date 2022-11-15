@@ -1,0 +1,87 @@
+#metaEditor-container {
+
+  border-radius: 5px;
+  padding: 30px;
+
+  background-color: var(--dark);
+  color: var(--light);
+
+  overflow-y: auto;
+  width: 20vw;
+}
+
+#metaEditor-container div {
+}
+
+
+
+#metaEdit-main {
+  margin: 15px auto;
+  margin-left: 30px;
+}
+
+#metaEdit-table * {
+  padding: 0;
+}
+
+#metaEdit-table tr {
+}
+
+
+
+#metaEdit-table th {
+  background-color: transparent;
+  border: none;
+  color: var(--light);
+  position: static;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: end;
+  padding: 10px 0;
+}
+
+#metaEdit-table td {
+  font-size: 12px;
+  color: var(--mid);
+  padding-left: 20px;
+}
+
+#metaEdit-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding-bottom: 20px;
+  margin-bottom: 10px;
+  border-bottom: var(--mid) 1px solid;
+}
+
+#metaEdit-header > div {
+  color: var(--light);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+#metaEdit-save {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 10px 0;
+  margin-top: 10px;
+  border-top: var(--mid) 1px solid;
+}
+
+#metaEdit-save > button {
+  color: var(--light);
+  padding: 10px 20px;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  bottom: 0;
+}
+
+#metaEdit-save:hover {
+  background-color: rgb(255,255,255, 0.035);
+}

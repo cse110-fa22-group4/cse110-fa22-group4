@@ -202,8 +202,12 @@ async function searchAllClick(element) {
  * @param {HTMLElement} element
  */
 async function settingsClick(element) {
-	await domAPI.loadPage('top-container-extended', 'pages/settings.html');
-	await topExtensionOn();
+  if (!topContainerIsExtended) {
+    await domAPI.loadPage('top-container-extended', 'pages/settings.html');
+    await topExtensionOn();
+  } else {
+    await topExtensionOff();
+  }
 }
 
 /**

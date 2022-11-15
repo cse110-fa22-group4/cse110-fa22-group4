@@ -1,8 +1,5 @@
 /* MAIN CONTAINER */
 #main-container {
-  height: 100%;
-  padding: 0 30px;
-  overflow-y: auto;
-
   color: var(--mid-dark);
+  overflow-y: auto;
 }

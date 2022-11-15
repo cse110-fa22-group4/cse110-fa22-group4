@@ -1,4 +1,9 @@
+/* GLOBAL VARS */
+let metaEditorIsExtended = false; // to toggle metadat editor view
+let currFileList; // Get file from user
+
 window.addEventListener('mainHeader-loaded', async () => {
+  await domAPI.setStyle('metaEditor-container', 'display', 'none');
 	await domAPI.addEventListener('btn-file', 'change', getFile);
 	await domAPI.addEventListener('btn-playlist-create', 'click', createPlaylist);
 	await domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
@@ -25,12 +30,35 @@ function addToPlaylist(element) {
  * Edit Metadata for user
  * @param {HTMLElement} element
  */
-function editMetaData(element) {
-	alert('*FUNCTION UNDER CONTRUCTION*');
+ async function editMetaData(element) {
+  if(!metaEditorIsExtended) {
+    await domAPI.loadPage('metaEditor-container', 'components/metaEditor.html');
+    await metaEditorOn();
+  } else {
+    await metaEditorOff();
+  }
 }
 
-// Get file from user
-let currFileList;
+/**
+ * Toggles the metadata editor off.
+ */
+ async function metaEditorOff() {
+	if (metaEditorIsExtended) {
+		await domAPI.setStyle('metaEditor-container', 'display', 'none');
+		metaEditorIsExtended = false;
+	}
+}
+
+/**
+ * Toggles the metadata editor on.
+ */
+async function metaEditorOn() {
+	if (!metaEditorIsExtended) {
+		await domAPI.setStyle('metaEditor-container', 'display', 'block');
+		metaEditorIsExtended = true;
+	}
+}
+
 
 /**
  * Calllback function for when a file is passed into the input.
@@ -41,4 +69,3 @@ async function getFile(element) {
 	await genAPI.debugLog(currFileList, 'main-header-callbacks');
 }
 
-// TODO: Use file to add to app library
