@@ -11,10 +11,15 @@
 
 /* GRID JS */
 .gridjs-search {
+
+  background-color: var(--light);
   margin-bottom: 20px;
+  width: 100%;
 
   /* width: 20vw;
   max-width: 365px; */
+
+  position: fixed;
 
 }
 
