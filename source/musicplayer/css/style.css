@@ -18,7 +18,7 @@
   font-size: 13px;
   font-weight: 100;
 
-  --theme: #9e5353;
+  --theme: #5f7cc0;
   --dark: #1F1F1F;
   --light: #FFFFFF;
   --mid: #C4C4C4;
@@ -61,7 +61,7 @@ button {
 
   display: grid;
   grid-template-columns: 1fr 0fr;
-  column-gap: 30px;
+  /* column-gap: 30px; */
 }
 
 

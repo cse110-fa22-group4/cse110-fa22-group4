@@ -8,13 +8,15 @@
 
   overflow-y: auto;
   width: 20vw;
+
+  margin-left: 10px;
 }
 
 #metaEditor-container div {
 }
 
 #metaEdit-main {
-  margin: 15px auto;
+  margin: 20px auto;
   margin-left: 30px;
 }
 
@@ -33,7 +35,7 @@
   font-size: 12px;
   font-weight: 800;
   text-align: end;
-  padding: 10px 0;
+  padding: 5px 0;
 }
 
 #metaEdit-table td {
