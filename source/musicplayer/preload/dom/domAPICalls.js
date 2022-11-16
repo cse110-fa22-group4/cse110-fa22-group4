@@ -62,9 +62,15 @@ async function setHTML(domID, html) {
  *                                              or a promise that returns one.
  * @param {any} params Extra grid parameters to pass into the constructor.
  * @return {Promise<Grid>} Returns the grid created.
+ * @return undefined if unsafe
  */
 async function addGrid(domID, columns, data, params = { }) {
 	// return new Grid({
+   //Perform this check above all
+   const isAttributeSafe = await ipcRenderer.invoke(
+       'managedAttributeCheck', domID, 'innerHTML');
+    if(!isAttributeSafe) return undefined;
+
 	  new Grid({
 		columns: columns,
 		data: data,
