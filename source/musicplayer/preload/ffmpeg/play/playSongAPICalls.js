@@ -5,7 +5,9 @@ let path = '';
 let pauseTime = 0;
 let vol = 0;
 let instance = undefined;
-
+//TODO: is there a better way to get the duration other than reading directly from metadata?
+//From stderr perhaps?
+let duration;
 /**
  * @memberOf ffmpegAPI
  * @description Plays a song at a given path with the given info.
@@ -68,6 +70,20 @@ async function stopSong() {
 	vol = 100;
 	pauseTime = 0;
 	path = '';
+}
+
+/**
+ * @memberOf ffmpegAPI
+ * @description seeks to the song 
+ * given the progress bar's percentage
+ * in whole percents(e.g. 85 for 85%)
+ * This is made for convenience, as you can take the progress bar's
+ * input using a dom call
+ * @param seekPercentage the percentage
+ */
+async function seekSong(seekPercentage) {
+    await stopSong();
+    await playSong(path, vol, ((seekPercentage/100.0) * duration));
 }
 
 module.exports = {
