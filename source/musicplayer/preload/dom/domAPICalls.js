@@ -64,10 +64,12 @@ async function setHTML(domID, html) {
  * @return {Promise<Grid>} Returns the grid created.
  */
 async function addGrid(domID, columns, data, params = { }) {
-	return new Grid({
+	// return new Grid({
+	  new Grid({
 		columns: columns,
 		data: data,
-	}).updateConfig(params).render(document.getElementById(domID));
+	}).updateConfig(params).render(document.getElementById(domID))
+      .on('rowClick', (...args) => alert('Play: ' + args[1].cells[1].data));
 }
 
 /**

@@ -24,6 +24,11 @@
   grid-template-columns: 1fr 1.5fr;
 }
 
+.overviewExtended-container button {
+  background-color: transparent;
+  border: none;
+}
+
 .ovEx-artwork {
   grid-row-start: 1;
   grid-row-end: 3;
@@ -99,15 +104,6 @@
   overflow-y: auto;
 }
 
-thead {
-  font-weight: 800;
-  color: #767676;
-}
-
-table {
-  font-size: 13px;
-}
-
 .ovEx-track-info {}
 
 .ovEx-queue-info {
@@ -149,7 +145,7 @@ table {
 
 /* TABLES */
 
-th {
+/* th {
   background-color: #ffffff;
   color: rgb(148, 148, 148);
   position: sticky;
@@ -163,4 +159,4 @@ th {
 
 td {
   padding: 10px;
-}
+} */
