@@ -64,8 +64,8 @@ async function stopSong() {
 	if (process.platform === 'win32') {
 		await require('child_process').spawn('taskkill', ['/pid', instance.pid, '/f', '/t']);
 	} else {
-		// use the macos version of kill process
-	}
+		await require('child_process').spawn('kill ' + instance.pid);
+    }
 	instance = undefined;
 	vol = 100;
 	pauseTime = 0;
