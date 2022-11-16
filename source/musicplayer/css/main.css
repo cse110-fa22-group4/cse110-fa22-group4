@@ -19,7 +19,7 @@
   /* width: 20vw;
   max-width: 365px; */
 
-  position: fixed;
+  /* position: fixed; */
 
 }
 
@@ -38,6 +38,11 @@
 
 .gridjs-wrapper {
   height: 100%;
+}
+
+.gridjs-wrapper button {
+  background-color: transparent;
+  border: none;
 }
 
 .gridjs-table {

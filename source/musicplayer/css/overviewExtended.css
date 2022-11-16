@@ -24,6 +24,11 @@
   grid-template-columns: 1fr 1.5fr;
 }
 
+.overviewExtended-container button {
+  background-color: transparent;
+  border: none;
+}
+
 .ovEx-artwork {
   grid-row-start: 1;
   grid-row-end: 3;

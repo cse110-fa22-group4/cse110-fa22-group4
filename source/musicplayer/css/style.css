@@ -39,11 +39,6 @@ body {
   padding: 0;
 }
 
-button {
-  background-color: transparent;
-  border: none;
-}
-
 /* TOP CONTAINER */
 #top-container {
   position: fixed;

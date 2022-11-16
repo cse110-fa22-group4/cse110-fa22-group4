@@ -12,8 +12,7 @@
   margin-left: 10px;
 }
 
-#metaEditor-container div {
-}
+#metaEditor-container div {}
 
 #metaEdit-main {
   margin: 20px auto;
@@ -24,8 +23,7 @@
   padding: 0;
 }
 
-#metaEdit-table tr {
-}
+#metaEdit-table tr {}
 
 #metaEdit-table th {
   background-color: transparent;
@@ -54,7 +52,7 @@
   border-bottom: var(--mid) 1px solid;
 }
 
-#metaEdit-header > div {
+#metaEdit-header>div {
   color: var(--light);
   font-size: 12px;
   font-weight: 800;
@@ -69,7 +67,7 @@
   border-top: var(--mid) 1px solid;
 }
 
-#metaEdit-save > button {
+#metaEdit-save>button {
   color: var(--light);
 
   padding: 20px;
@@ -78,8 +76,12 @@
 
   height: 100%;
   width: 100%;
+
+  background-color: transparent;
+  border: none;
+
 }
 
 #metaEdit-save:hover {
-  background-color: rgb(255,255,255, 0.035);
+  background-color: rgb(255, 255, 255, 0.035);
 }
