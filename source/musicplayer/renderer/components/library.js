@@ -1,16 +1,20 @@
+let libraryGrid = undefined; // gridJS library instance
+
 window.addEventListener('library-loaded', async () => {
 	await onLibraryLoad();
 });
+
 window.addEventListener('library-container-grid-clicked', async (args) => {
 	console.log(args['detail']);
 	console.log(grid);
 });
-let grid = undefined;
+
 
 /**
  * Function that is called on library load.
  */
 async function onLibraryLoad() {
+
 	// GridJS - USAGE EXAMPLE
 	const columns = ['#', 'TITLE', 'ARTIST', 'ALBUM', 'YEAR', 'DURATION', 'GENRE', 'PLAYLISTS', 'TAGS',
 		{name: '', hidden: true}];
@@ -71,5 +75,5 @@ async function onLibraryLoad() {
 		},
 	};
 
-	grid = await domAPI.addGrid('library-container', columns, data, gridSettings);
+	libraryGrid = await domAPI.addGrid('library-container', columns, data, gridSettings);
 }
