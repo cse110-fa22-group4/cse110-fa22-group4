@@ -45,6 +45,7 @@
 
 #header-subtitle-search > div:hover {
   color: var(--mid-dark);
+  transition: 300ms;
 }
 
 
