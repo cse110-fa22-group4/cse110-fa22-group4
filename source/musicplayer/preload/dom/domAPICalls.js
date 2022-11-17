@@ -31,7 +31,7 @@ async function loadPage(targetID, htmlFile, callback = undefined) {
 	const html = require('fs').readFileSync(await htmlFromRenderer(htmlFile)).toString();
 	await setHTML(targetID, html);
 	const temp = htmlFile.split('.');
-	const filename = temp[temp.length -2].split('/').pop();
+	const filename = temp[temp.length - 2].split('/').pop();
 	await debugLog(`Broadcasting event: ${filename}-loaded`, 'broadcast-event');
 	window.dispatchEvent(new Event(`${filename}-loaded`));
 	if (callback) {
@@ -62,16 +62,16 @@ async function setHTML(domID, html) {
  *                                              or a promise that returns one.
  * @param {any} params Extra grid parameters to pass into the constructor.
  * @return {Promise<Grid>} Returns the grid created.
- * @return undefined if unsafe
+ * @return {undefined} if unsafe
  */
-async function addGrid(domID, columns, data, params = { }) {
+async function addGrid(domID, columns, data, params = {}) {
 	// return new Grid({
 	// Perform this check above all
 	const isAttributeSafe = await ipcRenderer.invoke(
 		'managedAttributeCheck', domID, 'innerHTML');
 	if (!isAttributeSafe) return undefined;
 
-	  new Grid({
+	new Grid({
 		columns: columns,
 		data: data,
 	}).updateConfig(params).render(document.getElementById(domID))
