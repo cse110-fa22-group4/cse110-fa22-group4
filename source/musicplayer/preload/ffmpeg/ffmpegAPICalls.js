@@ -147,16 +147,23 @@ async function setPath(binPath = undefined) {
 		ffProbePath = path.join(binPath, '/ffprobe');
 		ffmpegPath = path.join(binPath, '/ffmpeg');
 		ffplayPath = path.join(binPath, '/ffplay');
-		// why is windows such a pita?
 	}
+	await debugLog(`Set ffPaths to\nffprobe: ${ffProbePath} \nffmpeg: ${ffmpegPath}\nffplay: ${ffplayPath}`,
+		'fs-general');
 	settings['ffmpegPath'] = binPath;
 	await writeSettings(settings);
 }
 
+/**
+ * @todo format response here.
+ * @return {Promise<string[]>} Index 0 = ffPlay Index 1 = ffProbe Index 2 = ffmpeg
+ */
+async function getPaths() {
+	return [ffplayPath, ffProbePath, ffmpegPath];
+}
+
 module.exports = {
-	ffplayPath,
-	ffProbePath,
-	ffmpegPath,
+	getPaths,
 	setPath,
 	getReadCMD,
 	getWriteCMD,

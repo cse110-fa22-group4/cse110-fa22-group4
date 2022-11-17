@@ -66,16 +66,16 @@ async function setHTML(domID, html) {
  */
 async function addGrid(domID, columns, data, params = { }) {
 	// return new Grid({
-   //Perform this check above all
-   const isAttributeSafe = await ipcRenderer.invoke(
-       'managedAttributeCheck', domID, 'innerHTML');
-    if(!isAttributeSafe) return undefined;
+	// Perform this check above all
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, 'innerHTML');
+	if (!isAttributeSafe) return undefined;
 
 	  new Grid({
 		columns: columns,
 		data: data,
 	}).updateConfig(params).render(document.getElementById(domID))
-      .on('rowClick', (...args) => alert('Play: ' + args[1].cells[1].data));
+		.on('rowClick', (...args) => alert('Play: ' + args[1].cells[1].data));
 }
 
 /**

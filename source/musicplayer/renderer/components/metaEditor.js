@@ -7,7 +7,19 @@ window.addEventListener('metaEditor-loaded', async () => {
  * Save metadata
  * @param {HTMLElement} element
  */
- function saveMetadata(element) {
-  // TODO: Implement saving metadata function
-	alert('*FUNCTION UNDER CONTRUCTION*');
+async function saveMetadata(element) {
+	// TODO: Implement saving metadata function
+	alert('*FUNCTION UNDER CONSTRUCTION*');
+	const inputMeta = await getMetaFromFields();
+
+	await ffmpegAPI.ffmpegWrite('file', inputMeta);
+}
+
+/**
+ * @return {Promise<Object>}
+ */
+async function getMetaFromFields() {
+	const retVal = {};
+
+	return retVal;
 }
