@@ -41,7 +41,8 @@ window.addEventListener('DOMContentLoaded', async () => {
  */
 async function homeClick(element) {
 	await domAPI.loadPage('main-container', 'pages/home.html');
-	await domAPI.setHTML('main-header', '<h1>Home</h1>');
+	await domAPI.setHTML('header-title', 'Home');
+  await domAPI.setHTML('header-subtitle', '');
 	await topExtensionOff();
 }
 
@@ -60,7 +61,8 @@ async function overviewClick(element) {
  */
 async function libraryClick(element) {
 	await domAPI.loadPage('main-container', 'pages/library.html', postLibraryLoad);
-	await domAPI.setHTML('main-header', '<h1>Library</h1>');
+	await domAPI.setHTML('header-title', 'Library');
+  await domAPI.setHTML('header-subtitle', 'All');
 	await topExtensionOff();
 }
 /**
@@ -76,7 +78,8 @@ async function postLibraryLoad() {
  */
 async function libraryArtistsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/libraryArtists.html');
-	await domAPI.setHTML('main-header', '<h1>Artists</h1>');
+	await domAPI.setHTML('header-title', 'Library');
+  await domAPI.setHTML('header-subtitle', 'Artists');
 	await topExtensionOff();
 }
 
@@ -86,7 +89,8 @@ async function libraryArtistsClick(element) {
  */
 async function libraryAlbumsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/libraryAlbums.html');
-	await domAPI.setHTML('main-header', '<h1>Albums</h1>');
+	await domAPI.setHTML('header-title', 'Library');
+  await domAPI.setHTML('header-subtitle', 'Albums');
 	await topExtensionOff();
 }
 
@@ -96,7 +100,8 @@ async function libraryAlbumsClick(element) {
  */
 async function libraryGenresClick(element) {
 	await domAPI.loadPage('main-container', 'pages/libraryGenres.html');
-	await domAPI.setHTML('main-header', '<h1>Genres</h1>');
+	await domAPI.setHTML('header-title', 'Library');
+  await domAPI.setHTML('header-subtitle', 'Genres');
 	await topExtensionOff();
 }
 
@@ -106,7 +111,8 @@ async function libraryGenresClick(element) {
  */
 async function libraryTagsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/libraryTags.html');
-	await domAPI.setHTML('main-header', '<h1>Tags</h1>');
+	await domAPI.setHTML('header-title', 'Library');
+  await domAPI.setHTML('header-subtitle', 'Tags');
 	await topExtensionOff();
 }
 
@@ -116,7 +122,8 @@ async function libraryTagsClick(element) {
  */
 async function playlistsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/playlists.html');
-	await domAPI.setHTML('main-header', '<h1>Playlists</h1>');
+	await domAPI.setHTML('header-title', 'Playlists');
+  await domAPI.setHTML('header-subtitle', 'All');
 	await topExtensionOff();
 }
 
@@ -126,7 +133,7 @@ async function playlistsClick(element) {
  */
 async function searchTracksClick(element) {
 	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('main-header', `<h1>Track results for: '${searchQuery}'</h1>`);
+	await domAPI.setHTML('header-title', `Track results for: '${searchQuery}'`);
 	currentSearchCategory = 'tracks';
 	await topExtensionOff();
 }
@@ -137,7 +144,7 @@ async function searchTracksClick(element) {
  */
 async function searchArtistsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('main-header', `<h1>Artist results for: '${searchQuery}'</h1>`);
+	await domAPI.setHTML('header-title', `Artist results for: '${searchQuery}'`);
 	currentSearchCategory = 'artists';
 	await topExtensionOff();
 }
@@ -148,7 +155,7 @@ async function searchArtistsClick(element) {
  */
 async function searchAlbumsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('main-header', `<h1>Album results for: '${searchQuery}'</h1>`);
+	await domAPI.setHTML('header-title', `Album results for: '${searchQuery}'`);
 	currentSearchCategory = 'albums';
 	await topExtensionOff();
 }
@@ -159,7 +166,7 @@ async function searchAlbumsClick(element) {
  */
 async function searchGenresClick(element) {
 	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('main-header', `<h1>Genre results for: '${searchQuery}'</h1>`);
+	await domAPI.setHTML('header-title', `Genre results for: '${searchQuery}'`);
 	currentSearchCategory = 'genres';
 	await topExtensionOff();
 }
@@ -170,7 +177,7 @@ async function searchGenresClick(element) {
  */
 async function searchPlaylistsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('main-header', `<h1>Playlist results for: '${searchQuery}'</h1>`);
+	await domAPI.setHTML('header-title', `Playlist results for: '${searchQuery}'`);
 	currentSearchCategory = 'playlists';
 	await topExtensionOff();
 }
@@ -181,7 +188,7 @@ async function searchPlaylistsClick(element) {
  */
 async function searchTagsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('main-header', `<h1>Tag results for: '${searchQuery}'</h1>`);
+	await domAPI.setHTML('header-title', `Tag results for: '${searchQuery}'`);
 	currentSearchCategory = 'tags';
 	await topExtensionOff();
 }
@@ -192,7 +199,7 @@ async function searchTagsClick(element) {
  */
 async function searchAllClick(element) {
 	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('main-header', `<h1>All results for: '${searchQuery}'</h1>`);
+	await domAPI.setHTML('header-title', `All results for: '${searchQuery}'`);
 	currentSearchCategory = 'all';
 	await topExtensionOff();
 }
