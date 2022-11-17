@@ -15,15 +15,19 @@ async function submitSearch(element) {
    * @type {Object}
    */
   const searchQuery = await domAPI.getValue('input-search', 'value');
+  searchQueryGlobal = searchQuery;
   if (searchQuery === undefined) return;
 
   if (searchQuery.length !== 0) {
+    // await domAPI.setHTML('header-title', `Results for: '${searchQuery}'`);
+    await domAPI.setValue('input-search', '');
+
     // Switch to search results page
+    await domAPI.setHTML('header-title', 'Search');
+    await domAPI.loadPage('header-subtitle', 'components/searchCategories.html');
+    await domAPI.setStyle('subtitle-search-all', 'color', 'var(--mid-dark)');
     await domAPI.loadPage('main-container', 'pages/searchPage.html');
 
-    // Change main header to match search query
-    await domAPI.setHTML('header-title', `Results for: '${searchQuery}'`);
-    await domAPI.loadPage('header-subtitle', 'components/searchCategories.html');
     window.dispatchEvent(new CustomEvent('searchbarSearch', { detail: searchQuery }));
     await topExtensionOff();
 

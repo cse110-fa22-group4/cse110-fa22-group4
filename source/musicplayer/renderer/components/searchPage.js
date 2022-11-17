@@ -9,7 +9,8 @@ let searchGrid = undefined;
  */
 async function onSearchPageLoad() {
 	// GridJS - USAGE EXAMPLE
-	const columns = ['#', 'TITLE', 'ARTIST', 'ALBUM', 'YEAR', 'DURATION', 'GENRE', 'PLAYLISTS', 'TAGS'];
+  const columns = ['#', 'TITLE', 'ARTIST', 'ALBUM', 'YEAR', 'DURATION', 'GENRE', 'PLAYLISTS', 'TAGS',
+    { name: '', hidden: true }];
 
 	const data = [
 		['01', 'Future Nostalgia', 'Dua Lipa', 'Future Nostalgia', '2020', '3:05',
@@ -54,12 +55,18 @@ async function onSearchPageLoad() {
 			'Monday Songs', 'Conscious, Melodic', 'test'],
 	];
 
-	const gridSettings = {
-		sort: true,
-		search: {
-			enabled: true,
-		},
-	};
+  const gridSettings = {
+    sort: true,
+    search: {
+      enabled: true,
+      ignoreHiddenColumns: false,
+      selector: (cell, rowIndex, cellIndex) => {
+        if (cellIndex === 1) console.log(cell);
+        return cell;
+      },
+      keyword: `${searchQueryGlobal}`,
+    },
+  };
 
 	searchGrid = await domAPI.addGrid('search-results-container', columns, data, gridSettings);
 }

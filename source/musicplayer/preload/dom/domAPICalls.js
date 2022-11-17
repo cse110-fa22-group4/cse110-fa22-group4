@@ -202,6 +202,27 @@ async function getValue(domID, value) {
 	}
 }
 
+/**
+ * @name setValue
+ * @memberOf domAPI
+ * @description Sets the value of a given domID, if it exists and
+ * is deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} value The value to set for the element.
+ * @return {boolean} The true if the setter is successful, else
+ * false if the value is deemed 'unsafe.'
+ *
+ */
+ async function setValue(domID, value) {
+	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, value);
+	if (isValueSafe) {
+		document.getElementById(domID).value = value;
+    return true;
+	} else {
+		return false;
+	}
+}
+
 module.exports = {
 	loadPage,
 	addEventListener,
@@ -211,5 +232,6 @@ module.exports = {
 	setHTML,
 	setStyle,
 	getValue,
+  setValue,
 	addGrid,
 };

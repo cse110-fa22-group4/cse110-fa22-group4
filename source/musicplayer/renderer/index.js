@@ -1,6 +1,7 @@
 /* GLOBAL VARS */
 let topContainerIsExtended = false; // to toggle extended view of top container
 const searchQuery = ''; // the current query entered into the search bar
+let searchQueryGlobal;
 let currentSearchCategory;
 
 /* GENERATE HOME PAGE */
