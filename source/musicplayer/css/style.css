@@ -52,7 +52,7 @@ body {
 
 #mainMeta-container {
   padding: 0 30px;
-  height: 58%;
+  height: 60%;
 
   display: grid;
   grid-template-columns: 1fr 0fr;
