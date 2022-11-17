@@ -24,15 +24,10 @@
   grid-template-columns: 1fr 1.5fr;
 }
 
-.overviewExtended-container button {
-  background-color: transparent;
-  border: none;
-}
-
+/* ALBUM ARTWORK */
 .ovEx-artwork {
   grid-row-start: 1;
   grid-row-end: 3;
-
   padding-top: 40px;
 }
 
@@ -42,6 +37,7 @@
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
+/* NAVIGATION */
 .ovEx-heading {
   display: flex;
   flex-direction: row;
@@ -51,8 +47,14 @@
 #btn-queue,
 #btn-track,
 #btn-lyrics {
-  color: var(--mid-dark);
+  background-color: transparent;
+  border: none;
+  padding-right: 40px;
   height: 40px;
+
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--mid-dark);
 }
 
 #btn-queue:hover {
@@ -66,13 +68,14 @@
 #btn-lyrics:hover {
   color: #FFFFFF;
 }
-
-.ovEx-heading > * {
-  font-size: 26px;
-  font-weight: 800;
-  padding-right: 40px;
+/* CONTENT */
+#ovEx-content-container {
+  font-size: 12px;
+  overflow-y: auto;
+  margin: 10px 0;
 }
 
+/* TRACK INFO */
 .ovEx-track-info {
   padding-top: 20px;
   display: flex;
@@ -98,65 +101,42 @@
   color: var(--mid);
 }
 
-.ovEx-queue {
-  display: flex;
-  align-items: center;
-  overflow-y: auto;
-}
-
-.ovEx-track-info {}
-
+/* QUEUE */
 .ovEx-queue-info {
+  display: flex;
+  align-items: start;
+  overflow-y: auto;
+
   padding-top: 20px;
   border-top: var(--mid-dark) 1px solid;
+
+  font-size: 12px;
+  font-weight: 100;
 }
 
-.queue-info-headers {
+.ovEx-queue-info th {
+  font-size: 12px;
   font-weight: 800;
   color: var(--mid-dark);
+
+  text-align: right;
+  padding-right: 10px;
+}
+
+/* OVERVIEW EXTENDED > QUEUE */
+.ovEx-queue-container {
+  font-size: 12px;
+  color: var(--mid);
+}
+
+/* OVERVIEW EXTENDED > TRACK */
+.ovEx-track-container {
+  font-size: 12px;
+  color: var(--mid);
 }
 
 /* OVERVIEW EXTENDED > LYRICS */
-#ovEx-lyrics-container {
-  margin-top: 30px;
-  margin-bottom: 20px;
-  width: 100%;
-  overflow-y: auto;
-}
-
-#ovEx-lyrics {
+.ovEx-lyrics-container {
   font-size: 12px;
-  top: 0;
+  color: var(--mid);
 }
-
-#ovEx-metadata-container {
-  margin-top: 30px;
-  margin-bottom: 20px;
-  width: 100%;
-  overflow-y: auto;
-
-}
-
-.track-info-headers {
-  font-weight: 800;
-}
-
-#ovEx-metadata {}
-
-/* TABLES */
-
-/* th {
-  background-color: #ffffff;
-  color: rgb(148, 148, 148);
-  position: sticky;
-  top: 0;
-  color: var(--dark);
-  text-align: left;
-  font-size: 14px;
-  padding: 10px;
-  border-bottom: rgb(198, 198, 198) 1px solid;
-}
-
-td {
-  padding: 10px;
-} */

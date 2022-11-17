@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await domAPI.loadPage('main-container', 'pages/home.html');
 	await domAPI.loadPage('playback-container', 'components/playback.html');
 	await domAPI.loadPage('searchbar-container', 'components/searchbar.html');
-	await domAPI.addEventListener('btn-home', 'click', homeClick);
+	await domAPI.addEventListener( 'btn-home', 'click', homeClick);
 	await domAPI.addEventListener( 'btn-overview', 'click', overviewClick);
 	await domAPI.addEventListener( 'btn-library', 'click', libraryClick);
 	await domAPI.addEventListener( 'btn-library-artists', 'click', libraryArtistsClick);
@@ -20,17 +20,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await domAPI.addEventListener( 'btn-library-genres', 'click', libraryGenresClick);
 	await domAPI.addEventListener( 'btn-library-tags', 'click', libraryTagsClick);
 	await domAPI.addEventListener( 'btn-playlists', 'click', playlistsClick);
-	await domAPI.addEventListener( 'btn-search-tracks', 'click', searchTracksClick);
-	await domAPI.addEventListener( 'btn-search-artists', 'click', searchArtistsClick);
-	await domAPI.addEventListener( 'btn-search-albums', 'click', searchAlbumsClick);
-	await domAPI.addEventListener( 'btn-search-genres', 'click', searchGenresClick);
-	await domAPI.addEventListener( 'btn-search-playlists', 'click', searchPlaylistsClick);
-	await domAPI.addEventListener( 'btn-search-tags', 'click', searchTagsClick);
-	await domAPI.addEventListener( 'btn-search-all', 'click', searchAllClick);
 	await domAPI.addEventListener( 'btn-settings', 'click', settingsClick);
-	await domAPI.addEventListener( 'btn-queue', 'click', ovExQueueClick);
-	await domAPI.addEventListener( 'btn-track', 'click', ovExTrackClick);
-	await domAPI.addEventListener( 'btn-lyrics', 'click', ovExLyricsClick);
 });
 
 /* SIDEBAR NAVIGATION */
@@ -51,7 +41,8 @@ async function homeClick(element) {
  * @param {HTMLElement} element
  */
 async function overviewClick(element) {
-	await domAPI.loadPage('top-container-extended', 'pages/overviewExtended.html');
+	await domAPI.loadPage('top-container-extended', 'components/overviewExtended.html');
+	await domAPI.loadPage('ovEx-content-container', 'pages/ovExQueue.html');
 	await topExtensionOn();
 }
 
@@ -128,83 +119,6 @@ async function playlistsClick(element) {
 }
 
 /**
- * Navigate to Search results extended view > Tracks
- * @param {HTMLElement} element
- */
-async function searchTracksClick(element) {
-	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('header-title', `Track results for: '${searchQuery}'`);
-	currentSearchCategory = 'tracks';
-	await topExtensionOff();
-}
-
-/**
- * Navigate to Search results extended view > Artists
- * @param {HTMLElement} element
- */
-async function searchArtistsClick(element) {
-	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('header-title', `Artist results for: '${searchQuery}'`);
-	currentSearchCategory = 'artists';
-	await topExtensionOff();
-}
-
-/**
- * Navigate to Search results extended view > Albums
- * @param {HTMLElement} element
- */
-async function searchAlbumsClick(element) {
-	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('header-title', `Album results for: '${searchQuery}'`);
-	currentSearchCategory = 'albums';
-	await topExtensionOff();
-}
-
-/**
- * Navigate to Search results extended view > Genres
- * @param {HTMLElement} element
- */
-async function searchGenresClick(element) {
-	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('header-title', `Genre results for: '${searchQuery}'`);
-	currentSearchCategory = 'genres';
-	await topExtensionOff();
-}
-
-/**
- * Navigate to Search results extended view > Playlists
- * @param {HTMLElement} element
- */
-async function searchPlaylistsClick(element) {
-	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('header-title', `Playlist results for: '${searchQuery}'`);
-	currentSearchCategory = 'playlists';
-	await topExtensionOff();
-}
-
-/**
- * Navigate to Search results extended view > Tags
- * @param {HTMLElement} element
- */
-async function searchTagsClick(element) {
-	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('header-title', `Tag results for: '${searchQuery}'`);
-	currentSearchCategory = 'tags';
-	await topExtensionOff();
-}
-
-/**
- * Navigate to Search results extended view > All
- * @param {HTMLElement} element
- */
-async function searchAllClick(element) {
-	await domAPI.loadPage('main-container', 'pages/searchExtended.html');
-	await domAPI.setHTML('header-title', `All results for: '${searchQuery}'`);
-	currentSearchCategory = 'all';
-	await topExtensionOff();
-}
-
-/**
  * Navigate to Search results extended view > All
  * @param {HTMLElement} element
  */
@@ -233,31 +147,4 @@ async function topExtensionOn() {
 		await domAPI.setStyle('top-container-extended', 'visibility', 'visible');
 		topContainerIsExtended = true;
 	}
-}
-
-/**
- * Navigate to Overview extended > Queue view
- * @param {HTMLElement} element
- */
-async function ovExQueueClick(element) {
-	await domAPI.loadPage('top-container-extended', 'pages/overviewExtended.html');
-	await topExtensionOn();
-}
-
-/**
- * Navigate to Overview extended > Lyrics view
- * @param {HTMLElement} element
- */
-async function ovExLyricsClick(element) {
-	await domAPI.loadPage('top-container-extended', 'pages/ovExLyrics.html');
-	await topExtensionOn();
-}
-
-/**
- * Navigate to Overview extended > Track view
- * @param {HTMLElement} element
- */
-async function ovExTrackClick(element) {
-	await domAPI.loadPage('top-container-extended', 'pages/ovExTrack.html');
-	await topExtensionOn();
 }

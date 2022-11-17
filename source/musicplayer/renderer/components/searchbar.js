@@ -19,10 +19,10 @@ async function submitSearch(element) {
 
   if (searchQuery.length !== 0) {
     // Switch to search results page
-    await domAPI.loadPage('main-container', 'pages/search.html');
+    await domAPI.loadPage('main-container', 'pages/searchPage.html');
 
     // Change main header to match search query
-    await domAPI.setHTML('header-title', `Top results for: '${searchQuery}'`);
+    await domAPI.setHTML('header-title', `Results for: '${searchQuery}'`);
     await domAPI.loadPage('header-subtitle', 'components/searchCategories.html');
     window.dispatchEvent(new CustomEvent('searchbarSearch', { detail: searchQuery }));
     await topExtensionOff();
