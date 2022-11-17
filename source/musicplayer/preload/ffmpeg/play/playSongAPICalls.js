@@ -1,4 +1,6 @@
 const {getPaths} = require('../ffmpegAPICalls');
+const fs = require('fs');
+const {debugLog} = require('../../general/genAPICalls');
 
 let paused = true;
 let path = '';
@@ -26,6 +28,14 @@ async function playSong(songPath, volume = 100, seekVal = 0) {
 	path = String(songPath);
 	const ffPaths = await getPaths();
 	console.log(path);
+	if (!fs.existsSync(songPath)) {
+		await debugLog(`Could not find song at path: ${songPath}`, 'fsplay-error');
+		return;
+	}
+	if (!fs.existsSync(ffPaths[0])) {
+		await debugLog(`Could not find ffplay at path: ${ffPaths[0]}`, 'fsplay-error');
+		return;
+	}
 
 	instance = await require('child_process').spawn(ffPaths[0],
 		[

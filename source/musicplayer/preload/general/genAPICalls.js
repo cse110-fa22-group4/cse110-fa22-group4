@@ -12,6 +12,7 @@ const enabledTags =
 		'fs-general',
 		'unit-tests',
 		'multi-ffmpeg-loading-progress',
+		'fsplay-error',
 		// 'settings-test',
 	];
 
