@@ -8,8 +8,16 @@ const {
     recursiveSearchAtPath,
     setStoragePath,
     getSourceFolder,
-} = require('../preload/fs/fsAPICalls');
+} = require('../../preload/fs/fsAPICalls');
 
+const {
+    getSongs,
+    writeSongs,
+    appendSong,
+    appendSongs,
+    removeSong,
+    cullShortAudio,
+} = require('../../preload/fs/songs/songsAPICalls');
 
 /**
  * @description Tests the songs API.
@@ -26,12 +34,11 @@ const {
         }
     }
     
-    await testGetSong();
+    //await testGetSong();
 
 }
 
 async function testGetSong() {
-    
 }
 
 async function testAppendSong() {

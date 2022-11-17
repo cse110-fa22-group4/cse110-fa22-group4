@@ -1,11 +1,11 @@
 const path = require('path');
 const {
     testSettings,
-} = require('../testing/settingsAPITester');
+} = require('../fsAPITesting/settingsAPITester');
 
 const {
     testSongs,
-} = require('../testing/songsAPITester');
+} = require('../fsAPITesting/songsAPITester');
 
 const {
     getStoragePath,
@@ -16,7 +16,7 @@ const {
     recursiveSearchAtPath,
     setStoragePath,
     getSourceFolder,
-} = require('../preload/fs/fsAPICalls');
+} = require('../../preload/fs/fsAPICalls');
 
 /**
  * @description Runs all of the unit tests for APIs.

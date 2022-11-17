@@ -4,7 +4,7 @@ const {
     writeToSetting,
     deleteSetting,
     writeSettings,
-} = require('../preload/fs/settings/settingsAPICalls');
+} = require('../../preload/fs/settings/settingsAPICalls');
 
 async function testSettings() {
 
