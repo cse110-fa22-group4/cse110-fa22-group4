@@ -8,9 +8,8 @@
 @import "library.css";
 @import "main.css";
 @import "metaEditor.css";
-
-
-/* @import "home.css"; */
+@import "settings.css";
+@import "home.css";
 
 
 :root {
