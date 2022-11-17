@@ -7,6 +7,8 @@ const {argv} = require('process');
 const htmlPath = __dirname + '/source/musicplayer/html';
 const fsAPITester = require('../testing/fsAPITester.js');
 
+let selectedSong = '';
+
 const createWindow = async () => {
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
@@ -93,4 +95,10 @@ ipcMain.handle('managedChildCheck', (event, args) => {
 });
 ipcMain.handle('openDialog', async (event, args) => {
 	return JSON.stringify(await dialog.showOpenDialog(args));
+});
+ipcMain.handle('get-selected-song', (event, args) => {
+	return selectedSong;
+});
+ipcMain.handle('set-selected-song', (event, args) => {
+	selectedSong = args;
 });

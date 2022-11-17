@@ -23,3 +23,10 @@ async function getMetaFromFields() {
 
 	return retVal;
 }
+
+/**
+ * @return {Promise<Object>} Returns an object that can be used to fill a Grid.JS form
+ */
+async function getMetaForFields() {
+
+}

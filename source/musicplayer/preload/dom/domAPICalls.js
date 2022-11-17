@@ -62,7 +62,7 @@ async function setHTML(domID, html) {
  *                                              or a promise that returns one.
  * @param {any} params Extra grid parameters to pass into the constructor.
  * @return {Promise<Grid>} Returns the grid created.
- * @return {undefined} if unsafe
+ * @return {Grid} The grid that is created is returned for searching purposes.
  */
 async function addGrid(domID, columns, data, params = {}) {
 	// return new Grid({
@@ -74,8 +74,12 @@ async function addGrid(domID, columns, data, params = {}) {
 	new Grid({
 		columns: columns,
 		data: data,
-	}).updateConfig(params).render(document.getElementById(domID))
-		.on('rowClick', (...args) => alert('Play: ' + args[1].cells[1].data));
+	})
+		.updateConfig(params)
+		.render(document.getElementById(domID))
+		.on('rowClick', (...args) =>
+			window.dispatchEvent(
+				new CustomEvent(`${domID}-grid-clicked`, {detail: args[1]})));
 }
 
 /**
