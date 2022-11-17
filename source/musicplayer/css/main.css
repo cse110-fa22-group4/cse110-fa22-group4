@@ -3,3 +3,76 @@
   color: var(--mid-dark);
   overflow-y: auto;
 }
+
+#library-container {
+  height: 100%;
+  width: 100%;
+}
+
+/* GRID JS */
+.gridjs-search {
+
+  background-color: var(--light);
+  margin-bottom: 20px;
+  width: 100%;
+
+  /* width: 20vw;
+  max-width: 365px; */
+
+  /* position: fixed; */
+
+}
+
+.gridjs-search > input {
+  color: var(--mid-dark);
+  height: 24px;
+  width: 250px;
+  border: 1px solid var(--mid);
+  border-radius: 2.5px;
+  font-size: 12px;
+}
+
+.gridjs-search > input::placeholder {
+  color: var(--mid-dark);
+}
+
+.gridjs-wrapper {
+  height: 100%;
+}
+
+.gridjs-wrapper button {
+  background-color: transparent;
+  border: none;
+}
+
+.gridjs-table {
+  border-spacing: 0;
+  width: 100%;
+}
+
+.gridjs-tr {
+}
+
+.gridjs-tbody .gridjs-tr:hover {
+  background-color: rgb(0,0,0,0.05);
+}
+
+.gridjs-thead {
+text-align: left;
+}
+
+.gridjs-th, .gridjs-td {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.gridjs-td {
+  padding-top:10px;
+  padding-bottom:10px;
+  white-space: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.gridjs-tbody {
+}

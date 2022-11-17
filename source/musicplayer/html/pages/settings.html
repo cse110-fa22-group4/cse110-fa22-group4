@@ -1,6 +1,7 @@
 <!--May need to change input on toggles to style toggles correctly-->
+<link href="/source/musicplayer/css/settings.css" rel="stylesheet">
+
 <div class="settings-container">
-    <h1>* SETTINGS UNDER CONSTRUCTION *</h1>
     <!--First column-->
     <div class="settings">
         <!--Watch folders-->
@@ -15,7 +16,10 @@
         <input type="file" id="add-paths-button">
         <div class="toggle">
             <p>Rescan watch folders at startup</p>
-            <label for="enable-scan-on-startup"></label><input type="checkbox" id="enable-scan-on-startup">
+            <label for="enable-scan-on-startup">
+                <input type="checkbox" id="enable-scan-on-startup">
+                <span class="slider round"></span>
+            </label>
         </div>
 
         <!--Playlists-->
@@ -33,14 +37,20 @@
         <h2>Theme</h2>
         <div class="toggle">
             <p>Default to light theme or toggle for dark mode</p>
-            <label for="enable-dark-mode"></label><input type="checkbox" id="enable-dark-mode">
+            <label for="enable-dark-mode">
+                <input type="checkbox" id="enable-dark-mode">
+                <span class="slider round"></span>
+            </label>
         </div>
 
         <!--Playback-->
         <h2>Playback</h2>
         <div class="toggle">
-            <p>Crossfase tracks</p>
-            <label for="enable-crossfade"></label><input type="checkbox" id="enable-crossfade">
+            <p>Crossfade tracks</p>
+            <label for="enable-crossfade">
+                <input type="checkbox" id="enable-crossfade">
+                <span class="slider round"></span>
+            </label>
         </div>
 
         <!--Sidebar Configuration-->
@@ -48,23 +58,38 @@
         <p>Customize your sidebar by adding or removing options</p>
         <div class="toggle">
             <p>Home</p>
-            <label for="enable-sidebar-home"></label><input type="checkbox" id="enable-sidebar-home">
+            <label for="enable-sidebar-home">
+                <input type="checkbox" id="enable-sidebar-home">
+                <span class="slider round"></span>
+            </label>
         </div>
         <div class="toggle">
             <p>Now Playing</p>
-            <label for="enable-sidebar-now-playing"></label><input type="checkbox" id="enable-sidebar-now-playing">
+            <label for="enable-sidebar-now-playing">
+                <input type="checkbox" id="enable-sidebar-now-playing">
+                <span class="slider round"></span>
+            </label>
         </div>
         <div class="toggle">
             <p>Library</p>
-            <label for="enable-sidebar-Library"></label><input type="checkbox" id="enable-sidebar-Library">
+            <label for="enable-sidebar-Library">
+                <input type="checkbox" id="enable-sidebar-library">
+                <span class="slider round"></span>
+            </label>
         </div>
         <div class="toggle">
             <p>Playlists</p>
-            <label for="enable-sidebar-Playlists"></label><input type="checkbox" id="enable-sidebar-Playlists">
+            <label for="enable-sidebar-Playlists">
+                <input type="checkbox" id="enable-sidebar-playlists">
+                <span class="slider round"></span>
+            </label>
         </div>
         <div class="toggle">
             <p>Quick Access</p>
-            <label for="enable-sidebar-Quick-Access"></label><input type="checkbox" id="enable-sidebar-Quick-Access">
+            <label for="enable-sidebar-Quick-Access">
+                <input type="checkbox" id="enable-sidebar-quick-access">
+                <span class="slider round"></span>
+            </label>
         </div>
     </div>
 
@@ -75,29 +100,47 @@
 
         <div class="toggle">
             <p>Opt-in</p>
-            <label for="enable-user-stats"></label><input type="checkbox" id="enable-user-stats">
+            <label for="enable-user-stats">
+                <input type="checkbox" id="enable-user-stats">
+                <span class="slider round"></span>
+            </label>
         </div>
 
         <!--According to Figma diagram, these should just be implemented with checkboxes-->
         <div class="toggle">
             <p>Most played tracks</p>
-            <label for="enable-most-played-tracks"></label><input type="checkbox" id="enable-most-played-tracks">
+            <label for="enable-most-played-tracks">
+                <input type="checkbox" id="enable-most-played-tracks">
+                <span class="slider round"></span>
+            </label>
         </div>
         <div class="toggle">
             <p>Most played artists</p>
-            <label for="enable-most-played-artists"></label><input type="checkbox" id="enable-most-played-artists">
+            <label for="enable-most-played-artists">
+                <input type="checkbox" id="enable-most-played-artists">
+                <span class="slider round"></span>
+            </label>
         </div>
         <div class="toggle">
             <p>Most played albums</p>
-            <label for="enable-most-played-albums"></label><input type="checkbox" id="enable-most-played-albums">
+            <label for="enable-most-played-albums">
+                <input type="checkbox" id="enable-most-played-albums">
+                <span class="slider round"></span>
+            </label>
         </div>
         <div class="toggle">
             <p>Most played playlists</p>
-            <label for="enable-most-played-playlists"></label><input type="checkbox" id="enable-most-played-playlists">
+            <label for="enable-most-played-playlists">
+                <input type="checkbox" id="enable-most-played-playlists">
+                <span class="slider round"></span>
+            </label>
         </div>
         <div class="toggle">
             <p>Most played genres</p>
-            <label for="enable-most-played-genres"></label><input type="checkbox" id="enable-most-played-genres">
+            <label for="enable-most-played-genres">
+                <input type="checkbox" id="enable-most-played-genres">
+                <span class="slider round"></span>
+            </label>
         </div>
     </div>
 </div>

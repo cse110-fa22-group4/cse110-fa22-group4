@@ -4,12 +4,52 @@
   background-color: transparent;
   height: 35px;
   padding: 10px 30px;
+  padding-top: 22px;
+  padding-bottom: 30px;
 
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
 }
 
+/* HEADING */
+#main-header {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+#header-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--dark);
+}
+
+#header-subtitle {
+  font-size: 12px;
+  font-weight: 100;
+  color: var(--mid-dark);
+
+  position: absolute;
+  margin-top: 5px;
+}
+
+#header-subtitle-search {
+  display: flex;
+  flex-direction: row;
+  color: var(--mid);
+}
+
+#header-subtitle-search > div {
+  margin-right: 20px;
+}
+
+#header-subtitle-search > div:hover {
+  color: var(--mid-dark);
+  transition: 300ms;
+}
+
+
+/* FUNCTION BUTTONS */
 #main-header-container button {
   
   background-color: var(--dark);
@@ -28,11 +68,6 @@
   overflow: hidden;
 }
 
-#main-header {
-  white-space: nowrap;
-  overflow: visible;
-}
-
 #playlist-create-input {
   height: 18px;
   width: 200px;
@@ -45,8 +80,6 @@
 #playlist-create-input::placeholder {
   color: var(--mid-dark);
 }
-
-
 
 #playlist-add {
   height: 22px;

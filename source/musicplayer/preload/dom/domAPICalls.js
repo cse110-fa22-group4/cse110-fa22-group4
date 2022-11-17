@@ -31,7 +31,7 @@ async function loadPage(targetID, htmlFile, callback = undefined) {
 	const html = require('fs').readFileSync(await htmlFromRenderer(htmlFile)).toString();
 	await setHTML(targetID, html);
 	const temp = htmlFile.split('.');
-	const filename = temp[temp.length -2].split('/').pop();
+	const filename = temp[temp.length - 2].split('/').pop();
 	await debugLog(`Broadcasting event: ${filename}-loaded`, 'broadcast-event');
 	window.dispatchEvent(new Event(`${filename}-loaded`));
 	if (callback) {
@@ -62,12 +62,24 @@ async function setHTML(domID, html) {
  *                                              or a promise that returns one.
  * @param {any} params Extra grid parameters to pass into the constructor.
  * @return {Promise<Grid>} Returns the grid created.
+ * @return {Grid} The grid that is created is returned for searching purposes.
  */
-async function addGrid(domID, columns, data, params = { }) {
-	return new Grid({
+async function addGrid(domID, columns, data, params = {}) {
+	// return new Grid({
+	// Perform this check above all
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, 'innerHTML');
+	if (!isAttributeSafe) return undefined;
+
+	new Grid({
 		columns: columns,
 		data: data,
-	}).updateConfig(params).render(document.getElementById(domID));
+	})
+		.updateConfig(params)
+		.render(document.getElementById(domID))
+		.on('rowClick', (...args) =>
+			window.dispatchEvent(
+				new CustomEvent(`${domID}-grid-clicked`, {detail: args[1]})));
 }
 
 /**
@@ -190,6 +202,27 @@ async function getValue(domID, value) {
 	}
 }
 
+/**
+ * @name setValue
+ * @memberOf domAPI
+ * @description Sets the value of a given domID, if it exists and
+ * is deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} value The value to set for the element.
+ * @return {boolean} The true if the setter is successful, else
+ * false if the value is deemed 'unsafe.'
+ *
+ */
+ async function setValue(domID, value) {
+	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, value);
+	if (isValueSafe) {
+		document.getElementById(domID).value = value;
+    return true;
+	} else {
+		return false;
+	}
+}
+
 module.exports = {
 	loadPage,
 	addEventListener,
@@ -199,5 +232,6 @@ module.exports = {
 	setHTML,
 	setStyle,
 	getValue,
+  setValue,
 	addGrid,
 };

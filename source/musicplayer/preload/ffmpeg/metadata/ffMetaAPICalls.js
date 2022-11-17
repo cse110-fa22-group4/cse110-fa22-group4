@@ -15,8 +15,7 @@ const {
 const {
 	getMultiCMD,
 	removeTempFile,
-	ffplayPath,
-	ffProbePath,
+	getPaths,
 	getReadCMD,
 	getWriteCMD,
 	getReadCMDForSpawn,
@@ -75,7 +74,8 @@ async function ffmpegRead(filepath) {
  * @description Performs an FFmpeg metadata write operation on the command line.
  * @memberOf ffmpegAPI
  * @param {string} filepath The path to the file to modify.
- * @param {Promise<object>} options A dictionary of tags to modify
+ * @param {object} options A dictionary of tags to modify
+ * @return {Promise<void>}
  */
 async function ffmpegWrite(filepath, options) {
 	const childProcess = require('child_process');

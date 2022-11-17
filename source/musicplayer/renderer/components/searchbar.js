@@ -1,5 +1,5 @@
 window.addEventListener('searchbar-loaded', async () => {
-	await domAPI.addEventListener('search-form', 'submit', submitSearch);
+  await domAPI.addEventListener('search-form', 'submit', submitSearch);
 });
 
 /**
@@ -7,22 +7,31 @@ window.addEventListener('searchbar-loaded', async () => {
  * @param {HTMLElement} element
  */
 async function submitSearch(element) {
-	// Set global var for search query input
-	/**
-	 * We literally await a Promise<Object>, idk why I have to specify this.
-	 * @type {Object}
-	 */
-	const searchQuery = await domAPI.getValue('input-search', 'value');
-	if (searchQuery === undefined) return;
+  event.preventDefault();
 
-	if (searchQuery.length !== 0) {
-		// Switch to search results page
-		await domAPI.loadPage('main-container', 'pages/search.html');
+  // Set global var for search query input
+  /**
+   * We literally await a Promise<Object>, idk why I have to specify this.
+   * @type {Object}
+   */
+  const searchQuery = await domAPI.getValue('input-search', 'value');
+  searchQueryGlobal = searchQuery;
+  if (searchQuery === undefined) return;
 
-		// Change main header to match search query
-		await domAPI.setHTML('main-header', `<h1>Top results for: '${searchQuery}'</h1>`);
-		window.dispatchEvent(new CustomEvent('searchbarSearch', {detail: searchQuery}));
-	}
+  if (searchQuery.length !== 0) {
+    // await domAPI.setHTML('header-title', `Results for: '${searchQuery}'`);
+    await domAPI.setValue('input-search', '');
 
-	// TODO: Use search query value for searching our app's library
+    // Switch to search results page
+    await domAPI.setHTML('header-title', 'Search');
+    await domAPI.loadPage('header-subtitle', 'components/searchCategories.html');
+    await domAPI.setStyle('subtitle-search-all', 'color', 'var(--mid-dark)');
+    await domAPI.loadPage('main-container', 'pages/searchPage.html');
+
+    window.dispatchEvent(new CustomEvent('searchbarSearch', { detail: searchQuery }));
+    await topExtensionOff();
+
+  }
+
+  // TODO: Use search query value for searching our app's library
 }

@@ -1,23 +1,16 @@
-let libraryGrid = undefined; // gridJS library instance
-
-window.addEventListener('library-loaded', async () => {
-	await onLibraryLoad();
+window.addEventListener('searchPage-loaded', async () => {
+	await onSearchPageLoad();
 });
 
-window.addEventListener('library-container-grid-clicked', async (args) => {
-	console.log(args['detail']);
-	console.log(grid);
-});
-
+let searchGrid = undefined;
 
 /**
- * Function that is called on library load.
+ * Function that is called on SearchPage load.
  */
-async function onLibraryLoad() {
-
+async function onSearchPageLoad() {
 	// GridJS - USAGE EXAMPLE
-	const columns = ['#', 'TITLE', 'ARTIST', 'ALBUM', 'YEAR', 'DURATION', 'GENRE', 'PLAYLISTS', 'TAGS',
-		{name: '', hidden: true}];
+  const columns = ['#', 'TITLE', 'ARTIST', 'ALBUM', 'YEAR', 'DURATION', 'GENRE', 'PLAYLISTS', 'TAGS',
+    { name: '', hidden: true }];
 
 	const data = [
 		['01', 'Future Nostalgia', 'Dua Lipa', 'Future Nostalgia', '2020', '3:05',
@@ -62,18 +55,18 @@ async function onLibraryLoad() {
 			'Monday Songs', 'Conscious, Melodic', 'test'],
 	];
 
-	const gridSettings = {
-		sort: true,
-		search: {
-			enabled: true,
-			ignoreHiddenColumns: false,
-			selector: (cell, rowIndex, cellIndex) => {
-				if (cellIndex === 1) console.log(cell);
-				return cell;
-			},
-			keyword: 'Future',
-		},
-	};
+  const gridSettings = {
+    sort: true,
+    search: {
+      enabled: true,
+      ignoreHiddenColumns: false,
+      selector: (cell, rowIndex, cellIndex) => {
+        if (cellIndex === 1) console.log(cell);
+        return cell;
+      },
+      keyword: `${searchQueryGlobal}`,
+    },
+  };
 
-	libraryGrid = await domAPI.addGrid('library-container', columns, data, gridSettings);
+	searchGrid = await domAPI.addGrid('search-results-container', columns, data, gridSettings);
 }
