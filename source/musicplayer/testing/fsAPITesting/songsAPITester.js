@@ -21,9 +21,14 @@ const {
 
 /**
  * @description Tests the songs API.
+ * @param {object[]} songFolderPaths An array of string paths to the 'watch' folders containing songs
  */
  async function testSongs(songFolderPaths) {
-    //song folder path setup
+    /*
+     * song folder path setup
+     * Takes an array of paths to simulate the 'watch folders'
+     */
+
     let songPaths = []
 
     for (let songFolderPath in songFolderPaths) {
@@ -38,17 +43,30 @@ const {
 
 }
 
+/**
+ * 
+ */
 async function testGetSong() {
 }
 
+/**
+ * 
+ */
 async function testAppendSong() {
     
 }
 
+/**
+ * 
+ */
 async function testDeleteSong() {
     
 }
 
+/**
+ * 
+ * @param {*} songs 
+ */
 async function testWriteSongs(songs) {
     
 }

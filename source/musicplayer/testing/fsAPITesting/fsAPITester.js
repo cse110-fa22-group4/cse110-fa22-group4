@@ -19,7 +19,7 @@ const {
 } = require('../../preload/fs/fsAPICalls');
 
 /**
- * @description Runs all of the unit tests for APIs.
+ * @description Runs all of the unit tests for fsAPI.
  * @return {Promise<void>}
  */
 async function testAll() {
