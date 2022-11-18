@@ -1,0 +1,40 @@
+# This workflow will generate documentation using jsdoc and put the corresponding page in ./docs
+
+name: JSDoc Generation
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  generate:
+    defaults:
+      run:
+        working-directory: source/musicplayer    
+    runs-on: ubuntu-latest
+    
+    steps:
+      # need to get jsdoc installed, and then can run this
+      # following command takes all js files in renderer, testing, preload, and main and generates their respective docs in ./docs
+      # config file is jsdoc.json
+      - uses: actions/checkout@v3
+      - name: generate jsdoc files
+        run: |
+           npm install -g jsdoc
+           jsdoc -c jsdoc.json
+
+      #configure git credentials, commit all added files (will just be jsdoc files)
+      - name: Commit files
+        id: commit
+        run: | 
+          git config --local user.email "action@github.com"
+          git config --local user.name "github-actions"
+          git add --all
+          git commit -m "Added docs"
+      #push changes to main.
+      #using the GITHUB_TOKEN does not start a new workflow run
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}

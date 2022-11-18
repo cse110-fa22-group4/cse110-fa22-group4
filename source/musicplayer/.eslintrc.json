@@ -1,47 +1,49 @@
 {
-  "env": {
-    "node": true,
-    "browser": true,
-    "commonjs": true,
-    "es2021": true
-  },
-  "globals": {
-    "jqAPI": true,
-    "domAPI": true,
-    "fsAPI": true,
-    "ffmpegAPI": true,
-    "genAPI": true
-  },
-    "plugins": [
-    ],
-  "extends": [
-    "eslint:recommended",
-    "google"
-  ],
-  "overrides": [
-    {
-      "files": [
-        "*.js",
-        "*.json"
-      ],
-      "rules": {
-        "indent": [
-          "error",
-          4
-        ],
-        "no-unused-vars": [
-          "off"
-        ],
-        "max-len": [
-          "error",
-          120
-        ]
-      }
-    }
-  ],
-  "parserOptions": {
-    "ecmaVersion": "latest"
-  },
-  "rules": {
-  }
+	"env": {
+		"node": true,
+		"browser": true,
+		"commonjs": true,
+		"es2021": true
+	},
+	"globals": {
+		"jqAPI": true,
+		"domAPI": true,
+		"fsAPI": true,
+		"ffmpegAPI": true,
+		"genAPI": true
+	},
+	"plugins": [
+	],
+	"extends": [
+		"eslint:recommended",
+		"google"
+	],
+	"overrides": [
+		{
+			"files": [
+				"*.js",
+				"*.json"
+			],
+			"rules": {
+				"indent": [
+					"error",
+					"tab"
+				],
+				"no-unused-vars": [
+					"off"
+				],
+				"max-len": [
+					"error",
+					120
+				],
+				"no-tabs": "off",
+				"no-mixed-spaces-and-tabs": "error"
+			}
+		}
+	],
+	"parserOptions": {
+		"ecmaVersion": "latest"
+	},
+	"rules": {
+	}
 }

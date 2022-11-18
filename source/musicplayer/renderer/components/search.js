@@ -1,9 +1,9 @@
 window.addEventListener('searchbarSearch', async (event) => {
-    const query = event.detail;
-    const cat = ['duration'];
-    const tCat = ['title', 'album_artist', 'genre'];
-    const ret = await findCategories(query, cat, tCat);
-    console.log(ret);
+	const query = event.detail;
+	const cat = ['duration'];
+	const tCat = ['title', 'album_artist', 'genre'];
+	const ret = await findCategories(query, cat, tCat);
+	await genAPI.debugLog(ret, 'test-searching');
 });
 
 
@@ -12,7 +12,6 @@ window.addEventListener('searchbarSearch', async (event) => {
  * which can be cancelled and overwritten.
  * @type {function}
  */
-let ongoingSearchProcess;
 /**
  *
  * @param {string} query query to find
@@ -29,36 +28,36 @@ let ongoingSearchProcess;
  * @todo this entire function needs to be redone for many reasons.
  */
 async function findCategories(query, categories, tagCategories) {
-    const songs = fsAPI.getSongs();
-    const results = { };
-    for (const i in songs) {
-        if (!i) continue;
-        const song = songs[i];
-        const data = song['format'];
-        if (data === undefined) continue;
-        categories.forEach((cat) => {
-            if (data[cat]) {
-                if (!results[cat]) results[cat] = [];
-                if (!(data[cat] in results[cat])) {
-                    if (data[cat].includes(query)) {
-                        results[cat].push(data[cat]); // mimic set functionality
-                    }
-                }
-            }
-        });
-        if (!data['tags']) continue;
-        tagCategories.forEach((tcat) => {
-            if (data['tags'][tcat]) {
-                if (!results[tcat]) results[tcat] = [];
-                if (!(data['tags'][tcat] in results[tcat])) {
-                    if (data['tags'][tcat].includes(query)) {
-                        results[tcat].push(data['tags'][tcat]);
-                    }
-                }
-            }
-        });
-    }
-    return results;
+	const songs = fsAPI.getSongs();
+	const results = { };
+	for (const i in songs) {
+		if (!i) continue;
+		const song = songs[i];
+		const data = song['format'];
+		if (data === undefined) continue;
+		categories.forEach((cat) => {
+			if (data[cat]) {
+				if (!results[cat]) results[cat] = [];
+				if (!(data[cat] in results[cat])) {
+					if (data[cat].includes(query)) {
+						results[cat].push(data[cat]); // mimic set functionality
+					}
+				}
+			}
+		});
+		if (!data['tags']) continue;
+		tagCategories.forEach((tcat) => {
+			if (data['tags'][tcat]) {
+				if (!results[tcat]) results[tcat] = [];
+				if (!(data['tags'][tcat] in results[tcat])) {
+					if (data['tags'][tcat].includes(query)) {
+						results[tcat].push(data['tags'][tcat]);
+					}
+				}
+			}
+		});
+	}
+	return results;
 }
 
 

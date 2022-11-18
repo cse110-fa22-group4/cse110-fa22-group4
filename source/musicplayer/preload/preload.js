@@ -2,52 +2,51 @@
 const {ipcRenderer, contextBridge, app} = require('electron');
 
 const {
-    addEventListener, getAttribute,
-    setAttribute, addChild, setHTML,
-    setStyle, getValue, loadPage,
-    addGrid,
+	addEventListener, getAttribute,
+	setAttribute, addChild, setHTML,
+	setStyle, getValue, setValue, loadPage,
+	addGrid,
 } = require('./dom/domAPICalls.js');
 
 const {
-    setPath,
+	setPath,
 } = require('./ffmpeg/ffmpegAPICalls.js');
 
 const {
-    ffmpegRead, ffmpegWrite,
-    getMetadataRecursive,
-    useMultiFFmpeg,
+	ffmpegRead, ffmpegWrite,
+	useMultiFFmpeg,
 } = require('./ffmpeg/metadata/ffMetaAPICalls');
 
 const {
-    pauseSong, playSong, stopSong, resumeSong,
+	pauseSong, playSong, stopSong, resumeSong,
 } = require('./ffmpeg/play/playSongAPICalls');
 
 const {
-    recursiveSearchAtPath, getSRCString,
-    fsInit, devClear,
+	recursiveSearchAtPath, getSRCString,
+	fsInit, devClear,
 } = require('./fs/fsAPICalls');
 
 const {
-    getAllPlaylists, getPlaylist,
-    removePlaylist, writePlaylist,
+	getAllPlaylists, getPlaylist,
+	removePlaylist, writePlaylist,
 } = require('./fs/playlists/playlistAPICalls');
 
 const {
-    appendSong, appendSongs, cullShortAudio,
-    getSongs, removeSong, writeSongs,
+	appendSong, appendSongs, cullShortAudio,
+	getSongs, removeSong, writeSongs,
 } = require('./fs/songs/songsAPICalls');
 
 const {
-    deleteSetting, getSetting, getSettings,
-    writeSettings, writeToSetting,
+	deleteSetting, getSetting, getSettings,
+	writeSettings, writeToSetting,
 } = require('./fs/settings/settingsAPICalls');
 
 const {
-    deleteStat, getStats, writeStats, writeToStat,
+	deleteStat, getStats, writeStats, writeToStat,
 } = require('./fs/stats/statsAPICalls');
 
 const {
-    debugLog, openDialog,
+	debugLog, openDialog,
 } = require('./general/genAPICalls.js');
 
 /**
@@ -83,73 +82,71 @@ window.fsAPI = undefined;
  */
 window.genAPI = undefined;
 
-module.exports = {debugLog};
-
 // All the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', async () => {
-    const replaceText = (selector, text) => {
-        const element = document.getElementById(selector);
-        if (element) element.innerText = text;
-    };
+	const replaceText = (selector, text) => {
+		const element = document.getElementById(selector);
+		if (element) element.innerText = text;
+	};
 
-    for (const dependency of ['chrome', 'node', 'electron']) {
-        replaceText(`${dependency}-version`, process.versions[dependency]);
-    }
+	for (const dependency of ['chrome', 'node', 'electron']) {
+		replaceText(`${dependency}-version`, process.versions[dependency]);
+	}
 
-    await fsInit();
-    await setPath();
+	await fsInit();
+	await setPath();
 });
 
 contextBridge.exposeInMainWorld('genAPI', {
-    debugLog: debugLog,
-    openDialog: openDialog,
+	debugLog: debugLog,
+	openDialog: openDialog,
 });
 
 contextBridge.exposeInMainWorld('domAPI', {
-    addEventListener: addEventListener,
-    getAttribute: getAttribute,
-    setAttribute: setAttribute,
-    addChild: addChild,
-    setHTML: setHTML,
-    setStyle: setStyle,
-    getValue: getValue,
-    loadPage: loadPage,
-    addGrid: addGrid,
+	addEventListener: addEventListener,
+	getAttribute: getAttribute,
+	setAttribute: setAttribute,
+	addChild: addChild,
+	setHTML: setHTML,
+	setStyle: setStyle,
+	getValue: getValue,
+  setValue: setValue,
+	loadPage: loadPage,
+	addGrid: addGrid,
 
 });
 
 contextBridge.exposeInMainWorld('ffmpegAPI', {
-    readMetadata: ffmpegRead,
-    writeMetadata: ffmpegWrite,
-    setBinPath: setPath,
-    getMetadataRecursive: getMetadataRecursive,
-    playSong: playSong,
-    stopSong: stopSong,
-    pauseSong: pauseSong,
-    resumeSong: resumeSong,
-    useMultiFFmpeg: useMultiFFmpeg,
+	readMetadata: ffmpegRead,
+	writeMetadata: ffmpegWrite,
+	setBinPath: setPath,
+	playSong: playSong,
+	stopSong: stopSong,
+	pauseSong: pauseSong,
+	resumeSong: resumeSong,
+	useMultiFFmpeg: useMultiFFmpeg,
 });
 
 contextBridge.exposeInMainWorld('fsAPI', {
-    getSettings: getSettings,
-    writeSettings: writeSettings,
-    writeToSetting: writeToSetting,
-    deleteSetting: deleteSetting,
-    getSetting: getSetting,
-    getSongs: getSongs,
-    appendSongs: appendSongs,
-    writeSong: writeSongs,
-    appendSong: appendSong,
-    removeSong: removeSong,
-    getStats: getStats,
-    writeStats: writeStats,
-    writeToStat: writeToStat,
-    deleteStat: deleteStat,
-    getAllPlaylists: getAllPlaylists,
-    removePlaylist: removePlaylist,
-    writePlaylist: writePlaylist,
-    getSRCString: getSRCString,
-    recursiveSearchAtPath: recursiveSearchAtPath,
-    cullShortAudio: cullShortAudio,
+	getSettings: getSettings,
+	writeSettings: writeSettings,
+	writeToSetting: writeToSetting,
+	deleteSetting: deleteSetting,
+	getSetting: getSetting,
+	getSongs: getSongs,
+	appendSongs: appendSongs,
+	writeSong: writeSongs,
+	appendSong: appendSong,
+	removeSong: removeSong,
+	getStats: getStats,
+	writeStats: writeStats,
+	writeToStat: writeToStat,
+	deleteStat: deleteStat,
+	getAllPlaylists: getAllPlaylists,
+	removePlaylist: removePlaylist,
+	writePlaylist: writePlaylist,
+	getSRCString: getSRCString,
+	recursiveSearchAtPath: recursiveSearchAtPath,
+	cullShortAudio: cullShortAudio,
 });

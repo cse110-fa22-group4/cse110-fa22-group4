@@ -1,6 +1,6 @@
 const {ipcRenderer} = require('electron');
 const {Grid} = require('gridjs');
-
+const {debugLog} = require('../general/genAPICalls');
 const path = require('path');
 
 // Ensures that an event is not established multiple times by accident.
@@ -14,8 +14,8 @@ const establishedEvents = {};
  * @return {Promise<string>} The actual path to the html file from a renderer process.
  */
 async function htmlFromRenderer(htmlFile) {
-    const htmlFilePath = await ipcRenderer.invoke('getAppPath');
-    return path.join(htmlFilePath, '/../html/', htmlFile);
+	const htmlFilePath = await ipcRenderer.invoke('getAppPath');
+	return path.join(htmlFilePath, '/../html/', htmlFile);
 }
 
 /**
@@ -28,15 +28,15 @@ async function htmlFromRenderer(htmlFile) {
  * @return {Promise<void>}
  */
 async function loadPage(targetID, htmlFile, callback = undefined) {
-    const html = require('fs').readFileSync(await htmlFromRenderer(htmlFile)).toString();
-    await setHTML(targetID, html);
-    const temp = htmlFile.split('.');
-    const filename = temp[temp.length -2].split('/').pop();
-    console.log(`Broadcasting event: ${filename}-loaded`);
-    window.dispatchEvent(new Event(`${filename}-loaded`));
-    if (callback) {
-        await callback(document.getElementById(targetID));
-    }
+	const html = require('fs').readFileSync(await htmlFromRenderer(htmlFile)).toString();
+	await setHTML(targetID, html);
+	const temp = htmlFile.split('.');
+	const filename = temp[temp.length - 2].split('/').pop();
+	await debugLog(`Broadcasting event: ${filename}-loaded`, 'broadcast-event');
+	window.dispatchEvent(new Event(`${filename}-loaded`));
+	if (callback) {
+		await callback(document.getElementById(targetID));
+	}
 }
 
 /**
@@ -48,11 +48,11 @@ async function loadPage(targetID, htmlFile, callback = undefined) {
  * @return {Promise<void>}
  */
 async function setHTML(domID, html) {
-    const isAttributeSafe = await ipcRenderer.invoke(
-        'managedAttributeCheck', domID, 'innerHTML');
-    if (isAttributeSafe) {
-        document.getElementById(domID).innerHTML = html;
-    }
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, 'innerHTML');
+	if (isAttributeSafe) {
+		document.getElementById(domID).innerHTML = html;
+	}
 }
 
 /**
@@ -62,12 +62,24 @@ async function setHTML(domID, html) {
  *                                              or a promise that returns one.
  * @param {any} params Extra grid parameters to pass into the constructor.
  * @return {Promise<Grid>} Returns the grid created.
+ * @return {Grid} The grid that is created is returned for searching purposes.
  */
-async function addGrid(domID, columns, data, params = { }) {
-    return new Grid({
-        columns: columns,
-        data: data,
-    }).updateConfig(params).render(document.getElementById(domID));
+async function addGrid(domID, columns, data, params = {}) {
+	// return new Grid({
+	// Perform this check above all
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, 'innerHTML');
+	if (!isAttributeSafe) return undefined;
+
+	new Grid({
+		columns: columns,
+		data: data,
+	})
+		.updateConfig(params)
+		.render(document.getElementById(domID))
+		.on('rowClick', (...args) =>
+			window.dispatchEvent(
+				new CustomEvent(`${domID}-grid-clicked`, {detail: args[1]})));
 }
 
 /**
@@ -81,18 +93,22 @@ async function addGrid(domID, columns, data, params = { }) {
  * @return {Promise<void>}
  */
 async function addEventListener(domID, event, func) {
-    const isEventSafe = await ipcRenderer.invoke(
-        'managedAddEventListenerCheck', domID, event);
-    const element = document.getElementById(domID);
-    if (!(domID in establishedEvents)) {
-        establishedEvents[domID] = [];
-    }
-    if (isEventSafe && !(event in establishedEvents[domID])) {
-        element.addEventListener(event, async () => {
-            await func(element);
-        }, false);
-        establishedEvents[domID].push(event);
-    }
+	const isEventSafe = await ipcRenderer.invoke(
+		'managedAddEventListenerCheck', domID, event);
+	const element = document.getElementById(domID);
+	if (element === undefined || element === null) {
+		await debugLog(`Failed to find ID: ${domID}`, 'add-event-error');
+		return;
+	}
+	if (!(domID in establishedEvents)) {
+		establishedEvents[domID] = [];
+	}
+	if (isEventSafe && !(event in establishedEvents[domID])) {
+		element.addEventListener(event, async () => {
+			await func(element);
+		}, false);
+		establishedEvents[domID].push(event);
+	}
 }
 
 /**
@@ -107,13 +123,13 @@ async function addEventListener(domID, event, func) {
  *          or if the attribute is deemed 'unsafe.'
  */
 async function getAttribute(domID, attribute) {
-    const isAttributeSafe = await ipcRenderer.invoke(
-        'managedAttributeCheck', domID, attribute);
-    if (isAttributeSafe) {
-        return document.getElementById(domID).getAttribute(attribute);
-    } else {
-        return undefined;
-    }
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, attribute);
+	if (isAttributeSafe) {
+		return document.getElementById(domID).getAttribute(attribute);
+	} else {
+		return undefined;
+	}
 }
 
 /**
@@ -123,14 +139,15 @@ async function getAttribute(domID, attribute) {
  * deemed 'safe.'
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} attribute The attribute to set on the element.
- * @param {Promise<string>} value The value to set the attribute to.
+ * @param {string} value The value to set the attribute to.
+ * @return {Promise<void>}
  */
 async function setAttribute(domID, attribute, value) {
-    const isAttributeSafe = await ipcRenderer.invoke(
-        'managedAttributeCheck', domID, attribute);
-    if (isAttributeSafe) {
-        document.getElementById(domID).setAttribute(attribute, value);
-    }
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, attribute);
+	if (isAttributeSafe) {
+		document.getElementById(domID).setAttribute(attribute, value);
+	}
 }
 
 /**
@@ -142,10 +159,10 @@ async function setAttribute(domID, attribute, value) {
  * @return {Promise<void>}
  */
 async function addChild(domID, child) {
-    const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
-    if (isChildSafe) {
-        document.getElementById(domID).appendChild(child);
-    }
+	const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
+	if (isChildSafe) {
+		document.getElementById(domID).appendChild(child);
+	}
 }
 
 /**
@@ -158,10 +175,10 @@ async function addChild(domID, child) {
  * @return {Promise<void>}
  */
 async function setStyle(domID, style, value) {
-    const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
-    if (isChildSafe) {
-        document.getElementById(domID).style[style] = value;
-    }
+	const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
+	if (isChildSafe) {
+		document.getElementById(domID).style[style] = value;
+	}
 }
 
 /**
@@ -177,22 +194,44 @@ async function setStyle(domID, style, value) {
  *
  */
 async function getValue(domID, value) {
-    const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, value);
-    if (isValueSafe) {
-        return document.getElementById(domID).value;
-    } else {
-        return undefined;
-    }
+	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, value);
+	if (isValueSafe) {
+		return document.getElementById(domID).value;
+	} else {
+		return undefined;
+	}
+}
+
+/**
+ * @name setValue
+ * @memberOf domAPI
+ * @description Sets the value of a given domID, if it exists and
+ * is deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} value The value to set for the element.
+ * @return {boolean} The true if the setter is successful, else
+ * false if the value is deemed 'unsafe.'
+ *
+ */
+ async function setValue(domID, value) {
+	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, value);
+	if (isValueSafe) {
+		document.getElementById(domID).value = value;
+    return true;
+	} else {
+		return false;
+	}
 }
 
 module.exports = {
-    loadPage,
-    addEventListener,
-    getAttribute,
-    setAttribute,
-    addChild,
-    setHTML,
-    setStyle,
-    getValue,
-    addGrid,
+	loadPage,
+	addEventListener,
+	getAttribute,
+	setAttribute,
+	addChild,
+	setHTML,
+	setStyle,
+	getValue,
+  setValue,
+	addGrid,
 };

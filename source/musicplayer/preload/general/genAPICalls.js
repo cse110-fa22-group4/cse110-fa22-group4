@@ -2,11 +2,19 @@ const path = require('path');
 const {ipcRenderer} = require('electron');
 
 /**
- * @description A boolean to toggle debug code
- * @type {boolean}
+ * @description A list of all debugLog tags. Use comments to enable/disable please.
+ * @type {string[]}
  */
-const debug = true;
-
+const enabledTags =
+	[
+		'add-event-error',
+		'broadcast-event',
+		'fs-general',
+		'unit-tests',
+		'multi-ffmpeg-loading-progress',
+		'fsplay-error',
+		// 'settings-test',
+	];
 
 /**
  * @name debugLog
@@ -15,16 +23,14 @@ const debug = true;
  * to go through outside of debug. This
  *              method is preferred to console.log even when forced because
  *              we  can use this to trace console messages.
- * @param {string} message The message to print.
- * @param {object} source The caller of this method. Should be called with
- * 'this'.
- * @param {boolean} force Force the print to go through. Defaults to false.
+ * @param {object} message The message to print.
+ * @param {string} tag The ID of this debug message. Each tag must be toggled.
  * @return {Promise<void>}
  */
-async function debugLog(message, source, force = false) {
-    if (debug && !force) {
-        console.log(message);
-    }
+async function debugLog(message, tag) {
+	if (enabledTags.includes(tag)) {
+		console.log(message);
+	}
 }
 
 /**
@@ -35,12 +41,12 @@ async function debugLog(message, source, force = false) {
  * @return {Promise<Electron.OpenDialogReturnValue>}
  */
 async function openDialog(opts) {
-    const {dialog} = require('electron');
-    return JSON.parse(await ipcRenderer.invoke('openDialog', opts));
+	const {dialog} = require('electron');
+	return JSON.parse(await ipcRenderer.invoke('openDialog', opts));
 }
 
 
 module.exports = {
-    debugLog,
-    openDialog,
+	debugLog,
+	openDialog,
 };

@@ -9,11 +9,11 @@ const {getStoragePath, makeDirIfNotExists} = require('../fsAPICalls');
  * @return {Promise<object>} An array of strings containing the name of every playlist.
  */
 async function getAllPlaylists() {
-    let storagePath = await getStoragePath();
-    const playlistPath = path.join(storagePath, 'playlists');
+	const storagePath = await getStoragePath();
+	const playlistPath = path.join(storagePath, 'playlists');
 
-    await makeDirIfNotExists('playlists');
-    return fs.readdirSync(playlistPath); // may not return file types
+	await makeDirIfNotExists('playlists');
+	return fs.readdirSync(playlistPath); // may not return file types
 }
 
 /**
@@ -24,15 +24,15 @@ async function getAllPlaylists() {
  * @return {Promise<Object>} A JSON formatted object that represents a playlist.
  */
 async function getPlaylist(playlist) {
-    let storagePath = await getStoragePath();
-    const playlistPath = path.join(storagePath, 'playlists', playlist);
+	const storagePath = await getStoragePath();
+	const playlistPath = path.join(storagePath, 'playlists', playlist);
 
-    await makeDirIfNotExists('playlists');
-    if (!fs.existsSync(playlistPath)) {
-        fs.closeSync(fs.openSync(playlistPath, 'w'));
-        fs.writeFileSync(playlistPath, '{ }');
-    }
-    return JSON.parse(fs.readFileSync(playlistPath, 'utf8'));
+	await makeDirIfNotExists('playlists');
+	if (!fs.existsSync(playlistPath)) {
+		fs.closeSync(fs.openSync(playlistPath, 'w'));
+		fs.writeFileSync(playlistPath, '{ }');
+	}
+	return JSON.parse(fs.readFileSync(playlistPath, 'utf8'));
 }
 
 /**
@@ -43,11 +43,11 @@ async function getPlaylist(playlist) {
  * @return {Promise<void>}
  */
 async function removePlaylist(playlistName) {
-    let storagePath = await getStoragePath();
-    const playlistPath = path.join(storagePath, 'playlists', playlistName);
-    await makeDirIfNotExists('playlists');
-    if (!fs.existsSync(playlistPath)) return;
-    fs.rmSync(playlistPath);
+	const storagePath = await getStoragePath();
+	const playlistPath = path.join(storagePath, 'playlists', playlistName);
+	await makeDirIfNotExists('playlists');
+	if (!fs.existsSync(playlistPath)) return;
+	fs.rmSync(playlistPath);
 }
 
 /**
@@ -61,18 +61,18 @@ async function removePlaylist(playlistName) {
  * @return {Promise<void>}
  */
 async function writePlaylist(playlistName, playlist) {
-    let storagePath = await getStoragePath();
-    const playlistPath = path.join(storagePath, 'playlists', playlistName);
-    await makeDirIfNotExists('playlists');
-    if (!fs.existsSync(playlistPath)) {
-        fs.closeSync(fs.openSync(playlistPath, 'w'));
-    }
-    fs.writeFileSync(playlistPath, JSON.stringify(playlist));
+	const storagePath = await getStoragePath();
+	const playlistPath = path.join(storagePath, 'playlists', playlistName);
+	await makeDirIfNotExists('playlists');
+	if (!fs.existsSync(playlistPath)) {
+		fs.closeSync(fs.openSync(playlistPath, 'w'));
+	}
+	fs.writeFileSync(playlistPath, JSON.stringify(playlist));
 }
 
 module.exports = {
-    getAllPlaylists,
-    getPlaylist,
-    removePlaylist,
-    writePlaylist,
+	getAllPlaylists,
+	getPlaylist,
+	removePlaylist,
+	writePlaylist,
 };

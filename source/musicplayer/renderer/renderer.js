@@ -1,7 +1,7 @@
 // Creates an onLoad function.
 window.addEventListener('DOMContentLoaded', () => {
-    eventHandlerLoadPhase();
-    postInit();
+	eventHandlerLoadPhase();
+	postInit();
 });
 
 /**

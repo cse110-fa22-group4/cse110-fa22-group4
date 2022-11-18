@@ -1,8 +1,9 @@
 const fs = require('fs');
 const {ipcRenderer} = require('electron');
 const path = require('path');
+const {debugLog} = require('../general/genAPICalls');
 
-var storagePath = '';
+let storagePath = '';
 
 /**
  * @description MUST BE CALLED ON STARTUP. Sets the path to userData, which can
@@ -10,17 +11,10 @@ var storagePath = '';
  * @return {Promise<void>}
  */
 async function fsInit() {
-    storagePath = await ipcRenderer.invoke('getUserData');
-    storagePath = path.join(storagePath, 'MixMatch');
-    await makeDirIfNotExists(storagePath);
-    /**
-     * Bro this function can't call any APIs since it is used before the
-     * initialization of the APIs, so we don't get any custom debug log
-     * functions.
-     * @todo try to find a workaround and uncomment the following line of code.
-     */
-    // genAPI.debugLog("UserData Storage Path: " + storagePath, this);
-    console.log('UserData Storage Path: ' + storagePath);
+	storagePath = await ipcRenderer.invoke('getUserData');
+	storagePath = path.join(storagePath, 'MixMatch');
+	await makeDirIfNotExists(storagePath);
+	await debugLog('UserData Storage Path: ' + storagePath, 'fs-general');
 }
 
 /**
@@ -29,18 +23,18 @@ async function fsInit() {
  * @return {Promise<void>}
  */
 async function setStoragePath(newStoragePath) {
-    const localPath = await getSourceFolder();
-    storagePath = path.join(localPath, newStoragePath);
-    await makeDirIfNotExists(storagePath);
-    console.log('UserData Storage Path: ' + storagePath);
+	const localPath = await getSourceFolder();
+	storagePath = path.join(localPath, newStoragePath);
+	await makeDirIfNotExists(storagePath);
+	await debugLog('UserData Storage Path: ' + storagePath, 'fs-general');
 }
 
 /**
  *
  * @return {Promise<string>}
  */
- async function getStoragePath() {
-    return storagePath;
+async function getStoragePath() {
+	return storagePath;
 }
 
 /**
@@ -48,7 +42,7 @@ async function setStoragePath(newStoragePath) {
  * @return {Promise<string>}
  */
 async function getSourceFolder() {
-    return __dirname + '/../../..';
+	return __dirname + '/../../..';
 }
 
 /**
@@ -61,23 +55,23 @@ async function getSourceFolder() {
  * @return {Promise<void>}
  */
 async function devClear(caller) {
-    const settingPath = path.join(storagePath, 'settings.json');
-    const songsPath = path.join(storagePath, 'songs.json');
-    const statsPath = path.join(storagePath, 'stats.json');
-    const playlistPath = path.join(storagePath, 'playlists');
+	const settingPath = path.join(storagePath, 'settings.json');
+	const songsPath = path.join(storagePath, 'songs.json');
+	const statsPath = path.join(storagePath, 'stats.json');
+	const playlistPath = path.join(storagePath, 'playlists');
 
-    if (fs.existsSync(settingPath)) {
-        fs.rmSync(settingPath);
-    }
-    if (fs.existsSync(songsPath)) {
-        fs.rmSync(songsPath);
-    }
-    if (fs.existsSync(statsPath)) {
-        fs.rmSync(statsPath);
-    }
-    if (fs.existsSync(playlistPath)) {
-        fs.rmdirSync(playlistPath, {recursive: true});
-    }
+	if (fs.existsSync(settingPath)) {
+		fs.rmSync(settingPath);
+	}
+	if (fs.existsSync(songsPath)) {
+		fs.rmSync(songsPath);
+	}
+	if (fs.existsSync(statsPath)) {
+		fs.rmSync(statsPath);
+	}
+	if (fs.existsSync(playlistPath)) {
+		fs.rmdirSync(playlistPath, {recursive: true});
+	}
 }
 
 /* File Structure in userData
@@ -99,14 +93,14 @@ async function devClear(caller) {
  * @return {Promise<void>}
  */
 async function makeDirIfNotExists(folder) {
-    await fs.opendir(folder, async (err, dir) => {
-        if (err) {
-            await fs.mkdir(folder, {recursive: false}, () => {
-                // Any callback that needs to happen on first folder create
-                // can happen here.
-            });
-        }
-    });
+	await fs.opendir(folder, async (err, dir) => {
+		if (err) {
+			await fs.mkdir(folder, {recursive: false}, () => {
+				// Any callback that needs to happen on first folder create
+				// can happen here.
+			});
+		}
+	});
 }
 
 /**
@@ -119,7 +113,7 @@ async function makeDirIfNotExists(folder) {
  * @todo May not work on all (or any) OS! May need to give filesystem access!
  */
 async function getSRCString(path) {
-    return 'file:///' + path;
+	return 'file:///' + path;
 }
 
 // To future people trying to make recursiveSearchAtPath async: don't. seriously. it isn't worth the headache.
@@ -135,44 +129,44 @@ async function getSRCString(path) {
  *
  */
 async function recursiveSearchAtPath(searchPath) {
-    // try and catch to take care of illegal folders/files
-    try {
-        const ret = [];
-        const dirs = fs.readdirSync(
-            searchPath,
-            {withFileTypes: true},
-        ).filter((d) => d.isDirectory()).map((d) => d.name);
+	// try and catch to take care of illegal folders/files
+	try {
+		const ret = [];
+		const dirs = fs.readdirSync(
+			searchPath,
+			{withFileTypes: true},
+		).filter((d) => d.isDirectory()).map((d) => d.name);
 
-        for (const dir of dirs) {
-            const dirPath = path.join(searchPath, dir);
-            if (fs.existsSync(dirPath)) {
-                const paths = await recursiveSearchAtPath(dirPath);
-                paths.forEach((p) => ret.push(p));
-            }
-        }
+		for (const dir of dirs) {
+			const dirPath = path.join(searchPath, dir);
+			if (fs.existsSync(dirPath)) {
+				const paths = await recursiveSearchAtPath(dirPath);
+				paths.forEach((p) => ret.push(p));
+			}
+		}
 
-        const files = fs.readdirSync(
-            searchPath,
-            {withFileTypes: true},
-        ).filter((d) =>
-            d.isFile()).filter((d) =>
-            d.name.split('.').pop() === 'mp3').map((d) => d.name);
-        files.forEach((f) => ret.push(path.join(searchPath, f).split(path.sep).join(path.posix.sep)));
+		const files = fs.readdirSync(
+			searchPath,
+			{withFileTypes: true},
+		).filter((d) =>
+			d.isFile()).filter((d) =>
+			d.name.split('.').pop() === 'mp3').map((d) => d.name);
+		files.forEach((f) => ret.push(path.join(searchPath, f).split(path.sep).join(path.posix.sep)));
 
-        return ret;
-    } catch (e) {
-        console.log(e);
-        return [];
-    }
+		return ret;
+	} catch (e) {
+		console.log(e);
+		return [];
+	}
 }
 
 module.exports = {
-    getStoragePath,
-    makeDirIfNotExists,
-    getSRCString,
-    fsInit,
-    devClear,
-    recursiveSearchAtPath,
-    setStoragePath,
-    getSourceFolder,
+	getStoragePath,
+	makeDirIfNotExists,
+	getSRCString,
+	fsInit,
+	devClear,
+	recursiveSearchAtPath,
+	setStoragePath,
+	getSourceFolder,
 };

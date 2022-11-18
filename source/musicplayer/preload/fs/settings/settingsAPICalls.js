@@ -9,13 +9,13 @@ const {getStoragePath} = require('../fsAPICalls');
  * @return {Promise<object>} A JSON formatted object of all the current settings
  */
 async function getSettings() {
-    let storagePath = await getStoragePath();
-    const settingsPath = path.join(storagePath, 'settings.json');
-    if (!fs.existsSync(settingsPath)) {
-        fs.closeSync(fs.openSync(settingsPath, 'w'));
-        fs.writeFileSync(settingsPath, '{ }');
-    }
-    return JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+	const storagePath = await getStoragePath();
+	const settingsPath = path.join(storagePath, 'settings.json');
+	if (!fs.existsSync(settingsPath)) {
+		fs.closeSync(fs.openSync(settingsPath, 'w'));
+		fs.writeFileSync(settingsPath, '{ }');
+	}
+	return JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
 }
 
 /**
@@ -26,11 +26,11 @@ async function getSettings() {
  * @return {Promise<object> | undefined} The setting if it exists, else undefined.
  */
 async function getSetting(setting) {
-    const settings = await getSettings();
-    if (setting in settings) {
-        return JSON.parse(settings[setting]);
-    }
-    return undefined;
+	const settings = await getSettings();
+	if (setting in settings) {
+		return JSON.parse(settings[setting]);
+	}
+	return undefined;
 }
 
 /**
@@ -43,12 +43,12 @@ async function getSetting(setting) {
  * @return {Promise<void>}
  */
 async function writeSettings(settings) {
-    let storagePath = await getStoragePath();
-    const settingsPath = path.join(storagePath, 'settings.json');
-    if (!fs.existsSync(settingsPath)) {
-        fs.closeSync(fs.openSync(settingsPath, 'w'));
-    }
-    fs.writeFileSync(settingsPath, JSON.stringify(settings));
+	const storagePath = await getStoragePath();
+	const settingsPath = path.join(storagePath, 'settings.json');
+	if (!fs.existsSync(settingsPath)) {
+		fs.closeSync(fs.openSync(settingsPath, 'w'));
+	}
+	fs.writeFileSync(settingsPath, JSON.stringify(settings));
 }
 
 /**
@@ -60,9 +60,9 @@ async function writeSettings(settings) {
  * @return {Promise<void>}
  */
 async function writeToSetting(setting, val) {
-    const settings = await getSettings();
-    settings[setting] = JSON.stringify(val);
-    await writeSettings(settings);
+	const settings = await getSettings();
+	settings[setting] = JSON.stringify(val);
+	await writeSettings(settings);
 }
 
 /**
@@ -74,15 +74,15 @@ async function writeToSetting(setting, val) {
  * @return {Promise<void>}
  */
 async function deleteSetting(setting) {
-    const settings = await getSettings();
-    delete settings[setting];
-    await writeSettings(settings);
+	const settings = await getSettings();
+	delete settings[setting];
+	await writeSettings(settings);
 }
 
 module.exports = {
-    getSettings,
-    getSetting,
-    writeSettings,
-    writeToSetting,
-    deleteSetting,
+	getSettings,
+	getSetting,
+	writeSettings,
+	writeToSetting,
+	deleteSetting,
 };

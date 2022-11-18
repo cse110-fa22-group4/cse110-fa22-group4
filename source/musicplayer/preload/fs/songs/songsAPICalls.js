@@ -10,15 +10,15 @@ const {getStoragePath} = require('../fsAPICalls');
  * @return {Promise<object>} A JSON formatted object containing all songs.
  */
 async function getSongs() {
-    let storagePath = await getStoragePath();
-    const songPath = path.join(storagePath, 'songs.json');
-    if (!fs.existsSync(songPath)) {
-        fs.closeSync(fs.openSync(songPath, 'w'));
-        fs.writeFileSync(songPath, '{ }');
-    }
-    const res = fs.readFileSync(songPath, 'utf8');
+	const storagePath = await getStoragePath();
+	const songPath = path.join(storagePath, 'songs.json');
+	if (!fs.existsSync(songPath)) {
+		fs.closeSync(fs.openSync(songPath, 'w'));
+		fs.writeFileSync(songPath, '{ }');
+	}
+	const res = fs.readFileSync(songPath, 'utf8');
 
-    return JSON.parse(res);
+	return JSON.parse(res);
 }
 
 /**
@@ -30,12 +30,12 @@ async function getSongs() {
  * @return {Promise<void>}
  */
 async function writeSongs(songs) {
-    let storagePath = await getStoragePath();
-    const songPath = path.join(storagePath, 'songs.json');
-    if (!fs.existsSync(songPath)) {
-        fs.closeSync(fs.openSync(songPath, 'w'));
-    }
-    fs.writeFileSync(songPath, JSON.stringify(songs));
+	const storagePath = await getStoragePath();
+	const songPath = path.join(storagePath, 'songs.json');
+	if (!fs.existsSync(songPath)) {
+		fs.closeSync(fs.openSync(songPath, 'w'));
+	}
+	fs.writeFileSync(songPath, JSON.stringify(songs));
 }
 
 /**
@@ -47,9 +47,9 @@ async function writeSongs(songs) {
  * @return {Promise<void>}
  */
 async function appendSong(newSong) {
-    const songs = await getSongs();
-    songs.push(newSong);
-    await writeSongs(songs);
+	const songs = await getSongs();
+	songs.push(newSong);
+	await writeSongs(songs);
 }
 
 /**
@@ -59,12 +59,12 @@ async function appendSong(newSong) {
  * @return {Promise<void>}
  */
 async function appendSongs(newSongs) {
-    const songs = await getSongs();
-    for (const song in newSongs) {
-        if (!song) continue;
-        songs[song] = newSongs[song];
-    }
-    await writeSongs(songs);
+	const songs = await getSongs();
+	for (const song in newSongs) {
+		if (!song) continue;
+		songs[song] = newSongs[song];
+	}
+	await writeSongs(songs);
 }
 
 /**
@@ -75,9 +75,9 @@ async function appendSongs(newSongs) {
  * @return {Promise<void>}
  */
 async function removeSong(oldSong) {
-    const songs = await getSongs();
-    delete songs[oldSong];
-    await writeSongs(songs);
+	const songs = await getSongs();
+	delete songs[oldSong];
+	await writeSongs(songs);
 }
 
 /**
@@ -86,26 +86,26 @@ async function removeSong(oldSong) {
  * @return {Promise<void>}
  */
 async function cullShortAudio() {
-    const songs = await getSongs();
-    const remove = [];
-    Object.keys(songs).forEach((song) => {
-        console.log(!songs[song]);
-        if (!songs[song] ||
+	const songs = await getSongs();
+	const remove = [];
+	Object.keys(songs).forEach((song) => {
+		console.log(!songs[song]);
+		if (!songs[song] ||
             !songs[song]['format'] ||
             !songs[song]['format']['duration'] ||
             !(parseInt(songs[song]['format']['duration']) > 10)) {
-            remove.push(song);
-        }
-    });
-    remove.forEach((r) => delete songs[r]);
-    await writeSongs(songs);
+			remove.push(song);
+		}
+	});
+	remove.forEach((r) => delete songs[r]);
+	await writeSongs(songs);
 }
 
 module.exports = {
-    getSongs,
-    writeSongs,
-    appendSong,
-    appendSongs,
-    removeSong,
-    cullShortAudio,
+	getSongs,
+	writeSongs,
+	appendSong,
+	appendSongs,
+	removeSong,
+	cullShortAudio,
 };

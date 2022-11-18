@@ -8,7 +8,7 @@
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self'">
-  <title>Mixmatch v0.1</title>
+  <title>Mixmatch v0.2</title>
 
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="../css/style.css" />
@@ -18,37 +18,37 @@
   <script src="../renderer/index.js"></script>
   <script src="../renderer/components/searchbar.js"></script>
   <script src="../renderer/components/settings.js"></script>
+  <script src="../renderer/components/overviewExtended.js"></script>
   <script src="../renderer/components/mainHeader.js"></script>
   <script src="../renderer/components/library.js"></script>
   <script src="../renderer/components/search.js"></script>
-
+  <script src="../renderer/components/metaEditor.js"></script>
+  <script src="../renderer/components/playback.js"></script>
+  <script src="../renderer/components/searchCategories.js"></script>
+  <script src="../renderer/components/searchPage.js"></script>
 
 </head>
 
 <body>
 
-  <!-- <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
-    <br>
-  <button id="my-button" data-value="0"> I have been pressed 0 times! </button> <br>
-  <div id="subpage"> </div> -->
-
-  <!-- HOME PAGE COMPONENTS -->
-
-  <!-- Main Window -->
-  <div id="main-container" class="vis"></div>
-
   <!-- Sidebar -->
   <div id="sidebar-container" class="vis"></div>
 
-  <!-- Now Playing + Main Window Heading -->
+  <!-- Overview + Main Heading + Main Contents (pages) + Meta Editor -->
   <div id="top-container">
+    
     <div id="overview-container" class="vis"></div>
+
     <div id="main-header-container" class="vis"></div>
+
+    <div id="mainMeta-container">
+      <div id="main-container" class="vis"></div>
+      <div id="metaEditor-container" class="vis"></div>
+    </div>
+
   </div>
 
+  <!-- Overview Extended -->
   <div id="top-container-extended"></div>
 
   <!-- Playback -->

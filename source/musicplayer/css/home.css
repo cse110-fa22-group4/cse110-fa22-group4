@@ -1,66 +1,26 @@
-/*main will be a grid. on the top is the titles, bottom left will be the four stats categories, and on the right is a scrollable timeline*/
-main {
-    /*Note: the current styling of everything is too big for the page*/
-    max-height: 50vh;
-    display: grid;
-    grid-template-columns: 6fr 2fr;
-    grid-template-rows: 2fr 18fr;
-    grid-template-areas:"stats-title timeline-title"
-                        "stats-content timeline-content";
-    column-gap: 7%;
-}
-/*the following are for setting up the areas in main*/
-.stats-title {
-    grid-area:stats-title;
-}
-.timeline-title {
-    grid-area:timeline-title;
-}
-.stats-content {
-    grid-area:stats-content;
-    /*styling for stats-content*/
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    column-gap: 7%;
-    row-gap: 5%;
-}
-.timeline-content {
+/*main will be a column flexbox*/
+.home {
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
-    grid-area: timeline-content;
 }
 
-/*styling for individual stats boxes*/
-.stats{
-    border-radius:  10px;
-    background-color: #1f1f1f ;
-    color: #FFFFFF;
-    
+/*collection which will show random selections from each category*/
+.home-container {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    overflow-x: auto;
 }
 
-/*styling for images in the stats boxes*/
-/*including the margin, they should cover about half the container*/
-.categoryCover {
-    border-radius: 10spx;
-    margin: 2.5%;
-    width:35%;
-    height:width;
+.home-listing {
+    margin-left: 3vh;
+    margin-right: 3vh;
 }
 
-/*styling for images in the stats boxes*/
-/*these images should take up all their container.*/
-.timelineCover {
-    border-radius:  10px;
-    width: 85%;
-    height: width;
+.home-listing > img {
+    border-radius: 10px;
+    max-width: 29vh;
+    height: currentWidth;
 }
-
-.categories {
-    margin-left: 5%;
-}
-
 
 

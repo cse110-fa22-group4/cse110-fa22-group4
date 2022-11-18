@@ -1,0 +1,141 @@
+
+/* TOP CONTAINER > MAIN HEADER */
+#main-header-container {
+  background-color: transparent;
+  height: 35px;
+  padding: 10px 30px;
+  padding-top: 22px;
+  padding-bottom: 25px;
+
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+}
+
+/* HEADING */
+#main-header {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+#header-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--dark);
+}
+
+#header-subtitle {
+  font-size: 12px;
+  font-weight: 100;
+  color: var(--mid-dark);
+
+  position: absolute;
+  margin-top: 5px;
+}
+
+#header-subtitle-search {
+  display: flex;
+  flex-direction: row;
+  color: var(--mid);
+}
+
+#header-subtitle-search > div {
+  margin-right: 20px;
+}
+
+#header-subtitle-search > div:hover {
+  color: var(--mid-dark);
+  transition: 300ms;
+}
+
+
+/* FUNCTION BUTTONS */
+#main-header-container button {
+  
+  background-color: var(--dark);
+  color: var(--light);
+  border: none;
+  border-radius: 2.5px;
+  height: 22px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+}
+
+#main-buttons-search {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#playlist-create-input {
+  height: 18px;
+  width: 200px;
+  font-size: 12px;
+  border-radius: 2.5px;
+  color: var(--mid-dark);
+  border: 1px solid var(--mid);
+}
+
+#playlist-create-input::placeholder {
+  color: var(--mid-dark);
+}
+
+#playlist-add {
+  height: 22px;
+  width: 200px;
+  font-size: 12px;
+  border-radius: 2.5px;
+  color: var(--mid-dark);
+  border: 1px solid var(--mid);
+}
+
+
+select {
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  font-weight: 100;
+}
+
+#btn-playlist-create {
+  display: none;
+}
+
+#btn-playlist-create+label {
+  background-color: var(--dark);
+  color: var(--light);
+  border: none;
+  border-radius: 2.5px;
+  padding: 4px 7px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+}
+
+#btn-file {
+  display: none;
+}
+
+#btn-file+label {
+  background-color: var(--dark);
+  color: var(--light);
+  border: none;
+  border-radius: 2.5px;
+  padding: 4px 7px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+}
+
+
+input {
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  font-weight: 100;
+}
+
+form {
+  display: inline;
+}
