@@ -91,6 +91,7 @@
 
 .library-card-info > div {
   padding: 3px 0;
+  height: 10px;
 }
 
 .library-card-info :nth-child(1) {

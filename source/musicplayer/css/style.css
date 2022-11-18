@@ -1,3 +1,6 @@
+/* @import "gridjs.css"; */
+@import "customGridjs.css";
+@import "main.css";
 @import "sidebar.css";
 @import "playback.css";
 @import "mainHeader.css";
@@ -6,8 +9,8 @@
 @import "searchbar.css";
 @import "search.css";
 @import "library.css";
-@import "main.css";
 @import "metaEditor.css";
+
 
 
 /* @import "home.css"; */

@@ -28,6 +28,10 @@
 }
 
 #input-search {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+  
   width: 20vw;
   max-width: 365px;
   height: 24px;
@@ -42,8 +46,11 @@
 }
 
 ::placeholder {
-  color: #C4C4C4;
+  font-family: 'Roboto', sans-serif;
   font-size: 12px;
+  font-weight: 100;
+
+  color: #C4C4C4;
 }
 
 #settings-container {

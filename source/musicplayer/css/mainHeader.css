@@ -130,12 +130,12 @@ select {
 }
 
 
-input {
+#main-header-container input {
   font-family: 'Roboto', sans-serif;
   font-size: 13px;
   font-weight: 100;
 }
 
-form {
+#main-header-container form {
   display: inline;
 }
