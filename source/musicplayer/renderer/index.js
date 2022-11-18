@@ -22,6 +22,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await domAPI.addEventListener( 'btn-library-tags', 'click', libraryTagsClick);
 	await domAPI.addEventListener( 'btn-playlists', 'click', playlistsClick);
 	await domAPI.addEventListener( 'btn-settings', 'click', settingsClick);
+
+	await domAPI.addEventListener('playbackArt', 'click', overviewClick);
+	await domAPI.addEventListener( 'playlists-bottom-btn', 'click', playlistsClick)
 });
 
 /* SIDEBAR NAVIGATION */

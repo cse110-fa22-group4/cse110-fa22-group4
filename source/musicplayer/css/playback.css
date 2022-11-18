@@ -1,13 +1,159 @@
 /* PLAYBACK */
 #playback-container {
-  position: fixed;
-  bottom: 0;
-  left: 230px;
-  width: calc(100% - 230px);
+  background-color: var(--light);
+  color: var(--txt-1);
   min-height: 100px;
   max-height: 100px;
-  border-radius: 15px 15px 0 0;
-  box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.25);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 230px;
+  padding-left: 30px;
+  box-shadow: 2px 0 4px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 15px 15px 0px 0px;
+  display: flex;        
+  align-items: center;
+}
 
-  background-color: var(--light);
+#bottombarContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  height: 100%;
+}
+
+#infoContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 25%;
+  max-height: 25%;
+}
+
+#playbackContainer {
+  /*
+  display: flex;
+  flex-direction: column;
+  */
+  display: grid;
+  grid-template-rows: 4ch 1fr;
+  grid-auto-flow: row; 
+  min-width: 50%;
+  justify-content: center;
+  align-items: center;
+}
+
+#playbackArt {
+  height: 20%;
+  width: 20%;
+  margin: 2px 5px 2px 2px;
+  border-radius: 2px 2px 2px 2px;
+}
+
+#controlsContainer {
+  display: grid;
+  /*grid-template-columns: auto auto auto auto auto;*/ /*whitespace issue doesnt seem related to container*/
+  grid-template-columns: 4ch 4ch 4ch 4ch 4ch;
+  justify-content: space-around;
+}
+
+.playbackBtn {
+  /*display: block;*/
+  padding: 0;
+  border: none;
+  background: none;
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.mainControls {
+  height: 100%;
+  width: 100%;
+  fill: black;
+}
+
+/*
+.audioIcons {
+  height: 100%;
+  width: 100%;
+}*/
+
+/*
+.otherControls {
+  fill: #67A8B7;
+  fill: #C4C4C4;
+}*/
+
+.timestamps {
+  color: lightgrey;
+  margin: 4px 4px 4px 4px;
+  /*margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;*/
+}
+
+
+#progressContainer {
+  display: grid;
+  grid-template-columns: 4ch 60ch 4ch;
+  align-items: center;
+  justify-content: center;
+}
+
+.progressBar {
+  display: flex;
+  align-items: center;
+  background-color: #C4C4C4;
+  border-radius: 5px;             /* (height of inner div) / 2 + padding */
+  padding: 1px;
+  height: 6px;
+  width: 100%;
+}
+
+.progressBar > div {
+  background-color: #67A8B7;
+  width: 50%; /* Adjust with JavaScript */
+  height: 8px;
+  border-radius: 10px;
+}
+
+#audioContainer {
+  display: grid;
+  grid-template-columns: 2ch 100% 2ch;
+  grid-template-rows: 2ch;
+  align-items: center;
+  max-width: 25%;
+  max-height: 25%;
+}
+
+/*Pretty sure Electron is Chrominum-based*/
+#volume {
+  overflow: hidden; /*This is key so that box shadow appears as fill*/
+  appearance: none;
+  outline: none;
+  width: 80%;
+  height: 1vmin;
+  border-radius: 0.5vmin;
+  background:  #C4C4C4; /*slider 'container' color*/
+}
+
+/*
+#volume::-webkit-slider-runnable-track {
+  height: 10px;
+  appearance: none;
+  color: #13bba4;
+  margin-top: -1px;
+}*/
+
+#volume::-webkit-slider-thumb {
+  cursor: pointer;
+  appearance: none;
+  width: 0;
+  height: 0;
+  background: #C4C4C4;                 /*thumb color*/
+  border-radius: 50%;
+  box-shadow: -80px 0 0 80px #67A8B7;  /*'fill' color*/
 }

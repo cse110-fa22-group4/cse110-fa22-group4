@@ -1,0 +1,57 @@
+<div id="bottombarContainer">
+    <!-- NOW PLAYING -->
+    <div id="infoContainer">
+        <!-- need js actually to dynamically change content-->
+        <!-- get data from api-->
+            <img src="../img/artwork.webp" id="playbackArt">
+            <!-- <img src="/musicplayer/img/artwork.webp" id="playbackArt"> -->
+        <p><b>Don't start now</b><br>Dua Lipa</p>
+    </div>
+
+    <!-- PLAYBACK CONTROLS -->
+    <div id="playbackContainer">
+        <div id="controlsContainer">
+            <button type="button" id="shuffle-btn" class="playbackBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mainControls" viewBox="0 0 60 60"><path class="otherControls" d="M29.05 40.5v-3h6.25l-9.2-9.15 2.1-2.15 9.3 9.2v-6.35h3V40.5Zm-19.45 0-2.1-2.15 27.9-27.9h-6.35v-3H40.5V18.9h-3v-6.3Zm10.15-18.7L7.5 9.6l2.15-2.15 12.25 12.2Z"/></svg>
+            </button>
+            <button type="button" id="prev-btn" class="playbackBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mainControls" viewBox="0 0 60 60"><path d="M11 36V12h3v24Zm26 0L19.7 24 37 12Z"/></svg>
+            </button>
+            <button type="button" id="play-btn" class="playbackBtn">
+                <img src="../img/icons/playback/play.png" width="20" height="20">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="mainControls" viewBox="0 0 60 60"><path d="M16 37.85v-28l22 14Z"/></svg> -->
+            </button>
+            <button type="button" id="next-btn" class="playbackBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mainControls" viewBox="0 0 60 60"><path d="M34 36V12h3v24Zm-23 0V12l17.3 12Z"/></svg>
+            </button>
+            <button type="button" id="loop-btn" class="playbackBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mainControls" viewBox="0 0 60 60"><path class="otherControls" d="M24 44q-3.75 0-7.025-1.4-3.275-1.4-5.725-3.85Q8.8 36.3 7.4 33.025 6 29.75 6 26h3q0 6.25 4.375 10.625T24 41q6.25 0 10.625-4.375T39 26q0-6.25-4.25-10.625T24.25 11H23.1l3.65 3.65-2.05 2.1-7.35-7.35 7.35-7.35 2.05 2.05-3.9 3.9H24q3.75 0 7.025 1.4 3.275 1.4 5.725 3.85 2.45 2.45 3.85 5.725Q42 22.25 42 26q0 3.75-1.4 7.025-1.4 3.275-3.85 5.725-2.45 2.45-5.725 3.85Q27.75 44 24 44Z"/></svg>
+            </button>
+        </div>
+        <div id="progressContainer">
+            <p class="timestamps">###</p>
+            <!-- <svg>
+                <rect id="playbackBar" class="bar"/>
+            </svg> -->
+            <div class="progressBar">
+                <div></div>
+            </div>
+            <p class="timestamps">###</p>
+        </div>
+    </div>
+
+    <!-- VOLUME -->
+    <div id="audioContainer">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" height="48" width="48"><path d="M28 41.45v-3.1q4.85-1.4 7.925-5.375T39 23.95q0-5.05-3.05-9.05-3.05-4-7.95-5.35v-3.1q6.2 1.4 10.1 6.275Q42 17.6 42 23.95t-3.9 11.225Q34.2 40.05 28 41.45ZM6 30V18h8L24 8v32L14 30Zm21 2.4V15.55q2.75.85 4.375 3.2T33 24q0 2.85-1.65 5.2T27 32.4Zm-6-16.8L15.35 21H9v6h6.35L21 32.45ZM16.3 24Z"/></svg>
+        <!-- <svg>
+            <rect id="audioBar" class="bar"/> 
+        </svg> -->
+        <!-- <div class="progressBar">
+            <div></div>
+        </div> -->
+        <input type="range" id="volume" value="100">
+        <button type="button" id="playlists-bottom-btn" class="playbackBtn" >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" height="48" width="48"><path d="M5 31.5v-3h15.3v3Zm0-8.25v-3h23.65v3ZM5 15v-3h23.65v3Zm27.1 27V25.9L43 33.95Z"/></svg>
+        </button>
+    </div>
+<div>
