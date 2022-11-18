@@ -22,6 +22,7 @@
   --theme: #67878E;
   --dark: #1F1F1F;
   --light: #FFFFFF;
+  --mid-light: #dbdbdb;
   --mid: #C4C4C4;
   --mid-dark: #767676;
 }
@@ -38,6 +39,18 @@ body {
   height: 100vh;
   margin: 0;
   padding: 0;
+}
+
+/* SCROLL BARS */
+::-webkit-scrollbar {
+  border: none;
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--mid-light);
+  border-radius: 10px;
 }
 
 /* TOP CONTAINER */
