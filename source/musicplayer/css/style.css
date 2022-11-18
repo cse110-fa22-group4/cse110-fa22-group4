@@ -53,7 +53,7 @@ body {
 
 #mainMeta-container {
   padding: 0 30px;
-  height: 60%;
+  height: 58%;
 
   display: grid;
   grid-template-columns: 1fr 0fr;
