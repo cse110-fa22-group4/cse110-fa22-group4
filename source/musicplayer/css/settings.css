@@ -35,8 +35,9 @@
     right: 0;
     bottom: 0;
     background-color: rgb(102, 99, 99);
+    /* animation doesn't appear to be working well right now
     -webkit-transition: .4s;
-    transition: .4s;
+    transition: .4s; */
 }
 
 /* position of slider when setting is off */
@@ -49,9 +50,10 @@
     bottom: 4px;
     background-color: white;
 
-    /* animation for when we go from on to off */
+    /* animation for when we go from on to off 
+    animation makes it take 0.8 seconds for these elements to dissappear
     -webkit-transition: .4s;
-    transition: .4s;
+    transition: .4s;*/
 }
 
 /*change the color of the label when we enable the setting*/

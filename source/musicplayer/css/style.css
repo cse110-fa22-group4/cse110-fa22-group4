@@ -10,10 +10,8 @@
 @import "search.css";
 @import "library.css";
 @import "metaEditor.css";
-
-
-
-/* @import "home.css"; */
+@import "settings.css";
+@import "home.css";
 
 
 :root {
@@ -55,7 +53,7 @@ body {
 
 #mainMeta-container {
   padding: 0 30px;
-  height: 58%;
+  height: 60%;
 
   display: grid;
   grid-template-columns: 1fr 0fr;
