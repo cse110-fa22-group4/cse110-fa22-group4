@@ -101,6 +101,24 @@
   color: var(--mid);
 }
 
+@media only screen and (max-width: 1300px) {
+  .ovEx-track-info :nth-child(1) {
+    font-size: 28px;
+  }
+
+  .ovEx-track-info :nth-child(2) {
+    font-size: 14px;
+    padding-left: 0;
+
+  }
+
+  .ovEx-track-info :nth-child(3) {
+    font-size: 12px;
+    padding-left: 0;
+
+  }
+}
+
 /* QUEUE */
 .ovEx-queue-info {
   display: flex;
