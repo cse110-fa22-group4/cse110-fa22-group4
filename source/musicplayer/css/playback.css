@@ -95,7 +95,6 @@
   margin-inline-end: 0px;*/
 }
 
-
 #progressContainer {
   display: grid;
   grid-template-columns: 4ch 60ch 4ch;
@@ -103,41 +102,48 @@
   justify-content: center;
 }
 
+/*
 .progressBar {
   display: flex;
   align-items: center;
   background-color: #C4C4C4;
-  border-radius: 5px;             /* (height of inner div) / 2 + padding */
+  border-radius: 5px;             
   padding: 1px;
   height: 6px;
   width: 100%;
 }
 
+
 .progressBar > div {
   background-color: #67A8B7;
-  width: 50%; /* Adjust with JavaScript */
+  width: 50%; 
   height: 8px;
   border-radius: 10px;
 }
+*/
 
 #audioContainer {
   display: grid;
-  grid-template-columns: 2ch 100% 2ch;
+  grid-template-columns: 3ch 12ch 4ch;
   grid-template-rows: 2ch;
   align-items: center;
+  justify-content: center;
   max-width: 25%;
   max-height: 25%;
 }
 
 /*Pretty sure Electron is Chrominum-based*/
-#volume {
+.fader {
   overflow: hidden; /*This is key so that box shadow appears as fill*/
   appearance: none;
   outline: none;
-  width: 80%;
-  height: 1vmin;
-  border-radius: 0.5vmin;
+  height: 2vmin;
+  border-radius: 1vmin;
   background:  #C4C4C4; /*slider 'container' color*/
+}
+
+#audio-fader {
+  width: 100%;
 }
 
 /*
@@ -148,12 +154,16 @@
   margin-top: -1px;
 }*/
 
-#volume::-webkit-slider-thumb {
+.fader::-webkit-slider-thumb {
   cursor: pointer;
   appearance: none;
   width: 0;
   height: 0;
   background: #C4C4C4;                 /*thumb color*/
-  border-radius: 50%;
-  box-shadow: -80px 0 0 80px #67A8B7;  /*'fill' color*/
+  border-radius: 80%;
+  box-shadow: -220px 0 0 220px #67A8B7;  /*'fill' color*/
+}
+
+#playlists-bottom-btn {
+  margin: 0 0 0 15px;
 }

@@ -18,7 +18,8 @@ window.addEventListener('playback-loaded', async () => {
     await domAPI.addEventListener('play-btn', 'click', playSong);
     //await domAPI.addEventListener('next-btn', 'click, );
     await domAPI.addEventListener('loop-btn', 'click', loopSong);
-  });
+    await domAPI.addEventListener('audio-fader', 'input', updateVolume);
+});
 
 /**
  * Handles behavior of play/pause button when clicked
@@ -94,5 +95,18 @@ function toggleIcon(btn, btnImg) {
     else {
         btnImg.src = "../img/icons/playback/play.png";
         (btn).id = "play-btn";
+    }
+}
+
+function updateVolume() {
+    let audioFader = document.querySelector('#audio-fader');
+    let audioIcon = document.querySelector('#audioIcon');
+    console.log(audioFader)
+    console.log(audioIcon)
+    console.log(audioFader.value)
+    if(audioFader.value == 0) {
+        audioIcon.src = "../img/icons/playback/muted.png";
+    } else {
+        audioIcon.src = "../img/icons/playback/unmuted.png"
     }
 }
