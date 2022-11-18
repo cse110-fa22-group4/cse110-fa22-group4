@@ -1,9 +1,8 @@
 <!-- Main Header -->
 <!-- Default Header is Home -->
 <div id="main-header">
-  <div id="header-title">Library</div>
+  <div id="header-title">Home</div>
   <div id="header-subtitle"></div>
-
 </div>
 
 <!-- Function Buttons -->
@@ -13,20 +12,18 @@
   <!-- <button id="btn-select" type="submit">Select: On</button> -->
 
   <!-- Create playlist -->
-  <label for="playlist-create-input"></label><input id="playlist-create-input" type="text"
-                                                    placeholder="Name new playlist...">
-  <input id="btn-playlist-create" type="submit">
-  <label id="btn-playlist-create-label" for="btn-playlist-create">Create Playlist</label>
+  <input id="input-playlist-create" type="text" placeholder="Name new playlist...">
+  <input id="btn-playlist-create" type="submit" value="Create Playlist">
 
   <!-- Add to playlist -->
-  <label for="playlist-add"></label><select name="add-ply" id="playlist-add"
->
-    <option value="" disabled selected>Add to playlist...</option>
+  <select name="select-playlist-add" id="select-playlist-add">
+    <option value="" selected disabled hidden>Choose a playlist...</option>
     <option value="select-playlist-1">Summer Mix</option>
     <option value="select-playlist-2">Monday Songs</option>
     <option value="select-playlist-3">Fav Karaoke</option>
   </select>
-  <button id="btn-playlist-add" type="submit">Add to Playlist</button>
+  <input id="btn-playlist-add" type="submit" value="Add to Playlist">
+
 
   <!-- Views -->
   <!-- <select name="views" id="btn-view">
@@ -46,7 +43,9 @@
   <button id="btn-meta" type="submit">Edit</button>
 
   <!-- Add File -->
-  <input id="btn-file" type="file" multiple>
-  <label id="btn-file-label" for="btn-file">Add to Library</label>
+    <input id="btn-file" type="file" multiple hidden>
+    <label id="btn-file-label" for="btn-file">
+      <div>Add to Library</div>
+    </label>  
 
 </div>

@@ -58,7 +58,7 @@
 
 /*change the color of the label when we enable the setting*/
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: var(--theme);
 }
 
 /*animation for when we enable the setting*/

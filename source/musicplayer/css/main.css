@@ -1,6 +1,6 @@
 /* MAIN CONTAINER */
 #main-container {
-  color: var(--mid-dark);
+  color: var(--dark);
   overflow-y: auto;
 }
 

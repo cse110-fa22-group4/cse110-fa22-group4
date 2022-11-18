@@ -2,18 +2,20 @@
 /* TOP CONTAINER > MAIN HEADER */
 #main-header-container {
   background-color: transparent;
-  height: 35px;
-  padding: 10px 30px;
-  padding-top: 22px;
-  padding-bottom: 25px;
+  padding: 22px 30px;
+  padding-bottom: 15px;
 
   display: flex;
   align-items: start;
   justify-content: space-between;
+
+  min-height: 50px;
 }
 
 /* HEADING */
 #main-header {
+  display: flex;
+  flex-direction: column;
   white-space: nowrap;
   overflow: visible;
 }
@@ -28,8 +30,6 @@
   font-size: 12px;
   font-weight: 100;
   color: var(--mid-dark);
-
-  position: absolute;
   margin-top: 5px;
 }
 
@@ -54,93 +54,93 @@
 }
 
 
-/* FUNCTION BUTTONS */
-#main-header-container button {
-  
-  background-color: var(--dark);
-  color: var(--light);
-  border: none;
-  border-radius: 2.5px;
-  height: 22px;
-
-  font-family: 'Roboto', sans-serif;
-  font-size: 12px;
-  font-weight: 100;
-}
-
+/* BUTTONS CONTAINER */
 #main-buttons-search {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+
+  align-self: center;
+
   white-space: nowrap;
   overflow: hidden;
 }
 
-#playlist-create-input {
-  height: 18px;
+/* BUTTON - CREATE PLAYLIST */
+#input-playlist-create {
+  height: 25px;
   width: 200px;
-  font-size: 12px;
+  border-radius: 2.5px;
+  border: 1px solid var(--mid);
+  padding-left: 10px;
+
+  font-size: 11px;
+  color: var(--mid-dark);
+}
+
+#input-playlist-create::placeholder {
+  font-size: 11px;
+  color: var(--mid-dark);
+}
+
+#btn-playlist-create, #btn-playlist-add {
+  border: none;
+  height: 29px;
+  border-radius: 2.5px;
+  background-color: var(--dark);
+
+  font-size: 11px;
+  color: var(--light);
+  padding: 0 15px;
+}
+/* BUTTON - ADD TO PLAYLIST */
+
+#select-playlist-add {
+  height: 29px;
+  width: 200px;
+  font-size: 11px;
   border-radius: 2.5px;
   color: var(--mid-dark);
   border: 1px solid var(--mid);
-}
 
-#playlist-create-input::placeholder {
-  color: var(--mid-dark);
-}
-
-#playlist-add {
-  height: 22px;
-  width: 200px;
-  font-size: 12px;
-  border-radius: 2.5px;
-  color: var(--mid-dark);
-  border: 1px solid var(--mid);
-}
-
-
-select {
   font-family: 'Roboto', sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 100;
+
+  padding-left: 5px;
 }
 
-#btn-playlist-create {
-  display: none;
-}
-
-#btn-playlist-create+label {
+/* BUTTON - METADATA EDITOR */
+button#btn-meta {
   background-color: var(--dark);
   color: var(--light);
   border: none;
   border-radius: 2.5px;
-  padding: 4px 7px;
+  height: 29px;
 
   font-family: 'Roboto', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 100;
+  padding: 0 15px;
 }
 
+/* BUTTON - ADD TO LIBRARY */
 #btn-file {
   display: none;
 }
 
-#btn-file+label {
+#btn-file + label {
   background-color: var(--dark);
   color: var(--light);
   border: none;
+  padding: 0 15px;
   border-radius: 2.5px;
-  padding: 4px 7px;
 
   font-family: 'Roboto', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 100;
-}
 
-
-#main-header-container input {
-  font-family: 'Roboto', sans-serif;
-  font-size: 13px;
-  font-weight: 100;
-}
-
-#main-header-container form {
-  display: inline;
+  height: 29px;
+  display: flex;
+  align-items: center;
 }
