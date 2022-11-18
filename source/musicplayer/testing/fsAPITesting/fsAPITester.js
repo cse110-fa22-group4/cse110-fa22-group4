@@ -24,10 +24,8 @@ const {
  */
 async function testAll() {
     await setStoragePath('users/user_1/data');
-    let folderPath = [];
-    folderPath.push('users/user_1/songs');
     await testSettings();
-    await testSongs(folderPath);
+    await testSongs();
 
    /* await setStoragePath('users/user_2/data');
     folderPath = 'users/user_2/songs';

@@ -11,6 +11,10 @@ const {
 } = require('../../preload/fs/fsAPICalls');
 
 const {
+    ffmpegRead,
+} = require('../../preload/ffmpeg/metadata/ffMetaAPICalls');
+
+const {
     getSongs,
     writeSongs,
     appendSong,
@@ -21,25 +25,15 @@ const {
 
 /**
  * @description Tests the songs API.
- * @param {object[]} songFolderPaths An array of string paths to the 'watch' folders containing songs
+ * 
  */
- async function testSongs(songFolderPaths) {
-    /*
-     * song folder path setup
-     * Takes an array of paths to simulate the 'watch folders'
-     */
-
-    let songPaths = []
-
-    for (let songFolderPath in songFolderPaths) {
-        const localPath = await getSourceFolder();
-        let paths = await recursiveSearchAtPath(path.join(localPath, songFolderPaths[songFolderPath]));
-        for(let p in paths) {
-            songPaths.push(paths[p]);
-        }
-    }
+ async function testSongs() {
     
-    //await testGetSong();
+    //await testWriteSongs(getSongs());
+    
+    await testGetSong();
+
+    await testAppendSong();
 
 }
 
@@ -47,13 +41,21 @@ const {
  * 
  */
 async function testGetSong() {
+    songs = await getSongs();
+    //console.log('settings file: ' + JSON.stringify(songs));
 }
 
 /**
  * 
  */
 async function testAppendSong() {
-    
+    let info = Object;
+    info.title = "Hope";
+    info.artist = "Tobu";
+    let song = Object;
+    song["/Users/jeremylei/untitled folder/cse110-fa22-group4/source/user_1/songs/Tobu/Tobu - Hope [NCS Release].mp3"] = info;
+    console.log(song);
+    appendSong(song);
 }
 
 /**
