@@ -4,7 +4,7 @@ const {ipcRenderer, contextBridge, app} = require('electron');
 const {
 	addEventListener, getAttribute,
 	setAttribute, addChild, setHTML,
-	setStyle, getValue, setValue, loadPage,
+	setStyle, setStyleClassToggle, getValue, setValue, loadPage,
 	addGrid,
 } = require('./dom/domAPICalls.js');
 
@@ -110,6 +110,7 @@ contextBridge.exposeInMainWorld('domAPI', {
 	addChild: addChild,
 	setHTML: setHTML,
 	setStyle: setStyle,
+  setStyleClassToggle: setStyleClassToggle,
 	getValue: getValue,
   setValue: setValue,
 	loadPage: loadPage,

@@ -13,8 +13,8 @@ window.addEventListener('searchCategories-loaded', async () => {
  * @param {HTMLElement} element
  */
  async function searchAll(element) {
-	await resetSearchStyle();
-  await domAPI.setStyle('subtitle-search-all', 'color', 'var(--mid-dark)');
+	await resetSubtitleButtons();
+  await domAPI.setStyleClassToggle('subtitle-search-all', 'subtitle-search-active', true);
 	alert('*FUNCTION UNDER CONTRUCTION*');
 }
 
@@ -23,8 +23,8 @@ window.addEventListener('searchCategories-loaded', async () => {
  * @param {HTMLElement} element
  */
  async function searchTracks(element) {
-	await resetSearchStyle();
-  await domAPI.setStyle('subtitle-search-tracks', 'color', 'var(--mid-dark)');
+	await resetSubtitleButtons();
+  await domAPI.setStyleClassToggle('subtitle-search-tracks', 'subtitle-search-active', true);
 	alert('*FUNCTION UNDER CONTRUCTION*');
 }
 
@@ -33,8 +33,8 @@ window.addEventListener('searchCategories-loaded', async () => {
  * @param {HTMLElement} element
  */
  async function searchArtists(element) {
-	await resetSearchStyle();
-  await domAPI.setStyle('subtitle-search-artists', 'color', 'var(--mid-dark)');
+	await resetSubtitleButtons();
+  await domAPI.setStyleClassToggle('subtitle-search-artists', 'subtitle-search-active', true);
 	alert('*FUNCTION UNDER CONTRUCTION*');
 }
 
@@ -43,8 +43,8 @@ window.addEventListener('searchCategories-loaded', async () => {
  * @param {HTMLElement} element
  */
  async function searchAlbums(element) {
-	await resetSearchStyle();
-  await domAPI.setStyle('subtitle-search-albums', 'color', 'var(--mid-dark)');
+	await resetSubtitleButtons();
+  await domAPI.setStyleClassToggle('subtitle-search-albums', 'subtitle-search-active', true);
 	alert('*FUNCTION UNDER CONTRUCTION*');
 }
 
@@ -53,8 +53,8 @@ window.addEventListener('searchCategories-loaded', async () => {
  * @param {HTMLElement} element
  */
  async function searchGenres(element) {
-	await resetSearchStyle();
-  await domAPI.setStyle('subtitle-search-genres', 'color', 'var(--mid-dark)');
+	await resetSubtitleButtons();
+  await domAPI.setStyleClassToggle('subtitle-search-genres', 'subtitle-search-active', true);
 	alert('*FUNCTION UNDER CONTRUCTION*');
 }
 
@@ -63,8 +63,8 @@ window.addEventListener('searchCategories-loaded', async () => {
  * @param {HTMLElement} element
  */
  async function searchPlaylists(element) {
-	await resetSearchStyle();
-  await domAPI.setStyle('subtitle-search-playlists', 'color', 'var(--mid-dark)');
+	await resetSubtitleButtons();
+  await domAPI.setStyleClassToggle('subtitle-search-playlists', 'subtitle-search-active', true);
 	alert('*FUNCTION UNDER CONTRUCTION*');
 }
 
@@ -73,22 +73,20 @@ window.addEventListener('searchCategories-loaded', async () => {
  * @param {HTMLElement} element
  */
  async function searchTags(element) {
-	await resetSearchStyle();
-  await domAPI.setStyle('subtitle-search-tags', 'color', 'var(--mid-dark)');
+	await resetSubtitleButtons();
+  await domAPI.setStyleClassToggle('subtitle-search-tags', 'subtitle-search-active', true);
 	alert('*FUNCTION UNDER CONTRUCTION*');
 }
 
 /**
- * Reset search categories styling
- * @param {HTMLElement} element
+ * Toggles off background highlight of subtitle buttons.
  */
- async function resetSearchStyle(element) {
-  await domAPI.setStyle('subtitle-search-all', 'color', 'var(--mid)');
-  await domAPI.setStyle('subtitle-search-tracks', 'color', 'var(--mid)');
-  await domAPI.setStyle('subtitle-search-artists', 'color', 'var(--mid)');
-  await domAPI.setStyle('subtitle-search-albums', 'color', 'var(--mid)');
-  await domAPI.setStyle('subtitle-search-genres', 'color', 'var(--mid)');
-  await domAPI.setStyle('subtitle-search-playlists', 'color', 'var(--mid)');
-  await domAPI.setStyle('subtitle-search-tags', 'color', 'var(--mid)');
+ async function resetSubtitleButtons() {
+  await domAPI.setStyleClassToggle('subtitle-search-all', 'subtitle-search-active', false)
+  await domAPI.setStyleClassToggle('subtitle-search-tracks', 'subtitle-search-active', false)
+  await domAPI.setStyleClassToggle('subtitle-search-artists', 'subtitle-search-active', false)
+  await domAPI.setStyleClassToggle('subtitle-search-albums', 'subtitle-search-active', false)
+  await domAPI.setStyleClassToggle('subtitle-search-genres', 'subtitle-search-active', false)
+  await domAPI.setStyleClassToggle('subtitle-search-playlists', 'subtitle-search-active', false)
+  await domAPI.setStyleClassToggle('subtitle-search-tags', 'subtitle-search-active', false)
 }
-

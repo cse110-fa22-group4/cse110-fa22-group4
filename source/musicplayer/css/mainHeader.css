@@ -43,6 +43,11 @@
   margin-right: 20px;
 }
 
+.subtitle-search-active {
+  color: var(--mid-dark);
+  transition: 300ms;
+}
+
 #header-subtitle-search > div:hover {
   color: var(--mid-dark);
   transition: 300ms;

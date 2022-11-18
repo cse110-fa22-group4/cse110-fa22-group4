@@ -16,9 +16,10 @@
 
   /* background: #2c597f; */
   /* background: linear-gradient(10deg, #b62727ad 0%, #2c597f 100%); */
-  /* background: linear-gradient(10deg, #1A4751 0%, #67878E 100%); */
-  background-color: #567c87;
-
+  /* background-color: linear-gradient(19deg, #67878E 0%, #67878E 100%); */
+  /* background-color: #567c87; */
+  background-color: var(--theme);
+  background-image: url(../img/sidebar-bg.png);
   white-space: nowrap;
   overflow: hidden;
 }
@@ -42,7 +43,12 @@
 }
 
 .sidebar-icon-btn:hover {
-  background-color: rgb(0, 0, 0, .2);
+  background-color: rgba(0, 0, 0, .20);
+  transition: 300ms;
+}
+
+.sidebar-btn-active {
+  background-color: rgba(0, 0, 0, .40);
   transition: 300ms;
 }
 

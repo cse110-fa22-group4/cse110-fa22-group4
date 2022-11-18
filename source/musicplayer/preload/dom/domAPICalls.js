@@ -182,6 +182,25 @@ async function setStyle(domID, style, value) {
 }
 
 /**
+ * @name setStyleClassToggle
+ * @memberOf domAPI
+ * @description Toggles a css class style to a given value if it is deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} style The style to change.
+ * @param {boolean} toggle Adds style class if true, otherwise remove if false.
+ * @return {Promise<void>}
+ */
+ async function setStyleClassToggle(domID, style, toggle) {
+	const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
+	if (isChildSafe) {
+    if(toggle)
+		  document.getElementById(domID).classList.add(style);
+    else
+		  document.getElementById(domID).classList.remove(style);
+	}
+}
+
+/**
  * @name getValue
  * @memberOf domAPI
  * @description Gets the value of a given domID, if it exists and
@@ -231,6 +250,7 @@ module.exports = {
 	addChild,
 	setHTML,
 	setStyle,
+  setStyleClassToggle,
 	getValue,
   setValue,
 	addGrid,

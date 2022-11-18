@@ -25,12 +25,13 @@ async function submitSearch(element) {
     // Switch to search results page
     await domAPI.setHTML('header-title', 'Search');
     await domAPI.loadPage('header-subtitle', 'components/searchCategories.html');
-    await domAPI.setStyle('subtitle-search-all', 'color', 'var(--mid-dark)');
+    await resetSubtitleButtons();
+    await domAPI.setStyleClassToggle('subtitle-search-all', 'subtitle-search-active', true);
     await domAPI.loadPage('main-container', 'pages/searchPage.html');
-
-    window.dispatchEvent(new CustomEvent('searchbarSearch', { detail: searchQuery }));
+    await resetSidebarButtons();
+    await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
     await topExtensionOff();
-
+    window.dispatchEvent(new CustomEvent('searchbarSearch', { detail: searchQuery }));
   }
 
   // TODO: Use search query value for searching our app's library

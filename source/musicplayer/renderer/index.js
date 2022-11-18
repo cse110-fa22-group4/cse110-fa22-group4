@@ -8,6 +8,7 @@ let currentSearchCategory;
 window.addEventListener('DOMContentLoaded', async () => {
 	await domAPI.setStyle('top-container-extended', 'visibility', 'hidden');
 	await domAPI.loadPage('sidebar-container', 'components/sidebar.html');
+  await domAPI.setStyleClassToggle('sidebar-btn-container-home', 'sidebar-btn-active', true);
 	await domAPI.loadPage('overview-container', 'components/overview.html');
 	await domAPI.loadPage('main-header-container', 'components/mainHeader.html');
 	await domAPI.loadPage('main-container', 'pages/home.html');
@@ -37,7 +38,9 @@ async function homeClick(element) {
 	await domAPI.loadPage('main-container', 'pages/home.html');
 	await domAPI.setHTML('header-title', 'Home');
   await domAPI.setHTML('header-subtitle', '');
-	await topExtensionOff();
+  await resetSidebarButtons();
+  await domAPI.setStyleClassToggle('sidebar-btn-container-home', 'sidebar-btn-active', true);
+  await topExtensionOff();
 }
 
 /**
@@ -47,6 +50,8 @@ async function homeClick(element) {
 async function overviewClick(element) {
 	await domAPI.loadPage('top-container-extended', 'components/overviewExtended.html');
 	await domAPI.loadPage('ovEx-content-container', 'pages/ovExQueue.html');
+  await resetSidebarButtons();
+  await domAPI.setStyleClassToggle('sidebar-btn-container-nowPlaying', 'sidebar-btn-active', true);
 	await topExtensionOn();
 }
 
@@ -58,6 +63,8 @@ async function libraryClick(element) {
 	await domAPI.loadPage('main-container', 'pages/library.html', postLibraryLoad);
 	await domAPI.setHTML('header-title', 'Library');
   await domAPI.setHTML('header-subtitle', 'All');
+  await resetSidebarButtons();
+  await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 	await topExtensionOff();
 }
 /**
@@ -75,6 +82,8 @@ async function libraryArtistsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/libraryArtists.html');
 	await domAPI.setHTML('header-title', 'Library');
   await domAPI.setHTML('header-subtitle', 'Artists');
+  await resetSidebarButtons();
+  await domAPI.setStyleClassToggle('sidebar-btn-container-artists', 'sidebar-btn-active', true);
 	await topExtensionOff();
 }
 
@@ -86,6 +95,8 @@ async function libraryAlbumsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/libraryAlbums.html');
 	await domAPI.setHTML('header-title', 'Library');
   await domAPI.setHTML('header-subtitle', 'Albums');
+  await resetSidebarButtons();
+  await domAPI.setStyleClassToggle('sidebar-btn-container-albums', 'sidebar-btn-active', true);
 	await topExtensionOff();
 }
 
@@ -97,6 +108,8 @@ async function libraryGenresClick(element) {
 	await domAPI.loadPage('main-container', 'pages/libraryGenres.html');
 	await domAPI.setHTML('header-title', 'Library');
   await domAPI.setHTML('header-subtitle', 'Genres');
+  await resetSidebarButtons();
+  await domAPI.setStyleClassToggle('sidebar-btn-container-genres', 'sidebar-btn-active', true);
 	await topExtensionOff();
 }
 
@@ -108,6 +121,8 @@ async function libraryTagsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/libraryTags.html');
 	await domAPI.setHTML('header-title', 'Library');
   await domAPI.setHTML('header-subtitle', 'Tags');
+  await resetSidebarButtons();
+  await domAPI.setStyleClassToggle('sidebar-btn-container-tags', 'sidebar-btn-active', true);
 	await topExtensionOff();
 }
 
@@ -119,6 +134,8 @@ async function playlistsClick(element) {
 	await domAPI.loadPage('main-container', 'pages/playlists.html');
 	await domAPI.setHTML('header-title', 'Playlists');
   await domAPI.setHTML('header-subtitle', 'All');
+  await resetSidebarButtons();
+  await domAPI.setStyleClassToggle('sidebar-btn-container-playlists', 'sidebar-btn-active', true);
 	await topExtensionOff();
 }
 
@@ -151,4 +168,18 @@ async function topExtensionOn() {
 		await domAPI.setStyle('top-container-extended', 'visibility', 'visible');
 		topContainerIsExtended = true;
 	}
+}
+
+/**
+ * Toggles off background highlight of sidebar buttons.
+ */
+ async function resetSidebarButtons() {
+  await domAPI.setStyleClassToggle('sidebar-btn-container-home', 'sidebar-btn-active', false);
+  await domAPI.setStyleClassToggle('sidebar-btn-container-nowPlaying', 'sidebar-btn-active', false)
+  await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', false)
+  await domAPI.setStyleClassToggle('sidebar-btn-container-artists', 'sidebar-btn-active', false)
+  await domAPI.setStyleClassToggle('sidebar-btn-container-albums', 'sidebar-btn-active', false)
+  await domAPI.setStyleClassToggle('sidebar-btn-container-genres', 'sidebar-btn-active', false)
+  await domAPI.setStyleClassToggle('sidebar-btn-container-tags', 'sidebar-btn-active', false)
+  await domAPI.setStyleClassToggle('sidebar-btn-container-playlists', 'sidebar-btn-active', false)
 }
