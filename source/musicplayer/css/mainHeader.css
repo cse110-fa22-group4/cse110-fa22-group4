@@ -18,6 +18,8 @@
   flex-direction: column;
   white-space: nowrap;
   overflow: visible;
+
+  min-width: 50%;
 }
 
 #header-title {
@@ -63,7 +65,7 @@
   align-self: center;
 
   white-space: nowrap;
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 /* BUTTON - CREATE PLAYLIST */

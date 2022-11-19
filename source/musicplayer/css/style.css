@@ -66,8 +66,7 @@ body {
 
 #mainMeta-container {
   padding: 0 30px;
-  height: 58%;
-
+  height: calc(100% - 33% - 80px);
   display: grid;
   grid-template-columns: 1fr 0fr;
   /* column-gap: 30px; */
