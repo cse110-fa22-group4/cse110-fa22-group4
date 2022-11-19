@@ -242,6 +242,23 @@ async function getValue(domID, value) {
 	}
 }
 
+/**
+ * @name setThemeColor
+ * @memberOf domAPI
+ * @description Sets the application theme color.
+ * @param {string} primary The value to set for the primary theme variable.
+ * @param {string} secondary The value to set for the secondary theme variable.
+ *
+ */
+ async function setThemeColor(primary, secondary) {
+  if(primary !== '')
+    document.documentElement.style.setProperty('--theme-primary', primary);
+  if(secondary !== '')
+    document.documentElement.style.setProperty('--theme-secondary', secondary);
+}
+
+
+
 module.exports = {
 	loadPage,
 	addEventListener,
@@ -254,4 +271,5 @@ module.exports = {
 	getValue,
   setValue,
 	addGrid,
+  setThemeColor,
 };

@@ -5,7 +5,7 @@ const {
 	addEventListener, getAttribute,
 	setAttribute, addChild, setHTML,
 	setStyle, setStyleClassToggle, getValue, setValue, loadPage,
-	addGrid,
+	addGrid, setThemeColor,
 } = require('./dom/domAPICalls.js');
 
 const {
@@ -115,7 +115,7 @@ contextBridge.exposeInMainWorld('domAPI', {
   setValue: setValue,
 	loadPage: loadPage,
 	addGrid: addGrid,
-
+  setThemeColor: setThemeColor,
 });
 
 contextBridge.exposeInMainWorld('ffmpegAPI', {

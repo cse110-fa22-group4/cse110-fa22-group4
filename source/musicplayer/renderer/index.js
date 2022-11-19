@@ -4,6 +4,18 @@ const searchQuery = ''; // the current query entered into the search bar
 let searchQueryGlobal;
 let currentSearchCategory;
 
+/* TEMPORARY COLOR THEME PICKER */
+const themeColorsPrimary = themeColorsSecondary = [
+  '#3c7f4f', // green-ish
+  '#8e4f46', // red-ish
+  '#a98f45', // yellow-ish
+  '#43918b', // teal-ish
+  '#39354d', // purple-ish
+  '#2e436a', // blue-ish
+  '#67878E', // default
+];
+let themeColorsPrimaryCount = themeColorsSecondaryCount = themeColorsPrimary.length;
+
 /* GENERATE HOME PAGE */
 window.addEventListener('DOMContentLoaded', async () => {
 	await domAPI.setStyle('top-container-extended', 'visibility', 'hidden');
@@ -23,6 +35,10 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await domAPI.addEventListener( 'btn-library-tags', 'click', libraryTagsClick);
 	await domAPI.addEventListener( 'btn-playlists', 'click', playlistsClick);
 	await domAPI.addEventListener( 'btn-settings', 'click', settingsClick);
+
+	await domAPI.addEventListener( 'btn-theme-color-primary', 'click', changeThemeColorPrimary);
+	await domAPI.addEventListener( 'btn-theme-color-secondary', 'click', changeThemeColorSecondary);
+
 
 	await domAPI.addEventListener('playbackArt', 'click', overviewClick);
 	await domAPI.addEventListener( 'playlists-bottom-btn', 'click', playlistsClick)
@@ -182,4 +198,22 @@ async function topExtensionOn() {
   await domAPI.setStyleClassToggle('sidebar-btn-container-genres', 'sidebar-btn-active', false)
   await domAPI.setStyleClassToggle('sidebar-btn-container-tags', 'sidebar-btn-active', false)
   await domAPI.setStyleClassToggle('sidebar-btn-container-playlists', 'sidebar-btn-active', false)
+}
+
+/**
+ * Set Primary Theme Color - ONLY TEMPORARY, REMOVE LATER!!!
+ */
+ async function changeThemeColorPrimary() {
+  await domAPI.setThemeColor(themeColorsPrimary[themeColorsPrimaryCount % themeColorsPrimary.length],'')
+  themeColorsPrimaryCount++;
+}
+
+/**
+ * Set Secondary Theme Color - ONLY TEMPORARY, REMOVE LATER!!!
+ */
+ async function changeThemeColorSecondary() {
+  await domAPI.setThemeColor('',themeColorsSecondary[themeColorsSecondaryCount % themeColorsSecondary.length])
+  themeColorsSecondaryCount--;
+  if (themeColorsSecondaryCount == 0)
+    themeColorsSecondaryCount = themeColorsSecondary.length;
 }

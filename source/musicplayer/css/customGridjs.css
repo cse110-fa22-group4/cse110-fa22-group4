@@ -67,7 +67,7 @@ text-align: left;
 }
 
 .gridjs-th {
-  color: var(--theme);
+  color: var(--theme-primary);
   padding-top: 5px;
 
 }
