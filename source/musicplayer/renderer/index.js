@@ -6,12 +6,15 @@ let currentSearchCategory;
 
 /* TEMPORARY COLOR THEME PICKER */
 const themeColorsPrimary = themeColorsSecondary = [
-  '#3c7f4f', // green-ish
   '#8e4f46', // red-ish
+  '#de802d', // orange-ish
   '#a98f45', // yellow-ish
-  '#43918b', // teal-ish
-  '#39354d', // purple-ish
+  '#3c7f4f', // green-ish
   '#2e436a', // blue-ish
+  '#39354d', // indigo-ish
+  '#995d9b', // violet-ish
+  '#43918b', // teal-ish
+  '#1a1a1a', // dark
   '#67878E', // default
 ];
 let themeColorsPrimaryCount = themeColorsSecondaryCount = themeColorsPrimary.length;
