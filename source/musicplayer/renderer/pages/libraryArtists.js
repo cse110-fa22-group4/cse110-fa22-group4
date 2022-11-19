@@ -1,3 +1,4 @@
+
 window.addEventListener('libraryArtists-loaded', async () => {
   await generateArtistsCards();
   await domAPI.addEventListenerbyClassName('library-card', 'click', libraryArtistsExtended);
@@ -42,7 +43,7 @@ window.addEventListener('libraryArtists-loaded', async () => {
 
   for (let k = 0; k < artistCards.length; k++) {
     const card = `
-    <div class="library-card">
+    <div class="library-card" data-libtarget="${artistCards[k].artist}">
       <div class="library-card-artwork">
         <img src=${artistCards[k].artwork}>
       </div>
@@ -65,9 +66,9 @@ window.addEventListener('libraryArtists-loaded', async () => {
  * Libarary > Artists Extended Page.
  * Generate Artist Library View based on user selection.
  */
-async function libraryArtistsExtended() {
+async function libraryArtistsExtended(e) {
 
-  let cardArtist = 'Dua Lipa'; // TODO: how to get element attribute after 'click'
+  let cardArtist = e.getAttribute('data-libtarget');
 
   // Set grid rows
   const data = [];

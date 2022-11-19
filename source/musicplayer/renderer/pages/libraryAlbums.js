@@ -42,7 +42,7 @@ window.addEventListener('libraryAlbums-loaded', async () => {
 
   for (let k = 0; k < albumCards.length; k++) {
     const card = `
-    <div class="library-card">
+    <div class="library-card" data-libtarget="${albumCards[k].album}">
       <div class="library-card-artwork">
         <img src=${albumCards[k].artwork}>
       </div>
@@ -56,7 +56,7 @@ window.addEventListener('libraryAlbums-loaded', async () => {
 
     cardList += card;
   }
-console.log(cardList);
+
   // insert card list into container
   await domAPI.setHTML('library-albums-cards', cardList);
 }
@@ -65,9 +65,9 @@ console.log(cardList);
  * Library > Albums Extended Page.
  * Generate Album Library View based on user selection.
  */
-async function libraryAlbumsExtended() {
+async function libraryAlbumsExtended(e) {
 
-  let cardAlbum = 'Future Nostalgia'; // TODO: how to get element attribute after 'click'
+  let cardAlbum = e.getAttribute('data-libtarget');
 
   // Set grid rows
   const data = [];

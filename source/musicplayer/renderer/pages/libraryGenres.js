@@ -29,7 +29,7 @@ async function generateGenresCards() {
   let cardList = '';
   for (const [key, value] of genreCards) {
     const card = `
-    <div class="library-card">
+    <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${value[1]}>
       </div>
@@ -52,9 +52,9 @@ async function generateGenresCards() {
  * Library > Genres Extended Page.
  * Generate Genre Library View based on user selection.
  */
-async function libraryGenresExtended() {
-  debugger
-  let cardGenre = 'Pop'; // TODO: how to get element attribute after 'click'
+async function libraryGenresExtended(e) {
+
+  let cardGenre = e.getAttribute('data-libtarget');
 
   // Set grid rows
   const data = [];

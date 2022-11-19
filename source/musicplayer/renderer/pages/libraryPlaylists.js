@@ -29,7 +29,7 @@ async function generatePlaylistsCards() {
   let cardList = '';
   for (const [key, value] of playlistCards) {
     const card = `
-    <div class="library-card">
+    <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${value[1]}>
       </div>
@@ -52,9 +52,9 @@ async function generatePlaylistsCards() {
  * Library > Playlists Extended Page.
  * Generate Playlist Library View based on user selection.
  */
-async function libraryPlaylistsExtended() {
-  debugger
-  let cardPlaylist = 'Summer Mix'; // TODO: how to get element attribute after 'click'
+async function libraryPlaylistsExtended(e) {
+
+  let cardPlaylist = e.getAttribute('data-libtarget');
 
   // Set grid rows
   const data = [];

@@ -29,7 +29,7 @@ async function generateTagsCards() {
   let cardList = '';
   for (const [key, value] of tagCards) {
     const card = `
-    <div class="library-card">
+    <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${value[1]}>
       </div>
@@ -52,9 +52,9 @@ async function generateTagsCards() {
  * Library > Tags Extended Page.
  * Generate Tag Library View based on user selection.
  */
-async function libraryTagsExtended() {
-  debugger
-  let cardTag = 'Timeless'; // TODO: how to get element attribute after 'click'
+async function libraryTagsExtended(e) {
+
+  let cardTag = e.getAttribute('data-libtarget');
 
   // Set grid rows
   const data = [];
