@@ -2,7 +2,7 @@
 const {ipcRenderer, contextBridge, app} = require('electron');
 
 const {
-	addEventListener, getAttribute,
+	addEventListener, addEventListenerbyClassName, getAttribute,
 	setAttribute, addChild, setHTML,
 	setStyle, setStyleClassToggle, getValue, setValue, loadPage,
 	addGrid, setThemeColor,
@@ -105,6 +105,7 @@ contextBridge.exposeInMainWorld('genAPI', {
 
 contextBridge.exposeInMainWorld('domAPI', {
 	addEventListener: addEventListener,
+	addEventListenerbyClassName: addEventListenerbyClassName,
 	getAttribute: getAttribute,
 	setAttribute: setAttribute,
 	addChild: addChild,

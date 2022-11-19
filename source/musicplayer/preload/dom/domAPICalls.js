@@ -112,6 +112,37 @@ async function addEventListener(domID, event, func) {
 }
 
 /**
+ * @name addEventListenerbyClassName
+ * @memberOf domAPI
+ * @description Adds an event listener to an element, if it exists and is
+ * deemed 'safe.'
+ * @param {string} domClass The 'class' tag that the element has in the html.
+ * @param {string} event The event that is to be assigned.
+ * @param {function} func The function that will run when the event triggers.
+ * @return {Promise<void>}
+ */
+ async function addEventListenerbyClassName(domClass, event, func) {
+	const isEventSafe = await ipcRenderer.invoke(
+		'managedAddEventListenerCheck', domClass, event);
+	const elements = document.getElementsByClassName(domClass);
+	if (elements === undefined || elements === null) {
+		await debugLog(`Failed to find ClassName: ${domClass}`, 'add-event-error');
+		return;
+	}
+	if (!(domClass in establishedEvents)) {
+		establishedEvents[domClass] = [];
+	}
+	if (isEventSafe && !(event in establishedEvents[domClass])) {
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].addEventListener(event, async () => {
+        await func(elements[i]);
+      }, false);
+    }
+    establishedEvents[domClass].push(event);
+	}
+}
+
+/**
  * @name getAttribute
  * @memberOf domAPI
  * @description Gets the attribute of a given domID, if it exists and is
@@ -262,6 +293,7 @@ async function getValue(domID, value) {
 module.exports = {
 	loadPage,
 	addEventListener,
+  addEventListenerbyClassName,
 	getAttribute,
 	setAttribute,
 	addChild,
