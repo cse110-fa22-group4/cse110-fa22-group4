@@ -150,7 +150,7 @@ async function libraryTagsClick(element) {
  * @param {HTMLElement} element
  */
 async function playlistsClick(element) {
-	await domAPI.loadPage('main-container', 'pages/playlists.html');
+	await domAPI.loadPage('main-container', 'pages/libraryPlaylists.html');
 	await domAPI.setHTML('header-title', 'Playlists');
   await domAPI.setHTML('header-subtitle', 'All');
   await resetSidebarButtons();

@@ -4,7 +4,7 @@ window.addEventListener('libraryArtists-loaded', async () => {
 });
 
 /**
- * Libarary > Artists Main Page.
+ * Library > Artists Main Page.
  * Generate Library Artists Cards.
  */
  async function generateArtistsCards() {

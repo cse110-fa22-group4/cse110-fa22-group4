@@ -1,0 +1,81 @@
+ // Preferred grid settings
+ const gridSettings = {
+  sort: true,
+  resizable: true,
+  fixedHeader: true,
+  autoWidth: true,
+  search: {
+    enabled: true,
+    keyword: '',
+  },
+};
+
+// Sample Track Categories + Headers
+let libraryHeaders = [
+  { hidden: false,  sort: {enablged: true},   name: '#', },
+  { hidden: false,  sort: {enablged: true},   name: 'TITLE', },
+  { hidden: false,  sort: {enablged: true},   name: 'ARTIST', },
+  { hidden: false,  sort: {enablged: true},   name: 'ALBUM', },
+  { hidden: false,  sort: {enablged: true},   name: 'YEAR', },
+  { hidden: false,  sort: {enablged: true},   name: 'DURATION', },
+  { hidden: false,  sort: {enablged: true},   name: 'GENRE', },
+  { hidden: false,  sort: {enablged: true},   name: 'PLAYLISTS', },
+  { hidden: false,  sort: {enablged: true},   name: 'TAGS' },
+  { hidden: true,   sort: {enablged: false},  name: 'ARTWORK' },
+];
+
+// Sample Catalog
+let libraryCatalog = [
+  { '#': '01', title: 'Future Nostalgia',       artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:05', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
+  { '#': '02', title: 'Don\'t Start Now',       artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:03', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
+  { '#': '03', title: 'Cool',                   artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:30', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
+  { '#': '04', title: 'Physical',               artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:14', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
+  { '#': '05', title: 'Levitating',             artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:24', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
+  { '#': '06', title: 'Pretty Please',          artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:15', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
+  { '#': '07', title: 'Hallucinate',            artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:29', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
+  { '#': '08', title: 'Love Again',             artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '4:18', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
+  { '#': '09', title: 'Break My Heart',         artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:42', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
+  { '#': '10', title: 'Good In Bed (Explicit)', artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:39', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
+  { '#': '11', title: 'Boys Will Be Boys',      artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '2:46', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
+
+  { '#': '01', title: 'Genesis',                artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '3:27', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+  { '#': '02', title: 'Lost In Your Light',     artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '3:24', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+  { '#': '03', title: 'Hotter Than Hell',       artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '3:10', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+  { '#': '04', title: 'Be The One',             artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '3:25', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+  { '#': '05', title: 'IDGAF',                  artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '3:38', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+  { '#': '06', title: 'Blow Your Mind (Mwah)',  artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '2:59', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+  { '#': '07', title: 'Garden',                 artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '3:48', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+  { '#': '08', title: 'No Goodbyes',            artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '3:36', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+  { '#': '09', title: 'Thinking \'Bout You',    artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '2:53', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+  { '#': '10', title: 'New Rules',              artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '3:32', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+  { '#': '11', title: 'Begging',                artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '3:14', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+  { '#': '12', title: 'Homesick',               artist: 'Dua Lipa', album: 'Dua Lipa', year: '2017', duration: '3:50', genre: 'Electronic, Pop', playlists: 'Summer Mix', tags: 'Jams', artwork: '../img/sampleData/artwork-DuaLipa2.webp'},
+
+  { '#': '01', title: 'United In Grief', artist: 'Kendrick Lamar',    album: 'Mr. Morale & The Big Steppers', year: '2022', duration: '4:15', genre: 'Hip-Hop', playlists: 'Summer Mix, Vibe', tags: 'Conscious, Soulful', artwork: '../img/sampleData/artwork-KendrickLamar.webp'},
+  { '#': '02', title: 'N95', artist: 'Kendrick Lamar',                album: 'Mr. Morale & The Big Steppers', year: '2022', duration: '3:15', genre: 'Hip-Hop', playlists: 'Summer Mix, Vibe', tags: 'Conscious, Soulful', artwork: '../img/sampleData/artwork-KendrickLamar.webp'},
+  { '#': '03', title: 'Worldwide Steppers', artist: 'Kendrick Lamar', album: 'Mr. Morale & The Big Steppers', year: '2022', duration: '3:23', genre: 'Hip-Hop', playlists: 'Summer Mix, Vibe', tags: 'Conscious, Soulful', artwork: '../img/sampleData/artwork-KendrickLamar.webp'},
+  { '#': '04', title: 'Die Hard', artist: 'Kendrick Lamar',           album: 'Mr. Morale & The Big Steppers', year: '2022', duration: '3:59', genre: 'Hip-Hop', playlists: 'Summer Mix, Vibe', tags: 'Conscious, Soulful', artwork: '../img/sampleData/artwork-KendrickLamar.webp'},
+  { '#': '05', title: 'Father Time', artist: 'Kendrick Lamar',        album: 'Mr. Morale & The Big Steppers', year: '2022', duration: '3:42', genre: 'Hip-Hop', playlists: 'Summer Mix, Vibe', tags: 'Conscious, Soulful', artwork: '../img/sampleData/artwork-KendrickLamar.webp'},
+  { '#': '06', title: 'Rich (Interlude)', artist: 'Kendrick Lamar',   album: 'Mr. Morale & The Big Steppers', year: '2022', duration: '1:43', genre: 'Hip-Hop', playlists: 'Summer Mix, Vibe', tags: 'Conscious, Soulful', artwork: '../img/sampleData/artwork-KendrickLamar.webp'},
+  { '#': '07', title: 'Rich Spirit', artist: 'Kendrick Lamar',        album: 'Mr. Morale & The Big Steppers', year: '2022', duration: '3:22', genre: 'Hip-Hop', playlists: 'Summer Mix, Vibe', tags: 'Conscious, Soulful', artwork: '../img/sampleData/artwork-KendrickLamar.webp'},
+  { '#': '08', title: 'We Cry Together', artist: 'Kendrick Lamar',    album: 'Mr. Morale & The Big Steppers', year: '2022', duration: '5:41', genre: 'Hip-Hop', playlists: 'Summer Mix, Vibe', tags: 'Conscious, Soulful', artwork: '../img/sampleData/artwork-KendrickLamar.webp'},
+  { '#': '09', title: 'Purple Hearts', artist: 'Kendrick Lamar',      album: 'Mr. Morale & The Big Steppers', year: '2022', duration: '5:29', genre: 'Hip-Hop', playlists: 'Summer Mix, Vibe', tags: 'Conscious, Soulful', artwork: '../img/sampleData/artwork-KendrickLamar.webp'},
+
+  { '#': '01', title: 'Come Together',                            artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '4:21', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '02', title: 'Something',                                artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '3:03', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '03', title: 'Maxwell\'s Silver Hammer',                 artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '3:27', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '04', title: 'Oh! Darling',                              artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '3:27', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '05', title: 'Octopus\'s Garden',                        artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '2:51', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '06', title: 'I Want You (She\'s So Heavy)',             artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '7:47', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '07', title: 'Here Comes The Sun',                       artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '3:05', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '08', title: 'Because',                                  artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '2:46', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '09', title: 'You Never Give Me Your Money',             artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '4:02', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '10', title: 'Sun King',                                 artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '2:27', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '11', title: 'Mean Mr. Mustard',                         artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '1:06', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '12', title: 'Polythene Pam',                            artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '1:13', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '13', title: 'She Came In Through The Bathroom Window',  artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '1:57', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '14', title: 'Golden Slumbers',                          artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '1:32', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '15', title: 'Carry That Weight',                        artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '1:37', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '16', title: 'The End',                                  artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '2:20', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+  { '#': '17', title: 'Her Majesty',                              artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '0:23', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+];
