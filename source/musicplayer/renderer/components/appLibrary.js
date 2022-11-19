@@ -12,20 +12,22 @@
 
 // Sample Track Categories + Headers
 let libraryHeaders = [
-  { hidden: false,  sort: {enablged: true},   name: '#', },
-  { hidden: false,  sort: {enablged: true},   name: 'TITLE', },
-  { hidden: false,  sort: {enablged: true},   name: 'ARTIST', },
-  { hidden: false,  sort: {enablged: true},   name: 'ALBUM', },
-  { hidden: false,  sort: {enablged: true},   name: 'YEAR', },
-  { hidden: false,  sort: {enablged: true},   name: 'DURATION', },
-  { hidden: false,  sort: {enablged: true},   name: 'GENRE', },
-  { hidden: false,  sort: {enablged: true},   name: 'PLAYLISTS', },
-  { hidden: false,  sort: {enablged: true},   name: 'TAGS' },
-  { hidden: true,   sort: {enablged: false},  name: 'ARTWORK' },
+  { hidden: false,  sort: {enabled: true},   name: '#', },
+  { hidden: false,  sort: {enabled: true},   name: 'TITLE', },
+  { hidden: false,  sort: {enabled: true},   name: 'ARTIST', },
+  { hidden: false,  sort: {enabled: true},   name: 'ALBUM', },
+  { hidden: false,  sort: {enabled: true},   name: 'YEAR', },
+  { hidden: false,  sort: {enabled: true},   name: 'DURATION', },
+  { hidden: false,  sort: {enabled: true},   name: 'GENRE', },
+  { hidden: false,  sort: {enabled: true},   name: 'PLAYLISTS', },
+  { hidden: false,  sort: {enabled: true},   name: 'TAGS' },
+  { hidden: true,   sort: {enabled: false},  name: 'ARTWORK' },
 ];
 
 // Sample Catalog
 let libraryCatalog = [
+
+
   { '#': '01', title: 'Future Nostalgia',       artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:05', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
   { '#': '02', title: 'Don\'t Start Now',       artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:03', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
   { '#': '03', title: 'Cool',                   artist: 'Dua Lipa', album: 'Future Nostalgia', year: '2020', duration: '3:30', genre: 'Dance, Pop', playlists: 'Monday Songs, Summer Mix', tags: 'Party, Summer', artwork: '../img/sampleData/artwork-DuaLipa.webp'},
@@ -61,6 +63,18 @@ let libraryCatalog = [
   { '#': '08', title: 'We Cry Together', artist: 'Kendrick Lamar',    album: 'Mr. Morale & The Big Steppers', year: '2022', duration: '5:41', genre: 'Hip-Hop', playlists: 'Summer Mix, Vibe', tags: 'Conscious, Soulful', artwork: '../img/sampleData/artwork-KendrickLamar.webp'},
   { '#': '09', title: 'Purple Hearts', artist: 'Kendrick Lamar',      album: 'Mr. Morale & The Big Steppers', year: '2022', duration: '5:29', genre: 'Hip-Hop', playlists: 'Summer Mix, Vibe', tags: 'Conscious, Soulful', artwork: '../img/sampleData/artwork-KendrickLamar.webp'},
 
+  { '#': '01', title: 'Unknown Title', artist: 'Unknown Artist', album: 'Unknown Album', year: '2003', duration: '3:05', genre: 'Dance, Electronic', playlists: 'Fav Karaoke, Chill', tags: 'Timeless, Soulful', artwork: '../img/artwork-default.png'},
+  { '#': '02', title: 'Unknown Title', artist: 'Unknown Artist', album: 'Unknown Album', year: '2003', duration: '3:03', genre: 'Dance, Electronic', playlists: 'Fav Karaoke, Chill', tags: 'Timeless, Soulful', artwork: '../img/artwork-default.png'},
+  { '#': '03', title: 'Unknown Title', artist: 'Unknown Artist', album: 'Unknown Album', year: '2003', duration: '3:30', genre: 'Dance, Electronic', playlists: 'Fav Karaoke, Chill', tags: 'Timeless, Soulful', artwork: '../img/artwork-default.png'},
+  { '#': '04', title: 'Unknown Title', artist: 'Unknown Artist', album: 'Unknown Album', year: '2003', duration: '3:14', genre: 'Dance, Electronic', playlists: 'Fav Karaoke, Chill', tags: 'Timeless, Soulful', artwork: '../img/artwork-default.png'},
+  { '#': '05', title: 'Unknown Title', artist: 'Unknown Artist', album: 'Unknown Album', year: '2003', duration: '3:24', genre: 'Dance, Electronic', playlists: 'Fav Karaoke, Chill', tags: 'Timeless, Soulful', artwork: '../img/artwork-default.png'},
+  { '#': '06', title: 'Unknown Title', artist: 'Unknown Artist', album: 'Unknown Album', year: '2003', duration: '3:15', genre: 'Dance, Electronic', playlists: 'Fav Karaoke, Chill', tags: 'Timeless, Soulful', artwork: '../img/artwork-default.png'},
+  { '#': '07', title: 'Unknown Title', artist: 'Unknown Artist', album: 'Unknown Album', year: '2003', duration: '3:29', genre: 'Dance, Electronic', playlists: 'Fav Karaoke, Chill', tags: 'Timeless, Soulful', artwork: '../img/artwork-default.png'},
+  { '#': '08', title: 'Unknown Title', artist: 'Unknown Artist', album: 'Unknown Album', year: '2003', duration: '4:18', genre: 'Dance, Electronic', playlists: 'Fav Karaoke, Chill', tags: 'Timeless, Soulful', artwork: '../img/artwork-default.png'},
+  { '#': '09', title: 'Unknown Title', artist: 'Unknown Artist', album: 'Unknown Album', year: '2003', duration: '3:42', genre: 'Dance, Electronic', playlists: 'Fav Karaoke, Chill', tags: 'Timeless, Soulful', artwork: '../img/artwork-default.png'},
+  { '#': '10', title: 'Unknown Title', artist: 'Unknown Artist', album: 'Unknown Album', year: '2003', duration: '3:39', genre: 'Dance, Electronic', playlists: 'Fav Karaoke, Chill', tags: 'Timeless, Soulful', artwork: '../img/artwork-default.png'},
+  { '#': '11', title: 'Unknown Title', artist: 'Unknown Artist', album: 'Unknown Album', year: '2003', duration: '2:46', genre: 'Dance, Electronic', playlists: 'Fav Karaoke, Chill', tags: 'Timeless, Soulful', artwork: '../img/artwork-default.png'},
+
   { '#': '01', title: 'Come Together',                            artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '4:21', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
   { '#': '02', title: 'Something',                                artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '3:03', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
   { '#': '03', title: 'Maxwell\'s Silver Hammer',                 artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '3:27', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
@@ -78,4 +92,42 @@ let libraryCatalog = [
   { '#': '15', title: 'Carry That Weight',                        artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '1:37', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
   { '#': '16', title: 'The End',                                  artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '2:20', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
   { '#': '17', title: 'Her Majesty',                              artist: 'The Beatles', album: 'Abbey Road', year: '1969', duration: '0:23', genre: 'Rock', playlists: 'Fav Karaoke, Monday Songs', tags: 'Timeless, 60s', artwork: '../img/sampleData/artwork-TheBeatles.jpeg'},
+
+  { '#': '01', title: 'Lavender Haze', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '3:22', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '02', title: 'Maroon', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '3:38', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '03', title: 'Anti-Hero', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '3:20', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '04', title: 'Snow On The Beach', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '4:16', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '05', title: 'You\'re On Your Own, Kid', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '3:14', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '06', title: 'Midnight Rain', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '2:54', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '07', title: 'Question...?', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '3:30', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '08', title: 'Vigilante Shit', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '2:44', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '09', title: 'Bejeweled', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '3:14', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '10', title: 'Labryinth', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '4:07', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '11', title: 'Karma', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '3:24', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '12', title: 'Sweet Nothing', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '3:08', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+  { '#': '13', title: 'Mastermind', artist: 'Taylor Swift', album: 'Midnights', year: '2022', duration: '3:11', genre: 'Pop, Electronic', playlists: 'Chill, Fall Songs', tags: 'Vibe, Jams', artwork: '../img/sampleData/artwork-TaylorSwift.webp'},
+
+  { '#': '01', title: 'Folsom Prison Blues', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '2:43', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '02', title: 'Dark As The Dungeon', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '2:45', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '03', title: 'I Still Miss Someone', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '1:57', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '04', title: 'Cocaine Blues', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '2:47', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '05', title: '25 Minutes To Go', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '3:12', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '06', title: 'Orange Blossom Special', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '3:37', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '07', title: 'The Long Black Veil', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '3:53', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '08', title: 'Send A Picture Of Mother', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '2:24', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '09', title: 'The Wall', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '1:36', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '10', title: 'Dirty Old Egg-Sucking Dog', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '1:30', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '11', title: 'Flushed From The Bathroom Of Your Heart', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '2:15', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '12', title: 'Jackson', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '3:20', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '13', title: 'Give My Love To Rose', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '2:40', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '14', title: 'I Got Stripes', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '1:48', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '15', title: 'Green, Green Grass Of Home', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '2:30', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+  { '#': '16', title: 'Greystone Chapel', artist: 'Johny Cash', album: 'At Folsom Prison', year: '1968', duration: '6:07', genre: 'Folk, World, Country', playlists: 'Sunny Drive, Oldies', tags: 'Guitar Songs', artwork: '../img/sampleData/artwork-JohnnyCash.jpeg'},
+
+  { '#': '01', title: 'So What', artist: 'Miles Davis', album: 'Kind of Blue', year: '1959', duration: '8:56', genre: 'Jazz', playlists: 'Classics, Melancholy', tags: 'Timeless, Masterpiece', artwork: '../img/sampleData/artwork-MilesDavis.jpeg'},
+  { '#': '02', title: 'Freddie Freeloader', artist: 'Miles Davis', album: 'Kind of Blue', year: '1959', duration: '9:32', genre: 'Jazz', playlists: 'Classics, Melancholy', tags: 'Timeless, Masterpiece', artwork: '../img/sampleData/artwork-MilesDavis.jpeg'},
+  { '#': '03', title: 'Blue In Green', artist: 'Miles Davis', album: 'Kind of Blue', year: '1959', duration: '5:27', genre: 'Jazz', playlists: 'Classics, Melancholy', tags: 'Timeless, Masterpiece', artwork: '../img/sampleData/artwork-MilesDavis.jpeg'},
+  { '#': '04', title: 'All Blues	', artist: 'Miles Davis', album: 'Kind of Blue', year: '1959', duration: '11:34', genre: 'Jazz', playlists: 'Classics, Melancholy', tags: 'Timeless, Masterpiece', artwork: '../img/sampleData/artwork-MilesDavis.jpeg'},
+  { '#': '05', title: 'Flamenco Sketches', artist: 'Miles Davis', album: 'Kind of Blue', year: '1959', duration: '9:32', genre: 'Jazz', playlists: 'Classics, Melancholy', tags: 'Timeless, Masterpiece', artwork: '../img/sampleData/artwork-MilesDavis.jpeg'},
+
 ];
