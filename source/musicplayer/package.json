@@ -13,7 +13,8 @@
     "webpack-test": "npm run webpack-build && electron ./dist/main.js",
     "test": "electron main/main.js",
     "start": "electron main/main.js",
-    "lint-project": "npx eslint ."
+    "lint-project": "npx eslint .",
+    "docs": "jsdoc -c jsdoc/conf.json"
   },
   "author": "Team Mariposa",
   "license": "ISC",
