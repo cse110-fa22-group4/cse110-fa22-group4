@@ -275,14 +275,15 @@ async function getValue(domID, value) {
  * is deemed 'safe.'
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} value The value to set for the element.
+ * @param {string} valueLiteral The literal that we are setting the value to
  * @return {boolean} The true if the setter is successful, else
  * false if the value is deemed 'unsafe.'
  *
  */
- async function setValue(domID, value) {
+ async function setValue(domID, value, valueLiteral) {
 	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, value);
 	if (isValueSafe) {
-		document.getElementById(domID).value = value;
+		document.getElementById(domID).value = valueLiteral;
     return true;
 	} else {
 		return false;
