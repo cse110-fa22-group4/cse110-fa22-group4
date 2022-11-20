@@ -56,6 +56,22 @@ async function setHTML(domID, html) {
 }
 
 /**
+ * @name appendHTML
+ * @memberOf domAPI
+ * @description Appends to the inner html of an element, if it is deemed 'safe.'
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} html The html to set to for the element.
+ * @return {Promise<void>}
+ */
+ async function appendHTML(domID, html) {
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, 'innerHTML');
+	if (isAttributeSafe) {
+		document.getElementById(domID).innerHTML += html;
+	}
+}
+
+/**
  * @param {string} domID The ID of the element to add this grid to.
  * @param {any} columns The column headers as a string array.
  * @param {any} data An array of string arrays that represent rows of data,
@@ -298,6 +314,7 @@ module.exports = {
 	setAttribute,
 	addChild,
 	setHTML,
+  appendHTML,
 	setStyle,
   setStyleClassToggle,
 	getValue,

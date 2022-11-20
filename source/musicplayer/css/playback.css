@@ -82,7 +82,7 @@
 
 /*
 .otherControls {
-  fill: #67A8B7;
+  fill: var(--theme-primary);
   fill: #C4C4C4;
 }*/
 
@@ -115,7 +115,7 @@
 
 
 .progressBar > div {
-  background-color: #67A8B7;
+  background-color: var(--theme-primary);
   width: 50%; 
   height: 8px;
   border-radius: 10px;
@@ -161,7 +161,7 @@
   height: 0;
   background: #C4C4C4;                 /*thumb color*/
   border-radius: 80%;
-  /* box-shadow: -220px 0 0 220px #67A8B7;  'fill' color */
+  /* box-shadow: -220px 0 0 220px var(--theme-primary);  'fill' color */
   box-shadow: -220px 0 0 220px var(--theme-primary);  /* Testing with global theme variable */
 }
 

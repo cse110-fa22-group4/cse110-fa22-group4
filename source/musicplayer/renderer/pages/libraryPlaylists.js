@@ -10,30 +10,30 @@ window.addEventListener('libraryPlaylists-loaded', async () => {
 async function generatePlaylistsCards() {
 
   // parse data from app library
-  const cardData = new Map() // ('playlist', {numArtists: Set(), numTracks: Number, artworks: []})
-  for (let i = 0; i < libraryCatalog.length; i++) {
-    const currTrack = libraryCatalog[i];
-    const playlistArr = libraryCatalog[i].playlists.split(', ');
-    for (let j = 0; j < playlistArr.length; j++) {
-      const currPlaylist = playlistArr[j];
-      if(cardData.has(currPlaylist)) {
-        cardData.get(currPlaylist).numArtists.add(currTrack.artist);
-        cardData.get(currPlaylist).numTracks++;
-        if(!cardData.get(currPlaylist).artworks.includes(currTrack.artwork))
-          cardData.get(currPlaylist).artworks.push(currTrack.artwork);
-      } else {
-        cardData.set(currPlaylist, {
-          numArtists: new Set().add(currTrack.artist),
-          numTracks: 1,
-          artworks: [currTrack.artwork]
-        });
-      }
-    }
-  }
+  // const cardData = new Map() // ('playlist', {numArtists: Set(), numTracks: Number, artworks: []})
+  // for (let i = 0; i < libraryCatalog.length; i++) {
+  //   const currTrack = libraryCatalog[i];
+  //   const playlistArr = libraryCatalog[i].playlists.split(', ');
+  //   for (let j = 0; j < playlistArr.length; j++) {
+  //     const currPlaylist = playlistArr[j];
+  //     if(cardData.has(currPlaylist)) {
+  //       cardData.get(currPlaylist).numArtists.add(currTrack.artist);
+  //       cardData.get(currPlaylist).numTracks++;
+  //       if(!cardData.get(currPlaylist).artworks.includes(currTrack.artwork))
+  //         cardData.get(currPlaylist).artworks.push(currTrack.artwork);
+  //     } else {
+  //       cardData.set(currPlaylist, {
+  //         numArtists: new Set().add(currTrack.artist),
+  //         numTracks: 1,
+  //         artworks: [currTrack.artwork]
+  //       });
+  //     }
+  //   }
+  // }
 
   // generate cards
   let cardList = '';
-  for (const [key, value] of cardData) {
+  for (const [key, value] of libraryPlaylists) {
     const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
     const card = `
     <div class="library-card" data-libtarget="${key}">
@@ -42,7 +42,24 @@ async function generatePlaylistsCards() {
       </div>
       <div class="library-card-info">
         <div>${key}</div>
-        <div>${value.numArtists.size} ${value.numArtists.size == 1 ? 'Artist' : 'Artists'}</div>
+        <div>${value.artists.size} ${value.artists.size == 1 ? 'Artist' : 'Artists'}</div>
+        <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
+      </div>
+    </div>
+  `;
+    cardList += card;
+  }
+  // generate cards for custom user playlists
+  for (const [key, value] of userPlaylists) {
+    const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+    const card = `
+    <div class="library-card" data-libtarget="${key}">
+      <div class="library-card-artwork">
+        <img src=${cardCover}>
+      </div>
+      <div class="library-card-info">
+        <div>${key}</div>
+        <div>${value.artists.size} ${value.artists.size == 1 ? 'Artist' : 'Artists'}</div>
         <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
       </div>
     </div>

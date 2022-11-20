@@ -5,24 +5,15 @@ let currFileList; // Get file from user
 window.addEventListener('mainHeader-loaded', async () => {
 	await domAPI.setStyle('metaEditor-container', 'display', 'none');
 	await domAPI.addEventListener('btn-file', 'change', getFile);
-	await domAPI.addEventListener('btn-playlist-create', 'click', createPlaylist);
 	await domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
 	await domAPI.addEventListener('btn-meta', 'click', editMetaData);
 });
 
 /**
- * Create playlist for user
- * @param {HTMLElement} element
- */
-function createPlaylist(element) {
-	alert('*FUNCTION UNDER CONTRUCTION*');
-}
-
-/**
  * Add track to playlist for user
  * @param {HTMLElement} element
  */
-function addToPlaylist(element) {
+async function addToPlaylist(element) {
 	alert('*FUNCTION UNDER CONTRUCTION*');
 }
 
@@ -58,7 +49,6 @@ async function metaEditorOn() {
 		metaEditorIsExtended = true;
 	}
 }
-
 
 /**
  * Calllback function for when a file is passed into the input.

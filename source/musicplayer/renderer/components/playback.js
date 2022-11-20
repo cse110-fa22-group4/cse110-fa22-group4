@@ -6,7 +6,7 @@ let isPaused = false;
 //let songPath = 'C:/Users/andre/Downloads/cse110_dev2/cse110-fa22-group4/source/musicplayer/songs/birds1.mp3'
 //let songPath = 'C:/Users/andre/Downloads/cse110_dev4/cse110-fa22-group4/source/musicplayer/songs/rickroll.webm'
 
-//const selectedColor = '#67A8B7';
+//const selectedColor = 'var(--theme-primary)';
 //const unselectedColor = 'black'; 
 
 window.addEventListener('playback-loaded', async () => {
@@ -73,7 +73,7 @@ function loopSong() {
  */
 function toggleColor(fillColor, btn) {
     if(fillColor == 'rgb(0, 0, 0)') {  //equivalent to black  
-        fillColor = '#67A8B7';
+        fillColor = 'var(--theme-primary)';
     }
     else {
         fillColor = 'black';

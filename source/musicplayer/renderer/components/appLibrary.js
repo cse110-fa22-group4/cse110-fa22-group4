@@ -1,4 +1,4 @@
- // Preferred grid settings
+// Preferred grid settings
  const gridSettings = {
   sort: true,
   resizable: true,
