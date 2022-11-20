@@ -63,7 +63,7 @@ async function setHTML(domID, html) {
  * @param {string} html The html to set to for the element.
  * @return {Promise<void>}
  */
- async function appendHTML(domID, html) {
+async function appendHTML(domID, html) {
 	const isAttributeSafe = await ipcRenderer.invoke(
 		'managedAttributeCheck', domID, 'innerHTML');
 	if (isAttributeSafe) {
@@ -137,7 +137,7 @@ async function addEventListener(domID, event, func) {
  * @param {function} func The function that will run when the event triggers.
  * @return {Promise<void>}
  */
- async function addEventListenerbyClassName(domClass, event, func) {
+async function addEventListenerbyClassName(domClass, event, func) {
 	const isEventSafe = await ipcRenderer.invoke(
 		'managedAddEventListenerCheck', domClass, event);
 	const elements = document.getElementsByClassName(domClass);
@@ -149,12 +149,12 @@ async function addEventListener(domID, event, func) {
 		establishedEvents[domClass] = [];
 	}
 	if (isEventSafe && !(event in establishedEvents[domClass])) {
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].addEventListener(event, async () => {
-        await func(elements[i]);
-      }, false);
-    }
-    establishedEvents[domClass].push(event);
+		for (let i = 0; i < elements.length; i++) {
+			elements[i].addEventListener(event, async () => {
+				await func(elements[i]);
+			}, false);
+		}
+		establishedEvents[domClass].push(event);
 	}
 }
 
@@ -237,13 +237,14 @@ async function setStyle(domID, style, value) {
  * @param {boolean} toggle Adds style class if true, otherwise remove if false.
  * @return {Promise<void>}
  */
- async function setStyleClassToggle(domID, style, toggle) {
+async function setStyleClassToggle(domID, style, toggle) {
 	const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
 	if (isChildSafe) {
-    if(toggle)
-		  document.getElementById(domID).classList.add(style);
-    else
-		  document.getElementById(domID).classList.remove(style);
+		if (toggle) {
+			document.getElementById(domID).classList.add(style);
+		} else {
+			document.getElementById(domID).classList.remove(style);
+		}
 	}
 }
 
@@ -276,15 +277,15 @@ async function getValue(domID, value) {
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} value The value to set for the element.
  * @param {string} valueLiteral The literal that we are setting the value to
- * @return {boolean} The true if the setter is successful, else
+ * @return {Promise<boolean>} The true if the setter is successful, else
  * false if the value is deemed 'unsafe.'
  *
  */
- async function setValue(domID, value, valueLiteral) {
+async function setValue(domID, value, valueLiteral) {
 	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, value);
 	if (isValueSafe) {
 		document.getElementById(domID).value = valueLiteral;
-    return true;
+		return true;
 	} else {
 		return false;
 	}
@@ -298,28 +299,29 @@ async function getValue(domID, value) {
  * @param {string} secondary The value to set for the secondary theme variable.
  *
  */
- async function setThemeColor(primary, secondary) {
-  if(primary !== '')
-    document.documentElement.style.setProperty('--theme-primary', primary);
-  if(secondary !== '')
-    document.documentElement.style.setProperty('--theme-secondary', secondary);
+async function setThemeColor(primary, secondary) {
+	if (primary !== '') {
+		document.documentElement.style.setProperty('--theme-primary', primary);
+	}
+	if (secondary !== '') {
+		document.documentElement.style.setProperty('--theme-secondary', secondary);
+	}
 }
-
 
 
 module.exports = {
 	loadPage,
 	addEventListener,
-  addEventListenerbyClassName,
+	addEventListenerbyClassName,
 	getAttribute,
 	setAttribute,
 	addChild,
 	setHTML,
-  appendHTML,
+	appendHTML,
 	setStyle,
-  setStyleClassToggle,
+	setStyleClassToggle,
 	getValue,
-  setValue,
+	setValue,
 	addGrid,
-  setThemeColor,
+	setThemeColor,
 };

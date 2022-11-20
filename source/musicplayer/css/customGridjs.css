@@ -74,7 +74,6 @@ text-align: left;
 .gridjs-td {
   padding-top:10px;
   padding-bottom:10px;
-  white-space: hidden;
   text-overflow: ellipsis;
 }
 

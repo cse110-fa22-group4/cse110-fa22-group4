@@ -1,7 +1,6 @@
 /* PLAYBACK */
 #playback-container {
   background-color: var(--light);
-  color: var(--txt-1);
   min-height: 100px;
   max-height: 100px;
   position: fixed;

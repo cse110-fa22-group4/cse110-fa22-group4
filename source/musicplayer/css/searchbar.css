@@ -55,7 +55,7 @@
 
 #settings-container {
   display: flex;
-  flex: row;
+  flex-direction: row;
   min-height: 100vh;
   max-height: 100vh;
   background: #b42020;

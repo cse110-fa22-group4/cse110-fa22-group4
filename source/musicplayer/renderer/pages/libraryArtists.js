@@ -1,38 +1,38 @@
 
 window.addEventListener('libraryArtists-loaded', async () => {
-  await generateArtistsCards();
-  await domAPI.addEventListenerbyClassName('library-card', 'click', libraryArtistsExtended);
+	await generateArtistsCards();
+	await domAPI.addEventListenerbyClassName('library-card', 'click', libraryArtistsExtended);
 });
 
 /**
  * Library > Artists Main Page.
  * Generate Library Artists Cards.
  */
- async function generateArtistsCards() {
-  
-  // parse data from app library
-  const cardData = new Map(); // ('artist', {numAlbums: set(), numTracks: Number, artworks: []})
-  for (let i = 0; i < libraryCatalog.length; i++) {
-    const currTrack = libraryCatalog[i];
-    if(cardData.has(currTrack.artist)) {
-      cardData.get(currTrack.artist).numAlbums.add(currTrack.album);
-      cardData.get(currTrack.artist).numTracks++;
-      if(!cardData.get(currTrack.artist).artworks.includes(currTrack.artwork))
-        cardData.get(currTrack.artist).artworks.push(currTrack.artwork);
-    } else {
-      cardData.set(currTrack.artist, {
-        numAlbums: new Set().add(currTrack.album),
-        numTracks: 1,
-        artworks: [currTrack.artwork]
-      });
-    }
-  }
+async function generateArtistsCards() {
+	// parse data from app library
+	const cardData = new Map(); // ('artist', {numAlbums: set(), numTracks: Number, artworks: []})
+	for (let i = 0; i < libraryCatalog.length; i++) {
+		const currTrack = libraryCatalog[i];
+		if (cardData.has(currTrack.artist)) {
+			cardData.get(currTrack.artist).numAlbums.add(currTrack.album);
+			cardData.get(currTrack.artist).numTracks++;
+			if (!cardData.get(currTrack.artist).artworks.includes(currTrack.artwork)) {
+				cardData.get(currTrack.artist).artworks.push(currTrack.artwork);
+			}
+		} else {
+			cardData.set(currTrack.artist, {
+				numAlbums: new Set().add(currTrack.album),
+				numTracks: 1,
+				artworks: [currTrack.artwork],
+			});
+		}
+	}
 
-  // generate cards
-  let cardList = '';
-  for (const [key, value] of cardData) {
-    const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
-    const card = `
+	// generate cards
+	let cardList = '';
+	for (const [key, value] of cardData) {
+		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		const card = `
     <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover}>
@@ -43,34 +43,34 @@ window.addEventListener('libraryArtists-loaded', async () => {
         <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
       </div>
     </div>
-  `;    
+  `;
 
-    cardList += card;
-  }
+		cardList += card;
+	}
 
-  // insert card list into container
-  await domAPI.setHTML('library-artists-cards', cardList);
+	// insert card list into container
+	await domAPI.setHTML('library-artists-cards', cardList);
 }
 
 /**
- * Libarary > Artists Extended Page.
- * Generate Artist Library View based on user selection.
+ * @description Libarary > Artists Extended Page. Generate Artist Library View based on user selection.
+ * @param {object} e The HTML element this event listener is attached to.
  */
 async function libraryArtistsExtended(e) {
+	const cardArtist = e.getAttribute('data-libtarget');
 
-  let cardArtist = e.getAttribute('data-libtarget');
+	// Set grid rows
+	const data = [];
+	for (let i = 0; i < libraryCatalog.length; i++) {
+		if (libraryCatalog[i].artist == cardArtist) {
+			data.push(libraryCatalog[i]);
+		}
+	}
 
-  // Set grid rows
-  const data = [];
-  for (let i = 0; i < libraryCatalog.length; i++) {
-    if(libraryCatalog[i].artist == cardArtist)
-      data.push(libraryCatalog[i]);
-  }
-
-  // Generate artist grid
-  await domAPI.setHTML('header-subtitle', `Library > Artists > ${cardArtist}`);
-  await domAPI.setHTML('library-artists-cards', '');
-  await domAPI.addGrid('library-artists-container', libraryHeaders, data, gridSettings);
+	// Generate artist grid
+	await domAPI.setHTML('header-subtitle', `Library > Artists > ${cardArtist}`);
+	await domAPI.setHTML('library-artists-cards', '');
+	await domAPI.addGrid('library-artists-container', libraryHeaders, data, gridSettings);
 }
 
 

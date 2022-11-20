@@ -1,4 +1,4 @@
-let libraryGrid = undefined; // gridJS library instance
+const libraryGrid = undefined; // gridJS library instance
 
 window.addEventListener('library-loaded', async () => {
 	await onLibraryLoad();
@@ -13,5 +13,5 @@ window.addEventListener('library-container-grid-clicked', async (args) => {
  * Generate Artist Library View.
  */
 async function onLibraryLoad() {
-  const libraryGrid = await domAPI.addGrid('library-container', libraryHeaders, libraryCatalog, gridSettings);
+	const libraryGrid = await domAPI.addGrid('library-container', libraryHeaders, libraryCatalog, gridSettings);
 }

@@ -1,32 +1,31 @@
 window.addEventListener('libraryAlbums-loaded', async () => {
-  await generateAlbumsCards();
-  await domAPI.addEventListenerbyClassName('library-card', 'click', libraryAlbumsExtended);
+	await generateAlbumsCards();
+	await domAPI.addEventListenerbyClassName('library-card', 'click', libraryAlbumsExtended);
 });
 
 /**
- * Library > Albums Main Page.
- * Generate Library Albums Cards.
+ * @description Library > Albums Main Page. Generate Library Albums Cards.
+ * @return {Promise<void>}
  */
- async function generateAlbumsCards() {
+async function generateAlbumsCards() {
+	// parse data from app library
+	const cardData = new Map(); // ('album', {artist: '', year: Number, artwork: ''})
 
-  // parse data from app library
-  const cardData = new Map() // ('album', {artist: '', year: Number, artwork: ''})
+	for (let i = 0; i < libraryCatalog.length; i++) {
+		const currTrack = libraryCatalog[i];
+		if (!cardData.has(currTrack.album)) {
+			cardData.set(currTrack.album, {
+				artist: currTrack.artist,
+				year: currTrack.year,
+				artwork: currTrack.artwork,
+			});
+		}
+	}
 
-  for (let i = 0; i < libraryCatalog.length; i++) {
-    const currTrack = libraryCatalog[i];
-    if(!cardData.has(currTrack.album)) {
-      cardData.set(currTrack.album, {
-        artist: currTrack.artist,
-        year: currTrack.year,
-        artwork: currTrack.artwork
-      });
-    }
-  }
-
-  // generate cards
-  let cardList = '';
-  for (const [key, value] of cardData) {
-    const card = `
+	// generate cards
+	let cardList = '';
+	for (const [key, value] of cardData) {
+		const card = `
     <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${value.artwork}>
@@ -37,32 +36,34 @@ window.addEventListener('libraryAlbums-loaded', async () => {
         <div>${value.year}</div>
       </div>
     </div>
-  `; 
+  `;
 
-    cardList += card;
-  }
+		cardList += card;
+	}
 
-  // insert card list into container
-  await domAPI.setHTML('library-albums-cards', cardList);
+	// insert card list into container
+	await domAPI.setHTML('library-albums-cards', cardList);
 }
 
 /**
- * Library > Albums Extended Page.
- * Generate Album Library View based on user selection.
+ * @description  > Albums Extended Page. Generate Album Library View based on user selection.
+ * @param {object} e The element that this event handler is attached to.
+ * @return {Promise<void>}
+ *
  */
 async function libraryAlbumsExtended(e) {
+	const cardAlbum = e.getAttribute('data-libtarget');
 
-  let cardAlbum = e.getAttribute('data-libtarget');
+	// Set grid rows
+	const data = [];
+	for (let i = 0; i < libraryCatalog.length; i++) {
+		if (libraryCatalog[i].album === cardAlbum) {
+			data.push(libraryCatalog[i]);
+		}
+	}
 
-  // Set grid rows
-  const data = [];
-  for (let i = 0; i < libraryCatalog.length; i++) {
-    if(libraryCatalog[i].album == cardAlbum)
-      data.push(libraryCatalog[i]);
-  }
-
-  // Generate album grid
-  await domAPI.setHTML('header-subtitle', `Library > Albums > ${cardAlbum}`);
-  await domAPI.setHTML('library-albums-cards', '');
-  await domAPI.addGrid('library-albums-container', libraryHeaders, data, gridSettings);
+	// Generate album grid
+	await domAPI.setHTML('header-subtitle', `Library > Albums > ${cardAlbum}`);
+	await domAPI.setHTML('library-albums-cards', '');
+	await domAPI.addGrid('library-albums-container', libraryHeaders, data, gridSettings);
 }

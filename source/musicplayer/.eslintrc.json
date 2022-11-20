@@ -10,7 +10,17 @@
 		"domAPI": true,
 		"fsAPI": true,
 		"ffmpegAPI": true,
-		"genAPI": true
+		"genAPI": true,
+		"libraryHeaders": true,
+		"libraryCatalog": true,
+		"gridSettings": true,
+		"libraryPlaylists": true,
+		"userPlaylists": true,
+		"topExtensionOn": true,
+		"topExtensionOff": true,
+		"searchQueryGlobal": true,
+		"resetSubtitleButtons": true,
+		"resetSidebarButtons": true
 	},
 	"plugins": [
 	],

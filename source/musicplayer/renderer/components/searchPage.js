@@ -10,21 +10,21 @@ let searchGrid = undefined;
 async function onSearchPageLoad() {
 	// GridJS - USAGE EXAMPLE
 
-  // Set grid headers - Sample Headers from sampleLibrary.js
-  const columns = libraryHeaders;
+	// Set grid headers - Sample Headers from sampleLibrary.js
+	const columns = libraryHeaders;
 
-  // Set grid rows - Sample data from sampleLibrary.js
-  const data = libraryCatalog
+	// Set grid rows - Sample data from sampleLibrary.js
+	const data = libraryCatalog;
 
-  // Set grid settings
+	// Set grid settings
 	const gridSettings = {
 		sort: true,
-    // resizable: true,   - doesn't seem to work
-    // fixedHeader: true, - doesn't seem to work
-    // autoWidth: true,   - doesn't seem to work
+		// resizable: true,   - doesn't seem to work
+		// fixedHeader: true, - doesn't seem to work
+		// autoWidth: true,   - doesn't seem to work
 		search: {
 			enabled: true,
-      keyword: `${searchQueryGlobal}`,
+			keyword: `${searchQueryGlobal}`,
 		},
 	};
 

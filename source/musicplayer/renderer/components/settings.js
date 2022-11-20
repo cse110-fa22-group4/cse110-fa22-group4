@@ -36,31 +36,33 @@ async function addPath(element) {
  * @description Displays loaded settings on page load. Adds watched directories
  * to the 'watched-folders' div and changes toggles to the correct state. Assumes
  * the settings match their respective id name.
- * 
+ *
  * WIP
  */
- async function loadSettingsState(){	
-	genAPI.debugLog("im in the settings function", 'settings-tests')
-	let settings = await fsAPI.getSettings()
+async function loadSettingsState() {
+	genAPI.debugLog('im in the settings function', 'settings-tests');
+	const settings = await fsAPI.getSettings();
 
-	if ('watchedDir' in settings){
-		//watchedDir is a list of directories. we will format watchedDirDisplay 
-		//to be the inner HTML for the 'watched-folders' div
+	if ('watchedDir' in settings) {
+		// watchedDir is a list of directories. we will format watchedDirDisplay
+		// to be the inner HTML for the 'watched-folders' div
 		let watchedDirDisplay = '';
-		for(dir in settings[watchedDir]){
+		for (const dir in settings['watchedDir']) {
+			if (!dir) continue;
 			watchedDirDisplay += '<p>' + dir + '</p><br>';
 		}
 		await domAPI.setHTML('watched-folders', watchedDirDisplay);
 
-		//done with this key, so let's delete it so we can loop through the rest.
-		delete settings['watchedDir']
+		// done with this key, so let's delete it so we can loop through the rest.
+		delete settings['watchedDir'];
 	}
 
-	//miscellaneous deletions
-	delete settings['wrong_file']
+	// miscellaneous deletions
+	delete settings['wrong_file'];
 
-	for(let setting in settings){
-		genApi.debugLog(`checking setting ${setting}`, 'settings-tests');
+	for (const setting in settings) {
+		if (!setting) continue;
+		await genAPI.debugLog(`checking setting ${setting}`, 'settings-tests');
 		await domAPI.setValue(setting, 'checked', 'true');
 	}
 }

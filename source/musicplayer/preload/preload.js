@@ -110,14 +110,14 @@ contextBridge.exposeInMainWorld('domAPI', {
 	setAttribute: setAttribute,
 	addChild: addChild,
 	setHTML: setHTML,
-  appendHTML: appendHTML,
+	appendHTML: appendHTML,
 	setStyle: setStyle,
-  setStyleClassToggle: setStyleClassToggle,
+	setStyleClassToggle: setStyleClassToggle,
 	getValue: getValue,
-  setValue: setValue,
+	setValue: setValue,
 	loadPage: loadPage,
 	addGrid: addGrid,
-  setThemeColor: setThemeColor,
+	setThemeColor: setThemeColor,
 });
 
 contextBridge.exposeInMainWorld('ffmpegAPI', {
