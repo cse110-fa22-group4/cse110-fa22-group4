@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Namespace: fsAPI | Namespace: fsAPI</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="">
+        
+            <img src="img/toast-ui.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Namespace: fsAPI</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-bookshelf.html">bookshelf</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:bookshelf_sub"></div></li><li><a href="module-color_mixer.html">color/mixer</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:color/mixer_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-color_mixer.html#.blend">blend</a></li><li><a href="module-color_mixer.html#.darken">darken</a></li></ul></div></li><li><a href="module-myModule.html">myModule</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:myModule_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="module-myModule.html#~foo">foo</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="module-myModule.html#~bar">bar</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Externals</h3><ul><li><a href="external-_jQuery.fn_.html">jQuery.fn</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="external:_jQuery.fn__sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="external-_jQuery.fn_.html#.starfairy">starfairy</a></li></ul></div></li><li><a href="external-String.html">String</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="external:String_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="external-String.html#rot13">rot13</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="FormButton.html">FormButton</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="FormButton_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="FormButton.html#fire">fire</a></li><li><a href="FormButton.html#on">on</a></li></ul></div></li><li><a href="Toaster.html">Toaster</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Toaster_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Toaster.html#toast">toast</a></li><li><a href="Toaster.html#.getInstance">getInstance</a></li></ul></div></li><li><a href="module-bookshelf.Book.html">Book</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:bookshelf.Book_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="module-bookshelf.Book.html#title">title</a></li></ul></div></li><li><a href="tui.component.Base.html">Base</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui.component.Base_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="tui.component.Base.html#getDatum">getDatum</a></li><li><a href="tui.component.Base.html#log">log</a></li><li><a href="tui.component.Base.html#log2">log2</a></li><li><a href="tui.component.Base.html#setDatum">setDatum</a></li><li><a href="tui.component.Base.html#.staticMethod">staticMethod</a></li></ul></div></li><li><a href="tui.component.BaseChild.html">BaseChild</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui.component.BaseChild_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="tui.component.BaseChild.html#getDatum">getDatum</a></li><li><a href="tui.component.BaseChild.html#log">log</a></li><li><a href="tui.component.BaseChild.html#log2">log2</a></li><li><a href="tui.component.BaseChild.html#setDatum">setDatum</a></li><li><a href="tui.component.BaseChild.html#sum">sum</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="tui.component.BaseChild.html#event:foo">foo</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="MyNamespace.html">MyNamespace</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="MyNamespace_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="MyNamespace.html#.bar">bar</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="MyNamespace.html#.foo">foo</a></li><li><a href="MyNamespace.html#.myFunction">myFunction</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="MyNamespace.html#.myTypeDef">myTypeDef</a></li></ul></div></li><li><a href="domAPI.html">domAPI</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="domAPI_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="domAPI.html#.managedAddChild">managedAddChild</a></li><li><a href="domAPI.html#.managedAddEventListener">managedAddEventListener</a></li><li><a href="domAPI.html#.managedGetAttribute">managedGetAttribute</a></li><li><a href="domAPI.html#.managedGetValue">managedGetValue</a></li><li><a href="domAPI.html#.managedSetAttribute">managedSetAttribute</a></li><li><a href="domAPI.html#.managedSetHTML">managedSetHTML</a></li><li><a href="domAPI.html#.managedSetStyle">managedSetStyle</a></li></ul></div></li><li><a href="ffmpegAPI.html">ffmpegAPI</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ffmpegAPI_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="ffmpegAPI.html#.binPath">binPath</a></li><li><a href="ffmpegAPI.html#.ffmpegRead">ffmpegRead</a></li><li><a href="ffmpegAPI.html#.ffmpegWrite">ffmpegWrite</a></li><li><a href="ffmpegAPI.html#.getMetadataRecursive">getMetadataRecursive</a></li></ul></div></li><li><a href="fsAPI.html">fsAPI</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="fsAPI_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="fsAPI.html#.appendSong">appendSong</a></li><li><a href="fsAPI.html#.deleteSetting">deleteSetting</a></li><li><a href="fsAPI.html#.deleteStat">deleteStat</a></li><li><a href="fsAPI.html#.devClear">devClear</a></li><li><a href="fsAPI.html#.getAllPlaylists">getAllPlaylists</a></li><li><a href="fsAPI.html#.getPlaylist">getPlaylist</a></li><li><a href="fsAPI.html#.getSRCString">getSRCString</a></li><li><a href="fsAPI.html#.getSetting">getSetting</a></li><li><a href="fsAPI.html#.getSettings">getSettings</a></li><li><a href="fsAPI.html#.getSongs">getSongs</a></li><li><a href="fsAPI.html#.getStats">getStats</a></li><li><a href="fsAPI.html#.makeDirIfExists">makeDirIfExists</a></li><li><a href="fsAPI.html#.recursiveSearchAtPath">recursiveSearchAtPath</a></li><li><a href="fsAPI.html#.removePlaylist">removePlaylist</a></li><li><a href="fsAPI.html#.removeSong">removeSong</a></li><li><a href="fsAPI.html#.writePlaylist">writePlaylist</a></li><li><a href="fsAPI.html#.writeSettings">writeSettings</a></li><li><a href="fsAPI.html#.writeSongs">writeSongs</a></li><li><a href="fsAPI.html#.writeStats">writeStats</a></li><li><a href="fsAPI.html#.writeToSetting">writeToSetting</a></li><li><a href="fsAPI.html#.writeToStat">writeToStat</a></li></ul></div></li><li><a href="genAPI.html">genAPI</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="genAPI_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="genAPI.html#.debugLog">debugLog</a></li></ul></div></li><li><a href="jqAPI.html">jqAPI</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="jqAPI_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="jqAPI.html#.loadPage">loadPage</a></li><li><a href="jqAPI.html#.onEvent">onEvent</a></li></ul></div></li><li><a href="tui.html">tui</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui_sub"></div></li><li><a href="tui.component.html">tui.component</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui.component_sub"></div></li><li><a href="tui.util.html">tui.util</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui.util_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="tui.util.html#.trim">trim</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Mixins</h3><ul><li><a href="tui.Eventful.html">Eventful</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui.Eventful_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="tui.Eventful.html#.fire">fire</a></li><li><a href="tui.Eventful.html#.on">on</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Global</h3><ul><li><a href="global.html"></a></li><li><a href="global.html#BIND_FLAG">BIND_FLAG</a></li><li><a href="global.html#Buffer">Buffer</a></li><li><a href="global.html#FUNC_ERROR_TEXT">FUNC_ERROR_TEXT</a></li><li class="hidden"><a href="global.html#Foo">Foo</a></li><li><a href="global.html#HASH_UNDEFINED">HASH_UNDEFINED</a></li><li><a href="global.html#HOT_COUNT">HOT_COUNT</a></li><li><a href="global.html#INFINITY">INFINITY</a></li><li><a href="global.html#LARGE_ARRAY_SIZE">LARGE_ARRAY_SIZE</a></li><li><a href="global.html#MAX_SAFE_INTEGER">MAX_SAFE_INTEGER</a></li><li><a href="global.html#PLACEHOLDER">PLACEHOLDER</a></li><li><a href="global.html#Symbol">Symbol</a></li><li><a href="global.html#UNORDERED_COMPARE_FLAG">UNORDERED_COMPARE_FLAG</a></li><li><a href="global.html#argsTag">argsTag</a></li><li><a href="global.html#arrayProto">arrayProto</a></li><li><a href="global.html#buildNav">buildNav</a></li><li><a href="global.html#buildSubNav">buildSubNav</a></li><li><a href="global.html#camelCase">camelCase</a></li><li><a href="global.html#cloneDom">cloneDom</a></li><li><a href="global.html#config">config</a></li><li><a href="global.html#contains">contains</a></li><li><a href="global.html#copyRecursiveSync">copyRecursiveSync</a></li><li><a href="global.html#coreJsData">coreJsData</a></li><li><a href="global.html#css">css</a></li><li><a href="global.html#cssCase">cssCase</a></li><li><a href="global.html#dataViewCtorString">dataViewCtorString</a></li><li><a href="global.html#debug">debug</a></li><li><a href="global.html#deprecate">deprecate</a></li><li><a href="global.html#domEach">domEach</a></li><li><a href="global.html#eventHandlerLoadPhase">eventHandlerLoadPhase</a></li><li><a href="global.html#foo">foo</a></li><li><a href="global.html#freeExports">freeExports</a></li><li><a href="global.html#freeGlobal">freeGlobal</a></li><li><a href="global.html#freeModule">freeModule</a></li><li><a href="global.html#freeParseInt">freeParseInt</a></li><li><a href="global.html#freeProcess">freeProcess</a></li><li><a href="global.html#freeSelf">freeSelf</a></li><li><a href="global.html#fsInit">fsInit</a></li><li><a href="global.html#funcProto">funcProto</a></li><li><a href="global.html#funcTag">funcTag</a></li><li><a href="global.html#funcToString">funcToString</a></li><li><a href="global.html#getCss">getCss</a></li><li><a href="global.html#getReadCMD">getReadCMD</a></li><li><a href="global.html#getWriteCMD">getWriteCMD</a></li><li><a href="global.html#hasOwnProperty">hasOwnProperty</a></li><li><a href="global.html#html">html</a></li><li><a href="global.html#htmlFilePath">htmlFilePath</a></li><li><a href="global.html#htmlFromRenderer">htmlFromRenderer</a></li><li><a href="global.html#isTag">isTag</a></li><li><a href="global.html#load">load</a></li><li><a href="global.html#maskSrcKey">maskSrcKey</a></li><li><a href="global.html#moduleExports">moduleExports</a></li><li><a href="global.html#nativeObjectToString">nativeObjectToString</a></li><li><a href="global.html#nodeUtil">nodeUtil</a></li><li><a href="global.html#objectCreate">objectCreate</a></li><li><a href="global.html#objectCtorString">objectCtorString</a></li><li><a href="global.html#objectProto">objectProto</a></li><li><a href="global.html#objectToString">objectToString</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#parseHTML">parseHTML</a></li><li><a href="global.html#postInit">postInit</a></li><li><a href="global.html#propertyIsEnumerable">propertyIsEnumerable</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#reEscapeChar">reEscapeChar</a></li><li><a href="global.html#reIsBadHex">reIsBadHex</a></li><li><a href="global.html#reIsBinary">reIsBinary</a></li><li><a href="global.html#reIsDeepProp">reIsDeepProp</a></li><li><a href="global.html#reIsHostCtor">reIsHostCtor</a></li><li><a href="global.html#reIsNative">reIsNative</a></li><li><a href="global.html#reIsOctal">reIsOctal</a></li><li><a href="global.html#reIsUint">reIsUint</a></li><li><a href="global.html#reRegExpChar">reRegExpChar</a></li><li><a href="global.html#reTrim">reTrim</a></li><li><a href="global.html#reWrapComment">reWrapComment</a></li><li><a href="global.html#removeAttribute">removeAttribute</a></li><li><a href="global.html#root">root</a></li><li><a href="global.html#serialize">serialize</a></li><li><a href="global.html#setCss">setCss</a></li><li><a href="global.html#stringify">stringify</a></li><li><a href="global.html#symbolProto">symbolProto</a></li><li><a href="global.html#tags">tags</a></li><li><a href="global.html#text">text</a></li><li><a href="global.html#trstr">trstr</a></li><li><a href="global.html#typedArrayTags">typedArrayTags</a></li><li><a href="global.html#val">val</a></li><li><a href="global.html#watchPaths">watchPaths</a></li><li><a href="global.html#wrapFlags">wrapFlags</a></li><li><a href="global.html#xml">xml</a></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>fsAPI</h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+                <div class="description">The fsAPI exposes many functions to modify the settings, overall songs, stats, playlists, and get             a working src filepath for any audio file.</div>
+            
+
+            
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>In general there are usually no checks to see if the file exists. These should be added, and until then         this API should be used with caution.</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+
+<dt>
+<h4 class="name" id=".appendSong">
+    <span class="type-signature"><span class="icon green">static</span> </span>appendSong<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line168">line 168</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Adds a new song to the songs.json file.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".deleteSetting">
+    <span class="type-signature"><span class="icon green">static</span> </span>deleteSetting<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line124">line 124</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Removes a setting from the settings file entirely.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".deleteStat">
+    <span class="type-signature"><span class="icon green">static</span> </span>deleteStat<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line240">line 240</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Removes a stat from stats.json
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".devClear">
+    <span class="type-signature"><span class="icon green">static</span> </span>devClear<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line26">line 26</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Deletes every file. Useful for development and unit tests. Can only be called from whitelisted callers.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".getAllPlaylists">
+    <span class="type-signature"><span class="icon green">static</span> </span>getAllPlaylists<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line267">line 267</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Gets an array that contains the names of every playlist.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>May or may not return file extensions, which could cause catastrophic errors if it doesn't. Testing needed.Update 11/06/2022, returns extensions on Mac and likely Linux, and either way, the other playlist functions are set to work without extensions</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".getPlaylist">
+    <span class="type-signature"><span class="icon green">static</span> </span>getPlaylist<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line282">line 282</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Gets a single playlist by name.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".getSRCString">
+    <span class="type-signature"><span class="icon green">static</span> </span>getSRCString<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line338">line 338</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Gets a string that, when passed into the src of a HTML Audio element will play the sound.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>May not work on all (or any) OS! May need to give filesystem access!</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".getSetting">
+    <span class="type-signature"><span class="icon green">static</span> </span>getSetting<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line79">line 79</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Gets a setting if it exists, and returns undefined otherwise.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".getSettings">
+    <span class="type-signature"><span class="icon green">static</span> </span>getSettings<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line64">line 64</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Gets the full settings as an object in JSON format.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".getSongs">
+    <span class="type-signature"><span class="icon green">static</span> </span>getSongs<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line137">line 137</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Gets the JSON formatted object that contains all songs and their paths.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".getStats">
+    <span class="type-signature"><span class="icon green">static</span> </span>getStats<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line195">line 195</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Gets the stats as a JSON formatted object.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".makeDirIfExists">
+    <span class="type-signature"><span class="icon green">static</span> </span>makeDirIfExists<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line253">line 253</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        checks if the folder exists in appdata and if not creates it
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>name of the function may be kind of long and cumbersome to use</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".recursiveSearchAtPath">
+    <span class="type-signature"><span class="icon green">static</span> </span>recursiveSearchAtPath<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line350">line 350</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Recursively searches every subdirectory at a given directory to return every song.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".removePlaylist">
+    <span class="type-signature"><span class="icon green">static</span> </span>removePlaylist<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line301">line 301</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Deletes a playlist by name.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".removeSong">
+    <span class="type-signature"><span class="icon green">static</span> </span>removeSong<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line182">line 182</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Removes a song from the songs.json folder
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".writePlaylist">
+    <span class="type-signature"><span class="icon green">static</span> </span>writePlaylist<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line317">line 317</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Writes a playlist. If it does not exist, creates a new playlist. If the playlist exists, it is             overwritten.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".writeSettings">
+    <span class="type-signature"><span class="icon green">static</span> </span>writeSettings<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line94">line 94</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Rewrites the entire settings file using the given JSON. This rewrites the entire settings, if you             want to only write one setting use writeToSetting()!
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".writeSongs">
+    <span class="type-signature"><span class="icon green">static</span> </span>writeSongs<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line152">line 152</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Rewrites the songs.json file with new content. If you want to modify a single song, use writeSongs() or             readSongs()!
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".writeStats">
+    <span class="type-signature"><span class="icon green">static</span> </span>writeStats<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line210">line 210</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Rewrites the stats file using the given JSON formatted object. To modify a single stat, use             writeToStat() or deleteStat()!
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".writeToSetting">
+    <span class="type-signature"><span class="icon green">static</span> </span>writeToSetting<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line110">line 110</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Writes a single setting to the settings.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id=".writeToStat">
+    <span class="type-signature"><span class="icon green">static</span> </span>writeToStat<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html">source/musicplayer/preload/fsAPICalls.js</a></code>,
+        <code><a href="source_musicplayer_preload_fsAPICalls.js.html#line226">line 226</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        Modifies a single stat.
+    </div>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="img/toast-ui.png" style="">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = 'fsAPI_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>
