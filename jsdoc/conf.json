@@ -1,0 +1,11 @@
+{
+  "source": {
+    "includePattern": ".+\\.js(doc|x)?$", // Only process file ending in .js, .jsdoc or .jsx
+    "include": [ "." ] // Check all folders.
+  },
+  "recurseDepth": 10,
+  "opts": {
+    "recurse": true,
+    "template": "node_modules/tui-jsdoc-template"
+  }
+}

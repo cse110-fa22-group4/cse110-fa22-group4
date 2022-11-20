@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "taffydb": "^2.7.3"
+  },
+  "devDependencies": {
+    "tui-jsdoc-template": "^1.2.2"
+  },
+
+  "scripts": {
+    "docs": "jsdoc -c jsdoc/conf.json"
+  }
+}
