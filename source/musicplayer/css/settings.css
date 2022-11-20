@@ -1,8 +1,12 @@
 .settings-container{
-    display: flex;
-    flex-direction: row;
+    margin-top: 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 5%;
 }
 .toggle{
+    margin-top: 3%;
+
     display: flex;
     align-items: center;
     flex-direction: row;
