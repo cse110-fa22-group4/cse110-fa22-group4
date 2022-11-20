@@ -11,46 +11,36 @@ window.addEventListener('libraryArtists-loaded', async () => {
  async function generateArtistsCards() {
   
   // parse data from app library
-  let artistCards = [];
-
+  const cardData = new Map(); // ('artist', {numAlbums: set(), numTracks: Number, artworks: []})
   for (let i = 0; i < libraryCatalog.length; i++) {
-    let artistFound = false;
-
-    for (let j = 0; j < artistCards.length; j++) {
-      if(libraryCatalog[i].artist == artistCards[j].artist) {
-
-        // artist exists in card list, update artist object
-        artistCards[j].albums.add(libraryCatalog[i].album)
-        artistCards[j].tracks.add(libraryCatalog[i].title)
-        artistFound = true;
-        break;
-      }
-    }
-    
-    // artist does not exist in card list, create new artist object
-    if (!artistFound) {
-      artistCards.push({ 
-        artist: libraryCatalog[i].artist, 
-        albums: new Set().add(libraryCatalog[i].album),
-        tracks: new Set().add(libraryCatalog[i].album),
-        artwork: libraryCatalog[i].artwork
-      })
+    const currTrack = libraryCatalog[i];
+    if(cardData.has(currTrack.artist)) {
+      cardData.get(currTrack.artist).numAlbums.add(currTrack.album);
+      cardData.get(currTrack.artist).numTracks++;
+      if(!cardData.get(currTrack.artist).artworks.includes(currTrack.artwork))
+        cardData.get(currTrack.artist).artworks.push(currTrack.artwork);
+    } else {
+      cardData.set(currTrack.artist, {
+        numAlbums: new Set().add(currTrack.album),
+        numTracks: 1,
+        artworks: [currTrack.artwork]
+      });
     }
   }
 
-  // generate artist cards
+  // generate cards
   let cardList = '';
-
-  for (let k = 0; k < artistCards.length; k++) {
+  for (const [key, value] of cardData) {
+    const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
     const card = `
-    <div class="library-card" data-libtarget="${artistCards[k].artist}">
+    <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
-        <img src=${artistCards[k].artwork}>
+        <img src=${cardCover}>
       </div>
       <div class="library-card-info">
-        <div>${artistCards[k].artist}</div>
-        <div>${artistCards[k].albums.size} Albums</div>
-        <div>${artistCards[k].tracks.size} Tracks</div>
+        <div>${key}</div>
+        <div>${value.numAlbums.size} ${value.numAlbums.size == 1 ? 'Album' : 'Albums'}</div>
+        <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
       </div>
     </div>
   `;    
@@ -78,7 +68,7 @@ async function libraryArtistsExtended(e) {
   }
 
   // Generate artist grid
-  await domAPI.setHTML('header-subtitle', `Library > Artist > ${cardArtist}`);
+  await domAPI.setHTML('header-subtitle', `Library > Artists > ${cardArtist}`);
   await domAPI.setHTML('library-artists-cards', '');
   await domAPI.addGrid('library-artists-container', libraryHeaders, data, gridSettings);
 }

@@ -10,37 +10,43 @@ window.addEventListener('libraryPlaylists-loaded', async () => {
 async function generatePlaylistsCards() {
 
   // parse data from app library
-  let playlistCards = new Map();
-
+  const cardData = new Map() // ('playlist', {numArtists: Set(), numTracks: Number, artworks: []})
   for (let i = 0; i < libraryCatalog.length; i++) {
-    const playlistsSplit = libraryCatalog[i].playlists.split(', ');
-    for (let j = 0; j < playlistsSplit.length; j++) {
-      if (playlistCards.has(playlistsSplit[j])) {
-        // playlist exists in card list, update playlist map
-        playlistCards.get(playlistsSplit[j])[0]++;
+    const currTrack = libraryCatalog[i];
+    const playlistArr = libraryCatalog[i].playlists.split(', ');
+    for (let j = 0; j < playlistArr.length; j++) {
+      const currPlaylist = playlistArr[j];
+      if(cardData.has(currPlaylist)) {
+        cardData.get(currPlaylist).numArtists.add(currTrack.artist);
+        cardData.get(currPlaylist).numTracks++;
+        if(!cardData.get(currPlaylist).artworks.includes(currTrack.artwork))
+          cardData.get(currPlaylist).artworks.push(currTrack.artwork);
       } else {
-        // playlist does not exist in card list, create new playlist map
-        playlistCards.set(playlistsSplit[j], [1, libraryCatalog[i].artwork]);
+        cardData.set(currPlaylist, {
+          numArtists: new Set().add(currTrack.artist),
+          numTracks: 1,
+          artworks: [currTrack.artwork]
+        });
       }
     }
   }
 
-  // generate playlist cards
+  // generate cards
   let cardList = '';
-  for (const [key, value] of playlistCards) {
+  for (const [key, value] of cardData) {
+    const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
     const card = `
     <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
-        <img src=${value[1]}>
+        <img src=${cardCover}>
       </div>
       <div class="library-card-info">
         <div>${key}</div>
-        <div>${value[0]} Tracks</div>
-        <div></div>
+        <div>${value.numArtists.size} ${value.numArtists.size == 1 ? 'Artist' : 'Artists'}</div>
+        <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
       </div>
     </div>
   `;
-
     cardList += card;
   }
 

@@ -10,37 +10,43 @@ window.addEventListener('libraryTags-loaded', async () => {
 async function generateTagsCards() {
 
   // parse data from app library
-  let tagCards = new Map();
-
+  const cardData = new Map() // ('tag', {numArtists: Set(), numTracks: Number, artworks: []})
   for (let i = 0; i < libraryCatalog.length; i++) {
-    const tagsSplit = libraryCatalog[i].tags.split(', ');
-    for (let j = 0; j < tagsSplit.length; j++) {
-      if (tagCards.has(tagsSplit[j])) {
-        // tag exists in card list, update tag map
-        tagCards.get(tagsSplit[j])[0]++;
+    const currTrack = libraryCatalog[i];
+    const tagArr = libraryCatalog[i].tags.split(', ');
+    for (let j = 0; j < tagArr.length; j++) {
+      const currTag = tagArr[j];
+      if(cardData.has(currTag)) {
+        cardData.get(currTag).numArtists.add(currTrack.artist);
+        cardData.get(currTag).numTracks++;
+        if(!cardData.get(currTag).artworks.includes(currTrack.artwork))
+          cardData.get(currTag).artworks.push(currTrack.artwork);
       } else {
-        // tag does not exist in card list, create new tag map
-        tagCards.set(tagsSplit[j], [1, libraryCatalog[i].artwork]);
+        cardData.set(currTag, {
+          numArtists: new Set().add(currTrack.artist),
+          numTracks: 1,
+          artworks: [currTrack.artwork]
+        });
       }
     }
   }
 
-  // generate tag cards
+  // generate cards
   let cardList = '';
-  for (const [key, value] of tagCards) {
+  for (const [key, value] of cardData) {
+    const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
     const card = `
     <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
-        <img src=${value[1]}>
+        <img src=${cardCover}>
       </div>
       <div class="library-card-info">
         <div>${key}</div>
-        <div>${value[0]} Tracks</div>
-        <div></div>
+        <div>${value.numArtists.size} ${value.numArtists.size == 1 ? 'Artist' : 'Artists'}</div>
+        <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
       </div>
     </div>
   `;
-
     cardList += card;
   }
 

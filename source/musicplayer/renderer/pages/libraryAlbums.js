@@ -10,49 +10,34 @@ window.addEventListener('libraryAlbums-loaded', async () => {
  async function generateAlbumsCards() {
 
   // parse data from app library
-  let albumCards = [];
+  const cardData = new Map() // ('album', {artist: '', year: Number, artwork: ''})
 
   for (let i = 0; i < libraryCatalog.length; i++) {
-    let albumFound = false;
-
-    for (let j = 0; j < albumCards.length; j++) {
-      if(libraryCatalog[i].album == albumCards[j].album) {
-
-        // album exists in card list, update album object
-        albumCards[j].artist = libraryCatalog[i].artist;
-        albumCards[j].year = libraryCatalog[i].year;
-        albumFound = true;
-        break;
-      }
-    }
-    
-    // album does not exist in card list, create new album object
-    if (!albumFound) {
-      albumCards.push({ 
-        album: libraryCatalog[i].album, 
-        artist: libraryCatalog[i].artist,
-        year: libraryCatalog[i].year,
-        artwork: libraryCatalog[i].artwork
-      })
+    const currTrack = libraryCatalog[i];
+    if(!cardData.has(currTrack.album)) {
+      cardData.set(currTrack.album, {
+        artist: currTrack.artist,
+        year: currTrack.year,
+        artwork: currTrack.artwork
+      });
     }
   }
 
-  // generate album cards
+  // generate cards
   let cardList = '';
-
-  for (let k = 0; k < albumCards.length; k++) {
+  for (const [key, value] of cardData) {
     const card = `
-    <div class="library-card" data-libtarget="${albumCards[k].album}">
+    <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
-        <img src=${albumCards[k].artwork}>
+        <img src=${value.artwork}>
       </div>
       <div class="library-card-info">
-        <div>${albumCards[k].album}</div>
-        <div>${albumCards[k].artist}</div>
-        <div>${albumCards[k].year}</div>
+        <div>${key}</div>
+        <div>${value.artist}</div>
+        <div>${value.year}</div>
       </div>
     </div>
-  `;    
+  `; 
 
     cardList += card;
   }

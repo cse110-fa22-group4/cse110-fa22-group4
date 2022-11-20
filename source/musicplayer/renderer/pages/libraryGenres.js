@@ -10,37 +10,43 @@ window.addEventListener('libraryGenres-loaded', async () => {
 async function generateGenresCards() {
 
   // parse data from app library
-  let genreCards = new Map();
-
+  const cardData = new Map() // ('genre', {numArtists: Set(), numTracks: Number, artworks: []})
   for (let i = 0; i < libraryCatalog.length; i++) {
-    const genresSplit = libraryCatalog[i].genre.split(', ');
-    for (let j = 0; j < genresSplit.length; j++) {
-      if (genreCards.has(genresSplit[j])) {
-        // genre exists in card list, update genre map
-        genreCards.get(genresSplit[j])[0]++;
+    const currTrack = libraryCatalog[i];
+    const genreArr = libraryCatalog[i].genre.split(', ');
+    for (let j = 0; j < genreArr.length; j++) {
+      const currGenre = genreArr[j];
+      if(cardData.has(currGenre)) {
+        cardData.get(currGenre).numArtists.add(currTrack.artist);
+        cardData.get(currGenre).numTracks++;
+        if(!cardData.get(currGenre).artworks.includes(currTrack.artwork))
+          cardData.get(currGenre).artworks.push(currTrack.artwork);
       } else {
-        // genre does not exist in card list, create new genre map
-        genreCards.set(genresSplit[j], [1, libraryCatalog[i].artwork]);
+        cardData.set(currGenre, {
+          numArtists: new Set().add(currTrack.artist),
+          numTracks: 1,
+          artworks: [currTrack.artwork]
+        });
       }
     }
   }
 
-  // generate genre cards
+  // generate cards
   let cardList = '';
-  for (const [key, value] of genreCards) {
+  for (const [key, value] of cardData) {
+    const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
     const card = `
     <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
-        <img src=${value[1]}>
+        <img src=${cardCover}>
       </div>
       <div class="library-card-info">
         <div>${key}</div>
-        <div>${value[0]} Tracks</div>
-        <div></div>
+        <div>${value.numArtists.size} ${value.numArtists.size == 1 ? 'Artist' : 'Artists'}</div>
+        <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
       </div>
     </div>
   `;
-
     cardList += card;
   }
 
@@ -54,14 +60,14 @@ async function generateGenresCards() {
  */
 async function libraryGenresExtended(e) {
 
-  let cardGenre = e.getAttribute('data-libtarget');
+  const cardGenre = e.getAttribute('data-libtarget');
 
   // Set grid rows
   const data = [];
   for (let i = 0; i < libraryCatalog.length; i++) {
-    const genresSplit = libraryCatalog[i].genre.split(', ');
-    for (let j = 0; j < genresSplit.length; j++) {
-      if (genresSplit[j] == cardGenre) {
+    const genreArr = libraryCatalog[i].genre.split(', ');
+    for (let j = 0; j < genreArr.length; j++) {
+      if (genreArr[j] == cardGenre) {
         data.push(libraryCatalog[i]);
         break;
       }
