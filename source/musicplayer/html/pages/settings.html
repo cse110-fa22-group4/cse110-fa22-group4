@@ -7,12 +7,16 @@
         <p>Watched folders:</p>
         <div id="watched-folders">
             <!--watched paths go here-->
-            <p>C://Users//Music</p>
+            <div>C://Users//Music</div>
         </div>
-        <button id="settings-rescan">Rescan now</button>
-        <input type="file" id="add-paths-button">
+        <div class="watch-folders-btns">
+            <button id="settings-rescan">Rescan now</button>
+            <label id="add-paths-button-label"
+                for="add-paths-button">Add</label>
+            <input type="file" id="add-paths-button">
+        </div>
         <div class="toggle">
-            <p>Rescan watch folders at startup</p>
+            <div>Rescan watch folders at startup</div>
             <label for="enable-scan-on-startup">
                 <input type="checkbox" id="enable-scan-on-startup">
                 <span class="slider round"></span>
@@ -22,120 +26,39 @@
         <!--Playlists-->
         <h2>Import / Export Playlists</h2>
         <p>Discover new mixes by importing a playlist</p>
-        <label>
-            <input type="text">
-        </label>
-        <input type="file" id="add-playlist-input">
+        <div class="import-playlist-btns">
+            <input id="new-playlist-name" type="text">
+            <label id="add-playlist-input-label" for="add-playlist-input">Import</label>
+            <input type="file" id="add-playlist-input">
+        </div>
+
     </div>
 
     <!--Second column-->
     <div class="settings">
         <!--theme-primary-->
         <h2>Theme</h2>
+
+        <!-- COLOR THEME PICKER -->
+        <div class="theme-color-picker-container">
+            <div>
+                <button id="btn-theme-color-primary" class="btn-theme-color"
+                    type="submit">Primary Color</button>
+                <div id="theme-color-preview-primary"></div>
+            </div>
+            <div>
+                <button id="btn-theme-color-secondary" class="btn-theme-color"
+                    type="submit">Secondary Color</button>
+                <div id="theme-color-preview-secondary"></div>
+            </div>
+        </div>
+
+
+
         <div class="toggle">
             <p>Default to light theme or toggle for dark mode</p>
             <label for="enable-dark-mode">
                 <input type="checkbox" id="enable-dark-mode">
-                <span class="slider round"></span>
-            </label>
-        </div>
-
-        <!--Playback-->
-        <h2>Playback</h2>
-        <div class="toggle">
-            <p>Crossfade tracks</p>
-            <label for="enable-crossfade">
-                <input type="checkbox" id="enable-crossfade">
-                <span class="slider round"></span>
-            </label>
-        </div>
-
-        <!--Sidebar Configuration-->
-        <h2>Sidebar Configuration</h2>
-        <p>Customize your sidebar by adding or removing options</p>
-        <div class="toggle">
-            <p>Home</p>
-            <label for="enable-sidebar-home">
-                <input type="checkbox" id="enable-sidebar-home">
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <div class="toggle">
-            <p>Now Playing</p>
-            <label for="enable-sidebar-now-playing">
-                <input type="checkbox" id="enable-sidebar-now-playing">
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <div class="toggle">
-            <p>Library</p>
-            <label for="enable-sidebar-library">
-                <input type="checkbox" id="enable-sidebar-library">
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <div class="toggle">
-            <p>Playlists</p>
-            <label for="enable-sidebar-playlists">
-                <input type="checkbox" id="enable-sidebar-playlists">
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <div class="toggle">
-            <p>Quick Access</p>
-            <label for="enable-sidebar-quick-access">
-                <input type="checkbox" id="enable-sidebar-quick-access">
-                <span class="slider round"></span>
-            </label>
-        </div>
-    </div>
-
-    <!--Third Column-->
-    <div class="settings">
-        <h2>Stats</h2>
-        <p>You have the option of tracking your usage statistics</p>
-
-        <div class="toggle">
-            <p>Opt-in</p>
-            <label for="enable-user-stats">
-                <input type="checkbox" id="enable-user-stats">
-                <span class="slider round"></span>
-            </label>
-        </div>
-
-        <!--According to Figma diagram, these should just be implemented with checkboxes-->
-        <div class="toggle">
-            <p>Most played tracks</p>
-            <label for="enable-most-played-tracks">
-                <input type="checkbox" id="enable-most-played-tracks">
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <div class="toggle">
-            <p>Most played artists</p>
-            <label for="enable-most-played-artists">
-                <input type="checkbox" id="enable-most-played-artists">
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <div class="toggle">
-            <p>Most played albums</p>
-            <label for="enable-most-played-albums">
-                <input type="checkbox" id="enable-most-played-albums">
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <div class="toggle">
-            <p>Most played playlists</p>
-            <label for="enable-most-played-playlists">
-                <input type="checkbox" id="enable-most-played-playlists">
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <div class="toggle">
-            <p>Most played genres</p>
-            <label for="enable-most-played-genres">
-                <input type="checkbox" id="enable-most-played-genres">
                 <span class="slider round"></span>
             </label>
         </div>

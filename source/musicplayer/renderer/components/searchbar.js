@@ -12,13 +12,13 @@ async function submitSearch(element) {
    * We literally await a Promise<Object>, idk why I have to specify this.
    * @type {Object}
    */
-	const searchQuery = await domAPI.getValue('input-search', 'value');
+	const searchQuery = await domAPI.getProperty('input-search', 'value');
 	searchQueryGlobal = searchQuery;
 	if (searchQuery === undefined) return;
 
 	if (searchQuery.length !== 0) {
 		// await domAPI.setHTML('header-title', `Results for: '${searchQuery}'`);
-		await domAPI.setValue('input-search', '');
+		await domAPI.setProperty('input-search', 'value', '');
 
 		// Switch to search results page
 		await domAPI.setHTML('header-title', 'Search');

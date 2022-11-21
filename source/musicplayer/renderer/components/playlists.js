@@ -1,12 +1,12 @@
 const libraryPlaylists = new Map(); // playlists that can be auto-generated from the library
 const userPlaylists = new Map(); // additional custom user playlists
-// PLAYLIST STRUCTURE LAYOUT
+// POSSIBLE PLAYLIST OBJECT STRUCTURE
 // (
 //   'playlist',
 //   {
 //     name: 'Summer Mix',
 //     numTracks: 32,
-//     artwork: '..img.png',
+//     artworks: ['..img.png', '..img2.png'],
 //     trackList: [{track1},{track2},...]
 //   }
 // )
@@ -74,10 +74,10 @@ async function populatePlaylistAddMenu() {
  */
 async function createUserPlaylist() {
 	// get custom playlist name
-	const playlistName = await domAPI.getValue('input-playlist-create', 'value');
+	const playlistName = await domAPI.getProperty('input-playlist-create', 'value');
 
 	if (playlistName.length !== 0) {
-		await domAPI.setValue('input-playlist-create', '');
+		await domAPI.setProperty('input-playlist-create', 'value', '');
 
 		// create new playlist object
 		userPlaylists.set(playlistName, {
