@@ -7,12 +7,16 @@
         <p>Watched folders:</p>
         <div id="watched-folders">
             <!--watched paths go here-->
-            <p>C://Users//Music</p>
+            <div>C://Users//Music</div>
         </div>
-        <button id="settings-rescan">Rescan now</button>
-        <input type="file" id="add-paths-button">
+        <div class="watch-folders-btns">
+            <button id="settings-rescan">Rescan now</button>
+            <label id="add-paths-button-label"
+                for="add-paths-button">Add</label>
+            <input type="file" id="add-paths-button">
+        </div>
         <div class="toggle">
-            <p>Rescan watch folders at startup</p>
+            <div>Rescan watch folders at startup</div>
             <label for="enable-scan-on-startup">
                 <input type="checkbox" id="enable-scan-on-startup">
                 <span class="slider round"></span>
@@ -22,16 +26,35 @@
         <!--Playlists-->
         <h2>Import / Export Playlists</h2>
         <p>Discover new mixes by importing a playlist</p>
-        <label>
-            <input type="text">
-        </label>
-        <input type="file" id="add-playlist-input">
+        <div class="import-playlist-btns">
+            <input id="new-playlist-name" type="text">
+            <label id="add-playlist-input-label" for="add-playlist-input">Import</label>
+            <input type="file" id="add-playlist-input">
+        </div>
+
     </div>
 
     <!--Second column-->
     <div class="settings">
         <!--theme-primary-->
         <h2>Theme</h2>
+
+        <!-- COLOR THEME PICKER -->
+        <div class="theme-color-picker-container">
+            <div>
+                <button id="btn-theme-color-primary" class="btn-theme-color"
+                    type="submit">Primary Color</button>
+                <div id="theme-color-preview-primary"></div>
+            </div>
+            <div>
+                <button id="btn-theme-color-secondary" class="btn-theme-color"
+                    type="submit">Secondary Color</button>
+                <div id="theme-color-preview-secondary"></div>
+            </div>
+        </div>
+
+
+
         <div class="toggle">
             <p>Default to light theme or toggle for dark mode</p>
             <label for="enable-dark-mode">

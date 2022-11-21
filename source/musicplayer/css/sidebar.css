@@ -80,39 +80,3 @@
   padding-left: 95px;
 }
 
-/* TEMP COLOR THEME PICKER */
-#btn-theme-color-primary {
-  font-size: 10px;
-  position: fixed;
-  left: 15px;
-  bottom: 70px;
-  width: 200px;
-  height: 50px;
-  border: none;
-  color: white;
-  background-color: rgba(0, 0, 0, .40);
-  border-radius: 5px;
-}
-
-#btn-theme-color-primary:hover {
-  background-color: rgba(0, 0, 0, .60);
-  transition: 300ms;
-}
-
-#btn-theme-color-secondary {
-  font-size: 10px;
-  position: fixed;
-  left: 15px;
-  bottom: 10px;
-  width: 200px;
-  height: 50px;
-  border: none;
-  color: white;
-  background-color: rgba(0, 0, 0, .40);
-  border-radius: 5px;
-}
-
-#btn-theme-color-secondary:hover {
-  background-color: rgba(0, 0, 0, .60);
-  transition: 300ms;
-}

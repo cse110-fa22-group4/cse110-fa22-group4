@@ -1,10 +1,40 @@
+/* COLOR THEME PICKER */
+const themeColorsPrimary = [
+	'#8e4f46', // red-ish
+	'#de802d', // orange-ish
+	'#a98f45', // yellow-ish
+	'#3c7f4f', // green-ish
+	'#2e436a', // blue-ish
+	'#39354d', // indigo-ish
+	'#995d9b', // violet-ish
+	'#43918b', // teal-ish
+	'#1a1a1a', // dark
+	'#67878E', // default
+];
+const themeColorsSecondary = [
+	'#8e4f46', // red-ish
+	'#de802d', // orange-ish
+	'#a98f45', // yellow-ish
+	'#3c7f4f', // green-ish
+	'#2e436a', // blue-ish
+	'#39354d', // indigo-ish
+	'#995d9b', // violet-ish
+	'#43918b', // teal-ish
+	'#1a1a1a', // dark
+	'#67878E', // default
+];
 
+let themeColorsPrimaryCount = themeColorsPrimary.length;
+let themeColorsSecondaryCount = themeColorsPrimary.length;
 window.addEventListener('settings-loaded', async ()=> {
 	await loadSettingsState();
 	await domAPI.addEventListener('settings-rescan', 'click', rescanClick);
 	await domAPI.addEventListener('add-paths-button', 'click', addPath);
 	await domAPI.addEventListener('enable-scan-on-startup', 'click', enableToggleableSetting);
 	await domAPI.addEventListener('enable-dark-mode', 'click', enableToggleableSetting);
+
+	await domAPI.addEventListener( 'btn-theme-color-primary', 'click', changeThemeColorPrimary);
+	await domAPI.addEventListener( 'btn-theme-color-secondary', 'click', changeThemeColorSecondary);
 });
 
 /**
@@ -76,5 +106,24 @@ async function loadSettingsState() {
 		if (relevantSettings[i] in allSettings) {
 			await domAPI.setProperty(relevantSettings[i], 'checked', 'true');
 		}
+	}
+}
+
+/**
+ * Set Primary Theme Color
+ */
+async function changeThemeColorPrimary() {
+	await domAPI.setThemeColor(themeColorsPrimary[themeColorsPrimaryCount % themeColorsPrimary.length], '');
+	themeColorsPrimaryCount++;
+}
+
+/**
+ * Set Secondary Theme Color
+ */
+async function changeThemeColorSecondary() {
+	await domAPI.setThemeColor('', themeColorsSecondary[themeColorsSecondaryCount % themeColorsSecondary.length]);
+	themeColorsSecondaryCount--;
+	if (themeColorsSecondaryCount == 0) {
+		themeColorsSecondaryCount = themeColorsSecondary.length;
 	}
 }
