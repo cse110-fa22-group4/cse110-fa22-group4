@@ -27,6 +27,8 @@ const themeColorsSecondary = [
 let themeColorsPrimaryCount = themeColorsPrimary.length;
 let themeColorsSecondaryCount = themeColorsPrimary.length;
 window.addEventListener('settings-loaded', async ()=> {
+	const test = await fsAPI.getSettings();
+	console.log(test);
 	await loadSettingsState();
 	await domAPI.addEventListener('settings-rescan', 'click', rescanClick);
 	await domAPI.addEventListener('add-paths-button', 'click', addPath);
@@ -42,14 +44,24 @@ window.addEventListener('settings-loaded', async ()=> {
  * @param {HTMLElement} element
  */
 async function rescanClick(element) {
+	console.log('clicked');
 	await ffmpegAPI.setBinPath();
-	const scannedSongs = { };
+	let scannedSongs = { };
 	const settings = await fsAPI.getSetting('watchedDir');
 	if (settings === undefined) return;
+
+	// I am going to implement a naive version of this for now - Noah
+	// things I have done to make this work - changed scannedSongs from const to let,
+	// create an array of ffmpegAPI.ffmpegRead(path) and evaluate them using Promise.allSettled
+	const promises = [];
 	for (const path of settings) {
 		// todo: implement cli app
+		console.log(path);
+		promises.push(ffmpegAPI.readMetadata(path));
 	}
-	await fsAPI.writeSongs(scannedSongs);
+	scannedSongs = await Promise.allSettled(promises);
+	console.log(scannedSongs);
+	await fsAPI.writeSong(scannedSongs);
 	await genAPI.debugLog(scannedSongs, 'settings-tests');
 }
 
@@ -61,10 +73,19 @@ async function rescanClick(element) {
 async function addPath(element) {
 	const dirs = await genAPI.openDialog({properties: ['openDirectory']});
 	await genAPI.debugLog(dirs['filePaths'], 'settings-tests');
-	let watched = await fsAPI.getSetting('watchedDir');
-	if (watched === undefined) watched = [];
-	watched.push(dirs['filePaths']);
-	await fsAPI.writeToSetting('watchedDir', watched);
+	console.log(`dirs: ${JSON.stringify(dirs)}`);
+	if (!dirs['canceled']) {
+		let watched = await fsAPI.getSetting('watchedDir');
+		console.log('got settings');
+		if (watched === undefined) watched = [];
+		console.log(watched);
+		for (const dir of dirs['filePaths']) {
+			watched.push(dir);
+		}
+		console.log(watched);
+		await fsAPI.writeToSetting('watchedDir', watched);
+		updateWatchedFoldersDisplay();
+	}
 }
 
 /**
@@ -74,8 +95,46 @@ async function addPath(element) {
  */
 async function enableToggleableSetting(element) {
 	const isEnabled = await domAPI.getProperty(element.id, 'checked');
-	console.log(isEnabled);
 	fsAPI.writeToSetting(element.id, isEnabled);
+}
+
+/**
+ * @description removes the watched directory from the list
+ * @param {HTMLElement} element
+ *
+ */
+async function removeDirectory(element) {
+	const watchedDirs = await fsAPI.getSetting('watchedDir');
+	const index = watchedDirs.indexOf(element.id);
+	if (index > -1) {
+		watchedDirs.splice(index, 1);
+	}
+	await fsAPI.writeToSetting('watchedDir', watchedDirs);
+	updateWatchedFoldersDisplay();
+}
+
+/**
+ * @description updates the watched folders div based on stored settings
+ * Note that you cannot add event listeners to the same object mroe than once
+ */
+async function updateWatchedFoldersDisplay() {
+	const watchedDirs = await fsAPI.getSetting('watchedDir');
+	if (watchedDirs !== undefined) {
+		// watchedDir is a list of directories. we will format watchedDirDisplay
+		// to be the inner HTML for the 'watched-folders' div
+		let watchedDirDisplay = '';
+		for (const dir of watchedDirs) {
+			if (!dir) continue;
+			watchedDirDisplay +=
+				`<div class="watched-folders-element"> <p> ${dir} </p> <button id="${dir}"> - </button></div>`;
+		}
+		await domAPI.setHTML('watched-folders', watchedDirDisplay);
+
+		// adding event listeners to the buttons
+		for (const dir of watchedDirs) {
+			domAPI.addEventListener(`${dir}`, 'click', removeDirectory);
+		}
+	}
 }
 
 /**
@@ -84,44 +143,42 @@ async function enableToggleableSetting(element) {
  * the settings match their respective id name.
  */
 async function loadSettingsState() {
-	genAPI.debugLog('im in the settings function', 'settings-tests');
+	updateWatchedFoldersDisplay();
 
-	const watchedDirs = await fsAPI.getSetting('watchedDir');
-	if (watchedDirs !== undefined) {
-		// watchedDir is a list of directories. we will format watchedDirDisplay
-		// to be the inner HTML for the 'watched-folders' div
-		let watchedDirDisplay = '';
-		for (const dir in watchedDirs) {
-			if (!dir) continue;
-			watchedDirDisplay += '<p>' + dir + '</p><br>';
+	// These are the toggles relevant to the settings menu
+	const relevantToggles = ['enable-scan-on-startup', 'enable-dark-mode'];
+	const allSettings = await fsAPI.getSettings();
+	for (let i=0; i < relevantToggles.length; i++) {
+		if (relevantToggles[i] in allSettings) {
+			await domAPI.setProperty(relevantToggles[i], 'checked', 'true');
 		}
-		await domAPI.setHTML('watched-folders', watchedDirDisplay);
 	}
 
-	// These are the keys relevant to the settings menu
-	const relevantSettings = ['enable-scan-on-startup', 'enable-dark-mode'];
-	const allSettings = await fsAPI.getSettings();
-
-	for (let i=0; i < relevantSettings.length; i++) {
-		if (relevantSettings[i] in allSettings) {
-			await domAPI.setProperty(relevantSettings[i], 'checked', 'true');
-		}
+	// color themes - this will need to go elsewhere, ideally we do not load it only when loading settings page
+	if ('primaryColor' in allSettings) {
+		await domAPI.setThemeColor(themeColorsPrimary[allSettings['primaryColor']-- % themeColorsPrimary.length], '');
+	}
+	if ('secondaryColor' in allSettings) {
+		await domAPI.setThemeColor('',
+			themeColorsSecondary[allSettings['secondaryColor']++ % themeColorsSecondary.length]);
 	}
 }
 
 /**
- * Set Primary Theme Color
+ * @description Set Primary Theme Color
  */
 async function changeThemeColorPrimary() {
 	await domAPI.setThemeColor(themeColorsPrimary[themeColorsPrimaryCount % themeColorsPrimary.length], '');
+	await fsAPI.writeToSetting('primaryColor', themeColorsPrimaryCount % themeColorsPrimary.length);
 	themeColorsPrimaryCount++;
 }
 
 /**
- * Set Secondary Theme Color
+ * @description Set Secondary Theme Color
  */
 async function changeThemeColorSecondary() {
 	await domAPI.setThemeColor('', themeColorsSecondary[themeColorsSecondaryCount % themeColorsSecondary.length]);
+	await fsAPI.writeToSetting('secondaryColor', themeColorsSecondaryCount % themeColorsSecondary.length);
 	themeColorsSecondaryCount--;
 	if (themeColorsSecondaryCount === 0) {
 		themeColorsSecondaryCount = themeColorsSecondary.length;
