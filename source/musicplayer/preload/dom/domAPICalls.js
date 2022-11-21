@@ -284,10 +284,52 @@ async function getValue(domID, value) {
 async function setValue(domID, value, valueLiteral) {
 	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, value);
 	if (isValueSafe) {
-		document.getElementById(domID).value = valueLiteral;
+		document.getElementById(domID)[value] = valueLiteral;
 		return true;
 	} else {
 		return false;
+	}
+}
+
+/**
+ * @name setProperty
+ * @memberOf domAPI
+ * @description Sets an arbitrary property of a given domID, if it exists and
+ * is deemed 'safe.' TODO: Verify with backend that this is safe and needed.
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} property The property to set for the element.
+ * @param {string} propertyLiteral The literal that we are setting the value to
+ * @return {Promise<boolean>} The true if the setter is successful, else
+ * false if the value is deemed 'unsafe.'
+ *
+ */
+async function setProperty(domID, property, propertyLiteral) {
+	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, property);
+	if (isValueSafe) {
+		document.getElementById(domID)[property] = propertyLiteral;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * @name getProperty
+ * @memberOf domAPI
+ * @description Gets an arbitrary property of a given domID, if it exists and
+ * is deemed 'safe.' TODO: Verify with backend that this is safe and needed.
+ * @param {string} domID The 'id' tag that the element has in the html.
+ * @param {string} property The property to get for the element.
+ * @return {Promise<object> | undefined} The true if the setter is successful, else
+ * false if the value is deemed 'unsafe.'
+ *
+ */
+async function getProperty(domID, property) {
+	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, property);
+	if (isValueSafe) {
+		return document.getElementById(domID)[property];
+	} else {
+		return undefined;
 	}
 }
 
@@ -322,6 +364,8 @@ module.exports = {
 	setStyleClassToggle,
 	getValue,
 	setValue,
+	setProperty,
+	getProperty,
 	addGrid,
 	setThemeColor,
 };

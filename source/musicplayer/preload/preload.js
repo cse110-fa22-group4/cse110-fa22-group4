@@ -5,7 +5,7 @@ const {
 	addEventListener, addEventListenerbyClassName, getAttribute,
 	setAttribute, addChild, setHTML, appendHTML,
 	setStyle, setStyleClassToggle, getValue, setValue, loadPage,
-	addGrid, setThemeColor,
+	addGrid, setThemeColor, setProperty, getProperty,
 } = require('./dom/domAPICalls.js');
 
 const {
@@ -115,6 +115,8 @@ contextBridge.exposeInMainWorld('domAPI', {
 	setStyleClassToggle: setStyleClassToggle,
 	getValue: getValue,
 	setValue: setValue,
+	getProperty: getProperty,
+	setProperty: setProperty,
 	loadPage: loadPage,
 	addGrid: addGrid,
 	setThemeColor: setThemeColor,

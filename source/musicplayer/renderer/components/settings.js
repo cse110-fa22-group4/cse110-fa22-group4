@@ -1,6 +1,10 @@
+
 window.addEventListener('settings-loaded', async ()=> {
+	await loadSettingsState();
 	await domAPI.addEventListener('settings-rescan', 'click', rescanClick);
 	await domAPI.addEventListener('add-paths-button', 'click', addPath);
+	await domAPI.addEventListener('enable-scan-on-startup', 'click', enableToggleableSetting);
+	await domAPI.addEventListener('enable-dark-mode', 'click', enableToggleableSetting);
 });
 
 /**
@@ -32,37 +36,45 @@ async function addPath(element) {
 	watched.push(dirs['filePaths']);
 	await fsAPI.writeToSetting('watchedDir', watched);
 }
+
+/**
+ * @description This function is called anytime a toggleable setting is clicked, and writes the setting to storage.
+ * Assumes that element id and key in settings exactly match.
+ * @param {HTMLElement} element
+ */
+async function enableToggleableSetting(element) {
+	const isEnabled = await domAPI.getProperty(element.id, 'checked');
+	console.log(isEnabled);
+	fsAPI.writeToSetting(element.id, isEnabled);
+}
+
 /**
  * @description Displays loaded settings on page load. Adds watched directories
  * to the 'watched-folders' div and changes toggles to the correct state. Assumes
  * the settings match their respective id name.
- *
- * WIP
  */
 async function loadSettingsState() {
 	genAPI.debugLog('im in the settings function', 'settings-tests');
-	const settings = await fsAPI.getSettings();
 
-	if ('watchedDir' in settings) {
+	const watchedDirs = await fsAPI.getSetting('watchedDir');
+	if (watchedDirs !== undefined) {
 		// watchedDir is a list of directories. we will format watchedDirDisplay
 		// to be the inner HTML for the 'watched-folders' div
 		let watchedDirDisplay = '';
-		for (const dir in settings['watchedDir']) {
+		for (const dir in watchedDirs) {
 			if (!dir) continue;
 			watchedDirDisplay += '<p>' + dir + '</p><br>';
 		}
 		await domAPI.setHTML('watched-folders', watchedDirDisplay);
-
-		// done with this key, so let's delete it so we can loop through the rest.
-		delete settings['watchedDir'];
 	}
 
-	// miscellaneous deletions
-	delete settings['wrong_file'];
+	// These are the keys relevant to the settings menu
+	const relevantSettings = ['enable-scan-on-startup', 'enable-dark-mode'];
+	const allSettings = await fsAPI.getSettings();
 
-	for (const setting in settings) {
-		if (!setting) continue;
-		await genAPI.debugLog(`checking setting ${setting}`, 'settings-tests');
-		await domAPI.setValue(setting, 'checked', 'true');
+	for (let i=0; i < relevantSettings.length; i++) {
+		if (relevantSettings[i] in allSettings) {
+			await domAPI.setProperty(relevantSettings[i], 'checked', 'true');
+		}
 	}
 }
