@@ -249,49 +249,6 @@ async function setStyleClassToggle(domID, style, toggle) {
 }
 
 /**
- * @name getValue
- * @memberOf domAPI
- * @description Gets the value of a given domID, if it exists and
- * is deemed 'safe.'
- * @param {string} domID The 'id' tag that the element has in the html.
- * @param {string} value The value to get from the element.
- * @return {Promise<object> | undefined} The value if the getter is successful, else
- * undefined if either the value or element does not exist,
- *          or if the value is deemed 'unsafe.'
- *
- */
-async function getValue(domID, value) {
-	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, value);
-	if (isValueSafe) {
-		return document.getElementById(domID).value;
-	} else {
-		return undefined;
-	}
-}
-
-/**
- * @name setValue
- * @memberOf domAPI
- * @description Sets the value of a given domID, if it exists and
- * is deemed 'safe.'
- * @param {string} domID The 'id' tag that the element has in the html.
- * @param {string} value The value to set for the element.
- * @param {string} valueLiteral The literal that we are setting the value to
- * @return {Promise<boolean>} The true if the setter is successful, else
- * false if the value is deemed 'unsafe.'
- *
- */
-async function setValue(domID, value, valueLiteral) {
-	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, value);
-	if (isValueSafe) {
-		document.getElementById(domID)[value] = valueLiteral;
-		return true;
-	} else {
-		return false;
-	}
-}
-
-/**
  * @name setProperty
  * @memberOf domAPI
  * @description Sets an arbitrary property of a given domID, if it exists and
@@ -362,8 +319,6 @@ module.exports = {
 	appendHTML,
 	setStyle,
 	setStyleClassToggle,
-	getValue,
-	setValue,
 	setProperty,
 	getProperty,
 	addGrid,
