@@ -123,7 +123,7 @@ async function changeThemeColorPrimary() {
 async function changeThemeColorSecondary() {
 	await domAPI.setThemeColor('', themeColorsSecondary[themeColorsSecondaryCount % themeColorsSecondary.length]);
 	themeColorsSecondaryCount--;
-	if (themeColorsSecondaryCount == 0) {
+	if (themeColorsSecondaryCount === 0) {
 		themeColorsSecondaryCount = themeColorsSecondary.length;
 	}
 }

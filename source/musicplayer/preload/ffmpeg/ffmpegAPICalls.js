@@ -41,9 +41,9 @@ async function getReadCMDForSpawn(filepath) {
 		cmd: ffProbePath,
 		args: [
 			'-hide_banner',
-			'-print_format json',
-			'show_format',
-			`-i "${filepath.split(path.sep).join(path.posix.sep)}"`,
+			'-print_format', 'json',
+			'-show_format',
+			`${filepath.split(path.sep).join(path.posix.sep)}`,
 		],
 	};
 }

@@ -10,11 +10,11 @@ const {storagePath} = require('../fsAPICalls');
  */
 async function getStats() {
 	const statsPath = path.join(storagePath, 'stats.json');
-	if (!fs.existsSync(statsPath)) {
-		fs.closeSync(fs.openSync(statsPath, 'w'));
-		fs.writeFileSync(statsPath, '{ }');
+	if (!(await fs.exists(statsPath))) {
+		await fs.close(await fs.open(statsPath, 'w'));
+		await fs.writeFile(statsPath, '{ }');
 	}
-	return JSON.parse(fs.readFileSync(statsPath, 'utf8'));
+	return JSON.parse(await fs.readFile(statsPath, 'utf8'));
 }
 
 /**
@@ -28,10 +28,10 @@ async function getStats() {
  */
 async function writeStats(stats) {
 	const statsPath = path.join(storagePath, 'stats.json');
-	if (!fs.existsSync(statsPath)) {
-		fs.closeSync(fs.openSync(statsPath, 'w'));
+	if (!(await fs.exists(statsPath))) {
+		await fs.close(await fs.open(statsPath, 'w'));
 	}
-	fs.writeFileSync(statsPath, JSON.stringify(stats));
+	await fs.writeFile(statsPath, JSON.stringify(stats));
 }
 
 /**

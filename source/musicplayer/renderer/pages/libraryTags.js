@@ -38,12 +38,12 @@ async function generateTagsCards() {
 		const card = `
     <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
-        <img src=${cardCover}>
+        <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
         <div>${key}</div>
-        <div>${value.numArtists.size} ${value.numArtists.size == 1 ? 'Artist' : 'Artists'}</div>
-        <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
+        <div>${value.numArtists.size} ${value.numArtists.size === 1 ? 'Artist' : 'Artists'}</div>
+        <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
     </div>
   `;
@@ -66,7 +66,7 @@ async function libraryTagsExtended(e) {
 	for (let i = 0; i < libraryCatalog.length; i++) {
 		const tagsSplit = libraryCatalog[i].tags.split(', ');
 		for (let j = 0; j < tagsSplit.length; j++) {
-			if (tagsSplit[j] == cardTag) {
+			if (tagsSplit[j] === cardTag) {
 				data.push(libraryCatalog[i]);
 				break;
 			}

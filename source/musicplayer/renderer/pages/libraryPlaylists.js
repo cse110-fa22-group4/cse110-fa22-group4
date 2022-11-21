@@ -37,12 +37,12 @@ async function generatePlaylistsCards() {
 		const card = `
     <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
-        <img src=${cardCover}>
+        <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
         <div>${key}</div>
-        <div>${value.artists.size} ${value.artists.size == 1 ? 'Artist' : 'Artists'}</div>
-        <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
+        <div>${value.artists.size} ${value.artists.size === 1 ? 'Artist' : 'Artists'}</div>
+        <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
     </div>
   `;
@@ -54,12 +54,12 @@ async function generatePlaylistsCards() {
 		const card = `
     <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
-        <img src=${cardCover}>
+        <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
         <div>${key}</div>
-        <div>${value.artists.size} ${value.artists.size == 1 ? 'Artist' : 'Artists'}</div>
-        <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
+        <div>${value.artists.size} ${value.artists.size === 1 ? 'Artist' : 'Artists'}</div>
+        <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
     </div>
   `;
@@ -82,7 +82,7 @@ async function libraryPlaylistsExtended(e) {
 	for (let i = 0; i < libraryCatalog.length; i++) {
 		const playlistsSplit = libraryCatalog[i].playlists.split(', ');
 		for (let j = 0; j < playlistsSplit.length; j++) {
-			if (playlistsSplit[j] == cardPlaylist) {
+			if (playlistsSplit[j] === cardPlaylist) {
 				data.push(libraryCatalog[i]);
 				break;
 			}
