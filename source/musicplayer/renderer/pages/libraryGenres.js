@@ -38,12 +38,12 @@ async function generateGenresCards() {
 		const card = `
     <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
-        <img src=${cardCover}>
+        <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
         <div>${key}</div>
-        <div>${value.numArtists.size} ${value.numArtists.size == 1 ? 'Artist' : 'Artists'}</div>
-        <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
+        <div>${value.numArtists.size} ${value.numArtists.size === 1 ? 'Artist' : 'Artists'}</div>
+        <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
     </div>
   `;
@@ -68,7 +68,7 @@ async function libraryGenresExtended(e) {
 	for (let i = 0; i < libraryCatalog.length; i++) {
 		const genreArr = libraryCatalog[i].genre.split(', ');
 		for (let j = 0; j < genreArr.length; j++) {
-			if (genreArr[j] == cardGenre) {
+			if (genreArr[j] === cardGenre) {
 				data.push(libraryCatalog[i]);
 				break;
 			}

@@ -35,12 +35,12 @@ async function generateArtistsCards() {
 		const card = `
     <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
-        <img src=${cardCover}>
+        <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
         <div>${key}</div>
-        <div>${value.numAlbums.size} ${value.numAlbums.size == 1 ? 'Album' : 'Albums'}</div>
-        <div>${value.numTracks} ${value.numTracks == 1 ? 'Track' : 'Tracks'} </div>
+        <div>${value.numAlbums.size} ${value.numAlbums.size === 1 ? 'Album' : 'Albums'}</div>
+        <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
     </div>
   `;
@@ -62,7 +62,7 @@ async function libraryArtistsExtended(e) {
 	// Set grid rows
 	const data = [];
 	for (let i = 0; i < libraryCatalog.length; i++) {
-		if (libraryCatalog[i].artist == cardArtist) {
+		if (libraryCatalog[i].artist === cardArtist) {
 			data.push(libraryCatalog[i]);
 		}
 	}

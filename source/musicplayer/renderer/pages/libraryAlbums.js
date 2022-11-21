@@ -28,7 +28,7 @@ async function generateAlbumsCards() {
 		const card = `
     <div class="library-card" data-libtarget="${key}">
       <div class="library-card-artwork">
-        <img src=${value.artwork}>
+        <img src=${value.artwork} alt="">
       </div>
       <div class="library-card-info">
         <div>${key}</div>

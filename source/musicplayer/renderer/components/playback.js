@@ -30,7 +30,7 @@ async function playSong() {
 	const playBtnImg = playBtn.querySelector('img');
 	// .setBinPath() in code or do in terminal atleast once,
 	// set to path of ffplay executable
-	if (playBtn.id == 'play-btn') {
+	if (playBtn.id === 'play-btn') {
 		if (isPaused) {
 			await ffmpegAPI.resumeSong();
 		} else {
@@ -72,7 +72,7 @@ function loopSong() {
  * @param {HTMLElement} btn svg (enclosed by button)
  */
 function toggleColor(fillColor, btn) {
-	if (fillColor == 'rgb(0, 0, 0)') { // equivalent to black
+	if (fillColor === 'rgb(0, 0, 0)') { // equivalent to black
 		fillColor = 'var(--theme-primary)';
 	} else {
 		fillColor = 'black';
@@ -86,7 +86,7 @@ function toggleColor(fillColor, btn) {
  * @param {HTMLElement} btnImg The icon image
  */
 function toggleIcon(btn, btnImg) {
-	if (btn.id == 'play-btn') {
+	if (btn.id === 'play-btn') {
 		console.log(btn);
 		btnImg.src = '../img/icons/playback/pause.png';
 		(btn).id = 'pause-btn';
@@ -105,7 +105,7 @@ function updateVolume() {
 	console.log(audioFader);
 	console.log(audioIcon);
 	console.log(audioFader.value);
-	if (audioFader.value == 0) {
+	if (audioFader.value === 0) {
 		audioIcon.src = '../img/icons/playback/muted.png';
 	} else {
 		audioIcon.src = '../img/icons/playback/unmuted.png';
