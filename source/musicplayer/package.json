@@ -11,7 +11,7 @@
 		"webpack-rebuild": "npm run clean & npm run update && npm run webpack-build",
 		"webpack-rebuild-win": "npm run clean-win & npm run update && npm run webpack-build",
 		"webpack-test": "npm run webpack-build && electron ./dist/main.js",
-		"test": "electron main/main.js -g",
+		"test": "jest",
 		"start": "electron main/main.js",
 		"lint-project": "npx eslint .",
 		"lint-fix": "npx eslint . --fix"
@@ -30,5 +30,17 @@
 		"stylelint-config-standard": "latest",
 		"webpack": "^5.74.0",
 		"webpack-cli": "^4.10.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.16.0",
+		"@babel/preset-env": "^7.16.0",
+		"babel-jest": "^27.3.1",
+		"jest": "^27.3.1",
+		"jest-puppeteer": "^6.0.0",
+		"puppeteer": "^11.0.0"
+	},
+	"jest": {
+		"preset": "jest-puppeteer",
+		"verbose": true
 	}
 }

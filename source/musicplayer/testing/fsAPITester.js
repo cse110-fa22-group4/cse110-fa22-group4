@@ -22,6 +22,22 @@ const {
 const {enableDebugLogTag} = require('../preload/general/genAPICalls');
 
 /**
+ * Functions from playlistAPICalls.js
+ */
+const {
+	getAllPlaylists,
+	getPlaylist,
+	removePlaylist,
+	writePlaylist,
+} = require('../preload/fs/playlists/playlistAPICalls');
+
+
+async function testGetAllPlaylists() {
+	// we have no playlist imported so it should be returning an empty array
+	const playlist_array = getPlaylist();
+}
+
+/**
  *
  * @return {Promise<void>}
  */
@@ -111,10 +127,12 @@ async function testSongs(songFolderPaths) {
 	}
 }
 
-/* async function testGetSong() {
 
-}
+// async function testGetSong() {
+//
+// }
 
+/*
 async function testAppendSong() {
 
 }
