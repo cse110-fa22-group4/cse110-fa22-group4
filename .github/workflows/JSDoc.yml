@@ -1,0 +1,19 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v2
+        
+    - name: Generate Docs
+      run: npm run docs 
