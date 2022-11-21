@@ -1,5 +1,7 @@
-const {path} = require('path');
-const {fs} = require('fs');
+// remove {} surround the path variable fix the path not defined problem
+const path = require('path');
+// remove {} surround the fs variable fix the readdirSync not defined problem
+const fs = require('fs');
 const {getStoragePath, makeDirIfNotExists} = require('../fsAPICalls');
 
 /**
@@ -11,7 +13,6 @@ const {getStoragePath, makeDirIfNotExists} = require('../fsAPICalls');
 async function getAllPlaylists() {
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists');
-
 	await makeDirIfNotExists('playlists');
 	return fs.readdirSync(playlistPath); // may not return file types
 }
