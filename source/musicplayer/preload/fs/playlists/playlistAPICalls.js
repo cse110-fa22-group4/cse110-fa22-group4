@@ -14,7 +14,7 @@ async function getAllPlaylists() {
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists');
 	await makeDirIfNotExists('playlists');
-	return await fs.readdir(playlistPath); // may not return file types
+	return fs.readdirSync(playlistPath); // may not return file types
 }
 
 /**
