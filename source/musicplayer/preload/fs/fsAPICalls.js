@@ -18,8 +18,13 @@ async function fsInit() {
 }
 
 /**
- *
- * @param {string} newStoragePath
+ * @name setStoragePath
+ * @memberOf fsAPI
+ * @description sets the storage path, the folder 
+ * that stores settings and playlists
+ * which is normally appData, to what we want
+ * It's typically inside the repo
+ * @param {string} newStoragePath the newStoragePath inside the repo
  * @return {Promise<void>}
  */
 async function setStoragePath(newStoragePath) {
@@ -30,16 +35,22 @@ async function setStoragePath(newStoragePath) {
 }
 
 /**
- *
- * @return {Promise<string>}
+ * @name getStoragepath
+ * @memberOf fsAPI
+ * @description returns the storage path
+ * @return {Promise<string>} A promise containing 
+ * the storage path
  */
 async function getStoragePath() {
 	return storagePath;
 }
 
 /**
- *
- * @return {Promise<string>}
+ * @name getSourceFolder
+ * @memberOf fsAPI
+ * @description returns the source folder of the repo
+ * @return {Promise<string>} a promise containing 
+ * a string of the repo's source folder
  */
 async function getSourceFolder() {
 	return __dirname + '/../../..';
@@ -61,6 +72,7 @@ async function devClear(caller) {
 	const playlistPath = path.join(storagePath, 'playlists');
 
 	if (fs.existsSync(settingPath)) {
+		//fs.rmSync(settingPath);
 		fs.rmSync(settingPath);
 	}
 	if (fs.existsSync(songsPath)) {
@@ -87,7 +99,7 @@ async function devClear(caller) {
 
 /**
  * @name makeDirIfExists
- * @description Checks if a folder, and if not creates it.
+ * @description Checks if a folder exists, and if not creates it.
  * @memberOf fsAPI
  * @param {string} folder The folder to be checked for.
  * @return {Promise<void>}

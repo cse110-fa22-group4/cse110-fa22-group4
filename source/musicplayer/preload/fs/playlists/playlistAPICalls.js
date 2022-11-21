@@ -1,7 +1,7 @@
 const {path} = require('path');
 const {fs} = require('fs');
 const {getStoragePath, makeDirIfNotExists} = require('../fsAPICalls');
-
+const {Grid} = require('gridjs');
 /**
  * @name getAllPlaylists
  * @description Gets an array that contains the names of every playlist.
@@ -13,7 +13,7 @@ async function getAllPlaylists() {
 	const playlistPath = path.join(storagePath, 'playlists');
 
 	await makeDirIfNotExists('playlists');
-	return fs.readdirSync(playlistPath); // may not return file types
+	return await fs.readdir(playlistPath); // may not return file types
 }
 
 /**
@@ -28,11 +28,11 @@ async function getPlaylist(playlist) {
 	const playlistPath = path.join(storagePath, 'playlists', playlist);
 
 	await makeDirIfNotExists('playlists');
-	if (!fs.existsSync(playlistPath)) {
-		fs.closeSync(fs.openSync(playlistPath, 'w'));
-		fs.writeFileSync(playlistPath, '{ }');
+	if (!(await fs.exists(playlistPath))) {
+		await fs.close(await fs.open(playlistPath, 'w'));
+		await fs.writeFile(playlistPath, '{ songs: [ ], }');
 	}
-	return JSON.parse(fs.readFileSync(playlistPath, 'utf8'));
+	return JSON.parse(await fs.readFile(playlistPath, 'utf8'));
 }
 
 /**
@@ -46,8 +46,8 @@ async function removePlaylist(playlistName) {
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists', playlistName);
 	await makeDirIfNotExists('playlists');
-	if (!fs.existsSync(playlistPath)) return;
-	fs.rmSync(playlistPath);
+	if (!(await fs.exists(playlistPath))) return;
+	await fs.rm(playlistPath);
 }
 
 /**
@@ -61,15 +61,42 @@ async function removePlaylist(playlistName) {
  * @return {Promise<void>}
  */
 async function writePlaylist(playlistName, playlist) {
+	//TODO: test if it doesn't exist
 	const storagePath = await getStoragePath();
-	const playlistPath = path.join(storagePath, 'playlists', playlistName);
-	await makeDirIfNotExists('playlists');
-	if (!fs.existsSync(playlistPath)) {
-		fs.closeSync(fs.openSync(playlistPath, 'w'));
+	
+	const playlistPath = path.join('~/Desktop', 'playlists', 'asdf.json');
+	console.log(playlistPath);
+	if (!(await fs.exists('~/Desktop/asdf.json'))) {
+		await fs.close(await fs.open(playlistPath, 'w'));
 	}
-	fs.writeFileSync(playlistPath, JSON.stringify(playlist));
+	await fs.writeFile(playlistPath, JSON.stringify(playlist));
 }
 
+/**
+ */
+async function playlistSearch(keyword) {
+	const gridSearcher = new Grid({
+		sort: true,
+		columns: ['names'],
+		data: [getAllPlaylists()],
+		search: {
+			enabled: true,
+			selector: (cell, rowIndex, cellIndex) => {
+			if (cellIndex === 1) console.log(cell);
+				return cell;
+			},
+			keyword: keyword,
+		},
+	});
+	
+	//TODO: how do we iterate through the data?
+	
+
+}
+
+async function exportPlaylist(playlistName) {
+	//TODO: should just cp it if it exists
+}
 module.exports = {
 	getAllPlaylists,
 	getPlaylist,

@@ -25,7 +25,7 @@ async function playSong(songPath, volume = 100, seekVal = 0) {
 	vol = Number(volume);
 	pauseTime = Number(seekVal);
 	paused = false;
-	path = String(songPath);
+	path = `\"${songPath}\"`;
 	const ffPaths = await getPaths();
 	if (!fs.existsSync(songPath)) {
 		await debugLog(`Could not find song at path: ${songPath}`, 'fsplay-error');

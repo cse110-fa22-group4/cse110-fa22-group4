@@ -12,11 +12,11 @@ const {getStoragePath} = require('../fsAPICalls');
 async function getSongs() {
 	const storagePath = await getStoragePath();
 	const songPath = path.join(storagePath, 'songs.json');
-	if (!fs.existsSync(songPath)) {
-		fs.closeSync(fs.openSync(songPath, 'w'));
-		fs.writeFileSync(songPath, '{ }');
+	if (!(await fs.exists(songPath))) {
+		await fs.close(await fs.open(songPath, 'w'));
+		await fs.writeFile(songPath, '{ }');
 	}
-	const res = fs.readFileSync(songPath, 'utf8');
+	const res = await fs.readFile(songPath, 'utf8');
 
 	return JSON.parse(res);
 }
@@ -32,10 +32,10 @@ async function getSongs() {
 async function writeSongs(songs) {
 	const storagePath = await getStoragePath();
 	const songPath = path.join(storagePath, 'songs.json');
-	if (!fs.existsSync(songPath)) {
-		fs.closeSync(fs.openSync(songPath, 'w'));
+	if (!(await fs.exists(songPath))) {
+		await fs.close(await fs.open(songPath, 'w'));
 	}
-	fs.writeFileSync(songPath, JSON.stringify(songs));
+	await fs.writeFile(songPath, JSON.stringify(songs));
 }
 
 /**
@@ -99,6 +99,14 @@ async function cullShortAudio() {
 	});
 	remove.forEach((r) => delete songs[r]);
 	await writeSongs(songs);
+}
+
+async function songsGrid() {
+	//TODO: returns a grid of the songs
+	
+}
+async function songsSearch() {
+	//TODO:
 }
 
 module.exports = {
