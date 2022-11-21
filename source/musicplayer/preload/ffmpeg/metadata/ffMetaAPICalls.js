@@ -36,21 +36,19 @@ const {promises: fs} = require('fs');
  */
 async function ffmpegReadPromise(filepath) {
 	const data = await getReadCMDForSpawn(filepath);
-	const cmd = spawn(data.cmd, data.args);
-	// not sure why this is here, we need to stop using this function anyways.
-	// todo: finish homemade cli app to replace this promise nightmare - liam
-	// noinspection LoopStatementThatDoesntLoopJS
-	for await (const d of cmd.stdout) {
-		return d;
-	}
+	await debugLog(data.cmd + ' ' + data.args, 'unit-tests');
 	return new Promise((resolve, reject) => {
 		try {
-			const cmd = spawn(data.cmd, data.args, {shell: false});
-			cmd.stdout.on('data', (data) => {
-				resolve(data.toString());
+			const cmd = spawn(data.cmd, data.args);
+			let retval = '';
+			cmd.stdout.on('data', async (data) => {
+				retval += data.toString();
 			});
-			cmd.on('error', (err) => {
-				reject(err);
+			cmd.stderr.on('data', async (data) => {
+				// we don't have to do anything here, it just prints the same thing twice.
+			});
+			cmd.on('close', async (code) => {
+				resolve(retval);
 			});
 		} catch (e) {
 			reject(e);
@@ -66,7 +64,9 @@ async function ffmpegReadPromise(filepath) {
  * @return {Promise<Object>} A json object of the read metadata
  */
 async function ffmpegRead(filepath) {
-	return JSON.parse(await ffmpegReadPromise(filepath));
+	const data = await ffmpegReadPromise(filepath);
+	await debugLog(data.replace('/\n|  */g', ''), 'unit-tests');
+	return JSON.parse(data.split('\n').join(''));
 }
 
 /**
@@ -82,10 +82,10 @@ async function ffmpegWrite(filepath, options) {
 	childProcess.execSync(await getWriteCMD(filepath, options)).toString();
 	if (process.platform === 'win32') {
 		childProcess.execSync('move /y out.' +
-            filepath.split('.').pop() + ' ' + filepath);
+			filepath.split('.').pop() + ' ' + filepath);
 	} else {
 		childProcess.execSync('mv out.' +
-            filepath.split('.').pop() + ' ' + filepath);
+			filepath.split('.').pop() + ' ' + filepath);
 	}
 }
 
@@ -109,7 +109,7 @@ async function createMultiFFmpegPromise() {
 				]);
 			let errFlag = false;
 
-			proc.stdout.on('data', async (data)=> {
+			proc.stdout.on('data', async (data) => {
 				if (data) {
 					await debugLog(data.toString(), 'multi-ffmpeg-loading-progress');
 				}

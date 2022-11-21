@@ -27,7 +27,6 @@ async function playSong(songPath, volume = 100, seekVal = 0) {
 	paused = false;
 	path = String(songPath);
 	const ffPaths = await getPaths();
-	console.log(path);
 	if (!fs.existsSync(songPath)) {
 		await debugLog(`Could not find song at path: ${songPath}`, 'fsplay-error');
 		return;
@@ -57,10 +56,16 @@ async function pauseSong() {
 	// The number 26 is a constant that emerges as a consequence of ffPlay's implementation of
 	// console data visualization. One could also get duration in a similar way if they so chose, to find the magic
 	// number place a breakpoint below and search the array manually.
-	pauseTime = Number(data[data.length - 26]);
-	paused = true;
+	const filtered = data.filter((value, index) => {
+		if (index < data.length - 30) return false;
+		return value && value.includes('.');
+	});
+	pauseTime = filtered[0];
 	await stopSong(false);
-	console.log(path);
+	paused = true;
+
+	console.log(filtered);
+	console.log(pauseTime);
 }
 
 /**
@@ -70,6 +75,7 @@ async function pauseSong() {
  */
 async function resumeSong() {
 	await playSong(path, vol, pauseTime);
+	console.log(pauseTime);
 	paused = false;
 }
 
