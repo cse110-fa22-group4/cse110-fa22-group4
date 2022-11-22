@@ -1,6 +1,20 @@
-{
-    "/Users/jeremylei/untitled folder/cse110-fa22-group4/source/user_1/songs/Tobu/Tobu - Hope [NCS Release].mp3": {
-        "title": "Hope",
-        "artist": "Tobu"
+[
+    {
+        "/cse110-fa22-group4/source/users/user_1/songs/Tobu/Tobu - Hope [NCS Release].mp3": {
+            "title": "Hope",
+            "artist": "Tobu"
+        }
+    },
+    {
+        "/cse110-fa22-group4/source/users/user_1/songs/Tobu/Tobu - Infectious [NCS Release].mp3": {
+            "title": "Infectious",
+            "artist": "Tobu"
+        }
+    },
+    {
+        "/cse110-fa22-group4/source/users/user_1/songs/Different Heaven & EH!DE - My Heart [NCS Release].mp3": {
+            "title": "My Heart",
+            "artist": "Different Heaven & EH!DE"
+        }
     }
-}
+]

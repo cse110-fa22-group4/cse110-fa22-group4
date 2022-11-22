@@ -14,7 +14,7 @@ async function fsInit() {
 	storagePath = await ipcRenderer.invoke('getUserData');
 	storagePath = path.join(storagePath, 'MixMatch');
 	await makeDirIfNotExists(storagePath);
-	await debugLog('UserData Storage Path: ' + storagePath, 'fs-general');
+	//await debugLog('UserData Storage Path: ' + storagePath, 'fs-general');
 }
 
 /**
@@ -26,7 +26,7 @@ async function setStoragePath(newStoragePath) {
 	const localPath = await getSourceFolder();
 	storagePath = path.join(localPath, newStoragePath);
 	await makeDirIfNotExists(storagePath);
-	await debugLog('UserData Storage Path: ' + storagePath, 'fs-general');
+	//await debugLog('UserData Storage Path: ' + storagePath, 'fs-general');
 }
 
 /**
