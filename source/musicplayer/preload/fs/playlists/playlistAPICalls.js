@@ -12,12 +12,13 @@ const {Grid} = require('gridjs');
 async function getAllPlaylists() {
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists');
+	console.log(playlistPath);
 
-	await makeDirIfNotExists('playlists');
-	//Sorry, but with readdir, the 
+	await makeDirIfNotExists(playlistPath);
+	//Sorry, but with readdir, the np
 	//filenames would've gone out of scope in the callback
 	//As a result, we can't return them
-	return fs.readdirSync(playlistPath)
+	return fs.readdirSync(playlistPath);
 }
 
 /**
@@ -31,7 +32,7 @@ async function getPlaylist(playlist) {
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists', playlist);
 
-	await makeDirIfNotExists('playlists');
+	await makeDirIfNotExists(playlistPath);
 	
 	await fs.exists(playlistPath, async(e) => {
 		if(!e) {
