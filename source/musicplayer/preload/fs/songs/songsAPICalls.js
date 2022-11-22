@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const {getStoragePath} = require('../fsAPICalls');
+const {getStoragePath, throwErr, throwErrOpen} = require('../fsAPICalls');
 
 /**
  * @name getSongs
@@ -12,11 +12,14 @@ const {getStoragePath} = require('../fsAPICalls');
 async function getSongs() {
 	const storagePath = await getStoragePath();
 	const songPath = path.join(storagePath, 'songs.json');
-	if (!(await fs.exists(songPath))) {
-		await fs.close(await fs.open(songPath, 'w'));
-		await fs.writeFile(songPath, '{ }');
-	}
-	const res = await fs.readFile(songPath, 'utf8');
+	//if (!(await fs.exists(songPath))) {
+	fs.exists(songPath, async (e) => {
+		if(!e) {
+				await fs.open(songPath, 'w', throwErrOpen);
+				await fs.writeFile(songPath, '{ }', throwErr);
+		}
+	});
+	const res = fs.readFileSync(songPath, 'utf8');
 
 	return JSON.parse(res);
 }
@@ -32,10 +35,12 @@ async function getSongs() {
 async function writeSongs(songs) {
 	const storagePath = await getStoragePath();
 	const songPath = path.join(storagePath, 'songs.json');
-	if (!(await fs.exists(songPath))) {
-		await fs.close(await fs.open(songPath, 'w'));
-	}
-	await fs.writeFile(songPath, JSON.stringify(songs));
+	//if (!(await fs.exists(songPath))) {
+	fs.exists(songPath, async (e) => {
+		if(!e)
+			await fs.open(songPath, 'w', throwErrOpen);
+	});
+	await fs.writeFile(songPath, JSON.stringify(songs), throwErr);
 }
 
 /**
@@ -44,11 +49,13 @@ async function writeSongs(songs) {
  * @memberOf fsAPI
  * @param {object} newSong The path of the new song file as a key, and
  *                          metadata as a value.
+ * @todo Kind of redundant with appendSongs around, isn't it?
  * @return {Promise<void>}
  */
 async function appendSong(newSong) {
 	const songs = await getSongs();
-	songs.push(newSong);
+	for(const song in newSongs)
+		songs[song] = newSong[song];
 	await writeSongs(songs);
 }
 
