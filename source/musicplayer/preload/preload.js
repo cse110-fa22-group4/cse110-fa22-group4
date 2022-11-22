@@ -47,6 +47,8 @@ const {
 
 const {
 	debugLog, openDialog,
+	publishGlobal, getGlobal,
+	removeGlobal,
 } = require('./general/genAPICalls.js');
 
 /**
@@ -101,6 +103,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 contextBridge.exposeInMainWorld('genAPI', {
 	debugLog: debugLog,
 	openDialog: openDialog,
+	publishGlobal: publishGlobal,
+	getGlobal: getGlobal,
+	removeGlobal: removeGlobal,
 });
 
 contextBridge.exposeInMainWorld('domAPI', {

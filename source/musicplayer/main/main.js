@@ -102,3 +102,4 @@ ipcMain.handle('get-selected-song', (event, args) => {
 ipcMain.handle('set-selected-song', (event, args) => {
 	selectedSong = args;
 });
+

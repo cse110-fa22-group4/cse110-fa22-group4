@@ -45,8 +45,45 @@ async function openDialog(opts) {
 	return JSON.parse(await ipcRenderer.invoke('openDialog', opts));
 }
 
+const globalVars = [];
+
+/**
+ * Adds a global to storage.
+ * @param {any} global
+ * @returns {Promise<void>}
+ */
+async function publishGlobal(global) {
+	globalVars.push(global);
+}
+
+/**
+ * Retrieves a global from storage
+ * @param {any} global
+ * @returns {Promise<any>}
+ */
+async function getGlobal(global) {
+	if (globalVars.includes(global)) {
+		return global;
+	}
+}
+
+/**
+ * Removes a global from storage.
+ * @param {any} global
+ * @returns {Promise<void>}
+ */
+async function removeGlobal(global) {
+	const i = globalVars.indexOf(global);
+	if (i > -1) {
+		globalVars.splice(i, 1);
+	}
+}
+
 
 module.exports = {
 	debugLog,
 	openDialog,
+	publishGlobal,
+	getGlobal,
+	removeGlobal,
 };
