@@ -1,7 +1,15 @@
+<<<<<<< HEAD
 const path = require('path');
 const fs = require('fs');
 const {getStoragePath, makeDirIfNotExists,
 throwErr, throwErrOpen} = require('../fsAPICalls');
+=======
+// remove {} surround the path variable fix the path not defined problem
+const path = require('path');
+// remove {} surround the fs variable fix the readdirSync not defined problem
+const fs = require('fs');
+const {getStoragePath, makeDirIfNotExists} = require('../fsAPICalls');
+>>>>>>> be771a5b185366d865badd4dc9f7194c11fabede
 const {Grid} = require('gridjs');
 /**
  * @name getAllPlaylists
@@ -12,12 +20,15 @@ const {Grid} = require('gridjs');
 async function getAllPlaylists() {
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists');
-
 	await makeDirIfNotExists('playlists');
+<<<<<<< HEAD
 	//Sorry, but with readdir, the 
 	//filenames would've gone out of scope in the callback
 	//As a result, we can't return them
 	return fs.readdirSync(playlistPath)
+=======
+	return fs.readdirSync(playlistPath); // may not return file types
+>>>>>>> be771a5b185366d865badd4dc9f7194c11fabede
 }
 
 /**
