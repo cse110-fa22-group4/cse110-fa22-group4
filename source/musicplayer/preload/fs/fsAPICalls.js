@@ -63,7 +63,7 @@ async function setStoragePath(newStoragePath) {
 }
 
 /**
- * @name getStoragepath
+ * @name getStoragePath
  * @memberOf fsAPI
  * @description returns the storage path
  * @return {Promise<string>} A promise containing 

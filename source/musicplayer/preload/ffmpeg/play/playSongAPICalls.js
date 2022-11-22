@@ -7,6 +7,7 @@ let path = '';
 let pauseTime = 0;
 let vol = 0;
 let instance = undefined;
+let pauseSongPath = '';
 // TODO: is there a better way to get the duration other than reading directly from metadata?
 // From stderr perhaps?
 // Duration can be scraped from the stderr, if you want to try what you can do is place a breakpoint on line
@@ -26,6 +27,7 @@ async function playSong(songPath, volume = 100, seekVal = 0) {
 	pauseTime = Number(seekVal);
 	paused = false;
 	path = `\"${songPath}\"`;
+	console.log("play song path: ", path);
 	const ffPaths = await getPaths();
 	if (!fs.existsSync(songPath)) {
 		await debugLog(`Could not find song at path: ${songPath}`, 'fsplay-error');
@@ -61,6 +63,7 @@ async function pauseSong() {
 		return value && value.includes('.');
 	});
 	pauseTime = filtered[0];
+	pauseSongPath = path.substring(1,path.length-1);
 	await stopSong(false);
 	paused = true;
 
@@ -74,7 +77,8 @@ async function pauseSong() {
  * @return {Promise<void>}
  */
 async function resumeSong() {
-	await playSong(path, vol, pauseTime);
+	console.log(pauseSongPath);
+	await playSong(pauseSongPath, vol, pauseTime);
 	console.log(pauseTime);
 	paused = false;
 }
