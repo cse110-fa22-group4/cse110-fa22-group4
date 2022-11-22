@@ -7,17 +7,20 @@ const {
 
 let electronApp;
 
-test('load app', async () => {
+test('Example Test Build', async () => {
   electronApp = await electron.launch({ args: ['../../main/main.js'] })
 
+  // reset data for the user you are modifying data for
+  await reset_user1;
 
+  // make test call
   expect(3).toBe(3);
 
   await electronApp.close()
 
 });
 
-//refresh environment
+//refresh entire environment at end of file
 test('reset', async () => {
   electronApp = await electron.launch({ args: ['../../main/main.js'] })
   await reset();
