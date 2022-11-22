@@ -12,10 +12,12 @@ async function getSettings() {
 	const storagePath = await getStoragePath();
 	const settingsPath = path.join(storagePath, 'settings.json');
 	//if (!(await fs.exists(settingsPath))) {
-	await fs.exists(settingsPath, async (err) => {
+	await fs.exists(settingsPath, async (e) => {
 		//await fs.close(await fs.open(settingsPath, 'w'));
-		await fs.open(settingsPath, 'w', throwErrOpen);
-		await fs.writeFile(settingsPath, '{ }', throwErr);
+		if(!e) {
+				await fs.open(settingsPath, 'w', throwErrOpen);
+				await fs.writeFile(settingsPath, '{ }', throwErr);
+		}
 
 	});
 	return JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
