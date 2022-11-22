@@ -133,29 +133,18 @@ async function devClear(caller) {
  * @return {Promise<void>}
  */
 async function makeDirIfNotExists(folder) {
-	// await fs.opendir(folder, async (err, dir) => {
-	// 	if (err) {
-	// 		await fs.mkdir(folder, {recursive: false}, () => {
-	// 			// Any callback that needs to happen on first folder create
-	// 			// can happen here.
-	// 		});
-	// 	}
-	// });
+	await fs.opendir(folder, async (err, dir) => {
+		if (err) {
+			// await fs.mkdir(folder, {recursive: false}, (err) => {
+			// 	// Any callback that needs to happen on first folder create
+			// 	// can happen here.
+			// 	if (err) throw err;
+			// });
 
-	// Sorry, the above code will have an error when corporate with fs.readdirSync() in
-	// playlistAPI getAllPlaylists();
-	// I have change the make directory if it wasn't already existing.
-	if (!fs.existsSync(folder)) {
-		fs.mkdir(folder, {recursive : true}, (err) => {
-			if (err) {
-				console.error(err);
-			}else{
-				console.log('dir: playlist created successfully');
-			}
-		})
-	}
-
-
+			// throw an error if it occurs
+			await fs.mkdir(folder, {recursive: false}, throwErr);
+		}
+	});
 }
 
 /**

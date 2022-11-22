@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const {getStoragePath, makeDirIfNotExists,
-throwErr, throwErrOpen} = require('../fsAPICalls');
+	throwErr, throwErrOpen} = require('../fsAPICalls');
 const {Grid} = require('gridjs');
 /**
  * @name getAllPlaylists
@@ -12,13 +12,12 @@ const {Grid} = require('gridjs');
 async function getAllPlaylists() {
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists');
-	console.log(playlistPath);
 
-	await makeDirIfNotExists(playlistPath);
-	//Sorry, but with readdir, the np
+	await makeDirIfNotExists('playlists');
+	//Sorry, but with readdir, the
 	//filenames would've gone out of scope in the callback
 	//As a result, we can't return them
-	return fs.readdirSync(playlistPath);
+	return fs.readdirSync(playlistPath)
 }
 
 /**
@@ -32,8 +31,8 @@ async function getPlaylist(playlist) {
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists', playlist);
 
-	await makeDirIfNotExists(playlistPath);
-	
+	await makeDirIfNotExists('playlists');
+
 	await fs.exists(playlistPath, async(e) => {
 		if(!e) {
 			await fs.open(playlistPath, 'w', throwErrOpen);
@@ -44,7 +43,7 @@ async function getPlaylist(playlist) {
 	//That we can't access again
 	//Also Map parsing from https://codingbeautydev.com/blog/javascript-convert-json-to-map/
 	return new Map(Object.entries(JSON.parse(fs.readFileSync(playlistPath, 'utf8'))));
-	
+
 }
 
 /**
@@ -78,9 +77,9 @@ async function removePlaylist(playlistName) {
  * @return {Promise<void>}
  */
 async function writePlaylist(playlistName, playlist) {
-	
+
 	const storagePath = await getStoragePath();
-	
+
 	const playlistPath = path.join(storagePath, 'playlists', playlistName);
 
 	await fs.exists(playlistPath, async(e) => {
@@ -91,8 +90,8 @@ async function writePlaylist(playlistName, playlist) {
 	//conversion from map to json partially inspired from
 	//https://codingbeautydev.com/blog/javascript-convert-json-to-map/
 	await fs.writeFile(playlistPath,
-	JSON.stringify(Object.fromEntries(playlist)),
-	throwErr);
+		JSON.stringify(Object.fromEntries(playlist)),
+		throwErr);
 }
 
 /**
@@ -105,15 +104,15 @@ async function playlistSearch(keyword) {
 		search: {
 			enabled: true,
 			selector: (cell, rowIndex, cellIndex) => {
-			if (cellIndex === 1) console.log(cell);
+				if (cellIndex === 1) console.log(cell);
 				return cell;
 			},
 			keyword: keyword,
 		},
 	});
-	
+
 	//TODO: how do we iterate through the data?
-	
+
 
 }
 
