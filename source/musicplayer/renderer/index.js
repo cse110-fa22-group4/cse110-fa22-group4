@@ -149,7 +149,11 @@ async function playlistsClick(element) {
  */
 async function settingsClick(element) {
 	await domAPI.loadPage('top-container-extended', 'pages/settings.html');
-	await topExtensionOn();
+	if(topContainerIsExtended) {
+		await topExtensionOff();
+	} else {
+		await topExtensionOn();
+	}
 }
 
 /**
