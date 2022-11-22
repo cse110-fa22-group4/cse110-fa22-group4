@@ -144,13 +144,11 @@ input:checked + .slider:before {
     color: var(--light);
   }
 
-  #watched-folders,
-  .watched-folders-element > button {
+  #watched-folders {
     height: 80px;
     width: 500px;
     padding: 15px;
     border: none;
-    overflow-y: auto;
     color: var(--light);
     background-color: rgba(0, 0, 0, .30);
     border-radius: 5px;
@@ -161,18 +159,6 @@ input:checked + .slider:before {
     margin-bottom: 5px;
   }
 
-  .watched-folders-element {
-    display: flex;
-    flex-direction: row;
-  }
-  .watched-folders-element > button {
-    padding: 0%;
-    overflow: hidden;
-    height: auto;
-    width: 25px;
-    margin-left: auto;
-  }
-
   .watch-folders-btns {
     display: flex;
     flex-direction: row;
@@ -181,7 +167,7 @@ input:checked + .slider:before {
     margin-bottom: 40px;
   }
 
-  #settings-rescan, #add-paths-button {
+  #settings-rescan, #add-paths-button-label {
     height: 28px;
     padding: 0 15px;
     border: none;
