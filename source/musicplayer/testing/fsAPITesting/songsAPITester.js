@@ -33,7 +33,7 @@ const {
     
     await testGetSong();
 
-    await testAppendSong();
+    //await testAppendSong();
 
 }
 
@@ -41,7 +41,7 @@ const {
  * 
  */
 async function testGetSong() {
-    songs = await getSongs();
+    let songs = await getSongs();
     //console.log('settings file: ' + JSON.stringify(songs));
 }
 

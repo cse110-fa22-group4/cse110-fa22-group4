@@ -36,7 +36,6 @@ async function testSettings() {
  */
 async function testGetSettings() {
     let settings = await getSettings();
-    console.log('settings file: ' + JSON.stringify(settings));
 }
 
 /**
