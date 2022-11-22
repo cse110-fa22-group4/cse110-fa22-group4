@@ -1,6 +1,7 @@
-const {path} = require('path');
-const {fs} = require('fs');
-const {getStoragePath, makeDirIfNotExists} = require('../fsAPICalls');
+const path = require('path');
+const fs = require('fs');
+const {getStoragePath, makeDirIfNotExists,
+throwErr, throwErrOpen} = require('../fsAPICalls');
 const {Grid} = require('gridjs');
 /**
  * @name getAllPlaylists
@@ -13,7 +14,10 @@ async function getAllPlaylists() {
 	const playlistPath = path.join(storagePath, 'playlists');
 
 	await makeDirIfNotExists('playlists');
-	return await fs.readdir(playlistPath); // may not return file types
+	//Sorry, but with readdir, the 
+	//filenames would've gone out of scope in the callback
+	//As a result, we can't return them
+	return fs.readdirSync(playlistPath)
 }
 
 /**
@@ -28,11 +32,16 @@ async function getPlaylist(playlist) {
 	const playlistPath = path.join(storagePath, 'playlists', playlist);
 
 	await makeDirIfNotExists('playlists');
-	if (!(await fs.exists(playlistPath))) {
-		await fs.close(await fs.open(playlistPath, 'w'));
-		await fs.writeFile(playlistPath, '{ songs: [ ], }');
-	}
-	return JSON.parse(await fs.readFile(playlistPath, 'utf8'));
+	
+	await fs.exists(playlistPath, async(e) => {
+		if(!e) {
+			await fs.open(playlistPath, 'w', throwErrOpen);
+			await fs.writeFile(playlistPath, '{ songs: [ ], }', throwErr);
+		}
+	});
+	//Again, the data would be a param in the callback
+	//That we can't access again
+	return JSON.parse(fs.readFileSync(playlistPath, 'utf8'));
 }
 
 /**
@@ -46,8 +55,13 @@ async function removePlaylist(playlistName) {
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists', playlistName);
 	await makeDirIfNotExists('playlists');
-	if (!(await fs.exists(playlistPath))) return;
-	await fs.rm(playlistPath);
+	//if (!(await fs.exists(playlistPath))) return;
+	//await fs.rm(playlistPath);
+	await fs.exists(playlistPath, async(e) => {
+		if(e) {
+			await fs.rm(playlistPath, throwErr);
+		}
+	});
 }
 
 /**
@@ -61,15 +75,17 @@ async function removePlaylist(playlistName) {
  * @return {Promise<void>}
  */
 async function writePlaylist(playlistName, playlist) {
-	//TODO: test if it doesn't exist
+	
 	const storagePath = await getStoragePath();
 	
-	const playlistPath = path.join('~/Desktop', 'playlists', 'asdf.json');
-	console.log(playlistPath);
-	if (!(await fs.exists('~/Desktop/asdf.json'))) {
-		await fs.close(await fs.open(playlistPath, 'w'));
-	}
-	await fs.writeFile(playlistPath, JSON.stringify(playlist));
+	const playlistPath = path.join(storagePath, 'playlists', playlistName);
+
+	await fs.exists(playlistPath, async(e) => {
+		if(!e) {
+			await fs.open(playlistPath, 'w', throwErrOpen);
+		}
+	});
+	await fs.writeFile(playlistPath,JSON.stringify(playlist),throwErr);
 }
 
 /**

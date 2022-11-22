@@ -147,6 +147,7 @@ contextBridge.exposeInMainWorld('fsAPI', {
 	writeToStat: writeToStat,
 	deleteStat: deleteStat,
 	getAllPlaylists: getAllPlaylists,
+	getPlaylist: getPlaylist,
 	removePlaylist: removePlaylist,
 	writePlaylist: writePlaylist,
 	getSRCString: getSRCString,

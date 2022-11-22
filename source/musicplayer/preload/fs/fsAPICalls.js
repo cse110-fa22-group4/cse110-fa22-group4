@@ -6,14 +6,42 @@ const {debugLog} = require('../general/genAPICalls');
 let storagePath = '';
 
 /**
+ * @name throwErr
+ * @memberOf none
+ * @description Every fs async function requires
+ * a callback, so this is it
+ * @param err the error
+ */
+function throwErr(err) {
+	if(err) throw err;
+}
+
+/**
+ * @name throwErrOpen
+ * @memberOf none
+ * @description fs.open uses this
+ * @param err the err
+ * @fd the file descriptor
+ */
+async function throwErrOpen(err, fd) {
+	if(err) 
+		throw Error("File opening doesn't work");
+	await fs.close(fd, throwErr);
+	
+}
+/**
+ * @name fsInit
+ * @memberOf fsInit
  * @description MUST BE CALLED ON STARTUP. Sets the path to userData, which can
  * only be done from main.js.
  * @return {Promise<void>}
  */
 async function fsInit() {
 	storagePath = await ipcRenderer.invoke('getUserData');
+	await makeDirIfNotExists(storagePath);
 	storagePath = path.join(storagePath, 'MixMatch');
 	await makeDirIfNotExists(storagePath);
+	await makeDirIfNotExists(path.join(storagePath, 'playlists'));
 	await debugLog('UserData Storage Path: ' + storagePath, 'fs-general');
 }
 
@@ -181,4 +209,6 @@ module.exports = {
 	recursiveSearchAtPath,
 	setStoragePath,
 	getSourceFolder,
+	throwErr,
+	throwErrOpen,
 };
