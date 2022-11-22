@@ -26,7 +26,7 @@ async function getAllPlaylists() {
  * @description Gets a single playlist by name.
  * @memberOf fsAPI
  * @param {string} playlist The name of the playlist to get.
- * @return {Promise<Object>} A JSON formatted object that represents a playlist.
+ * @return {Promise<Map>} A map that represents a playlist.
  */
 async function getPlaylist(playlist) {
 	const storagePath = await getStoragePath();
@@ -42,7 +42,9 @@ async function getPlaylist(playlist) {
 	});
 	//Again, the data would be a param in the callback
 	//That we can't access again
-	return JSON.parse(fs.readFileSync(playlistPath, 'utf8'));
+	//Also Map parsing from https://codingbeautydev.com/blog/javascript-convert-json-to-map/
+	return new Map(Object.entries(JSON.parse(fs.readFileSync(playlistPath, 'utf8'))));
+	
 }
 
 /**
@@ -71,7 +73,7 @@ async function removePlaylist(playlistName) {
  * playlist.  If the playlist exists, it is overwritten.
  * @memberOf fsAPI
  * @param {string} playlistName The name of the playlist to write to.
- * @param {object} playlist A JSON formatted object containing the playlist
+ * @param {Map} playlist A map containing the playlist
  * information.
  * @return {Promise<void>}
  */
@@ -86,7 +88,11 @@ async function writePlaylist(playlistName, playlist) {
 			await fs.open(playlistPath, 'w', throwErrOpen);
 		}
 	});
-	await fs.writeFile(playlistPath,JSON.stringify(playlist),throwErr);
+	//conversion from map to json partially inspired from
+	//https://codingbeautydev.com/blog/javascript-convert-json-to-map/
+	await fs.writeFile(playlistPath,
+	JSON.stringify(Object.fromEntries(playlist)),
+	throwErr);
 }
 
 /**
