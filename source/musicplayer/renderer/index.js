@@ -31,10 +31,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await domAPI.addEventListener( 'btn-home', 'click', homeClick);
 	await domAPI.addEventListener( 'btn-overview', 'click', overviewClick);
 	await domAPI.addEventListener( 'btn-library', 'click', libraryClick);
-	await domAPI.addEventListener( 'btn-library-artists', 'click', libraryArtistsClick);
-	await domAPI.addEventListener( 'btn-library-albums', 'click', libraryAlbumsClick);
-	await domAPI.addEventListener( 'btn-library-genres', 'click', libraryGenresClick);
-	await domAPI.addEventListener( 'btn-library-tags', 'click', libraryTagsClick);
 	await domAPI.addEventListener( 'btn-playlists', 'click', playlistsClick);
 	await domAPI.addEventListener( 'btn-settings', 'click', settingsClick);
 
@@ -86,58 +82,6 @@ async function libraryClick(element) {
  */
 async function postLibraryLoad() {
 
-}
-
-/**
- * Navigate to Library > Artists view
- * @param {HTMLElement} element
- */
-async function libraryArtistsClick(element) {
-	await domAPI.loadPage('main-container', 'pages/libraryArtists.html');
-	await domAPI.setHTML('header-title', 'Library');
-	await domAPI.setHTML('header-subtitle', 'Artists');
-	await resetSidebarButtons();
-	await domAPI.setStyleClassToggle('sidebar-btn-container-artists', 'sidebar-btn-active', true);
-	await topExtensionOff();
-}
-
-/**
- * Navigate to Library > Albums view
- * @param {HTMLElement} element
- */
-async function libraryAlbumsClick(element) {
-	await domAPI.loadPage('main-container', 'pages/libraryAlbums.html');
-	await domAPI.setHTML('header-title', 'Library');
-	await domAPI.setHTML('header-subtitle', 'Albums');
-	await resetSidebarButtons();
-	await domAPI.setStyleClassToggle('sidebar-btn-container-albums', 'sidebar-btn-active', true);
-	await topExtensionOff();
-}
-
-/**
- * Navigate to Library > Genres view
- * @param {HTMLElement} element
- */
-async function libraryGenresClick(element) {
-	await domAPI.loadPage('main-container', 'pages/libraryGenres.html');
-	await domAPI.setHTML('header-title', 'Library');
-	await domAPI.setHTML('header-subtitle', 'Genres');
-	await resetSidebarButtons();
-	await domAPI.setStyleClassToggle('sidebar-btn-container-genres', 'sidebar-btn-active', true);
-	await topExtensionOff();
-}
-
-/**
- * Navigate to Library > Tags view
- * @param {HTMLElement} element
- */
-async function libraryTagsClick(element) {
-	await domAPI.loadPage('main-container', 'pages/libraryTags.html');
-	await domAPI.setHTML('header-title', 'Library');
-	await domAPI.setHTML('header-subtitle', 'Tags');
-	await resetSidebarButtons();
-	await domAPI.setStyleClassToggle('sidebar-btn-container-tags', 'sidebar-btn-active', true);
-	await topExtensionOff();
 }
 
 /**
@@ -195,10 +139,6 @@ async function resetSidebarButtons() {
 	await domAPI.setStyleClassToggle('sidebar-btn-container-home', 'sidebar-btn-active', false);
 	await domAPI.setStyleClassToggle('sidebar-btn-container-nowPlaying', 'sidebar-btn-active', false);
 	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', false);
-	await domAPI.setStyleClassToggle('sidebar-btn-container-artists', 'sidebar-btn-active', false);
-	await domAPI.setStyleClassToggle('sidebar-btn-container-albums', 'sidebar-btn-active', false);
-	await domAPI.setStyleClassToggle('sidebar-btn-container-genres', 'sidebar-btn-active', false);
-	await domAPI.setStyleClassToggle('sidebar-btn-container-tags', 'sidebar-btn-active', false);
 	await domAPI.setStyleClassToggle('sidebar-btn-container-playlists', 'sidebar-btn-active', false);
 }
 
