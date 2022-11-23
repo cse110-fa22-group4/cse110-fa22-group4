@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 const path = require('path');
 const {ipcRenderer} = require('electron');
 
@@ -45,38 +46,42 @@ async function openDialog(opts) {
 	return JSON.parse(await ipcRenderer.invoke('openDialog', opts));
 }
 
-const globalVars = [];
+const globalVars = {};
 
 /**
- * Adds a global to storage.
- * @param {any} global
- * @returns {Promise<void>}
+ * @name publishGlobal
+ * @memberOf genAPI
+ * @description Adds a global to storage. Will overwrite anything with the same key
+ * @param {any} globalValue - the value of the global we are storing
+ * @param {string} globalKey - this string is the key that can be used to access the global that we just stored
+ * @return {Promise<void>}
  */
-async function publishGlobal(global) {
-	globalVars.push(global);
+async function publishGlobal(globalValue, globalKey) {
+	globalVars[globalKey] = globalValue;
 }
 
 /**
- * Retrieves a global from storage
- * @param {any} global
- * @returns {Promise<any>}
+ * @name getGlobal
+ * @memberOf genAPI
+ * @description Retrieves a global from storage
+ * @param {string} globalKey - the key to access the global, should be the same as the name of the global
+ * @return {Promise<any>}
  */
-async function getGlobal(global) {
-	if (globalVars.includes(global)) {
-		return global;
+async function getGlobal(globalKey) {
+	if (globalKey in globalVars) {
+		return globalVars[globalKey];
 	}
 }
 
 /**
- * Removes a global from storage.
- * @param {any} global
- * @returns {Promise<void>}
+ * @name removeGlobal
+ * @memberOf genAPI
+ * @description Removes a global from storage.
+ * @param {string} globalKey - the key of the global variable we want to remove
+ * @return {Promise<void>}
  */
-async function removeGlobal(global) {
-	const i = globalVars.indexOf(global);
-	if (i > -1) {
-		globalVars.splice(i, 1);
-	}
+async function removeGlobal(globalKey) {
+	delete globalVars.globalKey;
 }
 
 
