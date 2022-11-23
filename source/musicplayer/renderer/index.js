@@ -7,15 +7,15 @@ let topContainerIsExtended = false; // to toggle extended view of top container
 const searchQuery = ''; // the current query entered into the search bar
 let searchQueryGlobal;
 let currentSearchCategory;
-let currentPage = { // helper to track current page
-    home: true,
-    overview: false,
-    library: false,
-    artists: false,
-    albums: false,
-    tags: false,
-    playlists: false,
-    settings: false
+const currentPage = { // helper to track current page
+	home: true,
+	overview: false,
+	library: false,
+	artists: false,
+	albums: false,
+	tags: false,
+	playlists: false,
+	settings: false,
 };
 
 /* GENERATE HOME PAGE */
@@ -205,8 +205,8 @@ async function resetSidebarButtons() {
 /**
  *  Resets page values to false.
  */
- async function resetCurrentPage() {
-    Object.values(currentPage).forEach(page => {
-        page = false;
-    });
+async function resetCurrentPage() {
+	Object.values(currentPage).forEach((page) => {
+		page = false;
+	});
 }

@@ -1,7 +1,7 @@
-const { ipcRenderer } = require('electron');
-const { Grid, h } = require('gridjs');
-const { RowSelection } = require('gridjs/plugins/selection');
-const { debugLog } = require('../general/genAPICalls');
+const {ipcRenderer} = require('electron');
+const {Grid, h} = require('gridjs');
+const {RowSelection} = require('gridjs/plugins/selection');
+const {debugLog} = require('../general/genAPICalls');
 const path = require('path');
 
 // Ensures that an event is not established multiple times by accident.
@@ -17,8 +17,8 @@ let selectedTracks = [];
  * @return {Promise<string>} The actual path to the html file from a renderer process.
  */
 async function htmlFromRenderer(htmlFile) {
-    const htmlFilePath = await ipcRenderer.invoke('getAppPath');
-    return path.join(htmlFilePath, '/../html/', htmlFile);
+	const htmlFilePath = await ipcRenderer.invoke('getAppPath');
+	return path.join(htmlFilePath, '/../html/', htmlFile);
 }
 
 /**
@@ -31,15 +31,15 @@ async function htmlFromRenderer(htmlFile) {
  * @return {Promise<void>}
  */
 async function loadPage(targetID, htmlFile, callback = undefined) {
-    const html = require('fs').readFileSync(await htmlFromRenderer(htmlFile)).toString();
-    await setHTML(targetID, html);
-    const temp = htmlFile.split('.');
-    const filename = temp[temp.length - 2].split('/').pop();
-    await debugLog(`Broadcasting event: ${filename}-loaded`, 'broadcast-event');
-    window.dispatchEvent(new Event(`${filename}-loaded`));
-    if (callback) {
-        await callback(document.getElementById(targetID));
-    }
+	const html = require('fs').readFileSync(await htmlFromRenderer(htmlFile)).toString();
+	await setHTML(targetID, html);
+	const temp = htmlFile.split('.');
+	const filename = temp[temp.length - 2].split('/').pop();
+	await debugLog(`Broadcasting event: ${filename}-loaded`, 'broadcast-event');
+	window.dispatchEvent(new Event(`${filename}-loaded`));
+	if (callback) {
+		await callback(document.getElementById(targetID));
+	}
 }
 
 /**
@@ -51,11 +51,11 @@ async function loadPage(targetID, htmlFile, callback = undefined) {
  * @return {Promise<void>}
  */
 async function setHTML(domID, html) {
-    const isAttributeSafe = await ipcRenderer.invoke(
-        'managedAttributeCheck', domID, 'innerHTML');
-    if (isAttributeSafe) {
-        document.getElementById(domID).innerHTML = html;
-    }
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, 'innerHTML');
+	if (isAttributeSafe) {
+		document.getElementById(domID).innerHTML = html;
+	}
 }
 
 /**
@@ -67,11 +67,11 @@ async function setHTML(domID, html) {
  * @return {Promise<void>}
  */
 async function appendHTML(domID, html) {
-    const isAttributeSafe = await ipcRenderer.invoke(
-        'managedAttributeCheck', domID, 'innerHTML');
-    if (isAttributeSafe) {
-        document.getElementById(domID).innerHTML += html;
-    }
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, 'innerHTML');
+	if (isAttributeSafe) {
+		document.getElementById(domID).innerHTML += html;
+	}
 }
 
 /**
@@ -85,76 +85,73 @@ async function appendHTML(domID, html) {
  * @return {Grid} The grid that is created is returned for searching purposes.
  */
 async function addGrid(domID, columns, data, params = {}, rowSelectType) {
-    // return new Grid({
-    // Perform this check above all
-    const isAttributeSafe = await ipcRenderer.invoke(
-        'managedAttributeCheck', domID, 'innerHTML');
-    if (!isAttributeSafe) return undefined;
+	// return new Grid({
+	// Perform this check above all
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, 'innerHTML');
+	if (!isAttributeSafe) return undefined;
 
-    // enable row selection
-    columns.unshift(
-        {
-            id: 'awesomeCheckbox',
-            name: '',
-            plugin: {
-                component: RowSelection,
-                props: { id: (row) => row.cells, }
-            }
-        },
-    );
+	// enable row selection
+	columns.unshift(
+		{
+			id: 'awesomeCheckbox',
+			name: '',
+			plugin: {
+				component: RowSelection,
+				props: {id: (row) => row.cells},
+			},
+		},
+	);
 
-    // default grid
-    let grid = new Grid({
-        columns: columns,
-        data: data,
-    })
-        .updateConfig(params)
-        .render(document.getElementById(domID))
-        .on('rowClick', (...args) =>
-            window.dispatchEvent(
-                new CustomEvent(`${domID}-grid-clicked`, { detail: args[1] })));
+	// default grid
+	const grid = new Grid({
+		columns: columns,
+		data: data,
+	})
+		.updateConfig(params)
+		.render(document.getElementById(domID))
+		.on('rowClick', (...args) =>
+			window.dispatchEvent(
+				new CustomEvent(`${domID}-grid-clicked`, {detail: args[1]})));
 
-    // use row selection to manage playlists
-    if (rowSelectType == 'playlists') {
-        grid.on('ready', (...args) => {
-            const checkboxPlugin = grid.config.plugin.get('awesomeCheckbox');
-            checkboxPlugin.props.store.on('updated', function (state, prevState) {
-                // update selectedTracks with current selection
-                const currSelection = []
-                for (let i = 0; i < state.rowIds.length; i++) {
-                    let currTrackObj = {};
-                    for (let j = 1; j < columns.length; j++) {
-                        let key = columns[j].name;
-                        let value = state.rowIds[i][j].data;
-                        currTrackObj[`${key}`] = value;
-                    }
-                    currSelection.push(currTrackObj);
-                }
-                selectedTracks = currSelection;
+	// use row selection to manage playlists
+	if (rowSelectType == 'playlists') {
+		grid.on('ready', (...args) => {
+			const checkboxPlugin = grid.config.plugin.get('awesomeCheckbox');
+			checkboxPlugin.props.store.on('updated', function(state, prevState) {
+				// update selectedTracks with current selection
+				const currSelection = [];
+				for (let i = 0; i < state.rowIds.length; i++) {
+					const currTrackObj = {};
+					for (let j = 1; j < columns.length; j++) {
+						const key = columns[j].name;
+						const value = state.rowIds[i][j].data;
+						currTrackObj[`${key}`] = value;
+					}
+					currSelection.push(currTrackObj);
+				}
+				selectedTracks = currSelection;
 
-                // send selected tracks to playlist manager
-                let playlistManager = document.getElementById('selected-playlists-container');
-                let selectedRow = `
+				// send selected tracks to playlist manager
+				const playlistManager = document.getElementById('selected-playlists-container');
+				let selectedRow = `
                 <div class="playlist-manager-header">
                 <div>Title</div>
                 <div>Artist</div>
                 <div>Album</div>
                 </div>`;
-                for (let k = 0; k < currSelection.length; k++) {
-                debugger
-
-                    selectedRow += `
+				for (let k = 0; k < currSelection.length; k++) {
+					selectedRow += `
                     <div class="playlist-manager-row">
                     <div>${currSelection[k].title}</div>
                     <div>${currSelection[k].artist}</div>
                     <div>${currSelection[k].album}</div>
                     </div>`;
-                }
-                playlistManager.innerHTML = selectedRow;
-
-            });
-        });
-    }
+				}
+				playlistManager.innerHTML = selectedRow;
+			});
+		});
+	}
 }
 
 /**
@@ -168,22 +165,22 @@ async function addGrid(domID, columns, data, params = {}, rowSelectType) {
  * @return {Promise<void>}
  */
 async function addEventListener(domID, event, func) {
-    const isEventSafe = await ipcRenderer.invoke(
-        'managedAddEventListenerCheck', domID, event);
-    const element = document.getElementById(domID);
-    if (element === undefined || element === null) {
-        await debugLog(`Failed to find ID: ${domID}`, 'add-event-error');
-        return;
-    }
-    if (!(domID in establishedEvents)) {
-        establishedEvents[domID] = [];
-    }
-    if (isEventSafe && !(event in establishedEvents[domID])) {
-        element.addEventListener(event, async () => {
-            await func(element);
-        }, false);
-        establishedEvents[domID].push(event);
-    }
+	const isEventSafe = await ipcRenderer.invoke(
+		'managedAddEventListenerCheck', domID, event);
+	const element = document.getElementById(domID);
+	if (element === undefined || element === null) {
+		await debugLog(`Failed to find ID: ${domID}`, 'add-event-error');
+		return;
+	}
+	if (!(domID in establishedEvents)) {
+		establishedEvents[domID] = [];
+	}
+	if (isEventSafe && !(event in establishedEvents[domID])) {
+		element.addEventListener(event, async () => {
+			await func(element);
+		}, false);
+		establishedEvents[domID].push(event);
+	}
 }
 
 /**
@@ -197,24 +194,24 @@ async function addEventListener(domID, event, func) {
  * @return {Promise<void>}
  */
 async function addEventListenerbyClassName(domClass, event, func) {
-    const isEventSafe = await ipcRenderer.invoke(
-        'managedAddEventListenerCheck', domClass, event);
-    const elements = document.getElementsByClassName(domClass);
-    if (elements === undefined || elements === null) {
-        await debugLog(`Failed to find ClassName: ${domClass}`, 'add-event-error');
-        return;
-    }
-    if (!(domClass in establishedEvents)) {
-        establishedEvents[domClass] = [];
-    }
-    if (isEventSafe && !(event in establishedEvents[domClass])) {
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].addEventListener(event, async () => {
-                await func(elements[i]);
-            }, false);
-        }
-        establishedEvents[domClass].push(event);
-    }
+	const isEventSafe = await ipcRenderer.invoke(
+		'managedAddEventListenerCheck', domClass, event);
+	const elements = document.getElementsByClassName(domClass);
+	if (elements === undefined || elements === null) {
+		await debugLog(`Failed to find ClassName: ${domClass}`, 'add-event-error');
+		return;
+	}
+	if (!(domClass in establishedEvents)) {
+		establishedEvents[domClass] = [];
+	}
+	if (isEventSafe && !(event in establishedEvents[domClass])) {
+		for (let i = 0; i < elements.length; i++) {
+			elements[i].addEventListener(event, async () => {
+				await func(elements[i]);
+			}, false);
+		}
+		establishedEvents[domClass].push(event);
+	}
 }
 
 /**
@@ -229,13 +226,13 @@ async function addEventListenerbyClassName(domClass, event, func) {
  *          or if the attribute is deemed 'unsafe.'
  */
 async function getAttribute(domID, attribute) {
-    const isAttributeSafe = await ipcRenderer.invoke(
-        'managedAttributeCheck', domID, attribute);
-    if (isAttributeSafe) {
-        return document.getElementById(domID).getAttribute(attribute);
-    } else {
-        return undefined;
-    }
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, attribute);
+	if (isAttributeSafe) {
+		return document.getElementById(domID).getAttribute(attribute);
+	} else {
+		return undefined;
+	}
 }
 
 /**
@@ -249,11 +246,11 @@ async function getAttribute(domID, attribute) {
  * @return {Promise<void>}
  */
 async function setAttribute(domID, attribute, value) {
-    const isAttributeSafe = await ipcRenderer.invoke(
-        'managedAttributeCheck', domID, attribute);
-    if (isAttributeSafe) {
-        document.getElementById(domID).setAttribute(attribute, value);
-    }
+	const isAttributeSafe = await ipcRenderer.invoke(
+		'managedAttributeCheck', domID, attribute);
+	if (isAttributeSafe) {
+		document.getElementById(domID).setAttribute(attribute, value);
+	}
 }
 
 /**
@@ -265,10 +262,10 @@ async function setAttribute(domID, attribute, value) {
  * @return {Promise<void>}
  */
 async function addChild(domID, child) {
-    const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
-    if (isChildSafe) {
-        document.getElementById(domID).appendChild(child);
-    }
+	const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
+	if (isChildSafe) {
+		document.getElementById(domID).appendChild(child);
+	}
 }
 
 /**
@@ -281,10 +278,10 @@ async function addChild(domID, child) {
  * @return {Promise<void>}
  */
 async function setStyle(domID, style, value) {
-    const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
-    if (isChildSafe) {
-        document.getElementById(domID).style[style] = value;
-    }
+	const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
+	if (isChildSafe) {
+		document.getElementById(domID).style[style] = value;
+	}
 }
 
 /**
@@ -297,14 +294,14 @@ async function setStyle(domID, style, value) {
  * @return {Promise<void>}
  */
 async function setStyleClassToggle(domID, style, toggle) {
-    const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
-    if (isChildSafe) {
-        if (toggle) {
-            document.getElementById(domID).classList.add(style);
-        } else {
-            document.getElementById(domID).classList.remove(style);
-        }
-    }
+	const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
+	if (isChildSafe) {
+		if (toggle) {
+			document.getElementById(domID).classList.add(style);
+		} else {
+			document.getElementById(domID).classList.remove(style);
+		}
+	}
 }
 
 /**
@@ -320,13 +317,13 @@ async function setStyleClassToggle(domID, style, toggle) {
  *
  */
 async function setProperty(domID, property, propertyLiteral) {
-    const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, property);
-    if (isValueSafe) {
-        document.getElementById(domID)[property] = propertyLiteral;
-        return true;
-    } else {
-        return false;
-    }
+	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, property);
+	if (isValueSafe) {
+		document.getElementById(domID)[property] = propertyLiteral;
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /**
@@ -341,12 +338,12 @@ async function setProperty(domID, property, propertyLiteral) {
  *
  */
 async function getProperty(domID, property) {
-    const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, property);
-    if (isValueSafe) {
-        return document.getElementById(domID)[property];
-    } else {
-        return undefined;
-    }
+	const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, property);
+	if (isValueSafe) {
+		return document.getElementById(domID)[property];
+	} else {
+		return undefined;
+	}
 }
 
 /**
@@ -358,12 +355,12 @@ async function getProperty(domID, property) {
  *
  */
 async function setThemeColor(primary, secondary) {
-    if (primary !== '') {
-        document.documentElement.style.setProperty('--theme-primary', primary);
-    }
-    if (secondary !== '') {
-        document.documentElement.style.setProperty('--theme-secondary', secondary);
-    }
+	if (primary !== '') {
+		document.documentElement.style.setProperty('--theme-primary', primary);
+	}
+	if (secondary !== '') {
+		document.documentElement.style.setProperty('--theme-secondary', secondary);
+	}
 }
 
 /**
@@ -372,24 +369,24 @@ async function setThemeColor(primary, secondary) {
  * @description Returns track objects selected by the user from a grid.
  * @return {Promise<Array>} An array of selected tracks.
  */
- async function getSelectedTracks(element) {
-    return selectedTracks;
+async function getSelectedTracks() {
+	return selectedTracks;
 }
 
 module.exports = {
-    loadPage,
-    addEventListener,
-    addEventListenerbyClassName,
-    getAttribute,
-    setAttribute,
-    addChild,
-    setHTML,
-    appendHTML,
-    setStyle,
-    setStyleClassToggle,
-    setProperty,
-    getProperty,
-    addGrid,
-    setThemeColor,
-    getSelectedTracks,
+	loadPage,
+	addEventListener,
+	addEventListenerbyClassName,
+	getAttribute,
+	setAttribute,
+	addChild,
+	setHTML,
+	appendHTML,
+	setStyle,
+	setStyleClassToggle,
+	setProperty,
+	getProperty,
+	addGrid,
+	setThemeColor,
+	getSelectedTracks,
 };

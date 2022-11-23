@@ -123,7 +123,7 @@ contextBridge.exposeInMainWorld('domAPI', {
 	loadPage: loadPage,
 	addGrid: addGrid,
 	setThemeColor: setThemeColor,
-    getSelectedTracks: getSelectedTracks,
+	getSelectedTracks: getSelectedTracks,
 });
 
 contextBridge.exposeInMainWorld('ffmpegAPI', {
