@@ -7,6 +7,16 @@ let topContainerIsExtended = false; // to toggle extended view of top container
 const searchQuery = ''; // the current query entered into the search bar
 let searchQueryGlobal;
 let currentSearchCategory;
+let currentPage = { // helper to track current page
+    home: true,
+    overview: false,
+    library: false,
+    artists: false,
+    albums: false,
+    tags: false,
+    playlists: false,
+    settings: false
+};
 
 /* GENERATE HOME PAGE */
 window.addEventListener('DOMContentLoaded', async () => {
@@ -190,4 +200,13 @@ async function resetSidebarButtons() {
 	await domAPI.setStyleClassToggle('sidebar-btn-container-genres', 'sidebar-btn-active', false);
 	await domAPI.setStyleClassToggle('sidebar-btn-container-tags', 'sidebar-btn-active', false);
 	await domAPI.setStyleClassToggle('sidebar-btn-container-playlists', 'sidebar-btn-active', false);
+}
+
+/**
+ *  Resets page values to false.
+ */
+ async function resetCurrentPage() {
+    Object.values(currentPage).forEach(page => {
+        page = false;
+    });
 }
