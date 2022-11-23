@@ -8,27 +8,6 @@ window.addEventListener('libraryPlaylists-loaded', async () => {
  * Generate Library Playlists Cards.
  */
 async function generatePlaylistsCards() {
-	// parse data from app library
-	// const cardData = new Map() // ('playlist', {numArtists: Set(), numTracks: Number, artworks: []})
-	// for (let i = 0; i < libraryCatalog.length; i++) {
-	//   const currTrack = libraryCatalog[i];
-	//   const playlistArr = libraryCatalog[i].playlists.split(', ');
-	//   for (let j = 0; j < playlistArr.length; j++) {
-	//     const currPlaylist = playlistArr[j];
-	//     if(cardData.has(currPlaylist)) {
-	//       cardData.get(currPlaylist).numArtists.add(currTrack.artist);
-	//       cardData.get(currPlaylist).numTracks++;
-	//       if(!cardData.get(currPlaylist).artworks.includes(currTrack.artwork))
-	//         cardData.get(currPlaylist).artworks.push(currTrack.artwork);
-	//     } else {
-	//       cardData.set(currPlaylist, {
-	//         numArtists: new Set().add(currTrack.artist),
-	//         numTracks: 1,
-	//         artworks: [currTrack.artwork]
-	//       });
-	//     }
-	//   }
-	// }
 
 	// generate cards
 	let cardList = '';
@@ -48,6 +27,7 @@ async function generatePlaylistsCards() {
   `;
 		cardList += card;
 	}
+    
 	// generate cards for custom user playlists
 	for (const [key, value] of userPlaylists) {
 		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];

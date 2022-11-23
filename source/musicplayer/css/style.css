@@ -12,6 +12,7 @@
 @import "metaEditor.css";
 @import "settings.css";
 @import "home.css";
+@import "playlistManager.css";
 
 
 :root {
@@ -73,6 +74,16 @@ body {
   /* column-gap: 30px; */
 }
 
+/* PLAYLIST MANAGER + META EDITOR */
+#editor-container {
+    border-radius: 5px;
+    padding: 30px;
+    background-color: var(--dark);
+    color: var(--light);
+    overflow-y: auto;
+    width: 20vw;
+    margin-left: 10px;
+}
 
 /* This is just for testing settings.html*/
 /*
