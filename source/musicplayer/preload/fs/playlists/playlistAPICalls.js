@@ -2,7 +2,9 @@ const path = require('path');
 const fs = require('fs');
 const {getStoragePath, makeDirIfNotExists,
 	throwErr, throwErrOpen} = require('../fsAPICalls');
+const {getSongs} = require('../songs/songsAPICalls');
 const {Grid} = require('gridjs');
+const {debugLog} = require("../../general/genAPICalls");
 /**
  * @name getAllPlaylists
  * @description Gets an array that contains the names of every playlist.
@@ -25,7 +27,7 @@ async function getAllPlaylists() {
  * @description Gets a single playlist by name.
  * @memberOf fsAPI
  * @param {string} playlist The name of the playlist to get.
- * @return {Promise<Map>} A map that represents a playlist.
+ * @return {Promise<object>} A map that represents a playlist.
  */
 async function getPlaylist(playlist) {
 	const storagePath = await getStoragePath();
@@ -42,8 +44,91 @@ async function getPlaylist(playlist) {
 	//Again, the data would be a param in the callback
 	//That we can't access again
 	//Also Map parsing from https://codingbeautydev.com/blog/javascript-convert-json-to-map/
-	return new Map(Object.entries(JSON.parse(fs.readFileSync(playlistPath, 'utf8'))));
+	const playlistObj = JSON.parse(fs.readFileSync(playlistPath, 'utf8'));
+	const allSongs = await getSongs();
+	const ret = [];
 
+	await debugLog(playlistObj, 'playlists-test');
+	 /* PLAYLIST JSON SCHEMA
+		{
+			"meta": {
+				"creator": "UserA",
+				"time": 3452397592387, (seconds since 0)
+			},
+			"tags": {
+				"tagA": "expectedValue",
+				"album_artist": "NCS",
+			}
+		}
+	 */
+
+	/*
+	 So this is how search is going to work:
+	 1. Get playlist as a json object (we should just be reading and writing it as a json object, don't need to do
+	 			map stuff
+	 2. Create a new gridJS instance with the columns being every *key* in "tags", and the data being the correct data
+	 			from every song returned by getSongs()
+	 				(note - the first column must be song path)
+	 3. For each kvp in "tags":
+	 	i. Update the grid config, overriding the search keyword
+	 	ii. Use the callback described before to append the paths of songs with matching metadata to a list
+	 4. Return the list of song paths.
+
+	 */
+
+	// todo: THIS SHOULD BE CREATED ONCE, NOT EVERY PLAYLIST CALL
+	// the logic of making this needs to be reworked if this is only created once!
+	// its possible that we can isolate the column logic from playlists, and make a
+	// column for every possible unique tag. The hard part of that is ensuring that data
+	// lines up for every song.
+	const cols = ['path'].concat(Array.from(Object.keys(playlistObj['tags'])));
+	const data = [];
+	for (const songFormat in allSongs) {
+
+		const song = allSongs[songFormat]['format'];
+		const temp = { };
+		temp['filename'] = song['filename']
+		for (const tag in playlistObj['tags']) {
+			if (tag in song) {
+				temp[tag] = song[tag];
+			}
+			else if ('tags' in song && tag in song['tags']) {
+				temp[tag] = song['tags'][tag];
+			}
+			else {
+				temp[tag] = '';
+			}
+		}
+		data.push(temp);
+	}
+
+	const grid = new Grid({
+		columns: cols,
+		data: data,
+	});
+
+	for (const tag in playlistObj['tags']) {
+
+		grid.updateConfig({
+			columns: cols,
+			data: data,
+			search: {
+				enabled: true,
+				keyword: '',
+				/* The first column will be file path!!
+				* how does one ensure the above statement without creating a new gridJS every time?*/
+				selector: async (cell, rowIndex, cellIndex) => {
+					await debugLog(cell, 'playlist-test');
+					if (cellIndex !== 0) return;
+					if (!ret.includes(cell)) ret.push(cell);
+				},
+			},
+		});
+		await debugLog(grid, 'playlists-test');
+
+	}
+
+	return ret;
 }
 
 /**
@@ -72,7 +157,7 @@ async function removePlaylist(playlistName) {
  * playlist.  If the playlist exists, it is overwritten.
  * @memberOf fsAPI
  * @param {string} playlistName The name of the playlist to write to.
- * @param {Map} playlist A map containing the playlist
+ * @param {Object} playlist A map containing the playlist
  * information.
  * @return {Promise<void>}
  */
@@ -90,7 +175,7 @@ async function writePlaylist(playlistName, playlist) {
 	//conversion from map to json partially inspired from
 	//https://codingbeautydev.com/blog/javascript-convert-json-to-map/
 	await fs.writeFile(playlistPath,
-		JSON.stringify(Object.fromEntries(playlist)),
+		JSON.stringify(playlist),
 		throwErr);
 }
 
@@ -100,7 +185,7 @@ async function playlistSearch(keyword) {
 	const gridSearcher = new Grid({
 		sort: true,
 		columns: ['names'],
-		data: [getAllPlaylists()],
+		data: [await getAllPlaylists()],
 		search: {
 			enabled: true,
 			selector: (cell, rowIndex, cellIndex) => {

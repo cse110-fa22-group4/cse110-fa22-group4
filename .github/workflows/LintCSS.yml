@@ -24,6 +24,6 @@ jobs:
 
       # ESLint and Prettier must be in `package.json`
       - name: Install Node.js dependencies
-        run: npm update        
+        run: npm update
       - name: Run Lint CSS
         run: npx stylelint css/*
