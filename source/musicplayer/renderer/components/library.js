@@ -10,8 +10,9 @@ window.addEventListener('library-container-grid-clicked', async (args) => {
 });
 
 /**
- * Generate Artist Library View.
+ * Initial Library Load.
  */
 async function onLibraryLoad() {
-	const libraryGrid = await domAPI.addGrid('library-container', libraryHeaders, libraryCatalog, gridSettings);
+    await domAPI.setHTML('library-container', '');
+	const libraryGrid = await domAPI.addGrid('library-container', libraryHeaders, libraryCatalog, gridSettings, 'playlists');
 }

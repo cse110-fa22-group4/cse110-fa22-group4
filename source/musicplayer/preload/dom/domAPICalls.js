@@ -1,11 +1,14 @@
 const {ipcRenderer} = require('electron');
-const {Grid} = require('gridjs');
+const {Grid, h} = require('gridjs');
+const {RowSelection} = require('gridjs/plugins/selection');
 const {debugLog} = require('../general/genAPICalls');
 const path = require('path');
 
 // Ensures that an event is not established multiple times by accident.
 const establishedEvents = {};
 
+// holds track objects selected by the user
+let selectedTracks = [];
 
 /**
  * @name htmlFromRenderer
@@ -77,17 +80,31 @@ async function appendHTML(domID, html) {
  * @param {any} data An array of string arrays that represent rows of data,
  *                                              or a promise that returns one.
  * @param {any} params Extra grid parameters to pass into the constructor.
+ * @param {string} rowSelectType Determines the type of row selection action.
  * @return {Promise<Grid>} Returns the grid created.
  * @return {Grid} The grid that is created is returned for searching purposes.
  */
-async function addGrid(domID, columns, data, params = {}) {
+async function addGrid(domID, columns, data, params = {}, rowSelectType) {
 	// return new Grid({
 	// Perform this check above all
 	const isAttributeSafe = await ipcRenderer.invoke(
 		'managedAttributeCheck', domID, 'innerHTML');
 	if (!isAttributeSafe) return undefined;
 
-	new Grid({
+	// enable row selection
+	columns.unshift(
+		{
+			id: 'awesomeCheckbox',
+			name: '',
+			plugin: {
+				component: RowSelection,
+				props: {id: (row) => row.cells},
+			},
+		},
+	);
+
+	// default grid
+	const grid = new Grid({
 		columns: columns,
 		data: data,
 	})
@@ -96,6 +113,45 @@ async function addGrid(domID, columns, data, params = {}) {
 		.on('rowClick', (...args) =>
 			window.dispatchEvent(
 				new CustomEvent(`${domID}-grid-clicked`, {detail: args[1]})));
+
+	// use row selection to manage playlists
+	if (rowSelectType == 'playlists') {
+		grid.on('ready', (...args) => {
+			const checkboxPlugin = grid.config.plugin.get('awesomeCheckbox');
+			checkboxPlugin.props.store.on('updated', function(state, prevState) {
+				// update selectedTracks with current selection
+				const currSelection = [];
+				for (let i = 0; i < state.rowIds.length; i++) {
+					const currTrackObj = {};
+					for (let j = 1; j < columns.length; j++) {
+						const key = columns[j].name;
+						const value = state.rowIds[i][j].data;
+						currTrackObj[`${key}`] = value;
+					}
+					currSelection.push(currTrackObj);
+				}
+				selectedTracks = currSelection;
+
+				// send selected tracks to playlist manager
+				const playlistManager = document.getElementById('selected-playlists-container');
+				let selectedRow = `
+                <div class="playlist-manager-header">
+                <div>Title</div>
+                <div>Artist</div>
+                <div>Album</div>
+                </div>`;
+				for (let k = 0; k < currSelection.length; k++) {
+					selectedRow += `
+                    <div class="playlist-manager-row">
+                    <div>${currSelection[k].title}</div>
+                    <div>${currSelection[k].artist}</div>
+                    <div>${currSelection[k].album}</div>
+                    </div>`;
+				}
+				playlistManager.innerHTML = selectedRow;
+			});
+		});
+	}
 }
 
 /**
@@ -180,7 +236,7 @@ async function getAttribute(domID, attribute) {
 }
 
 /**
- * @name getAttribute
+ * @name setAttribute
  * @memberOf domAPI
  * @description Sets the attribute of a given domID, if it exists and is
  * deemed 'safe.'
@@ -307,6 +363,15 @@ async function setThemeColor(primary, secondary) {
 	}
 }
 
+/**
+ * @name getSelectedTracks
+ * @memberOf domAPI
+ * @description Returns track objects selected by the user from a grid.
+ * @return {Promise<Array>} An array of selected tracks.
+ */
+async function getSelectedTracks() {
+	return selectedTracks;
+}
 
 module.exports = {
 	loadPage,
@@ -323,4 +388,5 @@ module.exports = {
 	getProperty,
 	addGrid,
 	setThemeColor,
+	getSelectedTracks,
 };

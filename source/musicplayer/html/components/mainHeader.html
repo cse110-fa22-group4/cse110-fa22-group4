@@ -1,5 +1,3 @@
-<!-- Main Header -->
-<!-- Default Header is Home -->
 <div id="main-header">
   <div id="header-title">Home</div>
   <div id="header-subtitle"></div>
@@ -8,44 +6,19 @@
 <!-- Function Buttons -->
 <div id="main-buttons-search">
 
-  <!-- Select Mode -->
-  <!-- <button id="btn-select" type="submit">Select: On</button> -->
+    <!-- Add Songs to Queue -->
+    <button id="btn-addQueue" type="submit">+ Queue</button>
 
-  <!-- Create playlist -->
-  <input id="input-playlist-create" type="text" placeholder="Name new playlist...">
-  <input id="btn-playlist-create" type="submit" value="Create Playlist">
+    <!-- Playlist Editor -->
+    <button id="btn-playlist" type="submit">+ Playlist</button>
 
-  <!-- Add to playlist -->
-  <select name="select-playlist-add" id="select-playlist-add">
-    <option value="" selected disabled>Choose a playlist...</option>
-    <option value="select-playlist-1">Summer Mix</option>
-    <option value="select-playlist-2">Monday Songs</option>
-    <option value="select-playlist-3">Fav Karaoke</option>
-  </select>
-  <input id="btn-playlist-add" type="submit" value="Add to Playlist">
+    <!-- Metadata Editor -->
+    <button id="btn-meta" type="submit">+ Metadata</button>
 
-
-  <!-- Views -->
-  <!-- <select name="views" id="btn-view">
-    <option value="">Views</option>
-    <option value="drop-track-num">#</option>
-    <option value="drop-title">Title</option>
-    <option value="drop-artist">Artist</option>
-    <option value="drop-album">Album</option>
-    <option value="drop-genre">Genre</option>
-    <option value="drop-year">Year</option>
-    <option value="drop-duration">Duration</option>
-    <option value="drop-playlist">Playlist</option>
-    <option value="drop-tag">Tag</option>
-  </select> -->
-
-  <!-- Metadata Editor -->
-  <button id="btn-meta" type="submit">Edit</button>
-
-  <!-- Add File -->
+    <!-- Add File -->
     <input id="btn-file" type="file" multiple hidden>
     <label id="btn-file-label" for="btn-file">
-      <div>Add to Library</div>
-    </label>  
+        <div>+ Library</div>
+    </label>
 
 </div>

@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 // This file is very WIP
 window.addEventListener('home-loaded', async () => {
 	await generateHomeCards();
@@ -12,15 +13,90 @@ window.addEventListener('home-loaded', async () => {
  * @return {Promise<void>}
  */
 async function generateHomeCards() {
-	const cardList = [];
+	// we need to get our global libraryCatalog
+	const libraryCatalog = await genAPI.getGlobal(libraryCatalog);
+	// we cannot have more cards than we have songs
+	const numHomeCards = Math.max(4, libraryCatalog.length);
 
-	// insert card list into container
-	await domAPI.setHTML('library-albums-cards', cardList);
+	// this boolean prevents us from failing to generate something unique more than once.
+	// if we generate something nonunique, try again, and it still isn't unique, we just don't add a card then
+	let repeatFailure = false;
+
+	// let's get numHomeCards many unique random entries from our Library
+	const albums = new Set();
+	while (albums.size < numHomeCards) {
+		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+		// let's try this once more if it's not unique. We add it regardless of whether it is new or not the second time
+		if (!(albums[randomIndex] in albums) || repeatFailure) {
+			albums.add(libraryCatalog[randomIndex].album);
+			repeatFailure = false;
+		} else {
+			// this only gets executed when there has not been a repeat
+			// failure and the two adjacent elements are not equal.
+			repeatFailure = true;
+		}
+	}
+
+	const artists = new Set();
+	while (artists.size < numHomeCards) {
+		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+		// let's try this once more if it's not unique
+		if (!(artists[randomIndex] in artists) || repeatFailure) {
+			artists.add(libraryCatalog[randomIndex].artist);
+			repeatFailure = false;
+		} else {
+			// this only gets executed when there has not been a repeat
+			// failure and the two adjacent elements are not equal.
+			repeatFailure = true;
+		}
+	}
+
+	const genres = [];
+	while (genres.size < numHomeCards) {
+		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+		// let's try this once more if it's not unique
+		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
+		const genreArr = libraryCatalog[randomIndex].genre.split(', ');
+		for (const i of genreArr) {
+			if ((!(i in genres) || repeatFailure) && genres.size < numHomeCards) {
+				genres.add(i);
+				repeatFailure = false;
+			} else {
+				// this only gets executed when there has not been a repeat
+				// failure and the two adjacent elements are not equal.
+				repeatFailure = true;
+			}
+		}
+	}
+
+	const tags = [];
+	while (tags.size < numHomeCards) {
+		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+		// let's try this once more if it's not unique
+		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
+		const tagArr = libraryCatalog[randomIndex].tags.split(', ');
+		for (const i of tagArr) {
+			if ((!(i in tags) || repeatFailure) && tags.size < numHomeCards) {
+				tags.add(i);
+				repeatFailure = false;
+			} else {
+				// this only gets executed when there has not been a repeat
+				// failure and the two adjacent elements are not equal.
+				repeatFailure = true;
+			}
+		}
+	}
+
+	// insert card list into containers
+	await domAPI.setHTML('home-albums-container', albums);
+	await domAPI.setHTML('home-artists-container', artists);
+	await domAPI.setHTML('home-genres-container', genres);
+	await domAPI.setHTML('home-tags-container', tags);
 }
 
 /**
  * @description Generates a list of album cards
- * @param {list} albums an array of four random albums in the library Catalog to generate cards for
+ * @param {set} albums  - a set of four random albums in the library Catalog to generate cards for
  * @return {string} a list of strings which contain html for album cards
  */
 async function generateAlbumCardList(albums) {
@@ -68,7 +144,7 @@ async function generateAlbumCardList(albums) {
 
 /**
  * @description Generates a list of artist cards
- * @param {list} artists an array of four random artists in the library Catalog to generate cards for
+ * @param {set} artists  - a set of four random artists in the library Catalog to generate cards for
  * @return {string} a list of strings which contain html for artist cards
  */
 async function generateArtistCardList(artists) {
@@ -118,7 +194,7 @@ async function generateArtistCardList(artists) {
 
 /**
  * @description Generates a list of genre cards
- * @param {list} genres an array of four random genres in the library Catalog to generate cards for
+ * @param {set} genres - a set of four random genres in the library Catalog to generate cards for
  * @return {string} a list of strings which contain html for genre cards
  */
 async function generateGenreCardList(genres) {
@@ -172,7 +248,7 @@ async function generateGenreCardList(genres) {
 
 /**
  * @description Generates a list of tag cards
- * @param {list} tags an array of four random tags in the library Catalog to generate cards for
+ * @param {list} tags  - a set of four random tags in the library Catalog to generate cards for
  * @return {string} a list of strings which contain html for tag cards
  */
 async function generateTagCardList(tags) {
@@ -223,6 +299,11 @@ async function generateTagCardList(tags) {
 	}
 	return cardList;
 }
+
+// ALL THESE FUNCTIONS ARE HERE TEMPORARILY BECAUSE I DO NOT KNOW HOW TO IMPORT FUNCTIONS.
+// Originally were in files by Alvin, but those are gone. 
+// I expect them to come back though, so I will leave this message in
+
 
 /**
  * @description  > Albums Extended Page. Generate Album Library View based on user selection.
@@ -294,8 +375,6 @@ async function libraryGenresExtended(e) {
 	await domAPI.setHTML('library-genres-cards', '');
 	await domAPI.addGrid('library-genres-container', libraryHeaders, data, gridSettings);
 }
-
-// ALL THESE FUNCTIONS ARE HERE TEMPORARILY BECAUSE I DO NOT KNOW HOW TO IMPORT FUNCTIONS.
 
 /**
  * @description Library > Tags Extended Page. Generate Tag Library View based on user selection.

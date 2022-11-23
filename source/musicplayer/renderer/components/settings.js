@@ -27,8 +27,6 @@ const themeColorsSecondary = [
 let themeColorsPrimaryCount = themeColorsPrimary.length;
 let themeColorsSecondaryCount = themeColorsPrimary.length;
 window.addEventListener('settings-loaded', async ()=> {
-	const test = await fsAPI.getSettings();
-	console.log(test);
 	await loadSettingsState();
 	await domAPI.addEventListener('settings-rescan', 'click', rescanClick);
 	await domAPI.addEventListener('add-paths-button', 'click', addPath);
@@ -73,16 +71,12 @@ async function rescanClick(element) {
 async function addPath(element) {
 	const dirs = await genAPI.openDialog({properties: ['openDirectory']});
 	await genAPI.debugLog(dirs['filePaths'], 'settings-tests');
-	console.log(`dirs: ${JSON.stringify(dirs)}`);
 	if (!dirs['canceled']) {
 		let watched = await fsAPI.getSetting('watchedDir');
-		console.log('got settings');
 		if (watched === undefined) watched = [];
-		console.log(watched);
 		for (const dir of dirs['filePaths']) {
 			watched.push(dir);
 		}
-		console.log(watched);
 		await fsAPI.writeToSetting('watchedDir', watched);
 		updateWatchedFoldersDisplay();
 	}
@@ -115,7 +109,8 @@ async function removeDirectory(element) {
 
 /**
  * @description updates the watched folders div based on stored settings
- * Note that you cannot add event listeners to the same object mroe than once
+ * Note that you cannot add multiple of the same event listeners to the same object,
+ * so this function should not impact performance adding event listeners every time
  */
 async function updateWatchedFoldersDisplay() {
 	const watchedDirs = await fsAPI.getSetting('watchedDir');

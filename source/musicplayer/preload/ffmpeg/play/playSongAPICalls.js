@@ -9,11 +9,10 @@ let vol = 0;
 let instance = undefined;
 let pauseSongPath = '';
 // TODO: is there a better way to get the duration other than reading directly from metadata?
-// From stderr perhaps?
-// Duration can be scraped from the stderr, if you want to try what you can do is place a breakpoint on line
-// 48, and look for the index in the data array (offset from the end, not the start) of the duration, and from there can
-// scrape it in playSong().
-const duration = 0;
+// Answer: add it in as a parameter
+// Front end will add in the song's duration, gathered from metadata reading, as a parameter
+// duration in seconds
+let duration = 0;
 /**
  * @memberOf ffmpegAPI
  * @description Plays a song at a given path with the given info.
@@ -22,12 +21,12 @@ const duration = 0;
  * @param {number} seekVal The location to start playing the song at.
  * @return {Promise<void>}
  */
-async function playSong(songPath, volume = 100, seekVal = 0) {
+async function playSong(songPath, volume = 100, seekVal = 0, time) {
 	vol = Number(volume);
 	pauseTime = Number(seekVal);
 	paused = false;
 	path = `\"${songPath}\"`;
-	console.log("play song path: ", path);
+	duration = time;
 	const ffPaths = await getPaths();
 	if (!fs.existsSync(songPath)) {
 		await debugLog(`Could not find song at path: ${songPath}`, 'fsplay-error');
@@ -43,7 +42,7 @@ async function playSong(songPath, volume = 100, seekVal = 0) {
 			'-nodisp', '-hide_banner',
 			'-ss', seekVal,
 			'-volume', volume,
-			songPath,
+			path,
 		], {shell: true});
 }
 
@@ -94,7 +93,7 @@ async function stopSong(reset = true) {
 	if (process.platform === 'win32') {
 		await require('child_process').spawn('taskkill', ['/pid', instance.pid, '/f', '/t']);
 	} else {
-		await require('child_process').spawn('kill ' + instance.pid);
+		await require('child_process').spawn('kill', [instance.pid]);
 	}
 	if (reset) {
 		paused = false;
@@ -102,6 +101,7 @@ async function stopSong(reset = true) {
 		vol = 100;
 		pauseTime = 0;
 		path = '';
+		duration = 0;
 	}
 }
 
@@ -115,8 +115,9 @@ async function stopSong(reset = true) {
  * @param {number} seekPercentage the percentage
  */
 async function seekSong(seekPercentage) {
-	await stopSong();
-	await playSong(path, vol, ((seekPercentage/100.0) * duration));
+	await stopSong(false);
+	path = path.substring(1, path.length - 1);
+	await playSong(path, vol, ((seekPercentage/100.0) * duration), duration);
 }
 
 module.exports = {
@@ -124,4 +125,5 @@ module.exports = {
 	pauseSong,
 	resumeSong,
 	stopSong,
+	seekSong,
 };

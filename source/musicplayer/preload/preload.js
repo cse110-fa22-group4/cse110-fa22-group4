@@ -5,7 +5,7 @@ const {
 	addEventListener, addEventListenerbyClassName, getAttribute,
 	setAttribute, addChild, setHTML, appendHTML,
 	setStyle, setStyleClassToggle, loadPage,
-	addGrid, setThemeColor, setProperty, getProperty,
+	addGrid, setThemeColor, setProperty, getProperty, getSelectedTracks,
 } = require('./dom/domAPICalls.js');
 
 const {
@@ -18,7 +18,7 @@ const {
 } = require('./ffmpeg/metadata/ffMetaAPICalls');
 
 const {
-	pauseSong, playSong, stopSong, resumeSong,
+	pauseSong, playSong, stopSong, resumeSong, seekSong,
 } = require('./ffmpeg/play/playSongAPICalls');
 
 const {
@@ -123,16 +123,18 @@ contextBridge.exposeInMainWorld('domAPI', {
 	loadPage: loadPage,
 	addGrid: addGrid,
 	setThemeColor: setThemeColor,
+	getSelectedTracks: getSelectedTracks,
 });
 
 contextBridge.exposeInMainWorld('ffmpegAPI', {
 	readMetadata: ffmpegRead,
 	writeMetadata: ffmpegWrite,
-	setBinPath: setPath,
+	setBinpath: setPath,
 	playSong: playSong,
 	stopSong: stopSong,
 	pauseSong: pauseSong,
 	resumeSong: resumeSong,
+	seekSong: seekSong,
 	useMultiFFmpeg: useMultiFFmpeg,
 });
 
@@ -151,11 +153,11 @@ contextBridge.exposeInMainWorld('fsAPI', {
 	writeStats: writeStats,
 	writeToStat: writeToStat,
 	deleteStat: deleteStat,
-	getAllPlaylists: getAllPlaylists,
+	getAllplaylists: getAllPlaylists,
 	getPlaylist: getPlaylist,
 	removePlaylist: removePlaylist,
 	writePlaylist: writePlaylist,
 	getSRCString: getSRCString,
-	recursiveSearchAtPath: recursiveSearchAtPath,
+	recursiveSearchAtpath: recursiveSearchAtPath,
 	cullShortAudio: cullShortAudio,
 });

@@ -1,3 +1,4 @@
+const playlistManagerSelected = []; // holds track objects currently added to the playlist manager
 const libraryPlaylists = new Map(); // playlists that can be auto-generated from the library
 const userPlaylists = new Map(); // additional custom user playlists
 // POSSIBLE PLAYLIST OBJECT STRUCTURE
@@ -15,10 +16,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await rescanLibraryPlaylists();
 });
 
-window.addEventListener('mainHeader-loaded', async () => {
+window.addEventListener('playlistManager-loaded', async () => {
 	await populatePlaylistAddMenu();
 	await domAPI.addEventListener('btn-playlist-create', 'click', createUserPlaylist);
 	await domAPI.addEventListener('input-playlist-create', 'change', createUserPlaylist);
+	await domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
+	await domAPI.addEventListener('btn-playlist-remove-selection', 'click', removePlaylistSelection);
+	await domAPI.addEventListener('btn-playlist-delete', 'click', deletePlaylist);
 });
 
 /**
@@ -90,10 +94,77 @@ async function createUserPlaylist() {
 
 		// add custom playlist to menu option
 		const option =
-			`<option id="playlist-option-${playlistName}" value="${playlistName}" selected>${playlistName}</option>`;
+            `<option id="playlist-option-${playlistName}" value="${playlistName}" selected>${playlistName}</option>`;
 		await domAPI.appendHTML('select-playlist-add', option);
 		alert(`'${playlistName}' added. Navigate to your library to begin adding tracks to your playlist!`);
-
-		// TODO: If currently on playlist page, refresh page to reload cards with new playlist
+	} else {
+		alert('Enter a name for the playlist!');
 	}
+}
+
+/**
+ * Add track to playlist for user
+ * @param {HTMLElement} element
+ */
+async function addToPlaylist(element) {
+	const currPlaylist = await domAPI.getProperty('select-playlist-add', 'value');
+	if (currPlaylist == '') {
+		alert('Select a playlist to begin adding!');
+		return;
+	}
+
+	const tracks = await domAPI.getSelectedTracks();
+	if (tracks.length == 0) {
+		alert('Select tracks to begin adding!');
+		return;
+	}
+
+	// add playlist to track playlists key + update library
+	for (let i = 0; i < tracks.length; i++) {
+		for (let j = 0; j < libraryCatalog.length; j++) {
+			debugger;
+			if (tracks[i].path == libraryCatalog[j].path) {
+				tracks[i].playlists += `, ${currPlaylist}`;
+				libraryCatalog[j].playlists += `, ${currPlaylist}`;
+			}
+		}
+	}
+
+	// add tracks to custom playlists
+	for (let i = 0; i < tracks.length; i++) {
+		if (userPlaylists.has(currPlaylist)) {
+			userPlaylists.get(currPlaylist).artists.add(tracks[i].artist);
+			userPlaylists.get(currPlaylist).artworks.push(tracks[i].artwork);
+			userPlaylists.get(currPlaylist).numTracks++;
+			if (!userPlaylists.get(currPlaylist).artworks.includes(tracks[i].artwork)) {
+				userPlaylists.get(currPlaylist).trackList.push(tracks[i]);
+			}
+		} else {
+			libraryPlaylists.get(currPlaylist).artists.add(tracks[i].artist);
+			libraryPlaylists.get(currPlaylist).artworks.push(tracks[i].artwork);
+			libraryPlaylists.get(currPlaylist).numTracks++;
+			if (!libraryPlaylists.get(currPlaylist).artworks.includes(tracks[i].artwork)) {
+				libraryPlaylists.get(currPlaylist).trackList.push(tracks[i]);
+			}
+		}
+	}
+
+	alert('Tracks added to playlist!');
+}
+
+/**
+ * Add track to playlist for user
+ * @param {HTMLElement} element
+ */
+async function removePlaylistSelection(element) {
+	await domAPI.setHTML('selected-playlists-container', '');
+	libraryClick();
+}
+
+/**
+ * Deleted selected playlist
+ * @param {HTMLElement} element
+ */
+async function deletePlaylist(element) {
+	alert('*FUNCTION UNDER CONTRUCTION*');
 }
