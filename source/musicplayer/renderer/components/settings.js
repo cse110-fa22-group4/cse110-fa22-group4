@@ -27,8 +27,6 @@ const themeColorsSecondary = [
 let themeColorsPrimaryCount = themeColorsPrimary.length;
 let themeColorsSecondaryCount = themeColorsPrimary.length;
 window.addEventListener('settings-loaded', async ()=> {
-	const test = await fsAPI.getSettings();
-	console.log(test);
 	await loadSettingsState();
 	await domAPI.addEventListener('settings-rescan', 'click', rescanClick);
 	await domAPI.addEventListener('add-paths-button', 'click', addPath);
