@@ -12,7 +12,7 @@ let pauseSongPath = '';
 // Answer: add it in as a parameter
 // Front end will add in the song's duration, gathered from metadata reading, as a parameter
 // duration in seconds
-const duration = 0;
+let duration = 0;
 /**
  * @memberOf ffmpegAPI
  * @description Plays a song at a given path with the given info.
