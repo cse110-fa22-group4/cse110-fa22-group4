@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 const path = require('path');
 const {ipcRenderer} = require('electron');
 
