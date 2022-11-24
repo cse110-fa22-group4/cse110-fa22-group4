@@ -70,7 +70,7 @@ async function writeSettings(settings) {
  */
 async function writeToSetting(setting, val) {
 	const settings = await getSettings();
-	settings[setting] = (val);
+	settings[setting] = JSON.stringify(val);
 	await writeSettings(settings);
 }
 

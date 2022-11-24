@@ -14,7 +14,6 @@ test('Testing settings', async () => {
   electronApp = await electron.launch({ args: ['../main/main.js'] })
 
   await reset_user1();
-
   await setStoragePath('users/user_1/data');
   await testSettings();
 
@@ -31,7 +30,7 @@ test('Test getSettings', async () => {
 
   let settings = await getSettings();
 
-  expect(JSON.stringify(settings)).toBe(JSON.stringify({"Which User is this?":1,"testing":100}));
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({"Which User is this?":"1","testing":"100"}));
   
   await electronApp.close()
 
@@ -44,7 +43,7 @@ test('Test getSetting', async () => {
 
   let setting = await getSetting('testing');
 
-  expect(setting).toBe(100);
+  expect(JSON.parse(setting)).toBe(100);
   
   await electronApp.close()
 
@@ -55,9 +54,9 @@ test('Test writeSettings', async () => {
   await reset_user1();
   await setStoragePath('users/user_1/data');
 
-  await writeSettings({"hello": 0,"testing": 10});
+  await writeSettings({"hello": "0","testing": "10"});
   let settings = await getSettings();
-  expect(JSON.stringify(settings)).toBe(JSON.stringify({"hello": 0,"testing": 10}));
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({"hello": "0","testing": "10"}));
   
   await electronApp.close()
 
@@ -70,7 +69,7 @@ test('Test writeToSetting', async () => {
 
   await writeToSetting("written", 1);
   let settings = await getSettings();
-  expect(JSON.stringify(settings)).toBe(JSON.stringify({"Which User is this?":1,"testing":100,"written":1}));
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({"Which User is this?":"1","testing":"100","written":"1"}));
   
   await electronApp.close()
 
@@ -84,7 +83,7 @@ test('Test deleteSetting', async () => {
 
   await deleteSetting("testing");
   let settings = await getSettings();
-  expect(JSON.stringify(settings)).toBe(JSON.stringify({"Which User is this?":1}));
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({"Which User is this?":"1"}));
   
   await electronApp.close()
 
