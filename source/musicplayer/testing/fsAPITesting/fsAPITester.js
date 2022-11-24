@@ -19,6 +19,7 @@ const {
 const {
     getSettings,
     writeSettings,
+    writeToSetting,
 } = require('../../preload/fs/settings/settingsAPICalls');
 
 const {
