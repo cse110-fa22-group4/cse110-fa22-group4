@@ -66,8 +66,8 @@ async function pauseSong() {
 	await stopSong(false);
 	paused = true;
 
-	//console.log(filtered);
-	//console.log(pauseTime);
+	await debugLog(filtered, 'play-song-tests');
+	await debugLog(pauseTime, 'play-song-tests');
 }
 
 /**
@@ -76,9 +76,9 @@ async function pauseSong() {
  * @return {Promise<void>}
  */
 async function resumeSong() {
-	//console.log(pauseSongPath);
-	await playSong(pauseSongPath, vol, pauseTime, duration);
-	//console.log(pauseTime);
+	await debugLog(pauseSongPath, 'play-song-tests');
+	await playSong(pauseSongPath, vol, pauseTime);
+	await debugLog(pauseTime, 'play-song-tests');
 	paused = false;
 }
 

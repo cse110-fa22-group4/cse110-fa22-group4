@@ -13,6 +13,8 @@ const enabledTags =
 		'unit-tests',
 		'multi-ffmpeg-loading-progress',
 		'fsplay-error',
+		'play-song-tests',
+		'playlists-test',
 		// 'settings-test',
 	];
 
