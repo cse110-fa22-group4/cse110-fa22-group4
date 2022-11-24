@@ -5,7 +5,7 @@ const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const path = require('path');
 const {argv} = require('process');
 const htmlPath = __dirname + '/source/musicplayer/html';
-const fsAPITester = require('../testing/fsAPITester.js');
+const fsAPITester = require('../testing/fsAPITesting/fsAPITester');
 
 let selectedSong = '';
 

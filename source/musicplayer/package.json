@@ -34,13 +34,17 @@
 	"devDependencies": {
 		"@babel/core": "^7.20.2",
 		"@babel/preset-env": "^7.20.2",
+		"@playwright/test": "^1.28.1",
 		"babel-jest": "^27.5.1",
 		"jest": "^27.5.1",
 		"jest-puppeteer": "^6.1.1",
+		"playwright": "^1.28.1",
 		"puppeteer": "^11.0.0"
 	},
 	"jest": {
 		"preset": "jest-puppeteer",
-		"verbose": true
+		"verbose": true,
+		"@playwright/test": "^1.28.0",
+		"playwright": "^1.28.0"
 	}
 }
