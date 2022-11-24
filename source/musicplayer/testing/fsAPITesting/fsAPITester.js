@@ -29,11 +29,6 @@ const {
 
 const { expect } = require('@playwright/test');
 
-async function songTest() {
-    let songs = getSongs();
-    //console.log(JSON.stringify(songs));
-}
-
 /**
  * 
  */
@@ -91,5 +86,4 @@ module.exports = {
     reset_user2,
     reset_user3,
     reset,
-    songTest,
 };

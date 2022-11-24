@@ -2,7 +2,7 @@ const { _electron: electron } = require('playwright')
 const { test, expect } = require('@playwright/test')
 
 const {
-  reset, reset_user1, reset_user2, reset_user3, songTest,
+  reset, reset_user1, reset_user2, reset_user3,
 } = require('../fsAPITesting/fsAPITester');
 const { setStoragePath } = require('../../preload/fs/fsAPICalls');
 
@@ -19,7 +19,6 @@ test('load app', async () => {
 
   // run test
   expect(3).toBe(3);
-  songTest();
 
   await electronApp.close()
 }); 
