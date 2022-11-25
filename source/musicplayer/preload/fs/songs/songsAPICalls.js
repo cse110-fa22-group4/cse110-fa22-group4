@@ -20,6 +20,7 @@ async function getSongs() {
 		}
 	});
 	const res = fs.readFileSync(songPath, 'utf8');
+	//console.log(res);
 
 	return JSON.parse(res);
 }
