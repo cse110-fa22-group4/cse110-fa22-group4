@@ -2,7 +2,7 @@ const { _electron: electron } = require('playwright')
 const { test, expect } = require('@playwright/test')
 
 const {
-  reset_user1, reset_user2, reset_user3, reset_settings
+  reset_user1, reset_user2, reset_settings, reset_user_blank
 } = require('../fsAPITesting/fsAPITester');
 const { testSettings } = require('../fsAPITesting/settingsAPITester');
 const { setStoragePath } = require('../../preload/fs/fsAPICalls');
@@ -10,6 +10,9 @@ const { getSetting, getSettings, writeSettings, writeToSetting, deleteSetting } 
 
 let electronApp;
 
+/**
+ * Testing settings using old testing code
+ */
 test('Testing settings', async () => {
   electronApp = await electron.launch({ args: ['../main/main.js'] })
 
@@ -22,8 +25,10 @@ test('Testing settings', async () => {
 
 });
 
-
-test('Test getSettings', async () => {
+/**
+ * Test getSettings
+ */
+test('Test getSettings for user 1', async () => {
   electronApp = await electron.launch({ args: ['../main/main.js'] })
   await reset_user1();
   await setStoragePath('users/user_1/data');
@@ -36,32 +41,82 @@ test('Test getSettings', async () => {
 
 });
 
-test('Test getSetting', async () => {
+test('Test getSettings for user 2', async () => {
+  electronApp = await electron.launch({ args: ['../main/main.js'] })
+  await reset_user2();
+  await setStoragePath('users/user_2/data');
+
+  let settings = await getSettings();
+
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({}));
+  
+  await electronApp.close()
+
+});
+
+
+test('Test getSettings for user blank', async () => {
+  electronApp = await electron.launch({ args: ['../main/main.js'] })
+  await reset_user_blank();
+  await setStoragePath('users/user_blank/data');
+
+  let settings = await getSettings();
+
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({}));
+  
+  await electronApp.close()
+
+});
+
+/**
+ * Test getSetting
+ */
+test('Test getSetting for user 1', async () => {
   electronApp = await electron.launch({ args: ['../main/main.js'] })
   await reset_user1();
   await setStoragePath('users/user_1/data');
 
   let setting = await getSetting('testing');
-
   expect(JSON.parse(setting)).toBe(100);
+
+  setting = await getSetting('Which User is this?');
+  expect(JSON.parse(setting)).toBe(1);
   
   await electronApp.close()
 
 });
 
-test('Test writeSettings', async () => {
+test('Test getSetting for user 2', async () => {
   electronApp = await electron.launch({ args: ['../main/main.js'] })
-  await reset_user1();
-  await setStoragePath('users/user_1/data');
+  await reset_user2();
+  await setStoragePath('users/user_2/data');
 
-  await writeSettings({"hello": "0","testing": "10"});
-  let settings = await getSettings();
-  expect(JSON.stringify(settings)).toBe(JSON.stringify({"hello": "0","testing": "10"}));
+  let setting = await getSetting('DNE');
+
+  if(setting != null)
+    expect(JSON.parse(setting)).toBe("something that it definitely is not equal to");
   
   await electronApp.close()
 
 });
 
+test('Test getSetting for user blank', async () => {
+  electronApp = await electron.launch({ args: ['../main/main.js'] })
+  await reset_user_blank();
+  await setStoragePath('users/user_blank/data');
+
+  let setting = await getSetting('garbage_setting_that_does_not_exist');
+  
+  if(setting != null)
+    expect(JSON.parse(setting)).toBe("something that it definitely is not equal to");
+  
+  await electronApp.close()
+
+});
+
+/**
+ * Test writeToSetting
+ */
 test('Test writeToSetting', async () => {
   electronApp = await electron.launch({ args: ['../main/main.js'] })
   await reset_user1();
@@ -75,7 +130,9 @@ test('Test writeToSetting', async () => {
 
 });
 
-
+/**
+ * Test deleteSetting
+ */
 test('Test deleteSetting', async () => {
   electronApp = await electron.launch({ args: ['../main/main.js'] })
   await reset_user1();
@@ -89,11 +146,28 @@ test('Test deleteSetting', async () => {
 
 });
 
+/**
+ * Test writeSettings
+ */
+ test('Test writeSettings', async () => {
+  electronApp = await electron.launch({ args: ['../main/main.js'] })
+  await reset_user1();
+  await setStoragePath('users/user_1/data');
+
+  await writeSettings({"hello": "0","testing": "10"});
+  let settings = await getSettings();
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({"hello": "0","testing": "10"}));
+  
+  await electronApp.close()
+
+});
+
 
 
 //refresh environment
 test('reset', async () => {
   electronApp = await electron.launch({ args: ['../../main/main.js'] })
   await reset_settings();
+  await reset_user_blank();
   await electronApp.close()
 });
