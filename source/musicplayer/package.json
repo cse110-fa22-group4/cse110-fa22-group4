@@ -1,33 +1,50 @@
 {
-  "name": "musicplayer",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main/main.js",
-  "scripts": {
-    "update": "npm install",
-    "clean": "rm -r ./dist & rm -r ./node_modules",
-    "clean-win": "rd /s /q dist & rd /s /q node_modules",
-    "webpack-build": "webpack --config webpack.config.js",
-    "webpack-rebuild": "npm run clean & npm run update && npm run webpack-build",
-    "webpack-rebuild-win": "npm run clean-win & npm run update && npm run webpack-build",
-    "webpack-test": "npm run webpack-build && electron ./dist/main.js",
-    "test": "electron main/main.js",
-    "start": "electron main/main.js",
-    "lint-project": "npx eslint .",
-    "docs": "jsdoc -c jsdoc/conf.json"
-  },
-  "author": "Team Mariposa",
-  "license": "ISC",
-  "dependencies": {
-    "electron": "^21.2.0",
-    "html-webpack-plugin": "^5.5.0",
-    "jquery": "^3.6.1",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0",
-    "eslint": "^8.26.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-webpack-plugin": "^3.2.0",
-    "stylelint": "latest",
-    "stylelint-config-standard": "latest"
-  }
+	"name": "musicplayer",
+	"version": "1.0.0",
+	"description": "",
+	"main": "main/main.js",
+	"scripts": {
+		"update": "npm install",
+		"clean": "rm -r ./dist & rm -r ./node_modules",
+		"clean-win": "rd /s /q dist & rd /s /q node_modules",
+		"webpack-build": "webpack --config webpack.config.js",
+		"webpack-rebuild": "npm run clean & npm run update && npm run webpack-build",
+		"webpack-rebuild-win": "npm run clean-win & npm run update && npm run webpack-build",
+		"webpack-test": "npm run webpack-build && electron ./dist/main.js",
+		"test": "jest",
+		"start": "electron main/main.js",
+		"lint-project": "npx eslint .",
+		"lint-fix": "npx eslint . --fix"
+	},
+	"author": "Team Mariposa",
+	"license": "ISC",
+	"dependencies": {
+		"electron": "^21.2.0",
+		"eslint": "^8.26.0",
+		"eslint-config-google": "^0.14.0",
+		"eslint-webpack-plugin": "^3.2.0",
+		"gridjs": "^5.1.0",
+		"html-webpack-plugin": "^5.5.0",
+		"process": "^0.11.10",
+		"stylelint": "latest",
+		"stylelint-config-standard": "latest",
+		"webpack": "^5.74.0",
+		"webpack-cli": "^4.10.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.20.2",
+		"@babel/preset-env": "^7.20.2",
+		"@playwright/test": "^1.28.1",
+		"babel-jest": "^27.5.1",
+		"jest": "^27.5.1",
+		"jest-puppeteer": "^6.1.1",
+		"playwright": "^1.28.1",
+		"puppeteer": "^11.0.0"
+	},
+	"jest": {
+		"preset": "jest-puppeteer",
+		"verbose": true,
+		"@playwright/test": "^1.28.0",
+		"playwright": "^1.28.0"
+	}
 }
