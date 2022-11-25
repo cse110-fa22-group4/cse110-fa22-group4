@@ -2,7 +2,7 @@ const { _electron: electron } = require('playwright')
 const { test, expect } = require('@playwright/test')
 
 const {
-  reset_user1, reset_user2, reset_user3, reset
+  reset_user1, reset_user2, reset_user3, reset_settings
 } = require('../fsAPITesting/fsAPITester');
 const { testSettings } = require('../fsAPITesting/settingsAPITester');
 const { setStoragePath } = require('../../preload/fs/fsAPICalls');
@@ -94,6 +94,6 @@ test('Test deleteSetting', async () => {
 //refresh environment
 test('reset', async () => {
   electronApp = await electron.launch({ args: ['../../main/main.js'] })
-  await reset();
+  await reset_settings();
   await electronApp.close()
 });
