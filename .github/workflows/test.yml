@@ -1,0 +1,24 @@
+name: Testing
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+       working-directory: source/musicplayer
+
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: update dependencies
+      run: npm update
+    - name: testing
+      run: npm test
