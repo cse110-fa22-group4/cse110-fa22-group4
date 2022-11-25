@@ -21,4 +21,4 @@ jobs:
     - name: update dependencies
       run: npm update
     - name: testing
-      run: npm test
+      run: npx playwright test --workers=1
