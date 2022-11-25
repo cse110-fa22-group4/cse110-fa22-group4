@@ -44,7 +44,7 @@ Miro Board:
 
 https://miro.com/welcomeonboard/Ymp0cGlQbUphTnlXbTdHalNZVUIwWlF0NWlaeUx5NGFpZlZNS2xjc2xFS2VCRlhHUlR4N0FkUWFYVkJEUlluVXwzNDU4NzY0NTM2NjI5NzU1NTIxfDI=?share_link_id=552250609174
 
-![Miroboard brainstorming example](../../misc/images/miroboard10222022.jpg)
+![Miroboard brainstorming example](/admin/misc/images/miroboard10222022.jpg)
 
 ADR Draft:
 

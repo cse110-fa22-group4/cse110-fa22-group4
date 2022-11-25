@@ -1,189 +1,152 @@
+/**
+ * @namespace Renderer
+ */
+
 /* GLOBAL VARS */
 let topContainerIsExtended = false; // to toggle extended view of top container
-let searchQuery = ''; // the current query entered in the search bar
-let currentTrack; // object? of the currently playing track
+const searchQuery = ''; // the current query entered into the search bar
+let searchQueryGlobal;
 let currentSearchCategory;
+const currentPage = { // helper to track current page
+	home: true,
+	overview: false,
+	library: false,
+	artists: false,
+	albums: false,
+	tags: false,
+	playlists: false,
+	settings: false,
+};
 
 /* GENERATE HOME PAGE */
-window.addEventListener('DOMContentLoaded', () => {
-    domAPI.managedSetStyle('top-container-extended', 'visibility', 'hidden');
-    jqAPI.loadPage('#sidebar-container', 'components/sidebar.html');
-    jqAPI.loadPage('#overview-container', 'components/overview.html');
-    jqAPI.loadPage('#main-header-container', 'components/mainHeader.html');
-    jqAPI.loadPage('#main-container', 'pages/home.html');
-    jqAPI.loadPage('#playback-container', 'components/playback.html');
-    jqAPI.loadPage('#searchbar-container', 'components/searchbar.html');
-    jqAPI.onEvent('body', 'click', '#btn-home', homeClick);
-    jqAPI.onEvent('body', 'click', '#btn-overview', overviewClick);
-    jqAPI.onEvent('body', 'click', '#btn-library', libraryClick);
-    jqAPI.onEvent('body', 'click', '#btn-library-artists', libraryArtistsClick);
-    jqAPI.onEvent('body', 'click', '#btn-library-albums', libraryAlbumsClick);
-    jqAPI.onEvent('body', 'click', '#btn-library-genres', libraryGenresClick);
-    jqAPI.onEvent('body', 'click', '#btn-library-tags', libraryTagsClick);
-    jqAPI.onEvent('body', 'click', '#btn-playlists', playlistsClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-tracks', searchTracksClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-artists', searchArtistsClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-albums', searchAlbumsClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-genres', searchGenresClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-playlists', searchPlaylistsClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-tags', searchTagsClick);
-    jqAPI.onEvent('body', 'click', '#btn-search-all', searchAllClick);
-    jqAPI.onEvent('body', 'click', '#btn-settings', settingsClick);
-    jqAPI.onEvent('body', 'click', '#btn-queue', ovExQueueClick);
-    jqAPI.onEvent('body', 'click', '#btn-track', ovExTrackClick);
-    jqAPI.onEvent('body', 'click', '#btn-lyrics', ovExLyricsClick);
+window.addEventListener('DOMContentLoaded', async () => {
+	await domAPI.setStyle('top-container-extended', 'visibility', 'hidden');
+	await domAPI.loadPage('sidebar-container', 'components/sidebar.html');
+	await domAPI.setStyleClassToggle('sidebar-btn-container-home', 'sidebar-btn-active', true);
+	await domAPI.loadPage('overview-container', 'components/overview.html');
+	await domAPI.loadPage('main-header-container', 'components/mainHeader.html');
+	await domAPI.loadPage('main-container', 'pages/home.html');
+	await domAPI.loadPage('playback-container', 'components/playback.html');
+	await domAPI.loadPage('searchbar-container', 'components/searchbar.html');
+	await domAPI.addEventListener( 'btn-home', 'click', homeClick);
+	await domAPI.addEventListener( 'btn-overview', 'click', overviewClick);
+	await domAPI.addEventListener( 'btn-library', 'click', libraryClick);
+	await domAPI.addEventListener( 'btn-playlists', 'click', playlistsClick);
+	await domAPI.addEventListener( 'btn-settings', 'click', settingsClick);
+
+	await domAPI.addEventListener( 'playbackArt', 'click', overviewClick);
+	await domAPI.addEventListener( 'playlists-bottom-btn', 'click', playlistsClick);
 });
 
 /* SIDEBAR NAVIGATION */
 
-// Navigate to Home view
-function homeClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/home.html');
-    domAPI.managedSetHTML('main-header', '<h1>Home</h1>');
-    topExtensionOff();
+/**
+ * Navigate to Home view
+ * @param {HTMLElement} element
+ */
+async function homeClick(element) {
+	await domAPI.loadPage('main-container', 'pages/home.html');
+	await domAPI.setHTML('header-title', 'Home');
+	await domAPI.setHTML('header-subtitle', '');
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-home', 'sidebar-btn-active', true);
+	await topExtensionOff();
 }
 
-// Navigate to Overview (Now Playing) view
-function overviewClick(element) {
-    jqAPI.loadPage('#top-container-extended', 'pages/overviewExtended.html');
-    topExtensionOn();
+/**
+ * Navigate to Overview (Now Playing) view
+ * @param {HTMLElement} element
+ */
+async function overviewClick(element) {
+	await domAPI.loadPage('top-container-extended', 'components/overviewExtended.html');
+	await domAPI.loadPage('ovEx-content-container', 'pages/ovExQueue.html');
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-nowPlaying', 'sidebar-btn-active', true);
+	await topExtensionOn();
 }
 
-// Navigate to Library view
-function libraryClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/library.html');
-    domAPI.managedSetHTML('main-header', '<h1>Library</h1>');
-    topExtensionOff();
+/**
+ * Navigate to Library view
+ * @param {HTMLElement} element
+ */
+async function libraryClick(element) {
+	await domAPI.loadPage('main-container', 'pages/library.html', postLibraryLoad);
+	await domAPI.setHTML('header-title', 'Library');
+	await domAPI.setHTML('header-subtitle', 'All');
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
+	await topExtensionOff();
+}
+/**
+ * Post library loading function callback.
+ */
+async function postLibraryLoad() {
+
 }
 
-// Navigate to Library > Artists view
-function libraryArtistsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/libraryArtists.html');
-    domAPI.managedSetHTML('main-header', '<h1>Artists</h1>');
-    topExtensionOff();
+/**
+ * Navigate to Playlists view
+ * @param {HTMLElement} element
+ */
+async function playlistsClick(element) {
+	await domAPI.loadPage('main-container', 'pages/libraryPlaylists.html');
+	await domAPI.setHTML('header-title', 'Playlists');
+	await domAPI.setHTML('header-subtitle', 'All');
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-playlists', 'sidebar-btn-active', true);
+	await topExtensionOff();
 }
 
-// Navigate to Library > Albums view
-function libraryAlbumsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/libraryAlbums.html');
-    domAPI.managedSetHTML('main-header', '<h1>Albums</h1>');
-    topExtensionOff();
+/**
+ * Navigate to Search results extended view > All
+ * @param {HTMLElement} element
+ */
+async function settingsClick(element) {
+	await domAPI.loadPage('top-container-extended', 'pages/settings.html');
+	if (topContainerIsExtended) {
+		await topExtensionOff();
+	} else {
+		await topExtensionOn();
+	}
 }
 
-// Navigate to Library > Genres view
-function libraryGenresClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/libraryGenres.html');
-    domAPI.managedSetHTML('main-header', '<h1>Genres</h1>');
-    topExtensionOff();
+/**
+ * Toggles the overview off.
+ */
+async function topExtensionOff() {
+	if (topContainerIsExtended) {
+		await domAPI.setStyle('top-container', 'visibility', 'visible');
+		await domAPI.setStyle('top-container-extended', 'visibility', 'hidden');
+		topContainerIsExtended = false;
+	}
 }
 
-// Navigate to Library > Tags view
-function libraryTagsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/libraryTags.html');
-    domAPI.managedSetHTML('main-header', '<h1>Tags</h1>');
-    topExtensionOff();
+/**
+ * Toggles the overview on.
+ */
+async function topExtensionOn() {
+	if (!topContainerIsExtended) {
+		await domAPI.setStyle('top-container', 'visibility', 'hidden');
+		await domAPI.setStyle('top-container-extended', 'visibility', 'visible');
+		topContainerIsExtended = true;
+	}
 }
 
-// Navigate to Playlists view
-function playlistsClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/playlists.html');
-    domAPI.managedSetHTML('main-header', '<h1>Playlists</h1>');
-    topExtensionOff();
+/**
+ * Toggles off background highlight of sidebar buttons.
+ */
+async function resetSidebarButtons() {
+	await domAPI.setStyleClassToggle('sidebar-btn-container-home', 'sidebar-btn-active', false);
+	await domAPI.setStyleClassToggle('sidebar-btn-container-nowPlaying', 'sidebar-btn-active', false);
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', false);
+	await domAPI.setStyleClassToggle('sidebar-btn-container-playlists', 'sidebar-btn-active', false);
 }
 
-// Navigate to Search results extended view > Tracks
-function searchTracksClick(element) {
-    jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-    domAPI.managedSetHTML('main-header', `<h1>Track results for: '${searchQuery}'</h1>`);
-    currentSearchCategory = 'tracks';
-    topExtensionOff();
-}
-
-// Navigate to Search results extended view > Artists
-function searchArtistsClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-  domAPI.managedSetHTML('main-header', `<h1>Artist results for: '${searchQuery}'</h1>`);
-  currentSearchCategory = 'artists';
-  topExtensionOff();
-}
-
-// Navigate to Search results extended view > Albums
-function searchAlbumsClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-  domAPI.managedSetHTML('main-header', `<h1>Album results for: '${searchQuery}'</h1>`);
-  currentSearchCategory = 'albums';
-  topExtensionOff();
-}
-
-// Navigate to Search results extended view > Genres
-function searchGenresClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-  domAPI.managedSetHTML('main-header', `<h1>Genre results for: '${searchQuery}'</h1>`);
-  currentSearchCategory = 'genres';
-  topExtensionOff();
-}
-
-// Navigate to Search results extended view > Playlists
-function searchPlaylistsClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-  domAPI.managedSetHTML('main-header', `<h1>Playlist results for: '${searchQuery}'</h1>`);
-  currentSearchCategory = 'playlists';
-  topExtensionOff();
-}
-
-// Navigate to Search results extended view > Tags
-function searchTagsClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-  domAPI.managedSetHTML('main-header', `<h1>Tag results for: '${searchQuery}'</h1>`);
-  currentSearchCategory = 'tags';
-  topExtensionOff();
-}
-
-// Navigate to Search results extended view > All
-function searchAllClick(element) {
-  jqAPI.loadPage('#main-container', 'pages/searchExtended.html');
-  domAPI.managedSetHTML('main-header', `<h1>All results for: '${searchQuery}'</h1>`);
-  currentSearchCategory = 'all';
-  topExtensionOff();
-}
-
-// Navigate to Settings view
-function settingsClick(element) {
-    jqAPI.loadPage('#top-container-extended', 'pages/settings.html');
-    topExtensionOn();
-}
-
-/* TOGGLE OVERVIEW */
-function topExtensionOff() {
-    if (topContainerIsExtended) {
-        domAPI.managedSetStyle('top-container', 'visibility', 'visible');
-        domAPI.managedSetStyle('top-container-extended', 'visibility', 'hidden');
-        topContainerIsExtended = false;
-    }
-}
-
-function topExtensionOn() {
-    if (!topContainerIsExtended) {
-        domAPI.managedSetStyle('top-container', 'visibility', 'hidden');
-        domAPI.managedSetStyle('top-container-extended', 'visibility', 'visible');
-        topContainerIsExtended = true;
-    }
-}
-
-// Navigate to Overview extended > Queue view
-function ovExQueueClick(element) {
-    jqAPI.loadPage('#top-container-extended', 'pages/overviewExtended.html');
-    topExtensionOn();
-}
-
-// Navigate to Overview extended > Lyrics view
-function ovExLyricsClick(element) {
-    jqAPI.loadPage('#top-container-extended', 'pages/ovExLyrics.html');
-    topExtensionOn();
-}
-
-// Navigate to Overview extended > Track view
-function ovExTrackClick(element) {
-    jqAPI.loadPage('#top-container-extended', 'pages/ovExTrack.html');
-    topExtensionOn();
+/**
+ *  Resets page values to false.
+ */
+async function resetCurrentPage() {
+	Object.values(currentPage).forEach((page) => {
+		page = false;
+	});
 }

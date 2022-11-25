@@ -1,0 +1,82 @@
+/* GRID JS */
+.gridjs-search {
+
+  background-color: var(--light);
+  margin-bottom: 20px;
+  width: 100%;
+
+  /* width: 20vw;
+  max-width: 365px; */
+
+  /* position: fixed; */
+
+}
+
+.gridjs-search > input {
+  color: var(--mid-dark);
+  height: 29px;
+  width: 250px;
+  border: 1px solid var(--mid);
+  border-radius: 2.5px;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  font-weight: 100;
+  padding-left: 10px;
+}
+
+.gridjs-search > input::placeholder {
+  font-size: 11px;
+  color: var(--mid-dark);
+}
+
+.gridjs-wrapper {
+  height: 100%;
+}
+
+.gridjs-wrapper button {
+  background-color: transparent;
+  border: none;
+}
+
+.gridjs-table {
+  border-spacing: 0;
+  width: 100%;
+}
+
+.gridjs-tr {
+}
+
+.gridjs-tbody .gridjs-tr:hover {
+  background-color: rgb(0,0,0,0.05);
+  transition: 300ms;
+}
+
+.gridjs-thead {
+text-align: left;
+}
+
+.gridjs-th:hover {
+  background-color: rgb(0,0,0,0.05);
+  transition: 300ms;
+}
+
+.gridjs-th, .gridjs-td {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.gridjs-th {
+  color: var(--theme-primary);
+  padding-top: 5px;
+  text-transform: uppercase;
+}
+.gridjs-td {
+  padding-top:10px;
+  padding-bottom:10px;
+  text-overflow: ellipsis;
+}
+
+
+.gridjs-tbody {
+}

@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "multi_ffmpeg": {
+      "commandName": "NoArgsTest",
+      "commandLineArgs": " ",
+      "workingDirectory": ".\\.."
+    }
+  }
+}

@@ -1,38 +1,59 @@
 {
-  "env": {
-    "node": true,
-    "browser": true,
-    "commonjs": true,
-    "es2021": true
-  },
-  "globals": {
-    "jqAPI": true,
-    "domAPI": true,
-    "fsAPI": true
-  },
-    "plugins": [
-    ],
-  "extends": [
-    "eslint:recommended",
-    "google"
-  ],
-  "overrides": [
-    {
-      "files": [
-        "*.js",
-        "*.json"
-      ],
-      "rules": {
-        "indent": [
-          "error",
-          4
-        ]
-      }
-    }
-  ],
-  "parserOptions": {
-    "ecmaVersion": "latest"
-  },
-  "rules": {
-  }
+	"env": {
+		"node": true,
+		"browser": true,
+		"commonjs": true,
+		"es2021": true
+	},
+	"globals": {
+		"jqAPI": true,
+		"domAPI": true,
+		"fsAPI": true,
+		"ffmpegAPI": true,
+		"genAPI": true,
+		"libraryHeaders": true,
+		"libraryCatalog": true,
+		"gridSettings": true,
+		"libraryPlaylists": true,
+		"userPlaylists": true,
+		"topExtensionOn": true,
+		"topExtensionOff": true,
+		"searchQueryGlobal": true,
+		"resetSubtitleButtons": true,
+		"resetSidebarButtons": true
+	},
+	"plugins": [
+	],
+	"extends": [
+		"eslint:recommended",
+		"google"
+	],
+	"overrides": [
+		{
+			"files": [
+				"*.js",
+				"*.json"
+			],
+			"rules": {
+				"indent": [
+					"error",
+					"tab"
+				],
+				"no-unused-vars": [
+					"off"
+				],
+				"max-len": [
+					"error",
+					120
+				],
+				"no-tabs": "off",
+				"no-mixed-spaces-and-tabs": "error"
+			}
+		}
+	],
+	"parserOptions": {
+		"ecmaVersion": "latest"
+	},
+	"rules": {
+	}
 }

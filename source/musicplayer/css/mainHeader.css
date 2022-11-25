@@ -1,0 +1,124 @@
+
+/* TOP CONTAINER > MAIN HEADER */
+#main-header-container {
+    background-color: transparent;
+    padding: 22px 30px;
+    padding-bottom: 15px;
+  
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+  
+    min-height: 50px;
+  }
+  
+  /* HEADING */
+  #main-header {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+    overflow: visible;
+  
+    /* min-width: 50%; */
+  }
+  
+  #header-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--dark);
+  }
+  
+  #header-subtitle {
+    font-size: 12px;
+    font-weight: 100;
+    color: var(--mid-dark);
+    margin-top: 5px;
+  }
+  
+  #header-subtitle-search {
+    display: flex;
+    flex-direction: row;
+    color: var(--mid);
+  }
+  
+  #header-subtitle-search > div {
+    margin-right: 20px;
+  }
+  
+  .subtitle-search-active {
+    color: var(--mid-dark);
+    transition: 300ms;
+  }
+  
+  #header-subtitle-search > div:hover {
+    color: var(--mid-dark);
+    transition: 300ms;
+  }
+  
+  
+  /* BUTTONS CONTAINER */
+  #main-buttons-search {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  
+    align-self: center;
+  
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  
+  
+  /* BUTTON - METADATA EDITOR */
+  button#btn-meta, 
+  button#btn-playlist,
+  button#btn-addQueue
+    {
+    background-color: var(--dark);
+    color: var(--light);
+    border: none;
+    border-radius: 2.5px;
+    height: 29px;
+  
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    font-weight: 100;
+    padding: 0 15px;
+  }
+  
+  /* BUTTON - ADD TO LIBRARY */
+  #btn-file {
+    display: none;
+  }
+  
+  #btn-file + label {
+    background-color: var(--dark);
+    color: var(--light);
+    border: none;
+    padding: 0 15px;
+    border-radius: 2.5px;
+  
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    font-weight: 100;
+  
+    height: 29px;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* SEARCH BAR */
+  
+  #main-input-search {
+      background-color: var(--light);
+      height: 29px;
+      width: calc(20vw + 60px);
+  
+      border: 1px solid var(--mid);
+      border-radius: 2.5px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      font-weight: 100;
+      padding-left: 10px;
+      color: var(--mid-dark);
+  }

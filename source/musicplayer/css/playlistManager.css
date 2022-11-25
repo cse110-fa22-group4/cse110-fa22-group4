@@ -1,0 +1,119 @@
+#playlistManage-header {
+    margin-bottom: 20px;
+}
+
+#playlistManage-main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#input-playlist-create {
+    min-height: 20px;
+    width: calc(100% - 15px);
+    border-radius: 2.5px;
+    border: 1px solid var(--mid);
+    padding-left: 10px;
+    font-size: 11px;
+    color: var(--mid-dark);
+    margin-bottom: 10px;
+}
+
+#input-playlist-create::placeholder {
+    font-size: 11px;
+    color: var(--mid-dark);
+}
+
+#select-playlist-add {
+    min-height: 24px;
+    width: 100%;
+    font-size: 11px;
+    border-radius: 2.5px;
+    color: var(--mid-dark);
+    border: 1px solid var(--mid);
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    font-weight: 100;
+
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+
+#btn-playlist-create,
+#btn-playlist-add,
+#btn-playlist-delete,
+#btn-playlist-remove-selection {
+    border: none;
+    border-radius: 2.5px;
+    background-color: red;
+
+    font-size: 11px;
+    color: var(--light);
+    padding: 8px 10px;
+
+    align-self: end;
+
+    margin-bottom: 10px;
+
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.15);
+    background-color: rgba(0, 0, 0, .30);
+    color: var(--mid-light);
+    border-radius: 4px;
+}
+
+#btn-playlist-create:hover,
+#btn-playlist-add:hover,
+#btn-playlist-delete:hover,
+#btn-playlist-remove-selection:hover {
+    background-color: rgba(0, 0, 0, .70);
+}
+
+#btn-playlist-delete,
+#btn-playlist-remove-selection {
+    margin: 0;
+}
+
+#playlist-remove-delete-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#selected-playlists-container {
+    background-color: var(--light);
+    /* min-height: 75px; */
+    height: 100%;
+
+    max-width: 100%;
+    border-radius: 2.5px;
+    color: var(--mid-dark);
+    margin-bottom: 10px;
+    overflow-y: auto;
+    padding: 10px 10px;
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    font-weight: 100;
+
+
+}
+
+.playlist-manager-row, .playlist-manager-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.playlist-manager-header {
+    font-weight: 800;
+    color: var(--theme-primary);
+    margin-bottom: 5px;
+}
+
+.playlist-manager-row div, .playlist-manager-header div {
+    /* width: 100px; */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: 10px;
+}

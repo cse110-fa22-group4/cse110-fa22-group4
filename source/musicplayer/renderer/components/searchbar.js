@@ -1,23 +1,36 @@
-window.addEventListener('DOMContentLoaded', () => {
-    jqAPI.onEvent('body', 'submit', '#search-form', submitSearch);
+window.addEventListener('searchbar-loaded', async () => {
+	await domAPI.addEventListener('search-form', 'submit', submitSearch);
 });
 
-// Handle user search query
-function submitSearch(element) {
-    event.preventDefault();
+/**
+ * Handles search
+ * @param {HTMLElement} element
+ */
+async function submitSearch(element) {
+	// Set global var for search query input
+	/**
+   * We literally await a Promise<Object>, idk why I have to specify this.
+   * @type {Object}
+   */
+	const searchQuery = await domAPI.getProperty('input-search', 'value');
+	searchQueryGlobal = searchQuery;
+	if (searchQuery === undefined) return;
 
-    // Set global var for search query input
-    searchQuery = domAPI.managedGetValue('input-search', 'value');
-    if (searchQuery === undefined) return;
+	if (searchQuery.length !== 0) {
+		// await domAPI.setHTML('header-title', `Results for: '${searchQuery}'`);
+		await domAPI.setProperty('input-search', 'value', '');
 
-    if (searchQuery.length !== 0) {
-        // Switch to search results page
-        jqAPI.loadPage('#main-container', 'pages/search.html');
-        topExtensionOff();
+		// Switch to search results page
+		await domAPI.setHTML('header-title', 'Search');
+		await domAPI.loadPage('header-subtitle', 'components/searchCategories.html');
+		await resetSubtitleButtons();
+		await domAPI.setStyleClassToggle('subtitle-search-all', 'subtitle-search-active', true);
+		await domAPI.loadPage('main-container', 'pages/searchPage.html');
+		await resetSidebarButtons();
+		await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
+		await topExtensionOff();
+		window.dispatchEvent(new CustomEvent('searchbarSearch', {detail: searchQuery}));
+	}
 
-        // Change main header to match search query
-        domAPI.managedSetHTML('main-header', `<h1>Top results for: '${searchQuery}'</h1>`);
-    }
-
-    // TODO: Use search query value for searching our app's library
+	// TODO: Use search query value for searching our app's library
 }

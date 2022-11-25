@@ -1,0 +1,160 @@
+#top-container-extended {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 100px;
+  left: 230px;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+
+  padding: 30px;
+  padding-left: 60px;
+
+  background-color: var(--dark);
+  color: var(--light);
+}
+
+.overviewExtended-container {
+  min-height: 100%;
+  max-height: 100%;
+
+  display: grid;
+
+  grid-template-rows: .6fr 3fr 1.5fr;
+  grid-template-columns: 1fr 1.5fr;
+}
+
+/* ALBUM ARTWORK */
+.ovEx-artwork {
+  grid-row-start: 1;
+  grid-row-end: 3;
+  padding-top: 40px;
+}
+
+.ovEx-artwork > img {
+  height: 100%;
+  border-radius: 15px 15px 15px 15px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+/* NAVIGATION */
+.ovEx-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+}
+
+#btn-queue,
+#btn-track,
+#btn-lyrics {
+  background-color: transparent;
+  border: none;
+  padding-right: 40px;
+  height: 40px;
+
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--mid-dark);
+}
+
+#btn-queue:hover {
+  color: #FFFFFF;
+}
+
+#btn-track:hover {
+  color: #FFFFFF;
+}
+
+#btn-lyrics:hover {
+  color: #FFFFFF;
+}
+/* CONTENT */
+#ovEx-content-container {
+  font-size: 12px;
+  overflow-y: auto;
+  margin: 10px 0;
+}
+
+/* TRACK INFO */
+.ovEx-track-info {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ovEx-track-info :nth-child(1) {
+  font-size: 44px;
+  font-weight: 700;
+}
+
+.ovEx-track-info :nth-child(2) {
+  font-size: 22px;
+  font-weight: 100;
+  padding-left: 4px;
+}
+
+.ovEx-track-info :nth-child(3) {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 100;
+  padding-left: 4px;
+  color: var(--mid);
+}
+
+@media only screen and (max-width: 1300px) {
+  .ovEx-track-info :nth-child(1) {
+    font-size: 28px;
+  }
+
+  .ovEx-track-info :nth-child(2) {
+    font-size: 14px;
+    padding-left: 0;
+
+  }
+
+  .ovEx-track-info :nth-child(3) {
+    font-size: 12px;
+    padding-left: 0;
+
+  }
+}
+
+/* QUEUE */
+.ovEx-queue-info {
+  display: flex;
+  align-items: start;
+  overflow-y: auto;
+
+  padding-top: 20px;
+  border-top: var(--mid-dark) 1px solid;
+
+  font-size: 12px;
+  font-weight: 100;
+}
+
+.ovEx-queue-info th {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--mid-dark);
+
+  text-align: right;
+  padding-right: 10px;
+}
+
+/* OVERVIEW EXTENDED > QUEUE */
+.ovEx-queue-container {
+  font-size: 12px;
+  color: var(--mid);
+}
+
+/* OVERVIEW EXTENDED > TRACK */
+.ovEx-track-container {
+  font-size: 12px;
+  color: var(--mid);
+}
+
+/* OVERVIEW EXTENDED > LYRICS */
+.ovEx-lyrics-container {
+  font-size: 12px;
+  color: var(--mid);
+}

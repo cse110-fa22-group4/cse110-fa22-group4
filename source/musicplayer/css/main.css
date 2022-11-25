@@ -1,0 +1,10 @@
+/* MAIN CONTAINER */
+#main-container {
+  color: var(--dark);
+  overflow-y: auto;
+}
+
+#library-container {
+  height: 100%;
+  width: 100%;
+}

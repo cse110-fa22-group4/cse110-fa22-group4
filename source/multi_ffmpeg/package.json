@@ -1,0 +1,14 @@
+{
+  "name": "multi_ffmpeg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main/main.js",
+  "scripts": {
+    "multi-ffmpeg-build-win": "dotnet publish -p:PublishProfile=win",
+    "multi-ffmpeg-build-osx": "dotnet publish -p:PublishProfile=osx",
+    "multi-ffmpeg-build": "npm run multi-ffmpeg-build-osx && npm run multi-ffmpeg-build-win"
+  },
+  "author": "Team Mariposa",
+  "license": "ISC",
+  "dependencies": { }
+}
