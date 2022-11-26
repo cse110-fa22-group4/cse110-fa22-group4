@@ -135,7 +135,7 @@ async function getCurrentTime() {
 		if (index < data.length - 30) return false;
 		return value && value.includes('.');
 	});
-	returned filtered[0];
+	return filtered[0];
 
 }
 

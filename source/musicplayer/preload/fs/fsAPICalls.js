@@ -199,6 +199,4 @@ module.exports = {
 	recursiveSearchAtPath,
 	setStoragePath,
 	getSourceFolder,
-	throwErr,
-	throwErrOpen,
 };
