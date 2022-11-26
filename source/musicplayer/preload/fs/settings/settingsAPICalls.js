@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const fsPromises = fs.promises;
 const {throwErr, throwErrOpen, getStoragePath} = require('../fsAPICalls');
 
 /**
@@ -15,12 +16,12 @@ async function getSettings() {
 	await fs.exists(settingsPath, async (e) => {
 		//await fs.close(await fs.open(settingsPath, 'w'));
 		if(!e) {
-				await fs.open(settingsPath, 'w', throwErrOpen);
-				await fs.writeFile(settingsPath, '{ }', throwErr);
+				await fsPromises.close(await fsPromises.open(settingsPath, 'w'));
+				await fsPromises.writeFile(settingsPath, '{ }');
 		}
 
 	});
-	return JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+	return JSON.parse(await fsPromises.readFile(settingsPath, 'utf8'));
 }
 
 /**
@@ -52,11 +53,11 @@ async function writeSettings(settings) {
 	const settingsPath = path.join(storagePath, 'settings.json');
 	await fs.exists(settingsPath, async (e) => {
 		if(!e) {
-			await fs.open(settingsPath, 'w', throwErrOpen);
-			await fs.writeFile(settingsPath, '{ }', throwErr);
+			await fsPromises.close(await fsPromises.open(settingsPath, 'w'));
+			await fsPromises.writeFile(settingsPath, '{ }');
 		}
 	});
-	await fs.writeFileSync(settingsPath, JSON.stringify(settings));
+	await fsPromises.writeFile(settingsPath, JSON.stringify(settings));
 }
 
 

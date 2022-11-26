@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const fsPromises = fs.promises;
 const {getStoragePath, makeDirIfNotExists,
 	throwErr, throwErrOpen} = require('../fsAPICalls');
 const {getSongs} = require('../songs/songsAPICalls');
@@ -19,7 +20,7 @@ async function getAllPlaylists() {
 	//Sorry, but with readdir, the
 	//filenames would've gone out of scope in the callback
 	//As a result, we can't return them
-	return fs.readdirSync(playlistPath)
+	return await fsPromises.readdir(playlistPath)
 }
 
 /**
@@ -37,14 +38,11 @@ async function getPlaylist(playlist) {
 
 	await fs.exists(playlistPath, async(e) => {
 		if(!e) {
-			await fs.open(playlistPath, 'w', throwErrOpen);
-			await fs.writeFile(playlistPath, '{ songs: [ ], }', throwErr);
+			await fsPromises.close(await fsPromises.open(playlistPath, 'w'));
+			await fsPromises.writeFile(playlistPath, '{ songs: [ ], }');
 		}
 	});
-	//Again, the data would be a param in the callback
-	//That we can't access again
-	//Also Map parsing from https://codingbeautydev.com/blog/javascript-convert-json-to-map/
-	const playlistObj = JSON.parse(fs.readFileSync(playlistPath, 'utf8'));
+	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
 	const allSongs = await getSongs();
 	const ret = [];
 
@@ -146,7 +144,7 @@ async function removePlaylist(playlistName) {
 	//await fs.rm(playlistPath);
 	await fs.exists(playlistPath, async(e) => {
 		if(e) {
-			await fs.rm(playlistPath, throwErr);
+			await fsPromises.rm(playlistPath);
 		}
 	});
 }
@@ -169,14 +167,13 @@ async function writePlaylist(playlistName, playlist) {
 
 	await fs.exists(playlistPath, async(e) => {
 		if(!e) {
-			await fs.open(playlistPath, 'w', throwErrOpen);
+			await fsPromises.close(await fsPromises.open(playlistPath, 'w'));
 		}
 	});
 	//conversion from map to json partially inspired from
 	//https://codingbeautydev.com/blog/javascript-convert-json-to-map/
-	await fs.writeFile(playlistPath,
-		JSON.stringify(playlist),
-		throwErr);
+	await fsPromises.writeFile(playlistPath,
+		JSON.stringify(playlist));
 }
 
 /**
