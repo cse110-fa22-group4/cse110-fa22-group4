@@ -231,6 +231,7 @@ const libraryCatalog = [
 
 ];
 
+genAPI.publishGlobal(libraryCatalog,'libraryCatalog');
 
 // const libraryCatalog2 = [
 
