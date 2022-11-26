@@ -8,7 +8,7 @@ const prevSongsArr = [];
 let startStamp = null;
 let endStamp = null;
 let progressFader = null;
-let msElapsed = 0; 
+let msElapsed = 0;
 let barPercent = 0;
 let intervalID;
 // absolute path from local fs
@@ -52,7 +52,7 @@ window.addEventListener('playback-loaded', async () => {
 	await domAPI.addEventListener('play-btn', 'click', function() { controlSong(currSongPath);});
 	await domAPI.addEventListener('next-btn', 'click', function() { nextSong(testMap); });
 	await domAPI.addEventListener('loop-btn', 'click', loopSong);
-	await domAPI.addEventListener('audio-fader', 'input', updateVolume);
+	await domAPI.addEventListener('audio-fader', 'input', updateVolume(testMap));
 	decideFirstSong();
 
 	// progress bar functionalities
@@ -73,12 +73,12 @@ async function controlSong(songPath) {
 	if (playBtn.id === 'play-btn') {
 		if (isPaused) {
 			await ffmpegAPI.resumeSong();
-			intervalID = setInterval( function() { updateProgress(); }, 50);
+			intervalID = setInterval( function() { updateProgress(testMap); }, 50);
 		} else {
 			// @todo actual data/song path needs to be set here
 			await ffmpegAPI.playSong(songPath, 100, 0, 67000);
-			// setTimeout();	// exec code after duration of song 
-			intervalID = setInterval( function() { updateProgress(); }, 50);
+			// setTimeout();	// exec code after duration of song
+			intervalID = setInterval( function() { updateProgress(testMap); }, 50);
 		}
 	} else {
 		await ffmpegAPI.pauseSong();
@@ -124,10 +124,12 @@ async function nextSong(playlistMap) {
 	if ( playBtn.id === 'play-btn' ) {
 		toggleIcon(playBtn, playBtnImg);
 	}
+
+	clearInterval(intervalID);
 	initProgress(playlistMap);
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, 100, 0, 67000);
-	intervalID = setInterval( function() { updateProgress(); }, 50);
+	intervalID = setInterval( function() { updateProgress(testMap); }, 50);
 }
 
 /**
@@ -159,10 +161,13 @@ async function prevSong(playlistMap) {
 		toggleIcon(playBtn, playBtnImg);
 	}
 
+	clearInterval(intervalID);
 	initProgress(playlistMap);
+	console.log(startStamp.innerHTML);
+	console.log('test' + endStamp.innerHTML);
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, 100, 0, 67000);
-	intervalID = setInterval( function() { updateProgress(); }, 50);
+	intervalID = setInterval( function() { updateProgress(testMap); }, 50);
 }
 
 /**
@@ -257,6 +262,7 @@ function updateVolume() {
 // progress bar functionalities
 /**
  * @description set the inital values of the progress bar for current song
+ * @param {Map} playlistMap the map whose tracklist property holds
  */
 function initProgress(playlistMap) {
 	const mapVal = playlistMap.get('playlist');
@@ -269,29 +275,34 @@ function initProgress(playlistMap) {
 	endStamp.innerHTML = currSongDuration;
 	startStamp.innerHTML = '0:00';
 	progressFader.value = '0';
-	msElapsed = 0; 
+	msElapsed = 0;
 }
 
 
 /**
  * @description change the length and timestamp of the progress bar for current song
+ * @param {Map} playlistMap the map whose tracklist property holds
  */
-function updateProgress() {
+function updateProgress(playlistMap) {
 	// check if song is over
-	if ( formatStrToMs(startStamp.innerHTML) >= formatStrToMs(endStamp.innerHTML)) { 
-		clearInterval(intervalID); 
+	if ( formatStrToMs(startStamp.innerHTML) >= formatStrToMs(endStamp.innerHTML)) {
+		clearInterval(intervalID);
 		// double check init to Reset
 		return;
 	}
 	msElapsed = msElapsed + 50;
 	barPercent = (msElapsed/ formatStrToMs(endStamp.innerHTML)) * 100;
-	progressFader.value = barPercent.toString();	// value of input range is string  
+	progressFader.value = barPercent.toString();	// value of input range is string
+	console.log(msElapsed);
+	console.log(formatStrToMs(endStamp.innerHTML));
 	console.log(progressFader.value);
 	startStamp.innerHTML = msToFormatStr(msElapsed);
 }
 
 /**
  * @description converts duration of song (mm/ss format) string to milliseconds
+ * @param {string} durationString representing duration of song in (mm/ss format)
+ * @return {Number} representing duration of song in milliseconds
  */
 function formatStrToMs(durationString) {
 	// ask that duration is always formatted as hh:mm:ss when creating playlist
@@ -302,6 +313,11 @@ function formatStrToMs(durationString) {
 	return ( Number(minutes) * 60 + Number(seconds) ) * 1000;
 }
 
+/**
+ * @description converts milliseconds to (mm/ss format) string
+ * @param {Number} ms the duration converted to millseconds
+ * @return {String} a string representing time in mm/ss format
+ */
 function msToFormatStr(ms) {
-	return new Date(ms).toISOString().substring(14, 19)
+	return new Date(ms).toISOString().substring(14, 19);
 }
