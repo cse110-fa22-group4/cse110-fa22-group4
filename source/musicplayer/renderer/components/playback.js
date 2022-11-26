@@ -1,12 +1,13 @@
 /* GLOBAL VARS*/
-let isPaused = false;	//can't add to eslintrc since reassigned
+let isPaused = false;	// can't add to eslintrc since reassigned
 let shuffleOn = false;
 const testMap = new Map();
 let songNum = 0;
-let prevSongsArr = [];
+const prevSongsArr = [];
 // absolute path from local fs
 // const songPath1 = 'C:/Users/andre/Downloads/cse110_dev7/cse110-fa22-group4/source/musicplayer/songs/jingle_bells.mp3'
-// const songPath2 = 'C:/Users/andre/Downloads/cse110_dev7/cse110-fa22-group4/source/musicplayer/songs/happyBirthday1.mp3'
+// const songPath2 = 'C:/Users/andre/Downloads/cse110_dev7/cse110-fa22-group4/source/musicplayer/
+// songs/happyBirthday1.mp3'
 // const songPath3 = 'C:/Users/andre/Downloads/cse110_dev7/cse110-fa22-group4/source/musicplayer/songs/rickroll.mp3'
 // relative from /musicplayer
 const songPath1 = './songs/jingle_bells.mp3';
@@ -24,7 +25,7 @@ testMap.set( 'playlist', {
 		{'#': '01', 'title': 'Future Nostalgia', 'path': songPath1,
 			'artist': 'Dua Lipa', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '3:05',
 			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
-			'tags': 'Party, Summer', 'artwork': '../img/sampleData/artwork-DuaLipa.webp'}, 
+			'tags': 'Party, Summer', 'artwork': '../img/sampleData/artwork-DuaLipa.webp'},
 		{'#': '02', 'title': 'Don\'t Start Now', 'path': songPath2,
 			'artist': 'Dua Lipa', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '3:03',
 			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
@@ -38,11 +39,17 @@ testMap.set( 'playlist', {
 window.addEventListener('playback-loaded', async () => {
 	// shuffle is going to randomize order of songs in playlist
 	await domAPI.addEventListener('shuffle-btn', 'click', shuffleSong);
-	// prev also involves access to 'playlist' (array of objects insde map) 
-	await domAPI.addEventListener('prev-btn', 'click', function() { prevSong(testMap); } );
-	// wrapper to properly pass params without triggering functions initally 
-	await domAPI.addEventListener('play-btn', 'click', function() { controlSong(currSongPath); });
-	await domAPI.addEventListener('next-btn', 'click', function() { nextSong(testMap) });
+	// prev also involves access to 'playlist' (array of objects insde map)
+	await domAPI.addEventListener('prev-btn', 'click', function() {
+		prevSong(testMap);
+	} );
+	// wrapper to properly pass params without triggering functions initally
+	await domAPI.addEventListener('play-btn', 'click', function() {
+		controlSong(currSongPath);
+	});
+	await domAPI.addEventListener('next-btn', 'click', function() {
+		nextSong(testMap);
+	});
 	await domAPI.addEventListener('loop-btn', 'click', loopSong);
 	await domAPI.addEventListener('audio-fader', 'input', updateVolume);
 	decideFirstSong();
@@ -57,9 +64,6 @@ async function controlSong(songPath) {
 	// console.log(event); can actually get event/element
 	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
 	const playBtnImg = playBtn.querySelector('img');
-	//if (shuffleOn === true) {
-	// prevSongsArr.push(songNum);
-	//}
 	// .setBinPath() in code or do in terminal atleast once,
 	// set to path of ffplay executable
 	if (playBtn.id === 'play-btn') {
@@ -67,7 +71,7 @@ async function controlSong(songPath) {
 			await ffmpegAPI.resumeSong();
 		} else {
 			// @todo actual data/song path needs to be set here
-			await ffmpegAPI.playSong(songPath, 100, 0, 67000); 
+			await ffmpegAPI.playSong(songPath, 100, 0, 67000);
 		}
 	} else {
 		await ffmpegAPI.pauseSong();
@@ -94,9 +98,7 @@ async function nextSong(playlistMap) {
 	const mapVal = playlistMap.get('playlist');
 	const playlist = mapVal['trackList'];
 	if (shuffleOn === true) {
-		//prevSongsArr.push(songNum);
 		songNum = shuffle(0, playlist.length - 1, songNum);
-		//prevSongsArr.push(songNum);
 	} else {
 		if (songNum + 1 > playlist.length - 1 ) {
 			return;
@@ -110,8 +112,9 @@ async function nextSong(playlistMap) {
 	// on skip, always play the song so button should always become pause
 	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
 	const playBtnImg = playBtn.querySelector('img');
-	if ( playBtn.id === 'play-btn' ) { toggleIcon(playBtn, playBtnImg); }
-
+	if ( playBtn.id === 'play-btn' ) {
+		toggleIcon(playBtn, playBtnImg);
+	}
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, 100, 0, 67000);
 }
@@ -125,34 +128,25 @@ async function prevSong(playlistMap) {
 	// get prev. song (while handling indexOfBounds)
 	const mapVal = playlistMap.get('playlist');
 	const playlist = mapVal['trackList'];
-	//if (shuffleOn === true) {
-		// @todo peek() to handle indexOutOfBounds
-		// or just use index
-		// prevSongsArr.pop();
-		// let prevSongIndx = prevSongsArr.pop();
-		// //console.log(testEle);
-		// songNum = prevSongIndx;
-	//}
 	// turns out shuffleOn is not special case, since shuffling exists
-	// for prev. Btn to work properly always need array to track
-	// -2 since length is +1 from index 
+	// for prev. Btn to work properly always need array to track songs
+	// -2 since length is +1 from index
 	// (ie: at index=0, 1-1=0 allows if cond. to pass, triggers indexOutOfBounds)
-	if ( prevSongsArr.length - 2 < 0) { return; }	
+	if ( prevSongsArr.length - 2 < 0) {
+		return;
+	}
 	prevSongsArr.pop();	// remove current song
 	songNum = prevSongsArr[prevSongsArr.length - 1]; // retrieve prev song
-	// else {
-	// 	if (songNum - 1 < 0 ) {
-	// 		return;
-	// 	}
-	// 	songNum = songNum - 1;
-	// }
+	// no need for branch anymore, prevSongsArr handles both cases of shuffleOn/Off
 	currSongPath = playlist[songNum]['path'];
 	isPaused = false;	// isPaused shouldn't be carried over from other songs
 
 	// on prev, always play the song so button should always become pause
 	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
 	const playBtnImg = playBtn.querySelector('img');
-	if ( playBtn.id === 'play-btn' ) { toggleIcon(playBtn, playBtnImg); }
+	if ( playBtn.id === 'play-btn' ) {
+		toggleIcon(playBtn, playBtnImg);
+	}
 
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, 100, 0, 67000);
@@ -160,15 +154,15 @@ async function prevSong(playlistMap) {
 
 /**
  * @description randomized index for playlist order which cannot be current index
- * @param {number} min lower bound on randomized song index 
+ * @param {number} min lower bound on randomized song index
  * @param {number} max upper bound on randomized song index
  * @param {number} songNum curent song index
 *  @return {number} representing new random index/songNum to play
  */
 function shuffle(min, max, songNum) {
 	let randomIndx = songNum;
-	while (randomIndx === songNum) { 
-		// first formula would not give a uniform distrubution, 
+	while (randomIndx === songNum) {
+		// first formula would not give a uniform distrubution,
 		// highest indexed song only appears if exactly 2.0, really rare
 		// randomIndx = Math.floor( Math.random() * (max - min) + min );
 		randomIndx = Math.floor(Math.random() * (max - min + 1)) + min;
