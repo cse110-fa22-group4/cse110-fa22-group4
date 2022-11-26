@@ -1,6 +1,6 @@
-const {path} = require('path');
-const {fs} = require('fs');
-const {storagePath} = require('../fsAPICalls');
+const path = require('path');
+const fs = require('fs');
+const {throwErr, throwErrOpen, getStoragePath} = require('../fsAPICalls');
 
 /**
  * @name getStats
@@ -9,12 +9,18 @@ const {storagePath} = require('../fsAPICalls');
  * @return {Promise<object>} A JSON formatted object representing the stats.
  */
 async function getStats() {
+	const storagePath = await getStoragePath();
 	const statsPath = path.join(storagePath, 'stats.json');
-	if (!(await fs.exists(statsPath))) {
-		await fs.close(await fs.open(statsPath, 'w'));
-		await fs.writeFile(statsPath, '{ }');
-	}
-	return JSON.parse(await fs.readFile(statsPath, 'utf8'));
+	//if (!(await fs.exists(settingsPath))) {
+	await fs.exists(statsPath, async (e) => {
+		//await fs.close(await fs.open(settingsPath, 'w'));
+		if(!e) {
+				await fs.open(statsPath, 'w', throwErrOpen);
+				await fs.writeFile(statsPath, '{ }', throwErr);
+		}
+
+	});
+	return JSON.parse(fs.readFileSync(statsPath, 'utf8'));
 }
 
 /**
@@ -27,11 +33,15 @@ async function getStats() {
  * @return {Promise<void>}
  */
 async function writeStats(stats) {
+	const storagePath = await getStoragePath();
 	const statsPath = path.join(storagePath, 'stats.json');
-	if (!(await fs.exists(statsPath))) {
-		await fs.close(await fs.open(statsPath, 'w'));
-	}
-	await fs.writeFile(statsPath, JSON.stringify(stats));
+	await fs.exists(statsPath, async (e) => {
+		if(!e) {
+			await fs.open(statsPath, 'w', throwErrOpen);
+			await fs.writeFile(statsPath, '{ }', throwErr);
+		}
+	});
+	await fs.writeFileSync(statsPath, JSON.stringify(stats));
 }
 
 /**

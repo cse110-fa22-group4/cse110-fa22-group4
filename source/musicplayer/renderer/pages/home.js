@@ -1,6 +1,10 @@
 /* eslint-disable linebreak-style */
+
+let libraryCatalogRef;
 // This file is very WIP
 window.addEventListener('home-loaded', async () => {
+	// we need to get our global libraryCatalogRef
+	libraryCatalogRef = await genAPI.getGlobal('libraryCatalog');
 	await generateHomeCards();
 	await domAPI.addEventListenerbyClassName('library-card-album', 'click', libraryAlbumsExtended);
 	await domAPI.addEventListenerbyClassName('library-card-artist', 'click', libraryArtistsExtended);
@@ -13,85 +17,96 @@ window.addEventListener('home-loaded', async () => {
  * @return {Promise<void>}
  */
 async function generateHomeCards() {
-	// we need to get our global libraryCatalog
-	const libraryCatalog = await genAPI.getGlobal(libraryCatalog);
+	console.log(libraryCatalogRef);
 	// we cannot have more cards than we have songs
-	const numHomeCards = Math.max(4, libraryCatalog.length);
+	const numHomeCards = Math.min(4, libraryCatalogRef.length);
 
 	// this boolean prevents us from failing to generate something unique more than once.
 	// if we generate something nonunique, try again, and it still isn't unique, we just don't add a card then
-	let repeatFailure = false;
+	const maxRepeats = 4;
 
 	// let's get numHomeCards many unique random entries from our Library
 	const albums = new Set();
+	let count = 0;
 	while (albums.size < numHomeCards) {
-		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique. We add it regardless of whether it is new or not the second time
-		if (!(albums[randomIndex] in albums) || repeatFailure) {
-			albums.add(libraryCatalog[randomIndex].album);
-			repeatFailure = false;
+		if (!(albums.has(libraryCatalogRef[randomIndex]['album']))) {
+			albums.add(libraryCatalogRef[randomIndex]['album']);
+			count = 0;
+		} else if (count >= maxRepeats) {
+			break;
 		} else {
 			// this only gets executed when there has not been a repeat
 			// failure and the two adjacent elements are not equal.
-			repeatFailure = true;
+			count+=1;
 		}
 	}
 
 	const artists = new Set();
+	count = 0;
 	while (artists.size < numHomeCards) {
-		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
-		if (!(artists[randomIndex] in artists) || repeatFailure) {
-			artists.add(libraryCatalog[randomIndex].artist);
-			repeatFailure = false;
+		if (!(artists.has(libraryCatalogRef[randomIndex]['artist']))) {
+			artists.add(libraryCatalogRef[randomIndex].artist);
+			count = 0;
+		} else if (count >= maxRepeats) {
+			break;
 		} else {
 			// this only gets executed when there has not been a repeat
 			// failure and the two adjacent elements are not equal.
-			repeatFailure = true;
+			count+=1;
 		}
 	}
 
-	const genres = [];
+	const genres = new Set();
+	count = 0;
 	while (genres.size < numHomeCards) {
-		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
 		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
-		const genreArr = libraryCatalog[randomIndex].genre.split(', ');
+		const genreArr = libraryCatalogRef[randomIndex].genre.split(', ');
 		for (const i of genreArr) {
-			if ((!(i in genres) || repeatFailure) && genres.size < numHomeCards) {
+			if ((!(genres.has(i))) && genres.size < numHomeCards) {
 				genres.add(i);
-				repeatFailure = false;
+				count = 0;
+			} else if (count >= maxRepeats) {
+				break;
 			} else {
 				// this only gets executed when there has not been a repeat
 				// failure and the two adjacent elements are not equal.
-				repeatFailure = true;
+				count += 1;
 			}
 		}
 	}
 
-	const tags = [];
+	const tags = new Set();
+	count = 0;
 	while (tags.size < numHomeCards) {
-		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
 		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
-		const tagArr = libraryCatalog[randomIndex].tags.split(', ');
+		const tagArr = libraryCatalogRef[randomIndex].tags.split(', ');
 		for (const i of tagArr) {
-			if ((!(i in tags) || repeatFailure) && tags.size < numHomeCards) {
+			if ((!(tags.has(i))) && tags.size < numHomeCards) {
 				tags.add(i);
-				repeatFailure = false;
+				count = 0;
+			} else if (count >= maxRepeats) {
+				break;
 			} else {
 				// this only gets executed when there has not been a repeat
 				// failure and the two adjacent elements are not equal.
-				repeatFailure = true;
+				count+=1;
 			}
 		}
 	}
 
 	// insert card list into containers
-	await domAPI.setHTML('home-albums-container', albums);
-	await domAPI.setHTML('home-artists-container', artists);
-	await domAPI.setHTML('home-genres-container', genres);
-	await domAPI.setHTML('home-tags-container', tags);
+	await domAPI.setHTML('home-albums-container', await generateAlbumCardList(albums));
+	await domAPI.setHTML('home-artists-container', await generateArtistCardList(artists));
+	await domAPI.setHTML('home-genres-container', await generateGenreCardList(genres));
+	await domAPI.setHTML('home-tags-container', await generateTagCardList(tags));
 }
 
 /**
@@ -110,8 +125,8 @@ async function generateAlbumCardList(albums) {
 	});
 
 	// we go through the library and fill in our information for the album
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const currTrack = libraryCatalog[i];
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		const currTrack = libraryCatalogRef[i];
 		if (cardData.has(currTrack.album)) {
 			cardData.set(currTrack.album, {
 				artist: currTrack.artist,
@@ -125,7 +140,7 @@ async function generateAlbumCardList(albums) {
 	let cardList = '';
 	for (const [key, value] of cardData) {
 		const card = `
-    <div class="library-card-album" data-libtarget="${key}">
+    <div class="library-card library-card-album" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${value.artwork} alt="">
       </div>
@@ -159,8 +174,8 @@ async function generateArtistCardList(artists) {
 	});
 
 	// go through the library and get information on the artists
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const currTrack = libraryCatalog[i];
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		const currTrack = libraryCatalogRef[i];
 		if (cardData.has(currTrack.artist)) {
 			cardData.get(currTrack.artist).numAlbums.add(currTrack.album);
 			cardData.get(currTrack.artist).numTracks++;
@@ -175,7 +190,7 @@ async function generateArtistCardList(artists) {
 	for (const [key, value] of cardData) {
 		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
 		const card = `
-    <div class="library-card-artist" data-libtarget="${key}">
+    <div class="library-card library-card-artist" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
@@ -209,9 +224,9 @@ async function generateGenreCardList(genres) {
 	});
 
 	// look through the library to find songs in the genre
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const currTrack = libraryCatalog[i];
-		const genreArr = libraryCatalog[i].genre.split(', ');
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		const currTrack = libraryCatalogRef[i];
+		const genreArr = libraryCatalogRef[i].genre.split(', ');
 		for (let j = 0; j < genreArr.length; j++) {
 			const currGenre = genreArr[j];
 			if (cardData.has(currGenre)) {
@@ -229,7 +244,7 @@ async function generateGenreCardList(genres) {
 	for (const [key, value] of cardData) {
 		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
 		const card = `
-    <div class="library-card-genre" data-libtarget="${key}">
+    <div class="library-card library-card-genre" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
@@ -263,9 +278,9 @@ async function generateTagCardList(tags) {
 	});
 
 	// look through the library for songs with these tags
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const currTrack = libraryCatalog[i];
-		const tagArr = libraryCatalog[i].tags.split(', ');
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		const currTrack = libraryCatalogRef[i];
+		const tagArr = libraryCatalogRef[i].tags.split(', ');
 		for (let j = 0; j < tagArr.length; j++) {
 			const currTag = tagArr[j];
 			if (cardData.has(currTag)) {
@@ -284,7 +299,7 @@ async function generateTagCardList(tags) {
 	for (const [key, value] of cardData) {
 		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
 		const card = `
-    <div class="library-card-tag" data-libtarget="${key}">
+    <div class="library-card library-card-tag" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
@@ -301,7 +316,7 @@ async function generateTagCardList(tags) {
 }
 
 // ALL THESE FUNCTIONS ARE HERE TEMPORARILY BECAUSE I DO NOT KNOW HOW TO IMPORT FUNCTIONS.
-// Originally were in files by Alvin, but those are gone. 
+// Originally were in files by Alvin, but those are gone.
 // I expect them to come back though, so I will leave this message in
 
 
@@ -316,16 +331,17 @@ async function libraryAlbumsExtended(e) {
 
 	// Set grid rows
 	const data = [];
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		if (libraryCatalog[i].album === cardAlbum) {
-			data.push(libraryCatalog[i]);
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		if (libraryCatalogRef[i].album === cardAlbum) {
+			data.push(libraryCatalogRef[i]);
 		}
 	}
 
 	// Generate album grid
-	await domAPI.setHTML('header-subtitle', `Library > Albums > ${cardAlbum}`);
-	await domAPI.setHTML('library-albums-cards', '');
-	await domAPI.addGrid('library-albums-container', libraryHeaders, data, gridSettings);
+	await domAPI.setHTML('header-title', `Library`);
+	await domAPI.setHTML('home', '');
+	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardAlbum}`);
+	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings, 'playlists');
 }
 
 /**
@@ -337,16 +353,17 @@ async function libraryArtistsExtended(e) {
 
 	// Set grid rows
 	const data = [];
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		if (libraryCatalog[i].artist === cardArtist) {
-			data.push(libraryCatalog[i]);
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		if (libraryCatalogRef[i].artist === cardArtist) {
+			data.push(libraryCatalogRef[i]);
 		}
 	}
 
 	// Generate artist grid
-	await domAPI.setHTML('header-subtitle', `Library > Artists > ${cardArtist}`);
-	await domAPI.setHTML('library-artists-cards', '');
-	await domAPI.addGrid('library-artists-container', libraryHeaders, data, gridSettings);
+	await domAPI.setHTML('header-title', `Library`);
+	await domAPI.setHTML('home', '');
+	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardArtist}`);
+	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
 }
 
 /**
@@ -360,20 +377,20 @@ async function libraryGenresExtended(e) {
 
 	// Set grid rows
 	const data = [];
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const genreArr = libraryCatalog[i].genre.split(', ');
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		const genreArr = libraryCatalogRef[i].genre.split(', ');
 		for (let j = 0; j < genreArr.length; j++) {
 			if (genreArr[j] === cardGenre) {
-				data.push(libraryCatalog[i]);
+				data.push(libraryCatalogRef[i]);
 				break;
 			}
 		}
 	}
 
-	// Generate genre grid
-	await domAPI.setHTML('header-subtitle', `Library > Genres > ${cardGenre}`);
-	await domAPI.setHTML('library-genres-cards', '');
-	await domAPI.addGrid('library-genres-container', libraryHeaders, data, gridSettings);
+	await domAPI.setHTML('header-title', `Library`);
+	await domAPI.setHTML('home', '');
+	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardGenre}`);
+	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
 }
 
 /**
@@ -385,18 +402,19 @@ async function libraryTagsExtended(e) {
 
 	// Set grid rows
 	const data = [];
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const tagsSplit = libraryCatalog[i].tags.split(', ');
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		const tagsSplit = libraryCatalogRef[i].tags.split(', ');
 		for (let j = 0; j < tagsSplit.length; j++) {
 			if (tagsSplit[j] === cardTag) {
-				data.push(libraryCatalog[i]);
+				data.push(libraryCatalogRef[i]);
 				break;
 			}
 		}
 	}
 
 	// Generate tag grid
+	await domAPI.setHTML('header-title', `Library`);
+	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardTag}`);
-	await domAPI.setHTML('library-tags-cards', '');
-	await domAPI.addGrid('library-tags-container', libraryHeaders, data, gridSettings);
+	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
 }
