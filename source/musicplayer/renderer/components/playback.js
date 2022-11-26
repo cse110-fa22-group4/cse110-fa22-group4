@@ -293,9 +293,9 @@ function updateProgress(playlistMap) {
 	msElapsed = msElapsed + 50;
 	barPercent = (msElapsed/ formatStrToMs(endStamp.innerHTML)) * 100;
 	progressFader.value = barPercent.toString();	// value of input range is string
-	console.log(msElapsed);
-	console.log(formatStrToMs(endStamp.innerHTML));
-	console.log(progressFader.value);
+	//console.log(msElapsed);
+	//console.log(formatStrToMs(endStamp.innerHTML));
+	//console.log(progressFader.value);
 	startStamp.innerHTML = msToFormatStr(msElapsed);
 }
 
