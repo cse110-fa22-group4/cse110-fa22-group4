@@ -1,0 +1,51 @@
+## Meeting Information:
+
+__Meeting Date/Time__: 11_26_22, 10:00am-12:00pm
+
+__Meeting Location__: Zoom
+
+__Note-Taker__: Andrew 
+
+__Objective Statement__: Weekly full-group meeting: 2nd Sprint Agile review, retrospective meeting,
+Discuss object representing playlist
+
+## Attendees
+People who attended:
+- Liam
+- Noah
+- Alvin
+- Brian
+- Jeremy
+- Chi
+- Andrew
+- Yoo
+- Xuying
+
+People absent:
+- None
+
+## Agenda:
+| Item | Description |
+| ----- | ---------------- |
+| 2nd Sprint Agile review | see google Docs for more details |
+| 2nd Sprint Retrospective meeting | see Miro board for more details |
+| Playlist Object | Frontend and Backend needs to decide the object representing the playlist. getPlaylist() currently returns a map but comments say that there should be a json object and still talks about the object being a list of paths. |
+| Global searching | It seems that Noah maybe wanted global searching |
+| Frontend Debugging Session | Issue with rescanning |
+| Testing Debugging Session | Issue with running tests without having to relaunch electron everytime |
+| Frontend | Frontend has to decide the data structure of the Queue and how playback should be triggered on click of each grid js element |
+| Misc | Short questions were asked on management of github Project and tray icons for app|
+
+
+## Decisions:
+| Item | By Who? | Description |
+| ----- | ---- | ---------------- |
+| 2nd Sprint Agile review | Group | see google Docs for more details |
+| 2nd Sprint Retrospective meeting | Group | see Miro board for more details |
+| Playlist Object | Frontend, Backend, Testing | Frontend and Backend decides on returning Map with the structure: <pre>'playlist', { name: 'Summer Mix' numTracks: 32, artworks: ['..img.png', '..img2.png'], trackList: [{track1},{track2},...] }) </pre> for representing playlist in frontend usage. All existing keys in libraryCatalog example is kept except for `playlists`. |
+| Global searching | Frontend, Backend | It seems that GridJS already searching from anywhere in the app since its docked to top bar so global searching is redundant |
+| Frontend Debugging Session | Some functions used in rescanning were removed |
+| Testing Debugging Session | Jeremy, Liam | No current solution |
+| Frontend | Andrew, Alvin | Will discuss more in-depth next UI meeting (Tue. 11/26). Temperarily data structure of the Queue is just array holding individual songs and playlists. Playback could be triggered on click by getting grid js element's path in index 11 |
+| Misc | Frontend, Chi | 'No Status' updated recently in Github Project, the other categories could use an update. Tray icons for app rquested by Chi but this should be easily add-able |
+
