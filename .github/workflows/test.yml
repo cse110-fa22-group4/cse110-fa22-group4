@@ -1,3 +1,4 @@
+# lint check for javascript, css, html using google style guide and github actions
 name: Testing
 
 on:
@@ -7,18 +8,24 @@ on:
     branches: [ "main" ]
 
 jobs:
-  Testing:
-
-    runs-on: ubuntu-latest
-    
+  # run linter on source/musicplayer
+  test:
     defaults:
       run:
-       working-directory: source/musicplayer
+        working-directory: source/musicplayer
 
-
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: update dependencies
-      run: npm update
-    - name: testing
-      run: npx playwright test --workers=1
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install Node.js dependencies
+        run: npm update
+
+      - name: Run Testing
+        run: npx playwright test --workers=1
