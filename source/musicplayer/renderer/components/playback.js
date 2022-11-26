@@ -4,6 +4,13 @@ let shuffleOn = false;
 const testMap = new Map();
 let songNum = 0;
 const prevSongsArr = [];
+
+let startStamp = null;
+let endStamp = null;
+let progressFader = null;
+let msElapsed = 0; 
+let barPercent = 0;
+let intervalID;
 // absolute path from local fs
 // const songPath1 = 'C:/Users/andre/Downloads/cse110_dev7/cse110-fa22-group4/source/musicplayer/songs/jingle_bells.mp3'
 // const songPath2 = 'C:/Users/andre/Downloads/cse110_dev7/cse110-fa22-group4/source/musicplayer/
@@ -22,16 +29,16 @@ testMap.set( 'playlist', {
 	numTracks: 32,
 	artworks: ['..img.png', '..img2.png'],
 	trackList: [
-		{'#': '01', 'title': 'Future Nostalgia', 'path': songPath1,
-			'artist': 'Dua Lipa', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '3:05',
+		{'#': '01', 'title': 'joy to the world', 'path': songPath1,
+			'artist': 'person a', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '1:07',
 			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
 			'tags': 'Party, Summer', 'artwork': '../img/sampleData/artwork-DuaLipa.webp'},
-		{'#': '02', 'title': 'Don\'t Start Now', 'path': songPath2,
-			'artist': 'Dua Lipa', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '3:03',
+		{'#': '02', 'title': 'happy birthday', 'path': songPath2,
+			'artist': 'person b', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '0:29',
 			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
 			'tags': 'Party, Summer', 'artwork': '../img/sampleData/artwork-DuaLipa.webp'},
 		{'#': '03', 'title': 'Cool', 'path': songPath3,
-			'artist': 'Dua Lipa', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '3:30',
+			'artist': 'rick astley', 'album': 'never gonna give you up', 'year': '2020', 'duration': '3:32',
 			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
 			'tags': 'Party, Summer', 'artwork': '../img/sampleData/artwork-DuaLipa.webp'}],
 });
@@ -39,20 +46,17 @@ testMap.set( 'playlist', {
 window.addEventListener('playback-loaded', async () => {
 	// shuffle is going to randomize order of songs in playlist
 	await domAPI.addEventListener('shuffle-btn', 'click', shuffleSong);
-	// prev also involves access to 'playlist' (array of objects insde map)
-	await domAPI.addEventListener('prev-btn', 'click', function() {
-		prevSong(testMap);
-	} );
+	// prev also involves access to 'playlist' (array of objects inside map)
+	await domAPI.addEventListener('prev-btn', 'click', function() { prevSong(testMap); } );
 	// wrapper to properly pass params without triggering functions initally
-	await domAPI.addEventListener('play-btn', 'click', function() {
-		controlSong(currSongPath);
-	});
-	await domAPI.addEventListener('next-btn', 'click', function() {
-		nextSong(testMap);
-	});
+	await domAPI.addEventListener('play-btn', 'click', function() { controlSong(currSongPath);});
+	await domAPI.addEventListener('next-btn', 'click', function() { nextSong(testMap); });
 	await domAPI.addEventListener('loop-btn', 'click', loopSong);
 	await domAPI.addEventListener('audio-fader', 'input', updateVolume);
 	decideFirstSong();
+
+	// progress bar functionalities
+	initProgress(testMap);
 });
 
 /**
@@ -69,19 +73,24 @@ async function controlSong(songPath) {
 	if (playBtn.id === 'play-btn') {
 		if (isPaused) {
 			await ffmpegAPI.resumeSong();
+			intervalID = setInterval( function() { updateProgress(); }, 50);
 		} else {
 			// @todo actual data/song path needs to be set here
 			await ffmpegAPI.playSong(songPath, 100, 0, 67000);
+			// setTimeout();	// exec code after duration of song 
+			intervalID = setInterval( function() { updateProgress(); }, 50);
 		}
 	} else {
 		await ffmpegAPI.pauseSong();
 		isPaused = true; // guessing this line throws error since isPaused is reassigned
+		clearInterval(intervalID);
 	}
 	toggleIcon(playBtn, playBtnImg);
 }
 
 /**
  * @description add first song on load since next wouldn't been clicked yet
+ * helper for nextSong, prevSong to handle edge case
  */
 function decideFirstSong() {
 	prevSongsArr.push(songNum);
@@ -115,8 +124,10 @@ async function nextSong(playlistMap) {
 	if ( playBtn.id === 'play-btn' ) {
 		toggleIcon(playBtn, playBtnImg);
 	}
+	initProgress(playlistMap);
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, 100, 0, 67000);
+	intervalID = setInterval( function() { updateProgress(); }, 50);
 }
 
 /**
@@ -148,8 +159,10 @@ async function prevSong(playlistMap) {
 		toggleIcon(playBtn, playBtnImg);
 	}
 
+	initProgress(playlistMap);
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, 100, 0, 67000);
+	intervalID = setInterval( function() { updateProgress(); }, 50);
 }
 
 /**
@@ -238,4 +251,57 @@ function updateVolume() {
 	} else {
 		audioIcon.src = '../img/icons/playback/unmuted.png';
 	}
+}
+
+
+// progress bar functionalities
+/**
+ * @description set the inital values of the progress bar for current song
+ */
+function initProgress(playlistMap) {
+	const mapVal = playlistMap.get('playlist');
+	const playlist = mapVal['trackList'];
+	const currSongDuration = playlist[songNum]['duration'];
+
+	startStamp = document.querySelector('.timestamps:nth-of-type(1)');
+	endStamp = document.querySelector('.timestamps:nth-of-type(2)');
+	progressFader = document.querySelector('#progressBar');
+	endStamp.innerHTML = currSongDuration;
+	startStamp.innerHTML = '0:00';
+	progressFader.value = '0';
+	msElapsed = 0; 
+}
+
+
+/**
+ * @description change the length and timestamp of the progress bar for current song
+ */
+function updateProgress() {
+	// check if song is over
+	if ( formatStrToMs(startStamp.innerHTML) >= formatStrToMs(endStamp.innerHTML)) { 
+		clearInterval(intervalID); 
+		// double check init to Reset
+		return;
+	}
+	msElapsed = msElapsed + 50;
+	barPercent = (msElapsed/ formatStrToMs(endStamp.innerHTML)) * 100;
+	progressFader.value = barPercent.toString();	// value of input range is string  
+	console.log(progressFader.value);
+	startStamp.innerHTML = msToFormatStr(msElapsed);
+}
+
+/**
+ * @description converts duration of song (mm/ss format) string to milliseconds
+ */
+function formatStrToMs(durationString) {
+	// ask that duration is always formatted as hh:mm:ss when creating playlist
+	// const [hours, minutes, seconds] = durationString.split(':');
+	const [minutes, seconds] = durationString.split(':');
+
+	// return ( Number(hours) * 60 * 60 + Number(minutes) * 60 + Number(seconds) ) * 1000;
+	return ( Number(minutes) * 60 + Number(seconds) ) * 1000;
+}
+
+function msToFormatStr(ms) {
+	return new Date(ms).toISOString().substring(14, 19)
 }
