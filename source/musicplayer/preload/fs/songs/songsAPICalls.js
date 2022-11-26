@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-const {getStoragePath, throwErr, throwErrOpen} = require('../fsAPICalls');
-
+const fsPromises = require('fs').promises;
+const {setStoragePath, getStoragePath, throwErr, throwErrOpen} = require('../fsAPICalls');
 /**
  * @name getSongs
  * @description Gets the JSON formatted object that contains all songs and
@@ -13,17 +13,29 @@ async function getSongs() {
 	const storagePath = await getStoragePath();
 	const songPath = path.join(storagePath, 'songs.json');
 	//if (!(await fs.exists(songPath))) {
-	fs.exists(songPath, async (e) => {
+	await fs.exists(songPath, async (e) => {
 		if(!e) {
-				await fs.open(songPath, 'w', throwErrOpen);
-				await fs.writeFile(songPath, '{ }', throwErr);
+				await fsPromises.close(await fsPromises.open(songPath, 'w'));
+				await fsPromises.writeFile(songPath, '{ }');
 		}
 	});
-	const res = fs.readFileSync(songPath, 'utf8');
-	//console.log(res);
+	let songData = await fsPromises.readFile(songPath, 'utf8');
+	return JSON.parse(songData);
 
-	return JSON.parse(res);
+
 }
+
+/*
+async function test () {
+	await setStoragePath('users/user_reset/user_1/data');
+	let songs = await getSongs();
+	await setStoragePath('users/user_1/data');
+	await writeSongs(songs);
+	await setStoragePath('users/user_1/data');
+	let so = await getSongs();
+
+}
+*/
 
 /**
  * @name writeSongs
@@ -37,11 +49,11 @@ async function writeSongs(songs) {
 	const storagePath = await getStoragePath();
 	const songPath = path.join(storagePath, 'songs.json');
 	//if (!(await fs.exists(songPath))) {
-	fs.exists(songPath, async (e) => {
+	await fs.exists(songPath, async (e) => {
 		if(!e)
-			await fs.open(songPath, 'w', throwErrOpen);
+			await fsPromises.close(await fs.open(songPath, 'w'));
 	});
-	await fs.writeFile(songPath, JSON.stringify(songs), throwErr);
+	await fsPromises.writeFile(songPath, JSON.stringify(songs));
 }
 
 /**

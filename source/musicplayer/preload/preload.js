@@ -19,11 +19,12 @@ const {
 
 const {
 	pauseSong, playSong, stopSong, resumeSong, seekSong,
+	setBehaviorUponEnd, changeVolume, getCurrentTime,
 } = require('./ffmpeg/play/playSongAPICalls');
 
 const {
 	recursiveSearchAtPath, getSRCString,
-	fsInit, devClear,
+	fsInit, devClear, 
 } = require('./fs/fsAPICalls');
 
 const {
@@ -136,6 +137,10 @@ contextBridge.exposeInMainWorld('ffmpegAPI', {
 	resumeSong: resumeSong,
 	seekSong: seekSong,
 	useMultiFFmpeg: useMultiFFmpeg,
+	setBehaviorUponEnd: setBehaviorUponEnd,
+	changeVolume: changeVolume,
+	getCurrentTime: getCurrentTime,
+
 });
 
 contextBridge.exposeInMainWorld('fsAPI', {
