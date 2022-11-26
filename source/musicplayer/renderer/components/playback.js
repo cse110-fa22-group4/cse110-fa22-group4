@@ -10,7 +10,7 @@ let endStamp = null;
 let progressFader = null;
 let msElapsed = 0;
 let barPercent = 0;
-let intervalID;
+let intervalID; 
 // absolute path from local fs
 // const songPath1 = 'C:/Users/andre/Downloads/cse110_dev7/cse110-fa22-group4/source/musicplayer/songs/jingle_bells.mp3'
 // const songPath2 = 'C:/Users/andre/Downloads/cse110_dev7/cse110-fa22-group4/source/musicplayer/

@@ -28,7 +28,7 @@ const libraryHeaders = [
 // Sample Catalog
 
 const libraryCatalog = [
-
+	
 	{'#': '01', 'title': 'Future Nostalgia', 'path': '../audio/songs/Future Nostalgia',
 		'artist': 'Dua Lipa', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '3:05',
 		'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
