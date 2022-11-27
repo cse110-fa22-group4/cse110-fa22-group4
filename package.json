@@ -7,6 +7,7 @@
     "tui-jsdoc-template": "^1.2.2"
   },
   "dependencies": {
-    "taffydb": "^2.7.3"
+    "taffydb": "^2.7.3",
+    "jsdoc": "^3.6.3"
   }
 }
