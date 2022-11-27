@@ -31,6 +31,17 @@
   max-height: 25%;
 }
 
+.songInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 6ch;
+}
+
+.songInfo > p {
+  margin: 0 0 0 0;
+}
+
 #playbackContainer {
   /*
   display: flex;

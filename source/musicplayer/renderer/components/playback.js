@@ -37,10 +37,10 @@ testMap.set( 'playlist', {
 			'artist': 'person b', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '0:29',
 			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
 			'tags': 'Party, Summer', 'artwork': '../img/sampleData/artwork-DuaLipa.webp'},
-		{'#': '03', 'title': 'Cool', 'path': songPath3,
-			'artist': 'rick astley', 'album': 'never gonna give you up', 'year': '2020', 'duration': '3:32',
+		{'#': '03', 'title': 'never gonna give you up', 'path': songPath3,
+			'artist': 'rick astley', 'album': '...', 'year': '2020', 'duration': '3:32',
 			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
-			'tags': 'Party, Summer', 'artwork': '../img/sampleData/artwork-DuaLipa.webp'}],
+			'tags': 'Party, Summer', 'artwork': ''}],
 });
 
 window.addEventListener('playback-loaded', async () => {
@@ -52,11 +52,14 @@ window.addEventListener('playback-loaded', async () => {
 	await domAPI.addEventListener('play-btn', 'click', function() { controlSong(currSongPath);});
 	await domAPI.addEventListener('next-btn', 'click', function() { nextSong(testMap); });
 	await domAPI.addEventListener('loop-btn', 'click', loopSong);
-	await domAPI.addEventListener('audio-fader', 'input', updateVolume(testMap));
+	// await domAPI.addEventListener('progressBar', 'input', updateSeek);
+	// await domAPI.addEventListener('progressBar', 'mouseup', testSeek);
+	await domAPI.addEventListener('audio-fader', 'input', updateVolume);
 	decideFirstSong();
 
 	// progress bar functionalities
 	initProgress(testMap);
+	updateInfo(testMap);
 });
 
 /**
@@ -130,6 +133,8 @@ async function nextSong(playlistMap) {
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, 100, 0, 67000);
 	intervalID = setInterval( function() { updateProgress(testMap); }, 50);
+
+	updateInfo(playlistMap);
 }
 
 /**
@@ -163,11 +168,12 @@ async function prevSong(playlistMap) {
 
 	clearInterval(intervalID);
 	initProgress(playlistMap);
-	console.log(startStamp.innerHTML);
-	console.log('test' + endStamp.innerHTML);
+	// console.log(startStamp.innerHTML);
+	// console.log('test' + endStamp.innerHTML);
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, 100, 0, 67000);
 	intervalID = setInterval( function() { updateProgress(testMap); }, 50);
+	updateInfo(playlistMap);
 }
 
 /**
@@ -287,15 +293,18 @@ function updateProgress(playlistMap) {
 	// check if song is over
 	if ( formatStrToMs(startStamp.innerHTML) >= formatStrToMs(endStamp.innerHTML)) {
 		clearInterval(intervalID);
-		// double check init to Reset
+		// double check reset if issues arises, but nextSong should reset
+		nextSong(playlistMap);
+		// updateInfo(playlistMap)	//really should in next and prev, not outside
+
 		return;
 	}
 	msElapsed = msElapsed + 50;
 	barPercent = (msElapsed/ formatStrToMs(endStamp.innerHTML)) * 100;
 	progressFader.value = barPercent.toString();	// value of input range is string
-	//console.log(msElapsed);
-	//console.log(formatStrToMs(endStamp.innerHTML));
-	//console.log(progressFader.value);
+	// console.log(msElapsed);
+	// console.log(formatStrToMs(endStamp.innerHTML));
+	// console.log(progressFader.value);
 	startStamp.innerHTML = msToFormatStr(msElapsed);
 }
 
@@ -320,4 +329,52 @@ function formatStrToMs(durationString) {
  */
 function msToFormatStr(ms) {
 	return new Date(ms).toISOString().substring(14, 19);
+}
+
+/**
+ * @description converts milliseconds to (mm/ss format) string
+ * @param {Number} ms the duration converted to millseconds
+ * @return {String} a string representing time in mm/ss format
+ */
+function updateSeek(event) {
+	clearInterval(intervalID); //stop updating progress
+	console.log(event.value);
+}
+
+/**
+ * @description converts milliseconds to (mm/ss format) string
+ * @param {Number} ms the duration converted to millseconds
+ * @return {String} a string representing time in mm/ss format
+ */
+function testSeek(event) {
+	console.log("mouse up");
+	ffmpegAPI.seekSong(Number(event.value));
+}
+
+/**
+ * @description converts milliseconds to (mm/ss format) string
+ * @param {Number} ms the duration converted to millseconds
+ * @return {String} a string representing time in mm/ss format
+ */
+function updateInfo(playlistMap) {
+	const mapVal = playlistMap.get('playlist');
+	const playlist = mapVal['trackList'];
+	const currTitle = playlist[songNum]['title'];
+	const currArtist = playlist[songNum]['artist'];
+	let currArt = '';
+	if ( playlist[songNum]['artwork'] === '') {
+		currArt = '../img/artwork-default.png';
+	} else {
+		currArt = playlist[songNum]['artwork'];
+	}
+
+	const songTitle = document.querySelector('.songInfo > b');
+	const songArtist = document.querySelector('.songInfo > p');
+	const songArt = document.querySelector('#playbackArt');
+
+	songTitle.innerHTML = currTitle;
+	songArtist.innerHTML = currArtist;
+	console.log(currArt);
+	console.log(songNum);
+	songArt.src = currArt;
 }
