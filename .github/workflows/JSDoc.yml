@@ -16,4 +16,4 @@ jobs:
       uses: actions/checkout@v2
         
     - name: Generate Docs
-      run: npm run docs 
+      run: npm run testJsDoc 
