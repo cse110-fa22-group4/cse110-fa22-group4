@@ -1,6 +1,7 @@
 /* GLOBAL VARS*/
 let isPaused = false;	// can't add to eslintrc since reassigned
 let shuffleOn = false;
+let toggleOn = false;
 const testMap = new Map();
 let songNum = 0;
 const prevSongsArr = [];
@@ -203,6 +204,7 @@ function shuffleSong() {
 	const style = window.getComputedStyle(shuffleBtn);
 	const currColor = style.getPropertyValue('fill');
 	toggleColor(currColor, shuffleBtn);
+	shuffleOn = !shuffleOn;
 }
 
 /**
@@ -214,6 +216,7 @@ function loopSong() {
 	const style = window.getComputedStyle(loopBtn);
 	const currColor = style.getPropertyValue('fill');
 	toggleColor(currColor, loopBtn);
+	toggleOn = !toggleOn; 
 }
 
 /**
@@ -224,10 +227,8 @@ function loopSong() {
 function toggleColor(fillColor, btn) {
 	if (fillColor === 'rgb(0, 0, 0)') { // equivalent to black
 		fillColor = 'var(--theme-primary)';
-		shuffleOn = true;
 	} else {
 		fillColor = 'black';
-		shuffleOn = false;
 	}
 	btn.style.fill = fillColor;
 }
@@ -248,6 +249,7 @@ function toggleIcon(btn, btnImg) {
 	}
 }
 
+// audio functionalities 
 /**
  * @description Toggle the audio icon when clicked
  */
@@ -262,6 +264,8 @@ function updateVolume() {
 	} else {
 		audioIcon.src = '../img/icons/playback/unmuted.png';
 	}
+	// might want to add a separate triggered in change
+	// ffmpegAPI.changeVolume(audioFader.value);
 }
 
 
@@ -289,12 +293,22 @@ function initProgress(playlistMap) {
  * @description change the length and timestamp of the progress bar for current song
  * @param {Map} playlistMap the map whose tracklist property holds
  */
-function updateProgress(playlistMap) {
+async function updateProgress(playlistMap) {
 	// check if song is over
 	if ( formatStrToMs(startStamp.innerHTML) >= formatStrToMs(endStamp.innerHTML)) {
 		clearInterval(intervalID);
 		// double check reset if issues arises, but nextSong should reset
-		nextSong(playlistMap);
+		if (toggleOn) {
+			clearInterval(intervalID);
+			initProgress(playlistMap);
+			await ffmpegAPI.stopSong();
+			await ffmpegAPI.playSong(currSongPath, 100, 0, 67000);
+			intervalID = setInterval( function() { updateProgress(testMap); }, 50);
+			// no info update needed
+		} else {
+			nextSong(playlistMap);
+		}
+		
 		// updateInfo(playlistMap)	//really should in next and prev, not outside
 
 		return;
@@ -332,9 +346,7 @@ function msToFormatStr(ms) {
 }
 
 /**
- * @description converts milliseconds to (mm/ss format) string
- * @param {Number} ms the duration converted to millseconds
- * @return {String} a string representing time in mm/ss format
+ * @description stops progress bar updates on slider drag
  */
 function updateSeek(event) {
 	clearInterval(intervalID); //stop updating progress
@@ -342,19 +354,17 @@ function updateSeek(event) {
 }
 
 /**
- * @description converts milliseconds to (mm/ss format) string
- * @param {Number} ms the duration converted to millseconds
- * @return {String} a string representing time in mm/ss format
+ * @description seek to position in song based on slider (once mouse up)
+ * @param {HTMLElement} element element recieve from event 
  */
-function testSeek(event) {
-	console.log("mouse up");
-	ffmpegAPI.seekSong(Number(event.value));
+function testSeek(element) {
+	console.log('mouse up');
+	ffmpegAPI.seekSong(Number(element.value));
 }
 
 /**
- * @description converts milliseconds to (mm/ss format) string
- * @param {Number} ms the duration converted to millseconds
- * @return {String} a string representing time in mm/ss format
+ * @description updates info for current song 
+ * @param {Map} playlistMap the map whose tracklist property holds
  */
 function updateInfo(playlistMap) {
 	const mapVal = playlistMap.get('playlist');
