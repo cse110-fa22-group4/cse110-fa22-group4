@@ -1,7 +1,7 @@
 {
   "source": {
     "includePattern": ".+\\.js(doc|x)?$", // Only process file ending in .js, .jsdoc or .jsx
-    "include": [ "." ] // Check all folders.
+    "include": [ "source/musicplayer/preload/.", "source/musicplayer/renderer/.", "source/musicplayer/testing/." ] // Check all folders.
   },
   "recurseDepth": 10,
   "opts": {

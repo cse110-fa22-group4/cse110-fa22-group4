@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home | Home</title>
+    <title>Source: renderer/components/searchbar.js | Source: renderer/components/searchbar.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -24,7 +26,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Home</a></h1>
+        <h1><a href="index.html" class="link">Source: renderer/components/searchbar.js</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -42,19 +44,47 @@
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>window.addEventListener('searchbar-loaded', async () => {
+	await domAPI.addEventListener('search-form', 'submit', submitSearch);
+});
 
+/**
+ * Handles search
+ * @param {HTMLElement} element
+ */
+async function submitSearch(element) {
+	// Set global var for search query input
+	/**
+   * We literally await a Promise&lt;Object>, idk why I have to specify this.
+   * @type {Object}
+   */
+	const searchQuery = await domAPI.getProperty('input-search', 'value');
+	searchQueryGlobal = searchQuery;
+	if (searchQuery === undefined) return;
 
+	if (searchQuery.length !== 0) {
+		// await domAPI.setHTML('header-title', `Results for: '${searchQuery}'`);
+		await domAPI.setProperty('input-search', 'value', '');
 
+		// Switch to search results page
+		await domAPI.setHTML('header-title', 'Search');
+		await domAPI.loadPage('header-subtitle', 'components/searchCategories.html');
+		await resetSubtitleButtons();
+		await domAPI.setStyleClassToggle('subtitle-search-all', 'subtitle-search-active', true);
+		await domAPI.loadPage('main-container', 'pages/searchPage.html');
+		await resetSidebarButtons();
+		await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
+		await topExtensionOff();
+		window.dispatchEvent(new CustomEvent('searchbarSearch', {detail: searchQuery}));
+	}
 
-
-
-
-
-
-    
-
-
-
+	// TODO: Use search query value for searching our app's library
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
@@ -71,7 +101,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:undefined_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

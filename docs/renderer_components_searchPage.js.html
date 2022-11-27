@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home | Home</title>
+    <title>Source: renderer/components/searchPage.js | Source: renderer/components/searchPage.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -24,7 +26,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Home</a></h1>
+        <h1><a href="index.html" class="link">Source: renderer/components/searchPage.js</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -42,19 +44,43 @@
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>window.addEventListener('searchPage-loaded', async () => {
+	await onSearchPageLoad();
+});
 
+let searchGrid = undefined;
 
+/**
+ * Function that is called on SearchPage load.
+ */
+async function onSearchPageLoad() {
+	// GridJS - USAGE EXAMPLE
 
+	// Set grid headers - Sample Headers from sampleLibrary.js
+	const columns = libraryHeaders;
 
+	// Set grid rows - Sample data from sampleLibrary.js
+	const data = libraryCatalog;
 
+	// Set grid settings
+	const gridSettings = {
+		sort: true,
+		// resizable: true,   - doesn't seem to work
+		// fixedHeader: true, - doesn't seem to work
+		// autoWidth: true,   - doesn't seem to work
+		search: {
+			enabled: true,
+			keyword: `${searchQueryGlobal}`,
+		},
+	};
 
-
-
-
-    
-
-
-
+	searchGrid = await domAPI.addGrid('search-results-container', columns, data, gridSettings);
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
@@ -71,7 +97,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:undefined_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 
