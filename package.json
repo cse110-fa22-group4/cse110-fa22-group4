@@ -1,1 +1,12 @@
-{}
+{
+  "scripts": {
+    "testJsDoc": "jsdoc -c jsdoc/conf.json",
+    "tempUpdate": "npm i -D tui-jsdoc-template"
+  },
+  "devDependencies": {
+    "tui-jsdoc-template": "^1.2.2"
+  },
+  "dependencies": {
+    "taffydb": "^2.7.3"
+  }
+}

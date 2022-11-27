@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home | Home</title>
+    <title>Source: renderer/components/searchCategories.js | Source: renderer/components/searchCategories.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -24,7 +26,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Home</a></h1>
+        <h1><a href="index.html" class="link">Source: renderer/components/searchCategories.js</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -42,19 +44,103 @@
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>window.addEventListener('searchCategories-loaded', async () => {
+	await domAPI.addEventListener('subtitle-search-all', 'click', searchAll);
+	await domAPI.addEventListener('subtitle-search-tracks', 'click', searchTracks);
+	await domAPI.addEventListener('subtitle-search-artists', 'click', searchArtists);
+	await domAPI.addEventListener('subtitle-search-albums', 'click', searchAlbums);
+	await domAPI.addEventListener('subtitle-search-genres', 'click', searchGenres);
+	await domAPI.addEventListener('subtitle-search-playlists', 'click', searchPlaylists);
+	await domAPI.addEventListener('subtitle-search-tags', 'click', searchTags);
+});
 
+/**
+ * Narrow search results to all
+ * @param {HTMLElement} element
+ */
+async function searchAll(element) {
+	await resetSubtitleButtons();
+	await domAPI.setStyleClassToggle('subtitle-search-all', 'subtitle-search-active', true);
+	alert('*FUNCTION UNDER CONTRUCTION*');
+}
 
+/**
+ * Narrow search results to tracks
+ * @param {HTMLElement} element
+ */
+async function searchTracks(element) {
+	await resetSubtitleButtons();
+	await domAPI.setStyleClassToggle('subtitle-search-tracks', 'subtitle-search-active', true);
+	alert('*FUNCTION UNDER CONTRUCTION*');
+}
 
+/**
+ * Narrow search results to artists
+ * @param {HTMLElement} element
+ */
+async function searchArtists(element) {
+	await resetSubtitleButtons();
+	await domAPI.setStyleClassToggle('subtitle-search-artists', 'subtitle-search-active', true);
+	alert('*FUNCTION UNDER CONTRUCTION*');
+}
 
+/**
+ * Narrow search results to albums
+ * @param {HTMLElement} element
+ */
+async function searchAlbums(element) {
+	await resetSubtitleButtons();
+	await domAPI.setStyleClassToggle('subtitle-search-albums', 'subtitle-search-active', true);
+	alert('*FUNCTION UNDER CONTRUCTION*');
+}
 
+/**
+ * Narrow search results to genres
+ * @param {HTMLElement} element
+ */
+async function searchGenres(element) {
+	await resetSubtitleButtons();
+	await domAPI.setStyleClassToggle('subtitle-search-genres', 'subtitle-search-active', true);
+	alert('*FUNCTION UNDER CONTRUCTION*');
+}
 
+/**
+ * Narrow search results to playlists
+ * @param {HTMLElement} element
+ */
+async function searchPlaylists(element) {
+	await resetSubtitleButtons();
+	await domAPI.setStyleClassToggle('subtitle-search-playlists', 'subtitle-search-active', true);
+	alert('*FUNCTION UNDER CONTRUCTION*');
+}
 
+/**
+ * Narrow search results to tags
+ * @param {HTMLElement} element
+ */
+async function searchTags(element) {
+	await resetSubtitleButtons();
+	await domAPI.setStyleClassToggle('subtitle-search-tags', 'subtitle-search-active', true);
+	alert('*FUNCTION UNDER CONTRUCTION*');
+}
 
-
-    
-
-
-
+/**
+ * Toggles off background highlight of subtitle buttons.
+ */
+async function resetSubtitleButtons() {
+	await domAPI.setStyleClassToggle('subtitle-search-all', 'subtitle-search-active', false);
+	await domAPI.setStyleClassToggle('subtitle-search-tracks', 'subtitle-search-active', false);
+	await domAPI.setStyleClassToggle('subtitle-search-artists', 'subtitle-search-active', false);
+	await domAPI.setStyleClassToggle('subtitle-search-albums', 'subtitle-search-active', false);
+	await domAPI.setStyleClassToggle('subtitle-search-genres', 'subtitle-search-active', false);
+	await domAPI.setStyleClassToggle('subtitle-search-playlists', 'subtitle-search-active', false);
+	await domAPI.setStyleClassToggle('subtitle-search-tags', 'subtitle-search-active', false);
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
@@ -71,7 +157,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:undefined_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

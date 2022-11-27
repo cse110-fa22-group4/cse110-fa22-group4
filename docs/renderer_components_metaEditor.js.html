@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home | Home</title>
+    <title>Source: renderer/components/metaEditor.js | Source: renderer/components/metaEditor.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -24,7 +26,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Home</a></h1>
+        <h1><a href="index.html" class="link">Source: renderer/components/metaEditor.js</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -42,19 +44,43 @@
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>window.addEventListener('metaEditor-loaded', async () => {
+	await domAPI.addEventListener('btn-metaEdit-save', 'click', saveMetadata);
+});
 
 
+/**
+ * Save metadata
+ * @param {HTMLElement} element
+ */
+async function saveMetadata(element) {
+	// TODO: Implement saving metadata function
+	alert('*FUNCTION UNDER CONSTRUCTION*');
+	const inputMeta = await getMetaFromFields();
 
+	await ffmpegAPI.ffmpegWrite('file', inputMeta);
+}
 
+/**
+ * @return {Promise&lt;Object>}
+ */
+async function getMetaFromFields() {
+	const retVal = {};
 
+	return retVal;
+}
 
+/**
+ * @return {Promise&lt;Object>} Returns an object that can be used to fill a Grid.JS form
+ */
+async function getMetaForFields() {
 
-
-
-    
-
-
-
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
@@ -71,7 +97,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:undefined_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 
