@@ -9,10 +9,7 @@ let vol = 100;
 let instance = undefined;
 let pauseSongPath = '';
 let loop = false;
-// TODO: is there a better way to get the duration other than reading directly from metadata?
-// Answer: add it in as a parameter
-// Front end will add in the song's duration, gathered from metadata reading, as a parameter
-// duration in seconds
+let timeStarted; 
 let duration = 0;
 /**
  * @memberOf ffmpegAPI
@@ -59,6 +56,7 @@ async function playSong(songPath, volume = vol, seekVal = pauseTime,
 	options.push(path);
 	instance = await require('child_process').spawn(ffPaths[0],
 	options,{shell: true});
+	timeStarted = Date.now() - (seekVal * 1000);
 	setBehaviorUponEnd(callback);
 }
 /**
@@ -126,6 +124,7 @@ async function changeVolume(volume) {
  * @return {Promise<number>} time the current time
  */
 async function getCurrentTime() {
+	/*
 	if (!instance) return;
 	const data = instance.stderr.read().toString().split(' ');
 	// The number 26 is a constant that emerges as a consequence of ffPlay's implementation of
@@ -136,6 +135,9 @@ async function getCurrentTime() {
 		return value && value.includes('.');
 	});
 	return filtered[0];
+	*/
+	return (Date.now() - timeStarted)/1000.0;
+
 
 }
 
@@ -147,6 +149,7 @@ async function getCurrentTime() {
  * @todo maybe the top half should use getCurrentTime
  */
 async function pauseSong() {
+	/*
 	if (!instance) return;
 	const data = instance.stderr.read().toString().split(' ');
 	// The number 26 is a constant that emerges as a consequence of ffPlay's implementation of
@@ -156,12 +159,16 @@ async function pauseSong() {
 		if (index < data.length - 30) return false;
 		return value && value.includes('.');
 	});
-	pauseTime = filtered[0];
-	pauseSongPath = path.substring(1,path.length-1);
+	return filtered[0];
+	*/
+	//THE ANSWER WAS RIGHT 
+	//IN FRONT OF US THE WHOLE TIME
+	pauseTime = (Date.now() - timeStarted)/1000.0;
 	await stopSong(false);
+	pauseSongPath = path.substring(1,path.length-1);
 	paused = true;
 
-	await debugLog(filtered, 'play-song-tests');
+	//await debugLog(filtered, 'play-song-tests');
 	await debugLog(pauseTime, 'play-song-tests');
 }
 
