@@ -4,6 +4,11 @@
       "commandName": "NoArgsTest",
       "commandLineArgs": " ",
       "workingDirectory": ".\\.."
+    },
+    "Profile 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\Liam\\WebstormProjects\\cse110-fa22-group4\\source\\multi_ffmpeg\\bin\\Debug\\net6.0\\multi_ffmpeg.exe",
+      "commandLineArgs": "-i C:/Users/Liam/Desktop/bin/songs_temp.txt -o C:/Users/Liam/Desktop/bin/out.txt -p C:/Users/Liam/Desktop/bin/ffprobe.exe"
     }
   }
 }

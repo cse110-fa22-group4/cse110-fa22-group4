@@ -6,6 +6,7 @@ const {getStoragePath, makeDirIfNotExists,
 const {getSongs} = require('../songs/songsAPICalls');
 const {Grid} = require('gridjs');
 const {debugLog} = require("../../general/genAPICalls");
+
 /**
  * @name getAllPlaylists
  * @description Gets an array that contains the names of every playlist.
@@ -133,6 +134,25 @@ async function writeToPlaylist(playlistName, tag, val) {
 }
 
 /**
+ * @memberOf fsAPI
+ * @name writeToPlaylist
+ * @description Removes a value from a tag for playlist creation.
+ * @param {string} playlistName The name of the playlist.
+ * @param {string} tag The tag to use.
+ * @param {string} val The value to remove.
+ * @returns {Promise<void>}
+ */
+async function removeFromPlaylist(playlistName, tag, val) {
+	const storagePath = await getStoragePath();
+	const playlistPath = path.join(storagePath, 'playlists', playlistName);
+	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
+	if (tag in playlistObj['tags']) {
+		const filtered = playlistObj['tags'][tag].filter((value) => value !== val);
+		await writePlaylist(playlistName, filtered);
+	}
+}
+
+/**
  */
 async function playlistSearch(keyword) {
 	const gridSearcher = new Grid({
@@ -160,6 +180,7 @@ async function exportPlaylist(playlistName) {
 module.exports = {
 	getAllPlaylists,
 	writeToPlaylist,
+	removeFromPlaylist,
 	getPlaylist,
 	removePlaylist,
 	writePlaylist,
