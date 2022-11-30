@@ -1,7 +1,8 @@
 const path = require('path');
 const fs = require('fs');
 const fsPromises = require('fs').promises;
-const {setStoragePath, getStoragePath, throwErr, throwErrOpen} = require('../fsAPICalls');
+const {setStoragePath, getStoragePath, throwErr, throwErrOpen, convertPathToTrack} = require('../fsAPICalls');
+
 /**
  * @name getSongs
  * @description Gets the JSON formatted object that contains all songs and
@@ -32,27 +33,10 @@ async function getSongsTrackData() {
 	const songs = await getSongs();
 	const ret = [];
 	for (const songPath in songs) {
-		const song = songs[songPath]['format'];
-		const title = 'tags' in song && 'title' in song['tags'] ? song['tags']['title'] : '';
-		const artist = 'tags' in song && 'artist' in song['tags'] ? song['tags']['artist'] : '';
-		const album = 'tags' in song && 'album' in song['tags'] ? song['tags']['album'] : '';
-		const year = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
-		const duration = 'duration' in song ? song['duration']: '';
-		const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
-		ret.push( {
-			'title': title,
-			'path': songPath,
-			'artist': artist,
-			'album': album,
-			'year': year,
-			'duration': duration,
-			'genre': genre,
-		});
+		ret.push(await convertPathToTrack(songPath, songs));
 	}
 	return ret;
 }
-
-
 
 /**
  * @name writeSongs

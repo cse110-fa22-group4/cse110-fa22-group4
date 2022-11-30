@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const fsPromises = fs.promises;
 const {getStoragePath, makeDirIfNotExists,
-	throwErr, throwErrOpen} = require('../fsAPICalls');
+	throwErr, throwErrOpen, convertPathToTrack} = require('../fsAPICalls');
 const {getSongs} = require('../songs/songsAPICalls');
 const {Grid} = require('gridjs');
 const {debugLog} = require('../../general/genAPICalls');
@@ -56,16 +56,15 @@ async function getAllPlaylists() {
  * @return {Promise<object>} A map that represents a playlist.
  */
 async function getPlaylist(playlist) {
-	const storagePath = await getStoragePath();
-	const playlistPath = path.join(storagePath, 'playlists', playlist);
-
 	await makeDirIfNotExists('playlists');
 
-	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
+	const playlistObj = await getPlaylistObj(playlist);
 	const allSongs = await getSongs();
 	const foundPaths = [];
 	const ret = {'name': playlist, 'trackList': []};
+
 	for (const tagGroup of playlistObj['tags']) {
+
 		const foundSongs = Object.entries(allSongs).filter((val) => {
 			const meta = val[1];
 			if (!('format' in meta)) return false;
@@ -73,12 +72,11 @@ async function getPlaylist(playlist) {
 			for (const tag in tagGroup) {
 
 				if (tag in metadata) {
-					if (!metadata[tag].includes(tagGroup[tag])) {
-						return false;
-					}
+					if (!metadata[tag].includes(tagGroup[tag])) return false;
 				} else if ('tags' in metadata && tag in metadata['tags']) {
 					if (!metadata['tags'][tag].includes(tagGroup[tag])) return false;
 				} else return false;
+
 			}
 			return true;
 		});
@@ -91,21 +89,7 @@ async function getPlaylist(playlist) {
 			const song = foundMeta['format'];
 
 			foundPaths.push(foundPath);
-			const title = 'tags' in song && 'title' in song['tags'] ? song['tags']['title'] : '';
-			const artist = 'tags' in song && 'artist' in song['tags'] ? song['tags']['artist'] : '';
-			const album = 'tags' in song && 'album' in song['tags'] ? song['tags']['album'] : '';
-			const year = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
-			const duration = 'duration' in song ? song['duration']: '';
-			const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
-			ret['trackList'].push( {
-				'title': title,
-				'path': foundPath,
-				'artist': artist,
-				'album': album,
-				'year': year,
-				'duration': duration,
-				'genre': genre,
-			});
+			ret['trackList'].push(await convertPathToTrack(foundPath, allSongs));
 		}
 	}
 	ret['numTracks'] = foundPaths.length;
@@ -121,16 +105,23 @@ async function getPlaylist(playlist) {
  * @return {Promise<void>}
  */
 async function removePlaylist(playlistName) {
-	const storagePath = await getStoragePath();
-	const playlistPath = path.join(storagePath, 'playlists', playlistName);
 	await makeDirIfNotExists('playlists');
-	// if (!(await fs.exists(playlistPath))) return;
-	// await fs.rm(playlistPath);
-	await fs.exists(playlistPath, async (e) => {
-		if (e) {
-			await fsPromises.rm(playlistPath);
-		}
-	});
+	try {
+		await fsPromises.rm(playlistName);
+	} catch (e) {
+
+	}
+}
+
+/**
+ * @memberOf fsAPI
+ * @name createPlaylist
+ * @description Initializes a new, empty playlist.
+ * @param playlistName The playlist to create
+ * @returns {Promise<void>}
+ */
+async function createPlaylist(playlistName) {
+	await writeToPlaylist(playlistName, { "meta": {}, "tags": []});
 }
 
 /**
@@ -168,9 +159,7 @@ async function writePlaylist(playlistName, playlist) {
  * @return {Promise<void>}
  */
 async function writeToPlaylist(playlistName, tagGroup) {
-	const storagePath = await getStoragePath();
-	const playlistPath = path.join(storagePath, 'playlists', playlistName);
-	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
+	const playlistObj = await getPlaylistObj(playlistName);
 	playlistObj['tags'].push(tagGroup);
 	await writePlaylist(playlistName, playlistObj);
 }
@@ -184,17 +173,33 @@ async function writeToPlaylist(playlistName, tagGroup) {
  * @return {Promise<void>}
  */
 async function removeFromPlaylist(playlistName, index) {
-	const storagePath = await getStoragePath();
-	const playlistPath = path.join(storagePath, 'playlists', playlistName);
-	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
+	const playlistObj = await getPlaylistObj(playlistName);
+	playlistObj['tags'].splice(index);
+	await writePlaylist(playlistName, playlistObj);
 
 }
 
+/**
+ *
+ * @param {string} playlistName The name of the playlist to get.
+ * @returns {Promise<any>}
+ */
+async function getPlaylistObj(playlistName) {
+	const storagePath = await getStoragePath();
+	const playlistPath = path.join(storagePath, 'playlists', playlistName);
+	try {
+		return JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
+
+	} catch (e) {
+		return { };
+	}
+}
 
 async function exportPlaylist(playlistName) {
 	// TODO: should just cp it if it exists
 }
 module.exports = {
+	createPlaylist,
 	getAllPlaylists,
 	writeToPlaylist,
 	removeFromPlaylist,
