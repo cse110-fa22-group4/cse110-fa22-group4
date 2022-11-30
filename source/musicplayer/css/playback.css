@@ -96,7 +96,7 @@
 
 #progressContainer {
   display: grid;
-  grid-template-columns: 4ch 60ch 4ch;
+  grid-template-columns: 6ch 60ch 6ch;
   align-items: center;
   justify-content: center;
 }

@@ -1,34 +1,12 @@
 const fs = require('fs');
+const fsPromises = fs.promises;
 const {ipcRenderer} = require('electron');
 const path = require('path');
 const {debugLog} = require('../general/genAPICalls');
 
 let storagePath = '';
 
-/**
- * @name throwErr
- * @memberOf none
- * @description Every fs async function requires
- * a callback, so this is it
- * @param err the error
- */
-function throwErr(err) {
-	if(err) throw err;
-}
 
-/**
- * @name throwErrOpen
- * @memberOf none
- * @description fs.open uses this
- * @param err the err
- * @fd the file descriptor
- */
-async function throwErrOpen(err, fd) {
-	if(err) 
-		throw Error("File opening doesn't work");
-	await fs.close(fd, throwErr);
-	
-}
 /**
  * @name fsInit
  * @memberOf fsInit
@@ -133,6 +111,14 @@ async function devClear(caller) {
  * @return {Promise<void>}
  */
 async function makeDirIfNotExists(folder) {
+	//WARNING: untested code
+	try {
+		await fsPromises.opendir(folder);
+	}
+	catch(e) {
+		await fsPromises.mkdir(folder, {recursive: false});
+	}
+	/*
 	await fs.opendir(folder, async (err, dir) => {
 		if (err) {
 			// await fs.mkdir(folder, {recursive: false}, (err) => {
@@ -142,9 +128,9 @@ async function makeDirIfNotExists(folder) {
 			// });
 
 			// throw an error if it occurs
-			await fs.mkdir(folder, {recursive: false}, throwErr);
 		}
 	});
+	*/
 }
 
 /**
@@ -213,6 +199,4 @@ module.exports = {
 	recursiveSearchAtPath,
 	setStoragePath,
 	getSourceFolder,
-	throwErr,
-	throwErrOpen,
 };
