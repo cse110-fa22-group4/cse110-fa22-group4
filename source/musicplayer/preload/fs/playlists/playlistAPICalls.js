@@ -249,6 +249,9 @@ async function exportPlaylist(playlistName) {
 	// TODO: should just cp it if it exists
 }
 module.exports = {
+	writePlaylistMeta,
+	removePlaylistMeta,
+	getPlaylistMeta,
 	createPlaylist,
 	getAllPlaylists,
 	writeToPlaylist,
