@@ -88,7 +88,7 @@ async function appendSong(newSong) {
 /**
  * @name appendSongs
  * @description Appends multiple songs to the songs.json file.
- * @param {object[]} newSongs An array of new songs to be appended.
+ * @param {object} newSongs An array of new songs to be appended.
  * @return {Promise<void>}
  */
 async function appendSongs(newSongs) {
