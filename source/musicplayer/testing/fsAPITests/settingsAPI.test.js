@@ -115,9 +115,9 @@ test('Test getSetting for user blank', async () => {
 });
 
 /**
- * Test writeToSetting
+ * Test writeToSetting for user 1
  */
-test('Test writeToSetting', async () => {
+test('Test writeToSetting for user 1', async () => {
   electronApp = await electron.launch({ args: ['../main/main.js'] })
   await reset_user1();
   await setStoragePath('users/user_1/data');
@@ -131,9 +131,41 @@ test('Test writeToSetting', async () => {
 });
 
 /**
- * Test deleteSetting
+ * Test writeToSetting for user 2
  */
-test('Test deleteSetting', async () => {
+ test('Test writeToSetting for user 2', async () => {
+  electronApp = await electron.launch({ args: ['../main/main.js'] })
+  await reset_user2();
+  await setStoragePath('users/user_2/data');
+
+  await writeToSetting("write", 2);
+  let settings = await getSettings();
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({"write":"2"}));
+  
+  await electronApp.close()
+
+});
+
+/**
+ * Test writeToSetting for user blank
+ */
+ test('Test writeToSetting for user blank', async () => {
+  electronApp = await electron.launch({ args: ['../main/main.js'] })
+  await reset_user_blank();
+  await setStoragePath('users/user_blank/data');
+
+  await writeToSetting("written", 5);
+  let settings = await getSettings();
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({"written":"5"}));
+  
+  await electronApp.close()
+
+});
+
+/**
+ * Test deleteSetting for user 1
+ */
+test('Test deleteSetting for user 1', async () => {
   electronApp = await electron.launch({ args: ['../main/main.js'] })
   await reset_user1();
   await setStoragePath('users/user_1/data');
@@ -147,9 +179,41 @@ test('Test deleteSetting', async () => {
 });
 
 /**
- * Test writeSettings
+ * Test deleteSetting for user 2
  */
- test('Test writeSettings', async () => {
+ test('Test deleteSetting for user 2', async () => {
+  electronApp = await electron.launch({ args: ['../main/main.js'] })
+  await reset_user2();
+  await setStoragePath('users/user_2/data');
+
+  await deleteSetting("testing");
+  let settings = await getSettings();
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({}));
+  
+  await electronApp.close()
+
+});
+
+/**
+ * Test deleteSetting for user blank
+ */
+ test('Test deleteSetting for user blank', async () => {
+  electronApp = await electron.launch({ args: ['../main/main.js'] })
+  await reset_user_blank();
+  await setStoragePath('users/user_blank/data');
+
+  await deleteSetting("testing");
+  let settings = await getSettings();
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({}));
+  
+  await electronApp.close()
+
+});
+
+/**
+ * Test writeSettings for user 1
+ */
+ test('Test writeSettings for user 1', async () => {
   electronApp = await electron.launch({ args: ['../main/main.js'] })
   await reset_user1();
   await setStoragePath('users/user_1/data');
@@ -157,6 +221,38 @@ test('Test deleteSetting', async () => {
   await writeSettings({"hello": "0","testing": "10"});
   let settings = await getSettings();
   expect(JSON.stringify(settings)).toBe(JSON.stringify({"hello": "0","testing": "10"}));
+  
+  await electronApp.close()
+
+});
+
+/**
+ * Test writeSettings for user 2
+ */
+ test('Test writeSettings for user 2', async () => {
+  electronApp = await electron.launch({ args: ['../main/main.js'] })
+  await reset_user2();
+  await setStoragePath('users/user_2/data');
+
+  await writeSettings({"hello": "2","testing": "3"});
+  let settings = await getSettings();
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({"hello": "2","testing": "3"}));
+  
+  await electronApp.close()
+
+});
+
+/**
+ * Test writeSettings for user blank
+ */
+ test('Test writeSettings for user blank', async () => {
+  electronApp = await electron.launch({ args: ['../main/main.js'] })
+  await reset_user_blank();
+  await setStoragePath('users/user_blank/data');
+
+  await writeSettings({"hello": "5","testing": "6"});
+  let settings = await getSettings();
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({"hello": "5","testing": "6"}));
   
   await electronApp.close()
 
