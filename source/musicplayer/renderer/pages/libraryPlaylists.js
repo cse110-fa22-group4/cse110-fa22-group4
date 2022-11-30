@@ -1,6 +1,6 @@
 window.addEventListener('libraryPlaylists-loaded', async () => {
 	await onLibraryPlaylistsLoad();
-    await domAPI.addEventListenerbyClassName('library-card', 'click', libraryPlaylistsExtended);
+	await domAPI.addEventListenerbyClassName('library-card', 'click', libraryPlaylistsExtended);
 });
 
 window.addEventListener('library-playlists-container-grid-clicked', async (args) => {
@@ -10,13 +10,13 @@ window.addEventListener('library-playlists-container-grid-clicked', async (args)
 /**
  * Initial LibraryPlaylists Load.
  */
- async function onLibraryPlaylistsLoad() {
-    await domAPI.setHTML('library-playlists-container', '');
-    const libraryPlaylists = await fsAPI.getAllPlaylists();
+async function onLibraryPlaylistsLoad() {
+	await domAPI.setHTML('library-playlists-container', '');
+	const libraryPlaylists = await fsAPI.getAllPlaylists();
 
 	// generate cards
 	let cardList = '';
-    for (let i = 0; i < libraryPlaylists.length; i++) {
+	for (let i = 0; i < libraryPlaylists.length; i++) {
 		const cardCover = '../img/artwork-default.png';
 		const card = `
     <div class="library-card" data-libtarget="${libraryPlaylists[i]}">
@@ -31,7 +31,7 @@ window.addEventListener('library-playlists-container-grid-clicked', async (args)
 		cardList += card;
 	}
 
-    // insert card list into container
+	// insert card list into container
 	await domAPI.setHTML('library-playlists-cards', cardList);
 }
 
@@ -39,7 +39,7 @@ window.addEventListener('library-playlists-container-grid-clicked', async (args)
  * @description Library > Playlists Extended Page. Generate Playlist Library View based on user selection.
  * @param {object} e The HTML element this event listener is attached to.
  */
- async function libraryPlaylistsExtended(e) {
+async function libraryPlaylistsExtended(e) {
 	const cardPlaylist = e.getAttribute('data-libtarget');
 
 	// Set grid rows
@@ -49,8 +49,8 @@ window.addEventListener('library-playlists-container-grid-clicked', async (args)
 	await domAPI.setHTML('header-subtitle', `${cardPlaylist}`);
 	await domAPI.setHTML('library-playlists-cards', '');
 
-    const currPlaylist = await fsAPI.getPlaylist(cardPlaylist);
-    const trackList = currPlaylist.trackList;
-    await domAPI.setHTML('library-playlists-container', '');
+	const currPlaylist = await fsAPI.getPlaylist(cardPlaylist);
+	const trackList = currPlaylist.trackList;
+	await domAPI.setHTML('library-playlists-container', '');
 	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings);
 }

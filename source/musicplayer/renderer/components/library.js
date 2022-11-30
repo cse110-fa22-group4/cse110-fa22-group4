@@ -10,7 +10,7 @@ window.addEventListener('library-container-grid-clicked', async (args) => {
  * Initial Library Load.
  */
 async function onLibraryLoad() {
-    await domAPI.setHTML('library-container', '');
-    const trackList = await fsAPI.getSongsTrackData();
+	await domAPI.setHTML('library-container', '');
+	const trackList = await fsAPI.getSongsTrackData();
 	await domAPI.addGrid('library-container', libraryHeaders, trackList, gridSettings);
 }

@@ -12,60 +12,62 @@ let lastCreatedPlaylist; // the last selected playlist
 // )
 
 window.addEventListener('playlistManager-loaded', async () => {
-    await updatePlaylistOptions();
-    await domAPI.addEventListener('btn-playlist-create', 'click', createUserPlaylist);
-    await domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
-    await domAPI.addEventListener('btn-playlist-remove-selection', 'click', removePlaylistSelection);
-    await domAPI.addEventListener('btn-playlist-delete', 'click', deletePlaylist);
+	await updatePlaylistOptions();
+	await domAPI.addEventListener('btn-playlist-create', 'click', createUserPlaylist);
+	await domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
+	await domAPI.addEventListener('btn-playlist-remove-selection', 'click', removePlaylistSelection);
+	await domAPI.addEventListener('btn-playlist-delete', 'click', deletePlaylist);
 });
 
 /**
  * Update menu options for playlists drop-down.
  */
 async function updatePlaylistOptions() {
-    let playlistMenuOptions = '<option value="" selected disabled>Choose a playlist...</option>';
-    const userPlaylists = await fsAPI.getAllPlaylists();
-    for (let i = 0; i < userPlaylists.length; i++) {
-        let option;
-        if (userPlaylists[i] == lastCreatedPlaylist) {
-            option = `<option id="playlist-option-${userPlaylists[i]}" value="${userPlaylists[i]}" selected>${userPlaylists[i]}</option>`;
-        } else {
-            option = `<option id="playlist-option-${userPlaylists[i]}" value="${userPlaylists[i]}">${userPlaylists[i]}</option>`;
-        }
-        playlistMenuOptions += option;
-    }
+	let playlistMenuOptions = '<option value="" selected disabled>Choose a playlist...</option>';
+	const userPlaylists = await fsAPI.getAllPlaylists();
+	for (let i = 0; i < userPlaylists.length; i++) {
+		let option;
+		if (userPlaylists[i] == lastCreatedPlaylist) {
+			option = `<option id="playlist-option-${userPlaylists[i]}" value="${userPlaylists[i]}" selected>
+                ${userPlaylists[i]}</option>`;
+		} else {
+			option = `<option id="playlist-option-${userPlaylists[i]}" value="${userPlaylists[i]}">
+                ${userPlaylists[i]}</option>`;
+		}
+		playlistMenuOptions += option;
+	}
 
-    // Insert playlist options into container
-    await domAPI.setHTML('select-playlist-add', playlistMenuOptions);
+	// Insert playlist options into container
+	await domAPI.setHTML('select-playlist-add', playlistMenuOptions);
 }
 
 /**
  * Add custom user playlist.
  */
 async function createUserPlaylist() {
-    // get custom playlist name
-    const playlistName = await domAPI.getProperty('input-playlist-create', 'value');
+	// get custom playlist name
+	const playlistName = await domAPI.getProperty('input-playlist-create', 'value');
 
-    if (playlistName.length !== 0) {
-        await domAPI.setProperty('input-playlist-create', 'value', '');
+	if (playlistName.length !== 0) {
+		await domAPI.setProperty('input-playlist-create', 'value', '');
 
-        // create new playlist object
-        // const currPlaylistObj = {
-        //     name: playlistName,
-        //     numTracks: 0,
-        //     trackList: []
-        // };
+		// create new playlist object
+		// const currPlaylistObj = {
+		//     name: playlistName,
+		//     numTracks: 0,
+		//     trackList: []
+		// };
 
-        await fsAPI.writePlaylist(playlistName, {});
+		await fsAPI.writePlaylist(playlistName, {});
 
-        // add custom playlist to menu option
-        lastCreatedPlaylist = playlistName;
-        await updatePlaylistOptions();
+		// add custom playlist to menu option
+		lastCreatedPlaylist = playlistName;
+		await updatePlaylistOptions();
 
-        alert(`'${playlistName}' added`);
-    } else {
-        alert('Enter a name for the playlist!');
-    }
+		alert(`'${playlistName}' added`);
+	} else {
+		alert('Enter a name for the playlist!');
+	}
 }
 
 /**
@@ -73,22 +75,22 @@ async function createUserPlaylist() {
  * @param {HTMLElement} element
  */
 async function addToPlaylist(element) {
-    const currPlaylist = await domAPI.getProperty('select-playlist-add', 'value');
-    if (currPlaylist == '') {
-        alert('Select a playlist to begin adding!');
-        return;
-    }
+	const currPlaylist = await domAPI.getProperty('select-playlist-add', 'value');
+	if (currPlaylist == '') {
+		alert('Select a playlist to begin adding!');
+		return;
+	}
 
-    const tracks = await domAPI.getSelectedTracks();
-    if (tracks.length == 0) {
-        alert('Select tracks to begin adding!');
-        return;
-    }
+	const tracks = await domAPI.getSelectedTracks();
+	if (tracks.length == 0) {
+		alert('Select tracks to begin adding!');
+		return;
+	}
 
-    // TODO: add tracks to playlists
-    // await fsAPI.writePlaylist(currPlaylist, (currPlaylist,{name: currPlaylist, numTracks:2, trackList: tracks}))
-    
-    alert('Tracks added to playlist!');
+	// TODO: add tracks to playlists
+	// await fsAPI.writePlaylist(currPlaylist, (currPlaylist,{name: currPlaylist, numTracks:2, trackList: tracks}))
+
+	alert('Tracks added to playlist!');
 }
 
 /**
@@ -96,8 +98,8 @@ async function addToPlaylist(element) {
  * @param {HTMLElement} element
  */
 async function removePlaylistSelection(element) {
-    await domAPI.setHTML('selected-playlists-container', '');
-    // libraryClick();
+	await domAPI.setHTML('selected-playlists-container', '');
+	// libraryClick();
 }
 
 /**
@@ -105,13 +107,13 @@ async function removePlaylistSelection(element) {
  * @param {HTMLElement} element
  */
 async function deletePlaylist(element) {
-    const currPlaylist = await domAPI.getProperty('select-playlist-add', 'value');
-    if (currPlaylist == '') {
-        alert('Select a playlist to delete!');
-        return;
-    }
+	const currPlaylist = await domAPI.getProperty('select-playlist-add', 'value');
+	if (currPlaylist == '') {
+		alert('Select a playlist to delete!');
+		return;
+	}
 
-    await fsAPI.removePlaylist(currPlaylist);
-    await updatePlaylistOptions();
-    await updatePlaylistOptions();
+	await fsAPI.removePlaylist(currPlaylist);
+	await updatePlaylistOptions();
+	await updatePlaylistOptions();
 }

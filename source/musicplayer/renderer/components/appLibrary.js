@@ -13,19 +13,19 @@ const gridSettings = {
 // Library Headers
 const libraryHeaders = [
 	// {hidden: false, sort: {enabled: true}, name: '#'},           - may not be needed as category
-	// {hidden: false, sort: {enabled: true}, name: 'playlists'},   - may not be needed as category 
+	// {hidden: false, sort: {enabled: true}, name: 'playlists'},   - may not be needed as category
 
 	{hidden: false, sort: {enabled: true}, name: 'title'},
 	{hidden: false, sort: {enabled: true}, name: 'artist'},
 	{hidden: false, sort: {enabled: true}, name: 'album'},
 	{hidden: false, sort: {enabled: true}, name: 'year'},
-	{hidden: false, sort: {enabled: true}, name: 'duration', 
-        formatter: (cell) => `${new Date(1000 * cell).toISOString().substr(11, 8).replace(/^[0:]+/, "")}`},
-        // https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
+	{hidden: false, sort: {enabled: true}, name: 'duration',
+		formatter: (cell) => `${new Date(1000 * cell).toISOString().substr(11, 8).replace(/^[0:]+/, '')}`},
+	// https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
 	{hidden: false, sort: {enabled: true}, name: 'genre'},
 	{hidden: false, sort: {enabled: true}, name: 'tags'},
 
-    // hidden categories
+	// hidden categories
 	{hidden: true, sort: {enabled: false}, name: 'artwork'},
 	{hidden: true, sort: {enabled: false}, name: 'path'},
 ];
@@ -236,7 +236,7 @@ const libraryCatalog = [
 
 ];
 
-genAPI.publishGlobal(libraryCatalog,'libraryCatalog');
+genAPI.publishGlobal(libraryCatalog, 'libraryCatalog');
 
 // const libraryCatalog2 = [
 

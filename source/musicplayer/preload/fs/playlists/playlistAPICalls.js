@@ -5,7 +5,7 @@ const {getStoragePath, makeDirIfNotExists,
 	throwErr, throwErrOpen} = require('../fsAPICalls');
 const {getSongs} = require('../songs/songsAPICalls');
 const {Grid} = require('gridjs');
-const {debugLog} = require("../../general/genAPICalls");
+const {debugLog} = require('../../general/genAPICalls');
 
 /**
  * @name getAllPlaylists
@@ -18,10 +18,10 @@ async function getAllPlaylists() {
 	const playlistPath = path.join(storagePath, 'playlists');
 
 	await makeDirIfNotExists('playlists');
-	//Sorry, but with readdir, the
-	//filenames would've gone out of scope in the callback
-	//As a result, we can't return them
-	return await fsPromises.readdir(playlistPath)
+	// Sorry, but with readdir, the
+	// filenames would've gone out of scope in the callback
+	// As a result, we can't return them
+	return await fsPromises.readdir(playlistPath);
 }
 
 /**
@@ -40,7 +40,7 @@ async function getPlaylist(playlist) {
 	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
 	const allSongs = await getSongs();
 	const foundPaths = [];
-	const ret = { "name": playlist, "trackList": [] };
+	const ret = {'name': playlist, 'trackList': []};
 
 	for (const tagGroup in playlistObj['tags']) {
 		await debugLog(playlistObj['tags'], 'playlists-test');
@@ -88,10 +88,10 @@ async function removePlaylist(playlistName) {
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists', playlistName);
 	await makeDirIfNotExists('playlists');
-	//if (!(await fs.exists(playlistPath))) return;
-	//await fs.rm(playlistPath);
-	await fs.exists(playlistPath, async(e) => {
-		if(e) {
+	// if (!(await fs.exists(playlistPath))) return;
+	// await fs.rm(playlistPath);
+	await fs.exists(playlistPath, async (e) => {
+		if (e) {
 			await fsPromises.rm(playlistPath);
 		}
 	});
@@ -120,7 +120,7 @@ async function writePlaylist(playlistName, playlist) {
  * @param {string} playlistName The name of the playlist to write to.
  * @param {string} tag The tag to add.
  * @param {string} val The value to search for.
- * @returns {Promise<void>}
+ * @return {Promise<void>}
  */
 async function writeToPlaylist(playlistName, tag, val) {
 	const storagePath = await getStoragePath();
@@ -140,7 +140,7 @@ async function writeToPlaylist(playlistName, tag, val) {
  * @param {string} playlistName The name of the playlist.
  * @param {string} tag The tag to use.
  * @param {string} val The value to remove.
- * @returns {Promise<void>}
+ * @return {Promise<void>}
  */
 async function removeFromPlaylist(playlistName, tag, val) {
 	const storagePath = await getStoragePath();
@@ -153,9 +153,8 @@ async function removeFromPlaylist(playlistName, tag, val) {
 }
 
 
-
 async function exportPlaylist(playlistName) {
-	//TODO: should just cp it if it exists
+	// TODO: should just cp it if it exists
 }
 module.exports = {
 	getAllPlaylists,
