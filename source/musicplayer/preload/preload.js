@@ -33,6 +33,7 @@ const {
 	writeToPlaylist, removeFromPlaylist,
 	createPlaylist, writePlaylistMeta,
 	removePlaylistMeta, getPlaylistMeta,
+	getPlaylistObj,
 } = require('./fs/playlists/playlistAPICalls');
 
 const {
@@ -163,6 +164,7 @@ contextBridge.exposeInMainWorld('fsAPI', {
 	writeStats: writeStats,
 	writeToStat: writeToStat,
 	deleteStat: deleteStat,
+	getPlaylistObj: getPlaylistObj,
 	getAllPlaylists: getAllPlaylists,
 	getPlaylist: getPlaylist,
 	removePlaylist: removePlaylist,

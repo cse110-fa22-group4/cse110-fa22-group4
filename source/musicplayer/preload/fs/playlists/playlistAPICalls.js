@@ -230,7 +230,9 @@ async function removeFromPlaylist(playlistName, index) {
 }
 
 /**
- *
+ * @memberOf fsAPI
+ * @name getPlaylistObj
+ * @description Gets the actual playlist object. Should only be used for internal functions or debugging.
  * @param {string} playlistName The name of the playlist to get.
  * @returns {Promise<any>}
  */
@@ -248,7 +250,9 @@ async function getPlaylistObj(playlistName) {
 async function exportPlaylist(playlistName) {
 	// TODO: should just cp it if it exists
 }
+
 module.exports = {
+	getPlaylistObj,
 	writePlaylistMeta,
 	removePlaylistMeta,
 	getPlaylistMeta,
