@@ -5,42 +5,9 @@ const path = require('path');
 const {
   reset_all, reset_user1, reset_user2, reset_user_blank,
 } = require('../fsAPITesting/fsAPITester');
-const { setStoragePath, throwErr, throwErrOpen, getStoragePath, getSourceFolder, recursiveSearchAtPath, getSRCString } = require('../../preload/fs/fsAPICalls');
+const { setStoragePath, getStoragePath, getSourceFolder, recursiveSearchAtPath, getSRCString } = require('../../preload/fs/fsAPICalls');
 
 let electronApp;
-
-//throwErr test
-test('throwErr Test', async () => {
-  electronApp = await electron.launch({ args: ['../main/main.js'] })
-
-  try {
-    throwErr('test-error');
-    // no error, fail test
-    expect(1).toBe(2);
-  } catch(err) {
-    // error caught
-    expect(err).toBe('test-error');
-  }
-
-  await electronApp.close()
-}); 
-
-//throwErrOpen test
-test('throwErrOpen Test', async () => {
-  electronApp = await electron.launch({ args: ['../main/main.js'] })
-
-  // not sure how to test this one
-  /*
-  try {
-    throwErrOpen('', 9999919);
-    // no error, fail test
-    //expect(1).toBe(2);
-  } catch(err) {
-    // error caught
-  }*/
-
-  await electronApp.close()
-}); 
 
 //fsInit test
 test('fsInit Test', async () => {

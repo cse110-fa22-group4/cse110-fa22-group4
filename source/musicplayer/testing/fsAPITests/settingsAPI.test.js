@@ -156,7 +156,7 @@ test('Test writeToSetting for user 1', async () => {
 
   await writeToSetting("written", 5);
   let settings = await getSettings();
-  expect(JSON.stringify(settings)).toBe(JSON.stringify({"write":"5"}));
+  expect(JSON.stringify(settings)).toBe(JSON.stringify({"written":"5"}));
   
   await electronApp.close()
 

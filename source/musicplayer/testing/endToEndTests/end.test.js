@@ -17,7 +17,7 @@ test('load', async () => {
   
   const window = await electronApp.firstWindow();
   
-  console.log(window);
+  console.log(await window.title());
 
   await electronApp.close()
 
