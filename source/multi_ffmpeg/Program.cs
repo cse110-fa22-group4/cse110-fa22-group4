@@ -122,6 +122,7 @@ Console.Out.WriteLine("Input file: " + inputFilePath + ",\nOutput file: " + outp
 var fs = File.Open(inputFilePath, FileMode.Open);
 var buf = new byte[fs.Length];
 fs.Read(buf, 0, buf.Length);
+fs.Close();
 var files = (new string(Encoding.UTF8.GetChars(buf))).Split('\n');
 for (int i = 0; i < files.Length; i++)
 {
@@ -210,8 +211,6 @@ async Task<string> getFileData(string filePath)
     });
 }
 
-
-
 try
 {
     timer.Start();
@@ -238,7 +237,9 @@ try
     Console.Out.WriteLine("Milliseconds per file: " + timer.ElapsedMilliseconds / (double)(files.Length - 1));
     Console.Out.WriteLine("Total files parsed: " + files.Length);
     var text = '{' + string.Join(",", result.Where(s => !s.Equals(""))) + '}';
-
+    var writer = new StreamWriter(outputFilePath);
+    writer.Write(text);
+    writer.Close();
     if (clipboard) ClipboardService.SetText(text);
 
     return 1;

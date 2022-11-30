@@ -80,7 +80,7 @@ async function getMultiCMD(paths) {
 	let fileContents = '';
 	for (const songPath in paths) {
 		if (!songPath) continue;
-		fileContents += (songPath + '\n');
+		fileContents += (paths[songPath] + '\n');
 	}
 	await fs.writeFile(tempPath, fileContents, (err) => {
 		if (err) {

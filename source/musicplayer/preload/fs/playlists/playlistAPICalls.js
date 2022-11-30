@@ -6,6 +6,7 @@ const {getStoragePath, makeDirIfNotExists,
 const {getSongs} = require('../songs/songsAPICalls');
 const {Grid} = require('gridjs');
 const {debugLog} = require("../../general/genAPICalls");
+
 /**
  * @name getAllPlaylists
  * @description Gets an array that contains the names of every playlist.
