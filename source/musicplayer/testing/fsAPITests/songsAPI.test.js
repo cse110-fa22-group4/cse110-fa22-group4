@@ -152,9 +152,9 @@ test('appendSong for user blank', async () => {
   let songs = await getSongs();
 
   expect(JSON.stringify(songs)).toBe(JSON.stringify({
-    "/Desktop/Artist2 - Title2.mp3": {
-      "title": "Title2",
-      "artist": "Artist2"
+    "/Desktop/Artist3 - Title3.mp3": {
+      "title": "Title3",
+      "artist": "Artist3"
     }
   }));
 
@@ -193,6 +193,10 @@ test('appendSongs for user 1', async () => {
 
   expect(JSON.stringify(songs)).toBe(JSON.stringify(
     {
+      "/Desktop/Led Zeppelin - Stairway to Heaven.mp3": {
+        "title": "Stairway to Heaven",
+        "artist": "Led Zeppelin"
+      },
       "/cse110-fa22-group4/source/users/user_1/songs/Tobu/Tobu - Hope [NCS Release].mp3": {
         "title": "Hope",
         "artist": "Tobu"
@@ -208,10 +212,6 @@ test('appendSongs for user 1', async () => {
       "/Desktop/Artist - Title.mp3": {
         "title": "Title",
         "artist": "Artist"
-      },
-      "/Desktop/Led Zeppelin - Stairway to Heaven.mp3": {
-        "title": "Stairway to Heaven",
-        "artist": "Led Zeppelin"
       }
     }
   ));
@@ -244,6 +244,7 @@ test('appendSongs for user 1', async () => {
   await appendSongs(songlist)
 
   let songs = await getSongs();
+  console.log(songs);
 
   expect(JSON.stringify(songs)).toBe(JSON.stringify(
     {
