@@ -38,7 +38,8 @@ async function getPlaylist(playlist) {
 
 	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
 	const allSongs = await getSongs();
-	const ret = [];
+	const foundPaths = [];
+	const ret = { "name": playlist, "trackList": [] };
 
 	for (const tagGroup in playlistObj['tags']) {
 		await debugLog(playlistObj['tags'], 'playlists-test');
@@ -47,15 +48,30 @@ async function getPlaylist(playlist) {
 			for (const songPath in allSongs) {
 				const song = allSongs[songPath]['format'];
 
-				if (ret.includes(songPath)) continue;
-				if (tagGroup in song &&song[tagGroup].includes(tag)) {
-					ret.push(songPath);
-				} else if ('tags' in song && tagGroup in song['tags'] && song['tags'][tagGroup].includes(tag)) {
-					ret.push(songPath);
-				}
+				if (foundPaths.includes(songPath)) continue;
+				if (!(tagGroup in song &&song[tagGroup].includes(tag) ||
+					'tags' in song && tagGroup in song['tags'] && song['tags'][tagGroup].includes(tag))) continue;
+
+				foundPaths.push(songPath);
+				const title = 'tags' in song && 'title' in song['tags'] ? song['tags']['title'] : '';
+				const artist = 'tags' in song && 'artist' in song['tags'] ? song['tags']['artist'] : '';
+				const album = 'tags' in song && 'album' in song['tags'] ? song['tags']['album'] : '';
+				const year = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
+				const duration = 'duration' in song ? song['duration']: '';
+				const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
+				ret['trackList'].push( {
+					'title': title,
+					'path': songPath,
+					'artist': artist,
+					'album': album,
+					'year': year,
+					'duration': duration,
+					'genre': genre,
+				});
 			}
 		}
 	}
+	ret['numTracks'] = foundPaths.length;
 
 	return ret;
 }
