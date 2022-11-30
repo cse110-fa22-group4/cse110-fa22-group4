@@ -12,7 +12,6 @@
 
 ## High Points
 * Working unit tests for the settings file is been finalized
-* Having trouble connecting between the frontend and backend
 * Documentation portion have been finished and it automatically updates website.
 * Playlists and rollback bugs have been fixed
 * UI persistance setting have been implemented
