@@ -152,27 +152,7 @@ async function removeFromPlaylist(playlistName, tag, val) {
 	}
 }
 
-/**
- */
-async function playlistSearch(keyword) {
-	const gridSearcher = new Grid({
-		sort: true,
-		columns: ['names'],
-		data: [await getAllPlaylists()],
-		search: {
-			enabled: true,
-			selector: (cell, rowIndex, cellIndex) => {
-				if (cellIndex === 1) console.log(cell);
-				return cell;
-			},
-			keyword: keyword,
-		},
-	});
 
-	//TODO: how do we iterate through the data?
-
-
-}
 
 async function exportPlaylist(playlistName) {
 	//TODO: should just cp it if it exists

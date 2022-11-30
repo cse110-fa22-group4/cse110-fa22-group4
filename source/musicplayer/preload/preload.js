@@ -36,6 +36,7 @@ const {
 const {
 	appendSong, appendSongs, cullShortAudio,
 	getSongs, removeSong, writeSongs,
+	getSongsTrackData,
 } = require('./fs/songs/songsAPICalls');
 
 const {
@@ -151,6 +152,7 @@ contextBridge.exposeInMainWorld('fsAPI', {
 	deleteSetting: deleteSetting,
 	getSetting: getSetting,
 	getSongs: getSongs,
+	getSongsTrackData: getSongsTrackData,
 	writeSongs: writeSongs,
 	appendSongs: appendSongs,
 	appendSong: appendSong,

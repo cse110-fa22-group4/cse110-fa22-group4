@@ -23,16 +23,37 @@ async function getSongs() {
 	return JSON.parse(songData);
 }
 
-/*
-async function test () {
-	await setStoragePath('users/user_reset/user_1/data');
-	let songs = await getSongs();
-	await setStoragePath('users/user_1/data');
-	await writeSongs(songs);
-	await setStoragePath('users/user_1/data');
-	let so = await getSongs();
+/**
+ * @name getSongsTrackData
+ * @memberOf fsAPI
+ * @description Gets all songs in the user's library, in track data format.
+ * @returns {Promise<object>} An array of track data.
+ */
+async function getSongsTrackData() {
+	const songs = await getSongs();
+	const ret = [];
+	for (const songPath in songs) {
+		const song = songs[songPath]['format'];
+		const title = 'tags' in song && 'title' in song['tags'] ? song['tags']['title'] : '';
+		const artist = 'tags' in song && 'artist' in song['tags'] ? song['tags']['artist'] : '';
+		const album = 'tags' in song && 'album' in song['tags'] ? song['tags']['album'] : '';
+		const year = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
+		const duration = 'duration' in song ? song['duration']: '';
+		const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
+		ret.push( {
+			'title': title,
+			'path': songPath,
+			'artist': artist,
+			'album': album,
+			'year': year,
+			'duration': duration,
+			'genre': genre,
+		});
+	}
+	return ret;
 }
-*/
+
+
 
 /**
  * @name writeSongs
@@ -45,11 +66,7 @@ async function test () {
 async function writeSongs(songs) {
 	const storagePath = await getStoragePath();
 	const songPath = path.join(storagePath, 'songs.json');
-	//if (!(await fs.exists(songPath))) {
-	await fs.exists(songPath, async (e) => {
-		if(!e)
-			await fsPromises.close(await fs.open(songPath, 'w'));
-	});
+
 	await fsPromises.writeFile(songPath, JSON.stringify(songs));
 }
 
@@ -128,6 +145,7 @@ async function songsSearch() {
 
 module.exports = {
 	getSongs,
+	getSongsTrackData,
 	writeSongs,
 	appendSong,
 	appendSongs,
