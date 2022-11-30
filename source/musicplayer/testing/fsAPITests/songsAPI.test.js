@@ -171,32 +171,26 @@ test('appendSongs for user 1', async () => {
 
   await setStoragePath('users/user_1/data');
 
+
+  let songObj = {};
+
   let info1 = {}
   info1.title = "Title";
   info1.artist = "Artist";
-  let song1 = {};
-  song1["/Desktop/Artist - Title.mp3"] = info1;
+  songObj["/Desktop/Artist - Title.mp3"] = info1;
 
   let info2 = {}
   info2.title = "Stairway to Heaven";
   info2.artist = "Led Zeppelin";
-  let song2 = {};
-  song2["/Desktop/Led Zeppelin - Stairway to Heaven.mp3"] = info2;
-
-  let songlist = [];
-  songlist.push(song1);
-  songlist.push(song2);
-
-  await appendSongs(songlist)
+  songObj["/Desktop/Led Zeppelin - Stairway to Heaven.mp3"] = info2;
+  
+  await appendSongs(songObj);
 
   let songs = await getSongs();
 
   expect(JSON.stringify(songs)).toBe(JSON.stringify(
     {
-      "/Desktop/Led Zeppelin - Stairway to Heaven.mp3": {
-        "title": "Stairway to Heaven",
-        "artist": "Led Zeppelin"
-      },
+      
       "/cse110-fa22-group4/source/users/user_1/songs/Tobu/Tobu - Hope [NCS Release].mp3": {
         "title": "Hope",
         "artist": "Tobu"
@@ -212,6 +206,10 @@ test('appendSongs for user 1', async () => {
       "/Desktop/Artist - Title.mp3": {
         "title": "Title",
         "artist": "Artist"
+      },
+      "/Desktop/Led Zeppelin - Stairway to Heaven.mp3": {
+        "title": "Stairway to Heaven",
+        "artist": "Led Zeppelin"
       }
     }
   ));
@@ -225,26 +223,22 @@ test('appendSongs for user 1', async () => {
 
   await setStoragePath('users/user_2/data');
 
+  let songObj = {};
+
   let info1 = {}
   info1.title = "Title2";
   info1.artist = "Artist2";
-  let song1 = {};
-  song1["/Desktop/Artist2 - Title2.mp3"] = info1;
-
+  songObj["/Desktop/Artist2 - Title2.mp3"] = info1;
+  
   let info2 = {}
   info2.title = "Back in Black";
   info2.artist = "ACDC";
-  let song2 = {};
-  song2["/Desktop/ACDC - Back in Black.mp3"] = info2;
+  songObj["/Desktop/ACDC - Back in Black.mp3"] = info2;
+  
+  await appendSongs(songObj)
 
-  let songlist = [];
-  songlist.push(song1);
-  songlist.push(song2);
-
-  await appendSongs(songlist)
 
   let songs = await getSongs();
-  console.log(songs);
 
   expect(JSON.stringify(songs)).toBe(JSON.stringify(
     {
@@ -268,23 +262,19 @@ test('appendSongs for user 1', async () => {
   
     await setStoragePath('users/user_blank/data');
   
+    let songObj = {};
+
     let info1 = {}
     info1.title = "Title3";
     info1.artist = "Artist3";
-    let song1 = {};
-    song1["/Desktop/Artist3 - Title3.mp3"] = info1;
+    songObj["/Desktop/Artist3 - Title3.mp3"] = info1;
   
     let info2 = {}
     info2.title = "Welcome to the Jungle";
     info2.artist = "Guns N' Roses";
-    let song2 = {};
-    song2["/Desktop/Guns N' Roses - Welcome to the Jungle.mp3"] = info2;
+    songObj["/Desktop/Guns N' Roses - Welcome to the Jungle.mp3"] = info2;
   
-    let songlist = [];
-    songlist.push(song1);
-    songlist.push(song2);
-  
-    await appendSongs(songlist)
+    await appendSongs(songObj);
   
     let songs = await getSongs();
   
