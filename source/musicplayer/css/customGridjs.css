@@ -70,6 +70,7 @@ text-align: left;
   color: var(--theme-primary);
   padding-top: 5px;
   text-transform: uppercase;
+  vertical-align: top;
 }
 .gridjs-td {
   padding-top:10px;
@@ -77,6 +78,14 @@ text-align: left;
   text-overflow: ellipsis;
 }
 
+button.gridQueueButton {
+    display: flex;
+    background-color: var(--mid);
+    color: var(--light);
+    margin: 0 auto;
+    border-radius: 2.5px;
+}
 
-.gridjs-tbody {
+button.gridQueueButton:hover {
+    background-color: var(--mid-dark);
 }

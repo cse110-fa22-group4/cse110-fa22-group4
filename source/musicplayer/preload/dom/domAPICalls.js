@@ -102,6 +102,23 @@ async function addGrid(domID, columns, data, params = {}) {
         },
     );
 
+    // enable row buttons for queue
+    columns.push(
+        {
+            name: 'Queue',
+            formatter: (cell, row) => {
+                return h('button', {
+                    className: 'gridQueueButton',
+                    onClick: () => {
+                        // function for row queue click
+                        // TODO: add track to queue somehow
+                        alert(`${row.cells[9].data}`)
+                    }
+                }, '+');
+            }
+        }
+    )
+
     // construct default grid and render to page
     const grid = new Grid({
         columns: columns,
