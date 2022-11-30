@@ -166,6 +166,57 @@ async function writeToPlaylist(playlistName, tagGroup) {
 
 /**
  * @memberOf fsAPI
+ * @name writePlaylistMeta
+ * @description Writes metadata to a playlist, such as creator or date created.
+ * @example
+ * await writePlaylistMeta('myPlaylist', 'creator', 'user1');
+ * @param playlistName The name of the playlist
+ * @param metaTag The meta tag to add
+ * @param metaValue The value to set.
+ * @returns {Promise<void>}
+ */
+async function writePlaylistMeta(playlistName, metaTag, metaValue) {
+	const playlist = await getPlaylistObj(playlistName);
+	playlist['meta'][metaTag] = metaValue;
+	await writePlaylist(playlistName, playlist);
+}
+
+/**
+ * @memberOf fsAPI
+ * @name removePlaylistMeta
+ * @description Removes a metadata tag from a playlist.
+ * @example
+ * await removePlaylistMeta('myPlaylist', 'creator');
+ * @param playlistName The name of the playlist
+ * @param metaTag The tag to remove from the metadata
+ * @returns {Promise<void>}
+ */
+async function removePlaylistMeta(playlistName, metaTag) {
+	const playlist = await getPlaylistObj(playlistName);
+	if (!(metaTag in playlist['meta'])) return;
+	delete playlist['meta'][metaTag];
+	await writePlaylist(playlistName, playlist);
+}
+
+/**
+ * @memberOf fsAPI
+ * @name getPlaylistMeta
+ * @description Gets the metadata of a playlist as an object.
+ * @example
+ * const playlistMeta = await getPlaylistMeta('myPlaylist');
+ * // playlistMeta = {
+ * //	'creator': 'user1',
+ * //	'date': '523470985',
+ * //}
+ * @param playlistName The name of the playlist.
+ * @returns {Promise<object>} The metadata of the playlist.
+ */
+async function getPlaylistMeta(playlistName) {
+	return (await getPlaylistObj(playlistName))['meta'];
+}
+
+/**
+ * @memberOf fsAPI
  * @name writeToPlaylist
  * @description Removes a value from a tag for playlist creation.
  * @param {string} playlistName The name of the playlist.
@@ -176,7 +227,6 @@ async function removeFromPlaylist(playlistName, index) {
 	const playlistObj = await getPlaylistObj(playlistName);
 	playlistObj['tags'].splice(index);
 	await writePlaylist(playlistName, playlistObj);
-
 }
 
 /**
