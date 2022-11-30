@@ -11,9 +11,12 @@
 
 
 ## High Points
-* Working unit tests for the settings file
+* Working unit tests for the settings file is been finalized
 * Having trouble connecting between the frontend and backend
 * Documentation portion have been finished and it automatically updates website.
+* Playlists and rollback bugs have been fixed
+* UI persistance setting have been implemented
+* Every pipeline has been finalized, working on automatical installation
 
 ## Links to other Page
 ### [Sprint Meeting](112922-sprint-meeting.md)
