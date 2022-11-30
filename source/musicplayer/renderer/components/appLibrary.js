@@ -21,6 +21,7 @@ const libraryHeaders = [
 	{hidden: false, sort: {enabled: true}, name: 'year'},
 	{hidden: false, sort: {enabled: true}, name: 'duration', 
         formatter: (cell) => `${new Date(1000 * cell).toISOString().substr(11, 8).replace(/^[0:]+/, "")}`},
+        // https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
 	{hidden: false, sort: {enabled: true}, name: 'genre'},
 	{hidden: false, sort: {enabled: true}, name: 'tags'},
 
@@ -28,6 +29,7 @@ const libraryHeaders = [
 	{hidden: true, sort: {enabled: false}, name: 'artwork'},
 	{hidden: true, sort: {enabled: false}, name: 'path'},
 ];
+
 
 // Sample Catalog
 

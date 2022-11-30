@@ -40,6 +40,18 @@
     margin-bottom: 10px;
 }
 
+#playlists-add-selected-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#selected-playlists-title {
+    display: flex;
+    align-items: end;
+    margin-bottom: 10px;
+}
+
 #btn-playlist-create,
 #btn-playlist-add,
 #btn-playlist-delete,

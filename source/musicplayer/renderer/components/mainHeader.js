@@ -8,7 +8,6 @@ window.addEventListener('mainHeader-loaded', async () => {
     await domAPI.addEventListener('btn-addQueue', 'click', addToQueue);
     await domAPI.addEventListener('btn-playlist', 'click', managePlaylistData);
     await domAPI.addEventListener('btn-meta', 'click', editMetaData);
-    await domAPI.addEventListener('btn-file', 'change', getFile);
 });
 
 /**
@@ -31,6 +30,8 @@ async function playlistManagerOn() {
  */
  async function addToQueue(element) {
 	alert('*FUNCTION UNDER CONTRUCTION*');
+    let someTracks = await domAPI.getSelectedTracks();
+    console.log(someTracks);
 }
 
 /**
@@ -41,11 +42,13 @@ async function managePlaylistData(element) {
     if (!playlistManagerIsExtended && !metaEditorIsExtended) {
         await domAPI.loadPage('editor-container', 'components/playlistManager.html');
         await playlistManagerOn();
+        await domAPI.setAttribute('editor-container', 'data-editortype', 'playlists')
         playlistManagerIsExtended = true;
         metaEditorIsExtended = false;
         libraryClick();
     } else if (playlistManagerIsExtended && !metaEditorIsExtended) {
         await playlistManagerOff();
+        await domAPI.setAttribute('editor-container', 'data-editortype', '')
         playlistManagerIsExtended = false;
         metaEditorIsExtended = false;
         if (currentPage.library) {
@@ -53,6 +56,7 @@ async function managePlaylistData(element) {
         }
     } else if (!playlistManagerIsExtended && metaEditorIsExtended) {
         await domAPI.loadPage('editor-container', 'components/playlistManager.html');
+        await domAPI.setAttribute('editor-container', 'data-editortype', 'playlists')
         playlistManagerIsExtended = true;
         metaEditorIsExtended = false;
         libraryClick();
@@ -66,12 +70,14 @@ async function managePlaylistData(element) {
 async function editMetaData(element) {
     if (!metaEditorIsExtended && !playlistManagerIsExtended) {
         await domAPI.loadPage('editor-container', 'components/metaEditor.html');
+        await domAPI.setAttribute('editor-container', 'data-editortype', 'metadata')
         await playlistManagerOn();
         metaEditorIsExtended = true;
         playlistManagerIsExtended = false;
         libraryClick();
     } else if (metaEditorIsExtended && !playlistManagerIsExtended) {
         await playlistManagerOff();
+        await domAPI.setAttribute('editor-container', 'data-editortype', '')
         metaEditorIsExtended = false;
         playlistManagerIsExtended = false;
         if (currentPage.library) {
@@ -79,6 +85,7 @@ async function editMetaData(element) {
         }
     } else if (!metaEditorIsExtended && playlistManagerIsExtended) {
         await domAPI.loadPage('editor-container', 'components/metaEditor.html');
+        await domAPI.setAttribute('editor-container', 'data-editortype', 'metadata')
         metaEditorIsExtended = true;
         playlistManagerIsExtended = false;
         libraryClick();
