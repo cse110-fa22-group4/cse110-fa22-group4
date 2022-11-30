@@ -51,8 +51,7 @@ async function rescanClick(element) {
 	// things I have done to make this work - changed scannedSongs from const to let,
 	// create an array of ffmpegAPI.ffmpegRead(path) and evaluate them using Promise.allSettled
 	for (const path of settings) {
-		const paths = await fsAPI.recursiveSearchAtPath(path);
-		const obj = await ffmpegAPI.useMultiFFmpeg(paths);
+		const obj = await ffmpegAPI.useMultiFFmpeg(path);
 		Object.assign(scannedSongs, obj);
 	}
 	console.log(scannedSongs);
