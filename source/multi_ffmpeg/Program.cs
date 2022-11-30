@@ -114,6 +114,9 @@ if (inputFilePath.Equals(string.Empty) || outputFilePath.Equals(string.Empty) ||
         (outputFilePath.Equals(string.Empty) ? "Output File " : "") + 
         (ffprobePath.Equals(string.Empty)    ? "Probe Path " : ""));
     return -1;
+} else {
+Console.Out.WriteLine("Input file: " + inputFilePath + ",\nOutput file: " + outputFilePath +
+    ",\nProbe path: " + ffprobePath);
 }
 
 var fs = File.Open(inputFilePath, FileMode.Open);

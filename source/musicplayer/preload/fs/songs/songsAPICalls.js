@@ -15,14 +15,12 @@ async function getSongs() {
 	//if (!(await fs.exists(songPath))) {
 	await fs.exists(songPath, async (e) => {
 		if(!e) {
-				await fsPromises.close(await fsPromises.open(songPath, 'w'));
-				await fsPromises.writeFile(songPath, '{ }');
+			await fsPromises.close(await fsPromises.open(songPath, 'w'));
+			await fsPromises.writeFile(songPath, '{ }');
 		}
 	});
 	let songData = await fsPromises.readFile(songPath, 'utf8');
 	return JSON.parse(songData);
-
-
 }
 
 /*
@@ -33,7 +31,6 @@ async function test () {
 	await writeSongs(songs);
 	await setStoragePath('users/user_1/data');
 	let so = await getSongs();
-
 }
 */
 

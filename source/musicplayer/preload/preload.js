@@ -30,6 +30,7 @@ const {
 const {
 	getAllPlaylists, getPlaylist,
 	removePlaylist, writePlaylist,
+	writeToPlaylist,
 } = require('./fs/playlists/playlistAPICalls');
 
 const {
@@ -130,7 +131,7 @@ contextBridge.exposeInMainWorld('domAPI', {
 contextBridge.exposeInMainWorld('ffmpegAPI', {
 	readMetadata: ffmpegRead,
 	writeMetadata: ffmpegWrite,
-	setBinpath: setPath,
+	setBinPath: setPath,
 	playSong: playSong,
 	stopSong: stopSong,
 	pauseSong: pauseSong,
@@ -158,11 +159,12 @@ contextBridge.exposeInMainWorld('fsAPI', {
 	writeStats: writeStats,
 	writeToStat: writeToStat,
 	deleteStat: deleteStat,
-	getAllplaylists: getAllPlaylists,
+	getAllPlaylists: getAllPlaylists,
 	getPlaylist: getPlaylist,
 	removePlaylist: removePlaylist,
 	writePlaylist: writePlaylist,
+	writeToPlaylist: writeToPlaylist,
 	getSRCString: getSRCString,
-	recursiveSearchAtpath: recursiveSearchAtPath,
+	recursiveSearchAtPath: recursiveSearchAtPath,
 	cullShortAudio: cullShortAudio,
 });

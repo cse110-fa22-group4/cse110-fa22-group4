@@ -90,13 +90,14 @@ async function ffmpegWrite(filepath, options) {
 }
 
 /**
+ * @param {string[]} paths The paths to search.
  * @return {Promise<object>}
  */
-async function createMultiFFmpegPromise() {
+async function createMultiFFmpegPromise(paths) {
 	const childProcess = require('child_process');
 	const fs = require('fs').promises;
 	const {debugLog} = require('../../general/genAPICalls');
-	const commands = await getMultiCMD();
+	const commands = await getMultiCMD(paths);
 	return new Promise((resolve, reject) => {
 		try {
 			const proc = childProcess.spawn(
@@ -142,11 +143,13 @@ async function createMultiFFmpegPromise() {
 }
 
 /**
- *
+ * @memberOf ffmpegAPI
+ * @name createMultiFFmpegPromise
+ * @param {string[]} paths The paths to search.
  * @return {Promise<Object>}
  */
-async function useMultiFFmpeg() {
-	return await createMultiFFmpegPromise();
+async function useMultiFFmpeg(paths) {
+	return await createMultiFFmpegPromise(paths);
 }
 
 module.exports = {

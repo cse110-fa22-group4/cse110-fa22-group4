@@ -34,7 +34,11 @@ async function getSettings() {
 async function getSetting(setting) {
 	const settings = await getSettings();
 	if (setting in settings) {
-		return JSON.parse(settings[setting]);
+		try {
+			return JSON.parse(settings[setting]);
+		} catch (e) {
+			return settings[setting];
+		}
 	}
 	return undefined;
 }

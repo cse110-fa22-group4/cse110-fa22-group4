@@ -36,94 +36,25 @@ async function getPlaylist(playlist) {
 
 	await makeDirIfNotExists('playlists');
 
-	await fs.exists(playlistPath, async(e) => {
-		if(!e) {
-			await fsPromises.close(await fsPromises.open(playlistPath, 'w'));
-			await fsPromises.writeFile(playlistPath, '{ songs: [ ], }');
-		}
-	});
 	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
 	const allSongs = await getSongs();
 	const ret = [];
 
-	await debugLog(playlistObj, 'playlists-test');
-	 /* PLAYLIST JSON SCHEMA
-		{
-			"meta": {
-				"creator": "UserA",
-				"time": 3452397592387, (seconds since 0)
-			},
-			"tags": {
-				"tagA": "expectedValue",
-				"album_artist": "NCS",
+	for (const tagGroup in playlistObj['tags']) {
+		await debugLog(playlistObj['tags'], 'playlists-test');
+		for (const tagIndex in playlistObj['tags'][tagGroup]) {
+			const tag = playlistObj['tags'][tagGroup][tagIndex];
+			for (const songPath in allSongs) {
+				const song = allSongs[songPath]['format'];
+
+				if (ret.includes(songPath)) continue;
+				if (tagGroup in song &&song[tagGroup].includes(tag)) {
+					ret.push(songPath);
+				} else if ('tags' in song && tagGroup in song['tags'] && song['tags'][tagGroup].includes(tag)) {
+					ret.push(songPath);
+				}
 			}
 		}
-	 */
-
-	/*
-	 So this is how search is going to work:
-	 1. Get playlist as a json object (we should just be reading and writing it as a json object, don't need to do
-	 			map stuff
-	 2. Create a new gridJS instance with the columns being every *key* in "tags", and the data being the correct data
-	 			from every song returned by getSongs()
-	 				(note - the first column must be song path)
-	 3. For each kvp in "tags":
-	 	i. Update the grid config, overriding the search keyword
-	 	ii. Use the callback described before to append the paths of songs with matching metadata to a list
-	 4. Return the list of song paths.
-
-	 */
-
-	// todo: THIS SHOULD BE CREATED ONCE, NOT EVERY PLAYLIST CALL
-	// the logic of making this needs to be reworked if this is only created once!
-	// its possible that we can isolate the column logic from playlists, and make a
-	// column for every possible unique tag. The hard part of that is ensuring that data
-	// lines up for every song.
-	const cols = ['path'].concat(Array.from(Object.keys(playlistObj['tags'])));
-	const data = [];
-	for (const songFormat in allSongs) {
-
-		const song = allSongs[songFormat]['format'];
-		const temp = { };
-		temp['filename'] = song['filename']
-		for (const tag in playlistObj['tags']) {
-			if (tag in song) {
-				temp[tag] = song[tag];
-			}
-			else if ('tags' in song && tag in song['tags']) {
-				temp[tag] = song['tags'][tag];
-			}
-			else {
-				temp[tag] = '';
-			}
-		}
-		data.push(temp);
-	}
-
-	const grid = new Grid({
-		columns: cols,
-		data: data,
-	});
-
-	for (const tag in playlistObj['tags']) {
-
-		grid.updateConfig({
-			columns: cols,
-			data: data,
-			search: {
-				enabled: true,
-				keyword: '',
-				/* The first column will be file path!!
-				* how does one ensure the above statement without creating a new gridJS every time?*/
-				selector: async (cell, rowIndex, cellIndex) => {
-					await debugLog(cell, 'playlist-test');
-					if (cellIndex !== 0) return;
-					if (!ret.includes(cell)) ret.push(cell);
-				},
-			},
-		});
-		await debugLog(grid, 'playlists-test');
-
 	}
 
 	return ret;
@@ -160,20 +91,29 @@ async function removePlaylist(playlistName) {
  * @return {Promise<void>}
  */
 async function writePlaylist(playlistName, playlist) {
-
 	const storagePath = await getStoragePath();
-
 	const playlistPath = path.join(storagePath, 'playlists', playlistName);
+	await fsPromises.writeFile(playlistPath, JSON.stringify(playlist));
+}
 
-	await fs.exists(playlistPath, async(e) => {
-		if(!e) {
-			await fsPromises.close(await fsPromises.open(playlistPath, 'w'));
-		}
-	});
-	//conversion from map to json partially inspired from
-	//https://codingbeautydev.com/blog/javascript-convert-json-to-map/
-	await fsPromises.writeFile(playlistPath,
-		JSON.stringify(playlist));
+/**
+ * @memberOf fsAPI
+ * @name writeToPlaylist
+ * @description Adds a new tag, value pair to search for during playlist creation.
+ * @param {string} playlistName The name of the playlist to write to.
+ * @param {string} tag The tag to add.
+ * @param {string} val The value to search for.
+ * @returns {Promise<void>}
+ */
+async function writeToPlaylist(playlistName, tag, val) {
+	const storagePath = await getStoragePath();
+	const playlistPath = path.join(storagePath, 'playlists', playlistName);
+	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
+	if (!(tag in playlistObj['tags'])) {
+		playlistObj['tags'][tag] = [];
+	}
+	playlistObj['tags'][tag].push(val);
+	await writePlaylist(playlistName, playlistObj);
 }
 
 /**
@@ -203,6 +143,7 @@ async function exportPlaylist(playlistName) {
 }
 module.exports = {
 	getAllPlaylists,
+	writeToPlaylist,
 	getPlaylist,
 	removePlaylist,
 	writePlaylist,

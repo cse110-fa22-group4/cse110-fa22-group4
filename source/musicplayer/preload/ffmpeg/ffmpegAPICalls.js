@@ -68,16 +68,17 @@ async function getWriteCMD(filepath, options) {
 }
 
 /**
+ * @param {string[]} paths The file paths.
  * @return {Promise<{cmd: string, args: {input: string, output: string, probe:string}}>}
  */
-async function getMultiCMD() {
+async function getMultiCMD(paths) {
 	const fs = require('fs').promises;
 	const tempPath = path.join(await ipcRenderer.invoke('getTempPath'), 'songs_temp.txt');
 	const outPath = path.join(await ipcRenderer.invoke('getTempPath'), 'out_json.txt');
 
 	const songs = await getSongs();
 	let fileContents = '';
-	for (const songPath in songs) {
+	for (const songPath in paths) {
 		if (!songPath) continue;
 		fileContents += (songPath + '\n');
 	}
