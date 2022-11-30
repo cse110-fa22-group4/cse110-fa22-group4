@@ -149,6 +149,7 @@ async function setPath(binPath = undefined) {
 		ffProbePath = path.join(binPath, '/ffprobe');
 		ffmpegPath = path.join(binPath, '/ffmpeg');
 		ffplayPath = path.join(binPath, '/ffplay');
+		multiPath = path.join(binPath, '/multi_ffmpeg');
 	}
 	await debugLog(`Set ffPaths to\nffprobe: ${ffProbePath} \nffmpeg: ${ffmpegPath}\nffplay: ${ffplayPath}`,
 		'fs-general');
