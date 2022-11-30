@@ -93,13 +93,3 @@ async function editMetaData(element) {
 async function addToPlaylist(element) {
 	alert('*FUNCTION UNDER CONTRUCTION*');
 }
-
-
-/**
- * Calllback function for when a file is passed into the input.
- * @param {Event} element
- */
-async function getFile(element) {
-	currFileList = element.target.files;
-	await genAPI.debugLog(currFileList, 'main-header-callbacks');
-}

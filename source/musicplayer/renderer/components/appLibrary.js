@@ -12,15 +12,19 @@ const gridSettings = {
 
 // Sample Track Categories + Headers
 const libraryHeaders = [
-	{hidden: false, sort: {enabled: true}, name: '#'},
+	// {hidden: false, sort: {enabled: true}, name: '#'},           - may not be needed as category
+	// {hidden: false, sort: {enabled: true}, name: 'playlists'},   - may not be needed as category 
+
 	{hidden: false, sort: {enabled: true}, name: 'title'},
 	{hidden: false, sort: {enabled: true}, name: 'artist'},
 	{hidden: false, sort: {enabled: true}, name: 'album'},
 	{hidden: false, sort: {enabled: true}, name: 'year'},
-	{hidden: false, sort: {enabled: true}, name: 'duration'},
+	{hidden: false, sort: {enabled: true}, name: 'duration', 
+        formatter: (cell) => `${new Date(1000 * cell).toISOString().substr(11, 8).replace(/^[0:]+/, "")}`},
 	{hidden: false, sort: {enabled: true}, name: 'genre'},
-	{hidden: false, sort: {enabled: true}, name: 'playlists'},
 	{hidden: false, sort: {enabled: true}, name: 'tags'},
+
+    // hidden categories
 	{hidden: true, sort: {enabled: false}, name: 'artwork'},
 	{hidden: true, sort: {enabled: false}, name: 'path'},
 ];
@@ -28,7 +32,6 @@ const libraryHeaders = [
 // Sample Catalog
 
 const libraryCatalog = [
-	
 	{'#': '01', 'title': 'Future Nostalgia', 'path': '../audio/songs/Future Nostalgia',
 		'artist': 'Dua Lipa', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '3:05',
 		'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
