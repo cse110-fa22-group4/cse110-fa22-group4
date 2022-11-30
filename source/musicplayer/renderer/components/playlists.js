@@ -86,7 +86,8 @@ async function addToPlaylist(element) {
     }
 
     // TODO: add tracks to playlists
-
+    // await fsAPI.writePlaylist(currPlaylist, (currPlaylist,{name: currPlaylist, numTracks:2, trackList: tracks}))
+    
     alert('Tracks added to playlist!');
 }
 
@@ -96,7 +97,7 @@ async function addToPlaylist(element) {
  */
 async function removePlaylistSelection(element) {
     await domAPI.setHTML('selected-playlists-container', '');
-    libraryClick();
+    // libraryClick();
 }
 
 /**

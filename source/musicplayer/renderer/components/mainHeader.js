@@ -52,21 +52,21 @@ async function managePlaylistData(element) {
         await domAPI.setAttribute('editor-container', 'data-editortype', 'playlists')
         playlistManagerIsExtended = true;
         metaEditorIsExtended = false;
-        libraryClick();
+        // libraryClick();
     } else if (playlistManagerIsExtended && !metaEditorIsExtended) {
         await playlistManagerOff();
         await domAPI.setAttribute('editor-container', 'data-editortype', '')
         playlistManagerIsExtended = false;
         metaEditorIsExtended = false;
-        if (currentPage.library) {
-            libraryClick();
-        }
+        // if (currentPage.library) {
+        //     libraryClick();
+        // }
     } else if (!playlistManagerIsExtended && metaEditorIsExtended) {
         await domAPI.loadPage('editor-container', 'components/playlistManager.html');
         await domAPI.setAttribute('editor-container', 'data-editortype', 'playlists')
         playlistManagerIsExtended = true;
         metaEditorIsExtended = false;
-        libraryClick();
+        // libraryClick();
     }
 }
 
@@ -81,21 +81,21 @@ async function editMetaData(element) {
         await playlistManagerOn();
         metaEditorIsExtended = true;
         playlistManagerIsExtended = false;
-        libraryClick();
+        // libraryClick();
     } else if (metaEditorIsExtended && !playlistManagerIsExtended) {
         await playlistManagerOff();
         await domAPI.setAttribute('editor-container', 'data-editortype', '')
         metaEditorIsExtended = false;
         playlistManagerIsExtended = false;
-        if (currentPage.library) {
-            libraryClick();
-        }
+        // if (currentPage.library) {
+        //     libraryClick();
+        // }
     } else if (!metaEditorIsExtended && playlistManagerIsExtended) {
         await domAPI.loadPage('editor-container', 'components/metaEditor.html');
         await domAPI.setAttribute('editor-container', 'data-editortype', 'metadata')
         metaEditorIsExtended = true;
         playlistManagerIsExtended = false;
-        libraryClick();
+        // libraryClick();
     }
 }
 

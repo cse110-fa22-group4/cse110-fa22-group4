@@ -90,6 +90,7 @@ async function addGrid(domID, columns, data, params = {}) {
         'managedAttributeCheck', domID, 'innerHTML');
     if (!isAttributeSafe) return undefined;
 
+
     // enable row selection
     columns.unshift(
         {
@@ -112,7 +113,7 @@ async function addGrid(domID, columns, data, params = {}) {
                     onClick: () => {
                         // function for row queue click
                         // TODO: add track to queue somehow
-                        alert(`${row.cells[9].data}`)
+                        alert(`${row.cells[row.cells.length - 2].data}`)
                     }
                 }, '+');
             }
@@ -120,7 +121,7 @@ async function addGrid(domID, columns, data, params = {}) {
     )
 
     // construct default grid and render to page
-    const grid = new Grid({
+    let grid = new Grid({
         columns: columns,
         data: data,
     })
@@ -133,53 +134,57 @@ async function addGrid(domID, columns, data, params = {}) {
 
     // row selection actions
     grid.on('ready', (...args) => {
-        const checkboxPlugin = grid.config.plugin.get('awesomeCheckbox');
-        checkboxPlugin.props.store.on('updated', function (state, prevState) {
+        if (data.length != 0) {
+            const checkboxPlugin = grid.config.plugin.get('awesomeCheckbox');
+            checkboxPlugin.props.store.on('updated', function (state, prevState) {
 
-            // update selectedTracks with current selection
-            const currSelection = [];
-            for (let i = 0; i < state.rowIds.length; i++) {
-                const currTrackObj = {};
-                for (let j = 1; j < columns.length; j++) {
-                    const key = columns[j].name;
-                    const value = state.rowIds[i][j].data;
-                    currTrackObj[`${key}`] = value;
+                // update selectedTracks with current selection
+                const currSelection = [];
+                for (let i = 0; i < state.rowIds.length; i++) {
+                    const currTrackObj = {};
+                    for (let j = 1; j < columns.length; j++) {
+                        if (columns[j].name in data[0]) {
+                            const key = columns[j].name;
+                            const value = state.rowIds[i][j].data;
+                            currTrackObj[`${key}`] = value;
+                        }
+                    }
+                    currSelection.push(currTrackObj);
                 }
-                currSelection.push(currTrackObj);
-            }
-            selectedTracks = currSelection;
+                selectedTracks = currSelection;
 
-            // get current editor type
-            const editorType = document.getElementById('editor-container').getAttribute('data-editortype');
+                // get current editor type
+                const editorType = document.getElementById('editor-container').getAttribute('data-editortype');
 
-            // playlist manager actions
-            // send selected tracks to selected container
-            if (editorType == 'playlists') {
-                const playlistManager = document.getElementById('selected-playlists-container');
-                let selectedRow = `
+                // playlist manager actions
+                // send selected tracks to selected container
+                if (editorType == 'playlists') {
+                    const playlistManager = document.getElementById('selected-playlists-container');
+                    let selectedRow = `
                     <div class="playlist-manager-header">
                     <div>Title</div>
                     <div>Artist</div>
                     <div>Album</div>
                     </div>`;
-                for (let k = 0; k < selectedTracks.length; k++) {
-                    selectedRow += `
+                    for (let k = 0; k < selectedTracks.length; k++) {
+                        selectedRow += `
                         <div class="playlist-manager-row">
                         <div>${selectedTracks[k].title}</div>
                         <div>${selectedTracks[k].artist}</div>
                         <div>${selectedTracks[k].album}</div>
                         </div>`;
+                    }
+                    playlistManager.innerHTML = selectedRow;
                 }
-                playlistManager.innerHTML = selectedRow;
-            }
 
-            // metadata editor actions
-            // send selected tracks to playlist manager
-            if (editorType == 'metadata') {
-                // TODO: use selected tracks to edit metadata, MAY not need function here
-            }
+                // metadata editor actions
+                // send selected tracks to playlist manager
+                if (editorType == 'metadata') {
+                    // TODO: use selected tracks to edit metadata, MAY not need function here
+                }
 
-        });
+            });
+        }
     });
 }
 
