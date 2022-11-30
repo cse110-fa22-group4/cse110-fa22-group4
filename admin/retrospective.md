@@ -1,26 +1,3 @@
-<!-----
-
-Yay, no errors, warnings, or alerts!
-
-Conversion time: 0.406 seconds.
-
-
-Using this Markdown file:
-
-1. Paste this output into your source file.
-2. See the notes and action items below regarding this conversion run.
-3. Check the rendered output (headings, lists, code blocks, tables) for proper
-   formatting and use a linkchecker before you publish this page.
-
-Conversion notes:
-
-* Docs to Markdown version 1.0β33
-* Tue Nov 29 2022 19:22:34 GMT-0800 (PST)
-* Source doc: Sprint Review Meeting 11/26
-* Tables are currently converted to HTML tables.
------>
-
-
 # Meeting Minutes
 
 ## Meeting Information
