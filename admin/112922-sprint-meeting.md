@@ -10,6 +10,21 @@
 
 **Objective Statement:** Agile Sprint Review and Retrospective 2
 
+## Attendents
+People who attended:
+- [x] Alvin
+- [x] Andrew
+- [x] Brian
+- [x] Chi
+- [x] Jeremy
+- [x] Jiseung
+- [x] Liam
+- [x] Noah
+- [x] Xuying
+- [x] Yinlong
+
+People absent:
+- none
 
 <table>
   <tr>
