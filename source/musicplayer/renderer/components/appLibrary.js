@@ -10,7 +10,7 @@ const gridSettings = {
 	},
 };
 
-// Sample Track Categories + Headers
+// Library Headers
 const libraryHeaders = [
 	// {hidden: false, sort: {enabled: true}, name: '#'},           - may not be needed as category
 	// {hidden: false, sort: {enabled: true}, name: 'playlists'},   - may not be needed as category 
