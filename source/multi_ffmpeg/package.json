@@ -4,8 +4,8 @@
   "description": "",
   "main": "main/main.js",
   "scripts": {
-    "multi-ffmpeg-build-win": "dotnet publish -p:PublishProfile=win",
-    "multi-ffmpeg-build-osx": "dotnet publish -p:PublishProfile=osx",
+    "multi-ffmpeg-build-win-64": "dotnet publish -p:PublishProfile=win",
+    "multi-ffmpeg-build-osx-64": "dotnet publish -p:PublishProfile=osx",
     "multi-ffmpeg-build-osx-arm": "dotnet publish -p:PublishProfile=osx-arm",
     "multi-ffmpeg-build-linux-64": "dotnet publish -p:PublishProfile=linux-64",
     "multi-ffmpeg-build-adaptive": "dotnet publish -p:PublishProfile=adaptive",
