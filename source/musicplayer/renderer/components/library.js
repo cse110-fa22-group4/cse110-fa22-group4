@@ -2,9 +2,14 @@ window.addEventListener('library-loaded', async () => {
 	await onLibraryLoad();
 });
 
-window.addEventListener('library-container-grid-clicked', async (args) => {
+window.addEventListener('library-container-row-clicked', async (args) => {
 	console.log(args['detail']);
 });
+
+window.addEventListener('library-container-queue-clicked', async (args) => {
+	console.log(args['detail']);
+});
+
 
 /**
  * Initial Library Load.

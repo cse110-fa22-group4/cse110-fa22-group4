@@ -3,7 +3,11 @@ window.addEventListener('libraryPlaylists-loaded', async () => {
 	await domAPI.addEventListenerbyClassName('library-card', 'click', libraryPlaylistsExtended);
 });
 
-window.addEventListener('library-playlists-container-grid-clicked', async (args) => {
+window.addEventListener('library-playlists-container-row-clicked', async (args) => {
+	console.log(args['detail']);
+});
+
+window.addEventListener('library-playlists-queue-clicked', async (args) => {
 	console.log(args['detail']);
 });
 

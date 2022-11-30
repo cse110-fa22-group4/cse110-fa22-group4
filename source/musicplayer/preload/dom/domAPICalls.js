@@ -113,7 +113,9 @@ async function addGrid(domID, columns, data, params = {}) {
 					onClick: () => {
 						// function for row queue click
 						// TODO: add track to queue somehow
-						alert(`${row.cells[row.cells.length - 2].data}`);
+						// alert(`${row.cells[row.cells.length - 2].data}`);
+						window.dispatchEvent(new CustomEvent(`${domID}-queue-clicked`,
+							{detail: row.cells[row.cells.length - 2].data}));
 					},
 				}, '+');
 			},
@@ -130,7 +132,7 @@ async function addGrid(domID, columns, data, params = {}) {
 
 	// row click action
 	grid.on('rowClick', (...args) =>
-		window.dispatchEvent(new CustomEvent(`${domID}-grid-clicked`, {detail: args[1]})));
+		window.dispatchEvent(new CustomEvent(`${domID}-row-clicked`, {detail: args[1].cells[9].data})));
 
 	// row selection actions
 	grid.on('ready', (...args) => {
