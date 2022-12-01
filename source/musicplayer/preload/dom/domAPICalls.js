@@ -388,10 +388,10 @@ async function getProperty(domID, property) {
  *
  */
 async function setThemeColor(primary, secondary) {
-	if (primary !== '') {
+	if (primary !== '' && primary !== undefined) {
 		document.documentElement.style.setProperty('--theme-primary', primary);
 	}
-	if (secondary !== '') {
+	if (secondary !== '' && primary !== undefined) {
 		document.documentElement.style.setProperty('--theme-secondary', secondary);
 	}
 }

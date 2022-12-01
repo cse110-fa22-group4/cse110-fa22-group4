@@ -140,15 +140,6 @@ async function loadSettingsState() {
 			await domAPI.setProperty(relevantToggles[i], 'checked', 'true');
 		}
 	}
-
-	// color themes - this will need to go elsewhere, ideally we do not load it only when loading settings page
-	if ('primaryColor' in allSettings) {
-		await domAPI.setThemeColor(themeColorsPrimary[allSettings['primaryColor']-- % themeColorsPrimary.length], '');
-	}
-	if ('secondaryColor' in allSettings) {
-		await domAPI.setThemeColor('',
-			themeColorsSecondary[allSettings['secondaryColor']++ % themeColorsSecondary.length]);
-	}
 }
 
 /**
@@ -156,7 +147,7 @@ async function loadSettingsState() {
  */
 async function changeThemeColorPrimary() {
 	await domAPI.setThemeColor(themeColorsPrimary[themeColorsPrimaryCount % themeColorsPrimary.length], '');
-	await fsAPI.writeToSetting('primaryColor', themeColorsPrimaryCount % themeColorsPrimary.length);
+	await fsAPI.writeToSetting('primaryColor', themeColorsPrimary[themeColorsPrimaryCount % themeColorsPrimary.length]);
 	themeColorsPrimaryCount++;
 }
 
@@ -165,7 +156,8 @@ async function changeThemeColorPrimary() {
  */
 async function changeThemeColorSecondary() {
 	await domAPI.setThemeColor('', themeColorsSecondary[themeColorsSecondaryCount % themeColorsSecondary.length]);
-	await fsAPI.writeToSetting('secondaryColor', themeColorsSecondaryCount % themeColorsSecondary.length);
+	await fsAPI.writeToSetting('secondaryColor',
+		themeColorsSecondary[themeColorsSecondaryCount % themeColorsSecondary.length]);
 	themeColorsSecondaryCount--;
 	if (themeColorsSecondaryCount === 0) {
 		themeColorsSecondaryCount = themeColorsSecondary.length;
