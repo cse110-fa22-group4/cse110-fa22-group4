@@ -27,7 +27,7 @@ const libraryHeaders = [
 
 	// hidden categories
 	{hidden: true, sort: {enabled: false}, name: 'artwork'},
-	{hidden: true, sort: {enabled: false}, name: 'path'},
+	{hidden: true, sort: {enabled: false}, name: 'filename'},
 ];
 
 
