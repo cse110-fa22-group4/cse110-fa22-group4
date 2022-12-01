@@ -122,6 +122,7 @@ async function removePlaylist(playlistName) {
  */
 async function createPlaylist(playlistName) {
 	await writePlaylist(playlistName, { "meta": {}, "tags": []});
+	await writePlaylist(playlistName, { "meta": {}, "tags": []});
 }
 
 /**
