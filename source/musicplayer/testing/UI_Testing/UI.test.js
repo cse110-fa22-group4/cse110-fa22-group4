@@ -85,7 +85,7 @@ test('Check Page Navigation', async () => {
     window = await electronApp.firstWindow();
 
     // allow for 3 minutes for debugging
-    test.setTimeout(180000);
+    //test.setTimeout(180000);
 
 
     // Navigate to Now Playing
@@ -112,7 +112,7 @@ test('Check Page Navigation', async () => {
     await window.locator('#btn-settings').click();
     expect(await window.locator('#top-container-extended').getAttribute('style')).toStrictEqual("visibility: visible;");
 
-    await window.pause();
+   //await window.pause();
 
-}, 180000);
+});
 
