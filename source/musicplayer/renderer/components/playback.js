@@ -129,7 +129,7 @@ async function controlSong(songPath) {
 		} else {
 			// @todo actual data/song path needs to be set here
 			// @todo decide songPath based on object
-			await ffmpegAPI.playSong(songPath, volume, 0, 67);
+			await ffmpegAPI.playSong(songPath, volume, msElapsed/1000, 67);
 			// setTimeout();	// exec code after duration of song
 			// possible to change update every 1 sec like spotify
 			intervalID = setInterval( function() { updateProgress(testMap); }, 50);
@@ -429,7 +429,7 @@ function msToFormatStr(ms) {
  * @description stops progress bar updates on slider drag
  */
 function stopUpdateSeek(event) {
-	clearInterval(intervalID); //stop updating progress
+	clearInterval(intervalID); // stop updating progress
 	msElapsed = 0;
 	console.log(Number(event.value));
 	console.log(Number(event.value));
