@@ -22,6 +22,7 @@ const currentPage = { // helper to track current page
 window.addEventListener('DOMContentLoaded', async () => {
 	await domAPI.setStyle('top-container-extended', 'visibility', 'hidden');
 	await domAPI.loadPage('sidebar-container', 'components/sidebar.html');
+	await domAPI.setThemeColor(await fsAPI.getSetting('primaryColor'), await fsAPI.getSetting('secondaryColor'));
 	await domAPI.setStyleClassToggle('sidebar-btn-container-home', 'sidebar-btn-active', true);
 	await domAPI.loadPage('overview-container', 'components/overview.html');
 	await domAPI.loadPage('main-header-container', 'components/mainHeader.html');
@@ -34,7 +35,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await domAPI.addEventListener( 'btn-playlists', 'click', playlistsClick);
 	await domAPI.addEventListener( 'btn-settings', 'click', settingsClick);
 
-	await domAPI.setThemeColor(await fsAPI.getSetting('primaryColor'), await fsAPI.getSetting('secondaryColor'));
 
 
 	await domAPI.addEventListener( 'playbackArt', 'click', overviewClick);
