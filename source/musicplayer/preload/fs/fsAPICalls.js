@@ -213,6 +213,7 @@ async function convertPathToTrack(filename, songs) {
 	const year = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
 	const duration = 'duration' in song ? song['duration']: '';
 	const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
+	const tags = 'tags' in song && 'tags' in song['tags'] ? song['tags']['tags'] : '';
 	return {
 		'title': title,
 		'filename': filename,
@@ -221,6 +222,7 @@ async function convertPathToTrack(filename, songs) {
 		'year': year,
 		'duration': duration,
 		'genre': genre,
+		'tags': tags,
 	};
 }
 
