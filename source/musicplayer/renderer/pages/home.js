@@ -59,11 +59,15 @@ async function generateHomeCards() {
 
 	const genres = new Set();
 	count = 0;
-	while (genres.size < numHomeCards) {
+	while (genres.size < numHomeCards && count < maxRepeats) {
 		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
 		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
 		const genreArr = libraryCatalogRef[randomIndex].genre.split(', ');
+		if (genreArr.length == 0) {
+			genres.add('');
+			count += 1;
+		}
 		for (const i of genreArr) {
 			if ((!(genres.has(i))) && genres.size < numHomeCards) {
 				genres.add(i);
@@ -78,16 +82,17 @@ async function generateHomeCards() {
 		}
 	}
 
-	/*
-	This is all commented out for now because we do not have a 'tags' key in the fsAPI.getSongsTrackData() yet
-
 	const tags = new Set();
 	count = 0;
-	while (tags.size < numHomeCards) {
+	while (tags.size < numHomeCards && count < maxRepeats) {
 		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
 		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
 		const tagArr = libraryCatalogRef[randomIndex].tags.split(', ');
+		if (tagArr.length == 0) {
+			tags.add('');
+			count += 1;
+		}
 		for (const i of tagArr) {
 			if ((!(tags.has(i))) && tags.size < numHomeCards) {
 				tags.add(i);
@@ -100,15 +105,13 @@ async function generateHomeCards() {
 				count+=1;
 			}
 		}
-	}*/
+	}
 
 	// insert card list into containers
 	await domAPI.setHTML('home-albums-container', await generateAlbumCardList(albums));
 	await domAPI.setHTML('home-artists-container', await generateArtistCardList(artists));
 	await domAPI.setHTML('home-genres-container', await generateGenreCardList(genres));
-
-	// commented out because we do not have 'tags' key yet
-	// await domAPI.setHTML('home-tags-container', await generateTagCardList(tags));
+	await domAPI.setHTML('home-tags-container', await generateTagCardList(tags));
 }
 
 /**
@@ -339,7 +342,7 @@ async function generateTagCardList(tags) {
 		// generate default info
 		let tag;
 		if (key == '') {
-			tag = 'Unknown Album';
+			tag = 'Unassigned';
 		} else {
 			tag = key;
 		}
