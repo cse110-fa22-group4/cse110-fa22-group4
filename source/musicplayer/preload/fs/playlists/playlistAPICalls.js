@@ -106,8 +106,10 @@ async function getPlaylist(playlist) {
  */
 async function removePlaylist(playlistName) {
 	await makeDirIfNotExists('playlists');
+	const storagePath = await getStoragePath();
+	const playlistPath = path.join(storagePath, 'playlists', playlistName);
 	try {
-		await fsPromises.rm(playlistName);
+		await fsPromises.rm(playlistPath);
 	} catch (e) {
 
 	}
