@@ -1,5 +1,5 @@
-const playlistManagerSelected = []; // holds track objects currently added to the playlist manager
 let lastCreatedPlaylist; // the last selected playlist
+
 // POSSIBLE PLAYLIST OBJECT STRUCTURE
 // (
 //   'playlist',
@@ -20,9 +20,12 @@ window.addEventListener('playlistManager-loaded', async () => {
 });
 
 /**
- * Update menu options for playlists drop-down.
+ * @name updatePlaylistOptions
+ * @description Update menu options for playlists drop-down.
+ * @param {HTMLElement} element
+ * @return {Promise<void>}
  */
-async function updatePlaylistOptions() {
+async function updatePlaylistOptions(element) {
 	let playlistMenuOptions = '<option value="" selected disabled>Choose a playlist...</option>';
 	const userPlaylists = await fsAPI.getAllPlaylists();
 	for (let i = 0; i < userPlaylists.length; i++) {
@@ -42,21 +45,17 @@ async function updatePlaylistOptions() {
 }
 
 /**
- * Add custom user playlist.
+ * @name createUserPlaylist
+ * @description Create a playlist.
+ * @param {HTMLElement} element
+ * @return {Promise<void>}
  */
-async function createUserPlaylist() {
+async function createUserPlaylist(element) {
 	// get custom playlist name
 	const playlistName = await domAPI.getProperty('input-playlist-create', 'value');
 
 	if (playlistName.length !== 0) {
 		await domAPI.setProperty('input-playlist-create', 'value', '');
-
-		// create new playlist object
-		// const currPlaylistObj = {
-		//     name: playlistName,
-		//     numTracks: 0,
-		//     trackList: []
-		// };
 
 		await fsAPI.createPlaylist(playlistName);
 
@@ -71,8 +70,10 @@ async function createUserPlaylist() {
 }
 
 /**
- * Add track to playlist for user
+ * @name addToPlaylist
+ * @description Add selected tracks to a playlist.
  * @param {HTMLElement} element
+ * @return {Promise<void>}
  */
 async function addToPlaylist(element) {
 	const currPlaylist = await domAPI.getProperty('select-playlist-add', 'value');
@@ -87,18 +88,13 @@ async function addToPlaylist(element) {
 		return;
 	}
 
-	// TODO: add tracks to playlists
-    // TODO: add tracks to playlists
-    // currPlaylist = 'myPlaylist'
-    // tracks = [{track1}, {track2}, ...]
     for (let i = 0; i < tracks.length; i++) {
-
         const tags = {};
-
         for (const [key, value] of Object.entries(tracks[i])) {
-            tags[key] = value;
+            if(value.length != 0) {
+                tags[key] = value;
+            }
         }
-        debugger
         await fsAPI.writeToPlaylist(currPlaylist, tags);
     }
     
@@ -106,8 +102,10 @@ async function addToPlaylist(element) {
 }
 
 /**
- * Add track to playlist for user
+ * @name removePlaylistSelection
+ * @description Remove selected tracks from preview window.
  * @param {HTMLElement} element
+ * @return {Promise<void>}
  */
 async function removePlaylistSelection(element) {
 	await domAPI.setHTML('selected-playlists-container', '');
@@ -115,8 +113,10 @@ async function removePlaylistSelection(element) {
 }
 
 /**
- * Deleted selected playlist
+ * @name deletePlaylist
+ * @description Delete selected playlist.
  * @param {HTMLElement} element
+ * @return {Promise<void>}
  */
 async function deletePlaylist(element) {
 	const currPlaylist = await domAPI.getProperty('select-playlist-add', 'value');

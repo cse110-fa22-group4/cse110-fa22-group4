@@ -4,15 +4,23 @@ window.addEventListener('libraryPlaylists-loaded', async () => {
 });
 
 window.addEventListener('library-playlists-container-row-clicked', async (args) => {
-	console.log(args['detail']);
+    // NOTE: click a row seems way too sensitive for practical use,
+    // will probably not end up using
+	// console.log(args['detail']);
 });
 
-window.addEventListener('library-playlists-queue-clicked', async (args) => {
-	console.log(args['detail']);
+window.addEventListener('library-playlists-container-queue-clicked', async (args) => {
+    const trackObj = args['detail']; 
+	console.log(trackObj);
+
+    // send track to playback queue
+    queueArr.push(trackObj);
 });
 
 /**
- * Initial LibraryPlaylists Load.
+ * @name onLibraryPlaylistsLoad
+ * @description Initial load of playlists page, loads card view of playlists.
+ * @return {Promise<void>}
  */
 async function onLibraryPlaylistsLoad() {
 	await domAPI.setHTML('library-playlists-container', '');
@@ -40,21 +48,20 @@ async function onLibraryPlaylistsLoad() {
 }
 
 /**
- * @description Library > Playlists Extended Page. Generate Playlist Library View based on user selection.
- * @param {object} e The HTML element this event listener is attached to.
+ * @name libraryPlaylistsExtended
+ * @description Generate table view of selected playlist card.
+ * @param {HTMLElement} element The HTML element this event listener is attached to.
+ * @return {Promise<void>}
  */
-async function libraryPlaylistsExtended(e) {
-	const cardPlaylist = e.getAttribute('data-libtarget');
-
-	// Set grid rows
-	// const data = [];
+async function libraryPlaylistsExtended(element) {
+	const cardPlaylist = element.getAttribute('data-libtarget');
 
 	// Generate playlist grid
 	await domAPI.setHTML('header-subtitle', `${cardPlaylist}`);
 	await domAPI.setHTML('library-playlists-cards', '');
 
-	const currPlaylist = await fsAPI.getPlaylist(cardPlaylist);
-	const trackList = currPlaylist.trackList;
+	const currPlaylist = await fsAPI.getPlaylistObj(cardPlaylist);
+	const trackList = currPlaylist.tags;
 	await domAPI.setHTML('library-playlists-container', '');
 	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings);
 }
