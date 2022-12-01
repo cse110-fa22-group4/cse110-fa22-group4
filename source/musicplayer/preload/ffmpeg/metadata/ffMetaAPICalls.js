@@ -82,7 +82,7 @@ async function ffmpegWrite(filepath, options) {
 	childProcess.execSync(await getWriteCMD(filepath, options)).toString();
 	if (process.platform === 'win32') {
 		childProcess.execSync('move /y out.' +
-			filepath.split('.').pop() + ' ' + filepath);
+			filepath.split('.').pop() + ' ' + `\"${filepath}\"`);
 	} else {
 		childProcess.execSync('mv out.' +
 			filepath.split('.').pop() + ' ' + filepath);

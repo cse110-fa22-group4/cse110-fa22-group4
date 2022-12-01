@@ -14,7 +14,7 @@ let electronApp;
  * Set up the initial stage for the test
  */
 test.beforeAll(async () => {
-    //electronApp = electron.launch({ args:['../main/main.js'] });
+    //electronApp = electron.launch({ args:['/main/main.js'] });
 
     const testPath = '../source/musicplayer';
     // Read an empty file without any playlist in it.
