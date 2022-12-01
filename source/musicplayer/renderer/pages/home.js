@@ -1,8 +1,7 @@
 let libraryCatalogRef;
-// This file is very WIP
 window.addEventListener('home-loaded', async () => {
 	// we need to get our global libraryCatalogRef
-	libraryCatalogRef = await genAPI.getGlobal('libraryCatalog');
+	libraryCatalogRef = await fsAPI.getSongsTrackData();
 	await generateHomeCards();
 	await domAPI.addEventListenerbyClassName('library-card-album', 'click', libraryAlbumsExtended);
 	await domAPI.addEventListenerbyClassName('library-card-artist', 'click', libraryArtistsExtended);
@@ -15,6 +14,7 @@ window.addEventListener('home-loaded', async () => {
  * @return {Promise<void>}
  */
 async function generateHomeCards() {
+	console.log(libraryCatalogRef);
 	// we cannot have more cards than we have songs
 	const numHomeCards = Math.min(4, libraryCatalogRef.length);
 
@@ -78,6 +78,9 @@ async function generateHomeCards() {
 		}
 	}
 
+	/*
+	This is all commented out for now because we do not have a 'tags' key in the fsAPI.getSongsTrackData() yet
+
 	const tags = new Set();
 	count = 0;
 	while (tags.size < numHomeCards) {
@@ -97,13 +100,15 @@ async function generateHomeCards() {
 				count+=1;
 			}
 		}
-	}
+	}*/
 
 	// insert card list into containers
 	await domAPI.setHTML('home-albums-container', await generateAlbumCardList(albums));
 	await domAPI.setHTML('home-artists-container', await generateArtistCardList(artists));
 	await domAPI.setHTML('home-genres-container', await generateGenreCardList(genres));
-	await domAPI.setHTML('home-tags-container', await generateTagCardList(tags));
+
+	// commented out because we do not have 'tags' key yet
+	// await domAPI.setHTML('home-tags-container', await generateTagCardList(tags));
 }
 
 /**
@@ -136,13 +141,29 @@ async function generateAlbumCardList(albums) {
 	// generate cards
 	let cardList = '';
 	for (const [key, value] of cardData) {
+		// generation with no parameters
+		let album;
+		if (key == '') {
+			album = 'Unknown Album';
+		} else {
+			album = key;
+		}
+		if (value.artist == '') {
+			value.artist = 'Unknown Artist';
+		}
+		if (value.year == '') {
+			value.year = 'Unknown Year';
+		}
+		if (value.artwork == '' || value.artwork == undefined) {
+			value.artwork = '../img/artwork-default.png';
+		}
 		const card = `
     <div class="library-card library-card-album" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${value.artwork} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${album}</div>
         <div>${value.artist}</div>
         <div>${value.year}</div>
       </div>
@@ -161,7 +182,7 @@ async function generateAlbumCardList(albums) {
  */
 async function generateArtistCardList(artists) {
 	// we fill our cardData with the artists we were passed in
-	const cardData = new Map(); // ('album', {artist: '', year: Number, artwork: ''})
+	const cardData = new Map(); // ('artist, {numAlbums: '', year: Number, artwork: ''})
 	artists.forEach((artist) => {
 		cardData.set(artist, {
 			numAlbums: new Set(),
@@ -185,14 +206,24 @@ async function generateArtistCardList(artists) {
 	// generate cards from cardData
 	let cardList = '';
 	for (const [key, value] of cardData) {
-		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		// generation with no parameters
+		let artist;
+		if (key == '') {
+			artist = 'Unknown Artist';
+		} else {
+			artist = key;
+		}
+		if (cardCover == '' || cardCover == undefined) {
+			cardCover = '../img/artwork-default.png';
+		}
 		const card = `
     <div class="library-card library-card-artist" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${artist}</div>
         <div>${value.numAlbums.size} ${value.numAlbums.size === 1 ? 'Album' : 'Albums'}</div>
         <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
@@ -239,14 +270,24 @@ async function generateGenreCardList(genres) {
 	// generate cards
 	let cardList = '';
 	for (const [key, value] of cardData) {
-		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		// generation with no parameters
+		let genre;
+		if (key == '') {
+			genre = 'Unknown Genre';
+		} else {
+			genre = key;
+		}
+		if (cardCover == '' || cardCover == undefined) {
+			cardCover = '../img/artwork-default.png';
+		}
 		const card = `
     <div class="library-card library-card-genre" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${genre}</div>
         <div>${value.numArtists.size} ${value.numArtists.size === 1 ? 'Artist' : 'Artists'}</div>
         <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
@@ -294,14 +335,24 @@ async function generateTagCardList(tags) {
 	// generate cards
 	let cardList = '';
 	for (const [key, value] of cardData) {
-		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		// generate default info
+		let tag;
+		if (key == '') {
+			tag = 'Unknown Album';
+		} else {
+			tag = key;
+		}
+		if (cardCover == '' || cardCover == undefined) {
+			cardCover = '../img/artwork-default.png';
+		}
 		const card = `
     <div class="library-card library-card-tag" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${tag}</div>
         <div>${value.numArtists.size} ${value.numArtists.size === 1 ? 'Artist' : 'Artists'}</div>
         <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
@@ -311,11 +362,6 @@ async function generateTagCardList(tags) {
 	}
 	return cardList;
 }
-
-// ALL THESE FUNCTIONS ARE HERE TEMPORARILY BECAUSE I DO NOT KNOW HOW TO IMPORT FUNCTIONS.
-// Originally were in files by Alvin, but those are gone.
-// I expect them to come back though, so I will leave this message in
-
 
 /**
  * @description  > Albums Extended Page. Generate Album Library View based on user selection.

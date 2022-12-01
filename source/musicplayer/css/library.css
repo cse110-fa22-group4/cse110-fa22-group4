@@ -64,6 +64,8 @@
 .library-card {
   min-width: 275px;
   max-width: 275px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .library-card img {
@@ -87,6 +89,7 @@
 }
 
 .library-card-info > div {
+  text-overflow: ellipsis;
   padding: 3px 0;
   height: 11px;
 }
