@@ -42,14 +42,9 @@ window.addEventListener('settings-loaded', async ()=> {
  * @param {HTMLElement} element
  */
 async function rescanClick(element) {
-	console.log('clicked');
-	let scannedSongs = { };
+	const scannedSongs = { };
 	const settings = await fsAPI.getSetting('watchedDir');
 	if (settings === undefined) return;
-
-	// I am going to implement a naive version of this for now - Noah
-	// things I have done to make this work - changed scannedSongs from const to let,
-	// create an array of ffmpegAPI.ffmpegRead(path) and evaluate them using Promise.allSettled
 	for (const path of settings) {
 		const obj = await ffmpegAPI.useMultiFFmpeg(path);
 		Object.assign(scannedSongs, obj);

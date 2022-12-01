@@ -1,5 +1,3 @@
-/* eslint-disable linebreak-style */
-
 let libraryCatalogRef;
 // This file is very WIP
 window.addEventListener('home-loaded', async () => {
@@ -17,7 +15,6 @@ window.addEventListener('home-loaded', async () => {
  * @return {Promise<void>}
  */
 async function generateHomeCards() {
-	console.log(libraryCatalogRef);
 	// we cannot have more cards than we have songs
 	const numHomeCards = Math.min(4, libraryCatalogRef.length);
 
