@@ -136,7 +136,7 @@ async function addGrid(domID, columns, data, params = {}) {
 
 	// row selection actions
 	grid.on('ready', (...args) => {
-		if (data.length != 0) {
+		if (data.length !== 0) {
 			const checkboxPlugin = grid.config.plugin.get('awesomeCheckbox');
 			checkboxPlugin.props.store.on('updated', function(state, prevState) {
 				// update selectedTracks with current selection
@@ -146,8 +146,7 @@ async function addGrid(domID, columns, data, params = {}) {
 					for (let j = 1; j < columns.length; j++) {
 						if (columns[j].name in data[0]) {
 							const key = columns[j].name;
-							const value = state.rowIds[i][j].data;
-							currTrackObj[`${key}`] = value;
+							currTrackObj[`${key}`] = state.rowIds[i][j].data;
 						}
 					}
 					currSelection.push(currTrackObj);
@@ -159,7 +158,7 @@ async function addGrid(domID, columns, data, params = {}) {
 
 				// playlist manager actions
 				// send selected tracks to selected container
-				if (editorType == 'playlists') {
+				if (editorType === 'playlists') {
 					const playlistManager = document.getElementById('selected-playlists-container');
 					let selectedRow = `
                     <div class="playlist-manager-header">
@@ -180,7 +179,7 @@ async function addGrid(domID, columns, data, params = {}) {
 
 				// metadata editor actions
 				// send selected tracks to playlist manager
-				if (editorType == 'metadata') {
+				if (editorType === 'metadata') {
 					// TODO: use selected tracks to edit metadata, MAY not need function here
 				}
 			});
