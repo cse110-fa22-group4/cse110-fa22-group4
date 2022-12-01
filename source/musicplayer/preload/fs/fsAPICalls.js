@@ -192,12 +192,12 @@ async function recursiveSearchAtPath(searchPath) {
 
 /**
  *
- * @param path The path of the song
+ * @param filename The path of the song
  * @param songs The songs.json object
  * @returns {Promise<
  * {
  * 		duration: 	(string|number),
- * 		path: 		(string),
+ * 		filename: 		(string),
  * 		artist: 	(string),
  * 		year: 		(string|number),
  * 		album: 		(string),
@@ -205,8 +205,8 @@ async function recursiveSearchAtPath(searchPath) {
  * 		title: 		(string)
  * 	}>}
  */
-async function convertPathToTrack(path, songs) {
-	const song = songs[path]['format'];
+async function convertPathToTrack(filename, songs) {
+	const song = songs[filename]['format'];
 	const title = 'tags' in song && 'title' in song['tags'] ? song['tags']['title'] : '';
 	const artist = 'tags' in song && 'artist' in song['tags'] ? song['tags']['artist'] : '';
 	const album = 'tags' in song && 'album' in song['tags'] ? song['tags']['album'] : '';
@@ -215,7 +215,7 @@ async function convertPathToTrack(path, songs) {
 	const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
 	return {
 		'title': title,
-		'path': path,
+		'filename': filename,
 		'artist': artist,
 		'album': album,
 		'year': year,
