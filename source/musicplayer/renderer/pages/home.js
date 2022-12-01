@@ -14,9 +14,13 @@ window.addEventListener('home-loaded', async () => {
  * @return {Promise<void>}
  */
 async function generateHomeCards() {
-	console.log(libraryCatalogRef);
 	// we cannot have more cards than we have songs
 	const numHomeCards = Math.min(4, libraryCatalogRef.length);
+
+	if (numHomeCards === 0) {
+		await emptyLibrary();
+		return;
+	}
 
 	// this boolean prevents us from failing to generate something unique more than once.
 	// if we generate something nonunique, try again, and it still isn't unique, we just don't add a card then
@@ -463,4 +467,14 @@ async function libraryTagsExtended(e) {
 	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardTag}`);
 	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+}
+
+/**
+ * @description this function should be called if you have an empty library. It will display some friendly
+ * text telling the user to go add a watched folder.
+ */
+async function emptyLibrary() {
+	const friendlyText = `<h2>Looks like you don't have any songs in your library :(</h2>
+		<p>To add songs, go into the settings and add a folder with songs in it.</p>`;
+	await domAPI.setHTML('home', friendlyText);
 }
