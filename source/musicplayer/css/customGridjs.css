@@ -1,6 +1,5 @@
 /* GRID JS */
 .gridjs-search {
-
   background-color: var(--light);
   margin-bottom: 20px;
   width: 100%;
@@ -9,7 +8,6 @@
   max-width: 365px; */
 
   /* position: fixed; */
-
 }
 
 .gridjs-search > input {
@@ -18,8 +16,7 @@
   width: 250px;
   border: 1px solid var(--mid);
   border-radius: 2.5px;
-
-  font-family: 'Roboto', sans-serif;
+  font-family: Roboto, sans-serif;
   font-size: 11px;
   font-weight: 100;
   padding-left: 10px;
@@ -44,24 +41,17 @@
   width: 100%;
 }
 
-.gridjs-tr {
-}
-
 .gridjs-tbody .gridjs-tr:hover {
-  background-color: rgb(0,0,0,0.05);
+  background-color: rgb(0 0 0 / 5%);
   transition: 300ms;
 }
 
 .gridjs-thead {
-text-align: left;
+  text-align: left;
 }
 
-.gridjs-th:hover {
-  background-color: rgb(0,0,0,0.05);
-  transition: 300ms;
-}
-
-.gridjs-th, .gridjs-td {
+.gridjs-th,
+.gridjs-td {
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -70,13 +60,30 @@ text-align: left;
   color: var(--theme-primary);
   padding-top: 5px;
   text-transform: uppercase;
+  vertical-align: top;
 }
+
 .gridjs-td {
-  padding-top:10px;
-  padding-bottom:10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-overflow: ellipsis;
 }
 
+.gridjs-th:hover {
+  background-color: rgb(0 0 0 / 5%);
+  transition: 300ms;
+}
 
-.gridjs-tbody {
+/* stylelint-disable-next-line selector-class-pattern */
+button.gridQueueButton {
+  display: flex;
+  background-color: var(--mid);
+  color: var(--light);
+  margin: 0 auto;
+  border-radius: 2.5px;
+}
+
+/* stylelint-disable-next-line selector-class-pattern */
+button.gridQueueButton:hover {
+  background-color: var(--mid-dark);
 }

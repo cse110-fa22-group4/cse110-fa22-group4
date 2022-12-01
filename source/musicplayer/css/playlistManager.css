@@ -8,15 +8,25 @@
     height: 100%;
 }
 
+#playlist-create-container, 
+#playlist-add-container {
+    display: flex;
+    flex-direction: row;
+    height: 24px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
 #input-playlist-create {
-    min-height: 20px;
-    width: calc(100% - 15px);
+    min-height: 100%;
+
+    border: none;
     border-radius: 2.5px;
-    border: 1px solid var(--mid);
     padding-left: 10px;
     font-size: 11px;
     color: var(--mid-dark);
-    margin-bottom: 10px;
+    width: 100%;
+    margin-right: 10px;
 }
 
 #input-playlist-create::placeholder {
@@ -25,41 +35,50 @@
 }
 
 #select-playlist-add {
-    min-height: 24px;
+    border: none;
+
     width: 100%;
+    min-height: 100%;
     font-size: 11px;
     border-radius: 2.5px;
     color: var(--mid-dark);
-    border: 1px solid var(--mid);
 
     font-family: 'Roboto', sans-serif;
     font-size: 11px;
     font-weight: 100;
 
     padding-left: 5px;
+    margin-right: 10px;
+}
+
+#selected-playlists-title {
+    display: flex;
+    align-items: end;
     margin-bottom: 10px;
 }
 
 #btn-playlist-create,
 #btn-playlist-add,
 #btn-playlist-delete,
+#btn-playlist-special,
 #btn-playlist-remove-selection {
     border: none;
     border-radius: 2.5px;
-    background-color: red;
+    background-color: rgba(0, 0, 0, .30);
 
-    font-size: 11px;
-    color: var(--light);
-    padding: 8px 10px;
-
-    align-self: end;
-
-    margin-bottom: 10px;
 
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.15);
-    background-color: rgba(0, 0, 0, .30);
+
+    min-width: 90px;
+    min-height: 24px;
+
     color: var(--mid-light);
-    border-radius: 4px;
+    font-size: 11px;
+    /* padding: 8px 10px; */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #btn-playlist-create:hover,

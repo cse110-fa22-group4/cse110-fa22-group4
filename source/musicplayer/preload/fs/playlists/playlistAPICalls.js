@@ -2,10 +2,10 @@ const path = require('path');
 const fs = require('fs');
 const fsPromises = fs.promises;
 const {getStoragePath, makeDirIfNotExists,
-	throwErr, throwErrOpen} = require('../fsAPICalls');
+	throwErr, throwErrOpen, convertPathToTrack} = require('../fsAPICalls');
 const {getSongs} = require('../songs/songsAPICalls');
 const {Grid} = require('gridjs');
-const {debugLog} = require("../../general/genAPICalls");
+const {debugLog} = require('../../general/genAPICalls');
 
 /**
  * @name getAllPlaylists
@@ -18,11 +18,35 @@ async function getAllPlaylists() {
 	const playlistPath = path.join(storagePath, 'playlists');
 
 	await makeDirIfNotExists('playlists');
-	//Sorry, but with readdir, the
-	//filenames would've gone out of scope in the callback
-	//As a result, we can't return them
-	return await fsPromises.readdir(playlistPath)
+	// Sorry, but with readdir, the
+	// filenames would've gone out of scope in the callback
+	// As a result, we can't return them
+	return await fsPromises.readdir(playlistPath);
 }
+
+/* PLAYLIST STRUCTURE:
+{
+	"meta": {
+		"creator": "user",
+		"date": "199925292"
+	},
+	"tags": [
+		{
+			"title": "aaa",
+			"artist": "bbb",
+			"album": "ccc",
+		},
+		{
+			"album": "ddd",
+			"artist": "eee",
+		},
+	],
+}
+
+	- meta contains useful information, such as the creator of the playlist and the time it was created
+	- tags contains a sum of products form tag collection, as this allows for a minimal coverage of any set.
+
+ */
 
 /**
  * @name getPlaylist
@@ -32,44 +56,40 @@ async function getAllPlaylists() {
  * @return {Promise<object>} A map that represents a playlist.
  */
 async function getPlaylist(playlist) {
-	const storagePath = await getStoragePath();
-	const playlistPath = path.join(storagePath, 'playlists', playlist);
-
 	await makeDirIfNotExists('playlists');
 
-	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
+	const playlistObj = await getPlaylistObj(playlist);
 	const allSongs = await getSongs();
 	const foundPaths = [];
-	const ret = { "name": playlist, "trackList": [] };
+	const ret = {'name': playlist, 'trackList': []};
 
-	for (const tagGroup in playlistObj['tags']) {
-		await debugLog(playlistObj['tags'], 'playlists-test');
-		for (const tagIndex in playlistObj['tags'][tagGroup]) {
-			const tag = playlistObj['tags'][tagGroup][tagIndex];
-			for (const songPath in allSongs) {
-				const song = allSongs[songPath]['format'];
+	for (const tagGroup of playlistObj['tags']) {
 
-				if (foundPaths.includes(songPath)) continue;
-				if (!(tagGroup in song &&song[tagGroup].includes(tag) ||
-					'tags' in song && tagGroup in song['tags'] && song['tags'][tagGroup].includes(tag))) continue;
+		const foundSongs = Object.entries(allSongs).filter((val) => {
+			const meta = val[1];
+			if (!('format' in meta)) return false;
+			const metadata = meta['format'];
+			for (const tag in tagGroup) {
 
-				foundPaths.push(songPath);
-				const title = 'tags' in song && 'title' in song['tags'] ? song['tags']['title'] : '';
-				const artist = 'tags' in song && 'artist' in song['tags'] ? song['tags']['artist'] : '';
-				const album = 'tags' in song && 'album' in song['tags'] ? song['tags']['album'] : '';
-				const year = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
-				const duration = 'duration' in song ? song['duration']: '';
-				const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
-				ret['trackList'].push( {
-					'title': title,
-					'path': songPath,
-					'artist': artist,
-					'album': album,
-					'year': year,
-					'duration': duration,
-					'genre': genre,
-				});
+				if (tag in metadata) {
+					if (!metadata[tag].includes(tagGroup[tag])) return false;
+				} else if ('tags' in metadata && tag in metadata['tags']) {
+					if (!metadata['tags'][tag].includes(tagGroup[tag])) return false;
+				} else return false;
+
 			}
+			return true;
+		});
+
+		for (const foundObj of foundSongs) {
+			const foundPath = foundObj[0];
+			const foundMeta = foundObj[1];
+			if (foundPaths.includes(foundPath)) continue;
+			if (!('format' in foundMeta)) continue;
+			const song = foundMeta['format'];
+
+			foundPaths.push(foundPath);
+			ret['trackList'].push(await convertPathToTrack(foundPath, allSongs));
 		}
 	}
 	ret['numTracks'] = foundPaths.length;
@@ -85,16 +105,26 @@ async function getPlaylist(playlist) {
  * @return {Promise<void>}
  */
 async function removePlaylist(playlistName) {
+	await makeDirIfNotExists('playlists');
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists', playlistName);
-	await makeDirIfNotExists('playlists');
-	//if (!(await fs.exists(playlistPath))) return;
-	//await fs.rm(playlistPath);
-	await fs.exists(playlistPath, async(e) => {
-		if(e) {
-			await fsPromises.rm(playlistPath);
-		}
-	});
+	try {
+		await fsPromises.rm(playlistPath);
+	} catch (e) {
+
+	}
+}
+
+/**
+ * @memberOf fsAPI
+ * @name createPlaylist
+ * @description Initializes a new, empty playlist.
+ * @param playlistName The playlist to create
+ * @returns {Promise<void>}
+ */
+async function createPlaylist(playlistName) {
+	await writePlaylist(playlistName, { "meta": {}, "tags": []});
+	await writePlaylist(playlistName, { "meta": {}, "tags": []});
 }
 
 /**
@@ -116,21 +146,76 @@ async function writePlaylist(playlistName, playlist) {
 /**
  * @memberOf fsAPI
  * @name writeToPlaylist
- * @description Adds a new tag, value pair to search for during playlist creation.
+ * @description Adds a new tag group to the playlist.
  * @param {string} playlistName The name of the playlist to write to.
- * @param {string} tag The tag to add.
- * @param {string} val The value to search for.
+ * @param {object} tagGroup A product of tags to add.
+ * @example
+ * const tags = { };
+ * tags['artist'] = 'Dua Lipa';
+ * tags['title'] = 'Future Nostalgia';
+ * // tags:
+ * // {
+ * //	'artist': 'Dua Lipa',
+ * //	'title': 'Future Nostalgia',
+ * // }
+ * await fsAPI.writeToPlaylist('myPlaylist', tags);
+ * @return {Promise<void>}
+ */
+async function writeToPlaylist(playlistName, tagGroup) {
+	const playlistObj = await getPlaylistObj(playlistName);
+	playlistObj['tags'].push(tagGroup);
+	await writePlaylist(playlistName, playlistObj);
+}
+
+/**
+ * @memberOf fsAPI
+ * @name writePlaylistMeta
+ * @description Writes metadata to a playlist, such as creator or date created.
+ * @example
+ * await writePlaylistMeta('myPlaylist', 'creator', 'user1');
+ * @param playlistName The name of the playlist
+ * @param metaTag The meta tag to add
+ * @param metaValue The value to set.
  * @returns {Promise<void>}
  */
-async function writeToPlaylist(playlistName, tag, val) {
-	const storagePath = await getStoragePath();
-	const playlistPath = path.join(storagePath, 'playlists', playlistName);
-	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
-	if (!(tag in playlistObj['tags'])) {
-		playlistObj['tags'][tag] = [];
-	}
-	playlistObj['tags'][tag].push(val);
-	await writePlaylist(playlistName, playlistObj);
+async function writePlaylistMeta(playlistName, metaTag, metaValue) {
+	const playlist = await getPlaylistObj(playlistName);
+	playlist['meta'][metaTag] = metaValue;
+	await writePlaylist(playlistName, playlist);
+}
+
+/**
+ * @memberOf fsAPI
+ * @name removePlaylistMeta
+ * @description Removes a metadata tag from a playlist.
+ * @example
+ * await removePlaylistMeta('myPlaylist', 'creator');
+ * @param playlistName The name of the playlist
+ * @param metaTag The tag to remove from the metadata
+ * @returns {Promise<void>}
+ */
+async function removePlaylistMeta(playlistName, metaTag) {
+	const playlist = await getPlaylistObj(playlistName);
+	if (!(metaTag in playlist['meta'])) return;
+	delete playlist['meta'][metaTag];
+	await writePlaylist(playlistName, playlist);
+}
+
+/**
+ * @memberOf fsAPI
+ * @name getPlaylistMeta
+ * @description Gets the metadata of a playlist as an object.
+ * @example
+ * const playlistMeta = await getPlaylistMeta('myPlaylist');
+ * // playlistMeta = {
+ * //	'creator': 'user1',
+ * //	'date': '523470985',
+ * //}
+ * @param playlistName The name of the playlist.
+ * @returns {Promise<object>} The metadata of the playlist.
+ */
+async function getPlaylistMeta(playlistName) {
+	return (await getPlaylistObj(playlistName))['meta'];
 }
 
 /**
@@ -138,26 +223,43 @@ async function writeToPlaylist(playlistName, tag, val) {
  * @name writeToPlaylist
  * @description Removes a value from a tag for playlist creation.
  * @param {string} playlistName The name of the playlist.
- * @param {string} tag The tag to use.
- * @param {string} val The value to remove.
- * @returns {Promise<void>}
+ * @param {number} index The index of the tag group to remove.
+ * @return {Promise<void>}
  */
-async function removeFromPlaylist(playlistName, tag, val) {
+async function removeFromPlaylist(playlistName, index) {
+	const playlistObj = await getPlaylistObj(playlistName);
+	playlistObj['tags'].splice(index);
+	await writePlaylist(playlistName, playlistObj);
+}
+
+/**
+ * @memberOf fsAPI
+ * @name getPlaylistObj
+ * @description Gets the actual playlist object. Should only be used for internal functions or debugging.
+ * @param {string} playlistName The name of the playlist to get.
+ * @returns {Promise<any>}
+ */
+async function getPlaylistObj(playlistName) {
 	const storagePath = await getStoragePath();
 	const playlistPath = path.join(storagePath, 'playlists', playlistName);
-	const playlistObj = JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
-	if (tag in playlistObj['tags']) {
-		const filtered = playlistObj['tags'][tag].filter((value) => value !== val);
-		await writePlaylist(playlistName, filtered);
+	try {
+		return JSON.parse(await fsPromises.readFile(playlistPath, 'utf8'));
+
+	} catch (e) {
+		return { };
 	}
 }
 
-
-
 async function exportPlaylist(playlistName) {
-	//TODO: should just cp it if it exists
+	// TODO: should just cp it if it exists
 }
+
 module.exports = {
+	getPlaylistObj,
+	writePlaylistMeta,
+	removePlaylistMeta,
+	getPlaylistMeta,
+	createPlaylist,
 	getAllPlaylists,
 	writeToPlaylist,
 	removeFromPlaylist,

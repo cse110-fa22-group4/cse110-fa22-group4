@@ -40,6 +40,10 @@ const createWindow = async () => {
 	if (argv.length === 3 && argv[2] === '-g') {
 		await fsAPITester.testAll();
 	}
+
+	// add mainWindow to global
+	// probably can't make mainWindow global 
+	//await genAPI.publishGlobal(mainWindow, 'mainWindow');
 };
 
 // This method will be called when Electron has finished

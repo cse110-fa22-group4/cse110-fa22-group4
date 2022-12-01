@@ -58,7 +58,7 @@ const globalVars = {};
  * @return {Promise<void>}
  */
 async function publishGlobal(globalValue, globalKey) {
-	globalVars[globalKey] = globalValue;
+	globalVars[globalKey] = JSON.stringify(globalValue);
 }
 
 /**
@@ -70,7 +70,7 @@ async function publishGlobal(globalValue, globalKey) {
  */
 async function getGlobal(globalKey) {
 	if (globalKey in globalVars) {
-		return globalVars[globalKey];
+		return JSON.parse(globalVars[globalKey]);
 	}
 }
 

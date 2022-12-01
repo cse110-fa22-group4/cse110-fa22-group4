@@ -1,0 +1,23 @@
+# lint check for javascript, css, html using google style guide and github actions
+name: Testing
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    name: tests
+    runs-on: macos-latest
+    
+    defaults:
+      run:
+        working-directory: source/musicplayer
+    
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: npm update
+      - name: Run tests
+        run: npx playwright test --workers=1

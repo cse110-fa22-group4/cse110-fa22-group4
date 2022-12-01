@@ -1,10 +1,7 @@
-/* eslint-disable linebreak-style */
-
 let libraryCatalogRef;
-// This file is very WIP
 window.addEventListener('home-loaded', async () => {
 	// we need to get our global libraryCatalogRef
-	libraryCatalogRef = await genAPI.getGlobal('libraryCatalog');
+	libraryCatalogRef = await fsAPI.getSongsTrackData();
 	await generateHomeCards();
 	await domAPI.addEventListenerbyClassName('library-card-album', 'click', libraryAlbumsExtended);
 	await domAPI.addEventListenerbyClassName('library-card-artist', 'click', libraryArtistsExtended);
@@ -17,9 +14,13 @@ window.addEventListener('home-loaded', async () => {
  * @return {Promise<void>}
  */
 async function generateHomeCards() {
-	console.log(libraryCatalogRef);
 	// we cannot have more cards than we have songs
 	const numHomeCards = Math.min(4, libraryCatalogRef.length);
+
+	if (numHomeCards === 0) {
+		await emptyLibrary();
+		return;
+	}
 
 	// this boolean prevents us from failing to generate something unique more than once.
 	// if we generate something nonunique, try again, and it still isn't unique, we just don't add a card then
@@ -62,11 +63,15 @@ async function generateHomeCards() {
 
 	const genres = new Set();
 	count = 0;
-	while (genres.size < numHomeCards) {
+	while (genres.size < numHomeCards && count < maxRepeats) {
 		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
 		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
 		const genreArr = libraryCatalogRef[randomIndex].genre.split(', ');
+		if (genreArr.length == 0) {
+			genres.add('');
+			count += 1;
+		}
 		for (const i of genreArr) {
 			if ((!(genres.has(i))) && genres.size < numHomeCards) {
 				genres.add(i);
@@ -83,11 +88,15 @@ async function generateHomeCards() {
 
 	const tags = new Set();
 	count = 0;
-	while (tags.size < numHomeCards) {
+	while (tags.size < numHomeCards && count < maxRepeats) {
 		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
 		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
 		const tagArr = libraryCatalogRef[randomIndex].tags.split(', ');
+		if (tagArr.length == 0) {
+			tags.add('');
+			count += 1;
+		}
 		for (const i of tagArr) {
 			if ((!(tags.has(i))) && tags.size < numHomeCards) {
 				tags.add(i);
@@ -139,13 +148,29 @@ async function generateAlbumCardList(albums) {
 	// generate cards
 	let cardList = '';
 	for (const [key, value] of cardData) {
+		// generation with no parameters
+		let album;
+		if (key == '') {
+			album = 'Unknown Album';
+		} else {
+			album = key;
+		}
+		if (value.artist == '') {
+			value.artist = 'Unknown Artist';
+		}
+		if (value.year == '') {
+			value.year = 'Unknown Year';
+		}
+		if (value.artwork == '' || value.artwork == undefined) {
+			value.artwork = '../img/artwork-default.png';
+		}
 		const card = `
     <div class="library-card library-card-album" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${value.artwork} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${album}</div>
         <div>${value.artist}</div>
         <div>${value.year}</div>
       </div>
@@ -164,7 +189,7 @@ async function generateAlbumCardList(albums) {
  */
 async function generateArtistCardList(artists) {
 	// we fill our cardData with the artists we were passed in
-	const cardData = new Map(); // ('album', {artist: '', year: Number, artwork: ''})
+	const cardData = new Map(); // ('artist, {numAlbums: '', year: Number, artwork: ''})
 	artists.forEach((artist) => {
 		cardData.set(artist, {
 			numAlbums: new Set(),
@@ -188,14 +213,24 @@ async function generateArtistCardList(artists) {
 	// generate cards from cardData
 	let cardList = '';
 	for (const [key, value] of cardData) {
-		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		// generation with no parameters
+		let artist;
+		if (key == '') {
+			artist = 'Unknown Artist';
+		} else {
+			artist = key;
+		}
+		if (cardCover == '' || cardCover == undefined) {
+			cardCover = '../img/artwork-default.png';
+		}
 		const card = `
     <div class="library-card library-card-artist" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${artist}</div>
         <div>${value.numAlbums.size} ${value.numAlbums.size === 1 ? 'Album' : 'Albums'}</div>
         <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
@@ -242,14 +277,24 @@ async function generateGenreCardList(genres) {
 	// generate cards
 	let cardList = '';
 	for (const [key, value] of cardData) {
-		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		// generation with no parameters
+		let genre;
+		if (key == '') {
+			genre = 'Unknown Genre';
+		} else {
+			genre = key;
+		}
+		if (cardCover == '' || cardCover == undefined) {
+			cardCover = '../img/artwork-default.png';
+		}
 		const card = `
     <div class="library-card library-card-genre" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${genre}</div>
         <div>${value.numArtists.size} ${value.numArtists.size === 1 ? 'Artist' : 'Artists'}</div>
         <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
@@ -297,14 +342,24 @@ async function generateTagCardList(tags) {
 	// generate cards
 	let cardList = '';
 	for (const [key, value] of cardData) {
-		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		// generate default info
+		let tag;
+		if (key == '') {
+			tag = 'Unassigned';
+		} else {
+			tag = key;
+		}
+		if (cardCover == '' || cardCover == undefined) {
+			cardCover = '../img/artwork-default.png';
+		}
 		const card = `
     <div class="library-card library-card-tag" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${tag}</div>
         <div>${value.numArtists.size} ${value.numArtists.size === 1 ? 'Artist' : 'Artists'}</div>
         <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
@@ -314,11 +369,6 @@ async function generateTagCardList(tags) {
 	}
 	return cardList;
 }
-
-// ALL THESE FUNCTIONS ARE HERE TEMPORARILY BECAUSE I DO NOT KNOW HOW TO IMPORT FUNCTIONS.
-// Originally were in files by Alvin, but those are gone.
-// I expect them to come back though, so I will leave this message in
-
 
 /**
  * @description  > Albums Extended Page. Generate Album Library View based on user selection.
@@ -417,4 +467,14 @@ async function libraryTagsExtended(e) {
 	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardTag}`);
 	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+}
+
+/**
+ * @description this function should be called if you have an empty library. It will display some friendly
+ * text telling the user to go add a watched folder.
+ */
+async function emptyLibrary() {
+	const friendlyText = `<h2>Looks like you don't have any songs in your library :(</h2>
+		<p>To add songs, go into the settings and add a folder with songs in it.</p>`;
+	await domAPI.setHTML('home', friendlyText);
 }

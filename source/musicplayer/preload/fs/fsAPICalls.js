@@ -190,7 +190,44 @@ async function recursiveSearchAtPath(searchPath) {
 	}
 }
 
+/**
+ *
+ * @param filename The path of the song
+ * @param songs The songs.json object
+ * @returns {Promise<
+ * {
+ * 		duration: 	(string|number),
+ * 		filename: 		(string),
+ * 		artist: 	(string),
+ * 		year: 		(string|number),
+ * 		album: 		(string),
+ * 		genre: 		(string),
+ * 		title: 		(string)
+ * 	}>}
+ */
+async function convertPathToTrack(filename, songs) {
+	const song = songs[filename]['format'];
+	const title = 'tags' in song && 'title' in song['tags'] ? song['tags']['title'] : '';
+	const artist = 'tags' in song && 'artist' in song['tags'] ? song['tags']['artist'] : '';
+	const album = 'tags' in song && 'album' in song['tags'] ? song['tags']['album'] : '';
+	const year = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
+	const duration = 'duration' in song ? song['duration']: '';
+	const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
+	const tags = 'tags' in song && 'tags' in song['tags'] ? song['tags']['tags'] : '';
+	return {
+		'title': title,
+		'filename': filename,
+		'artist': artist,
+		'album': album,
+		'year': year,
+		'duration': duration,
+		'genre': genre,
+		'tags': tags,
+	};
+}
+
 module.exports = {
+	convertPathToTrack,
 	getStoragePath,
 	makeDirIfNotExists,
 	getSRCString,

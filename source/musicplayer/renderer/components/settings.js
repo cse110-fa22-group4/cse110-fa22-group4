@@ -42,17 +42,11 @@ window.addEventListener('settings-loaded', async ()=> {
  * @param {HTMLElement} element
  */
 async function rescanClick(element) {
-	console.log('clicked');
-	let scannedSongs = { };
+	const scannedSongs = { };
 	const settings = await fsAPI.getSetting('watchedDir');
 	if (settings === undefined) return;
-
-	// I am going to implement a naive version of this for now - Noah
-	// things I have done to make this work - changed scannedSongs from const to let,
-	// create an array of ffmpegAPI.ffmpegRead(path) and evaluate them using Promise.allSettled
 	for (const path of settings) {
-		const paths = await fsAPI.recursiveSearchAtPath(path);
-		const obj = await ffmpegAPI.useMultiFFmpeg(paths);
+		const obj = await ffmpegAPI.useMultiFFmpeg(path);
 		Object.assign(scannedSongs, obj);
 	}
 	console.log(scannedSongs);
@@ -146,15 +140,6 @@ async function loadSettingsState() {
 			await domAPI.setProperty(relevantToggles[i], 'checked', 'true');
 		}
 	}
-
-	// color themes - this will need to go elsewhere, ideally we do not load it only when loading settings page
-	if ('primaryColor' in allSettings) {
-		await domAPI.setThemeColor(themeColorsPrimary[allSettings['primaryColor']-- % themeColorsPrimary.length], '');
-	}
-	if ('secondaryColor' in allSettings) {
-		await domAPI.setThemeColor('',
-			themeColorsSecondary[allSettings['secondaryColor']++ % themeColorsSecondary.length]);
-	}
 }
 
 /**
@@ -162,7 +147,7 @@ async function loadSettingsState() {
  */
 async function changeThemeColorPrimary() {
 	await domAPI.setThemeColor(themeColorsPrimary[themeColorsPrimaryCount % themeColorsPrimary.length], '');
-	await fsAPI.writeToSetting('primaryColor', themeColorsPrimaryCount % themeColorsPrimary.length);
+	await fsAPI.writeToSetting('primaryColor', themeColorsPrimary[themeColorsPrimaryCount % themeColorsPrimary.length]);
 	themeColorsPrimaryCount++;
 }
 
@@ -171,7 +156,8 @@ async function changeThemeColorPrimary() {
  */
 async function changeThemeColorSecondary() {
 	await domAPI.setThemeColor('', themeColorsSecondary[themeColorsSecondaryCount % themeColorsSecondary.length]);
-	await fsAPI.writeToSetting('secondaryColor', themeColorsSecondaryCount % themeColorsSecondary.length);
+	await fsAPI.writeToSetting('secondaryColor',
+		themeColorsSecondary[themeColorsSecondaryCount % themeColorsSecondary.length]);
 	themeColorsSecondaryCount--;
 	if (themeColorsSecondaryCount === 0) {
 		themeColorsSecondaryCount = themeColorsSecondary.length;
