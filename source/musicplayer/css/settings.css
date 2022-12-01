@@ -1,246 +1,249 @@
+/* stylelint-disable property-no-vendor-prefix */
 .settings-container {
-    margin-top: 5%;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 530px 1fr;
-    column-gap: 5%;
-
-    color: var(--mid);
-}
-.toggle{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    white-space: nowrap;
-    margin-bottom: 40px;
+  margin-top: 5%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 530px 1fr;
+  column-gap: 5%;
+  color: var(--mid);
 }
 
-/* Hide default HTML checkbox, will be covered by the label*/
+.toggle {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  white-space: nowrap;
+  margin-bottom: 40px;
+}
+
+/* Hide default HTML checkbox, will be covered by the label */
 .toggle input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-.toggle > label{
-    /* aligns to right side of column*/
-    margin-left: auto;
-    /*styling will be covering the checkbox*/
-    position: relative;
-    display: inline-block;
-    min-width: 60px;
-    height: 34px;
+.toggle > label {
+  /* aligns to right side of column */
+  margin-left: auto;
+
+  /* styling will be covering the checkbox */
+  position: relative;
+  display: inline-block;
+  min-width: 60px;
+  height: 34px;
 }
 
 /* we use the span element as a slider */
 .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgb(102, 99, 99);
-    /* animation doesn't appear to be working well right now
-    -webkit-transition: .4s;
-    transition: .4s; */
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(102 99 99);
 
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  /* animation doesn't appear to be working well right now
+  -webkit-transition: .4s;
+  transition: .4s; */
+
+  box-shadow: inset 0 4px 4px rgba(0 0 0 / 25%);
 }
 
 /* position of slider when setting is off */
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    min-width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  min-width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
 
-    /* animation for when we go from on to off 
-    animation makes it take 0.8 seconds for these elements to dissappear
-    -webkit-transition: .4s;
-    transition: .4s;*/
+  /* animation for when we go from on to off
+  animation makes it take 0.8 seconds for these elements to dissappear
+  -webkit-transition: .4s;
+  transition: .4s; */
 }
 
-/*change the color of the label when we enable the setting*/
+/* change the color of the label when we enable the setting */
 input:checked + .slider {
-    /* background-color: #2196F3; */
-    background-color: var(--theme-primary); /* Testing with global theme variable */
+  /* background-color: #2196F3; */
+  background-color: var(--theme-primary); /* Testing with global theme variable */
 }
 
-/*animation for when we enable the setting*/
-input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
+/* animation for when we enable the setting */
+input:checked + .slider::before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
+
 /* Rounded sliders */
 .slider.round {
-    border-radius: 34px;
-  }
-  
-.slider.round:before {
-    border-radius: 50%;
-    box-shadow: -2px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 34px;
+}
+
+.slider.round::before {
+  border-radius: 50%;
+  box-shadow: -2px 0 4px  rgba(0 0 0 / 25%);
 }
 
 /* TEMP COLOR THEME PICKER */
 .theme-color-picker-container {
-    display: flex;
-    flex-direction: column;
-    row-gap: 20px;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  margin-bottom: 20px;
 }
 
 .btn-theme-color {
-    font-size: 12px;
-    width: 200px;
-    height: 50px;
-    border: none;
-    color: var(--mid);
+  width: 200px;
+  height: 50px;
+  border: none;
+  color: var(--mid);
+  background-color: rgba(0 0 0 / 30%);
+  border-radius: 5px;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+  box-shadow: inset 0 4px 4px rgba(0 0 0 / 25%);
+}
 
-    background-color: rgba(0, 0, 0, .30);
-    border-radius: 5px;
+.theme-color-picker-container > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
-    font-family: 'Roboto', sans-serif;
-    font-size: 12px;
-    font-weight: 100;
+.btn-theme-color:hover {
+  background-color: rgba(0 0 0 / 70%);
+  transition: 300ms;
+}
 
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  }
+#theme-color-preview-primary,
+#theme-color-preview-secondary {
+  width: 34px;
+  height: 34px;
+  border-radius: 2.5px;
+  box-shadow: inset 4px -4px 4px rgba(0 0 0 / 25%);
+}
 
-  .theme-color-picker-container > div {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+#theme-color-preview-primary {
+  background-color: var(--theme-primary);
+}
 
-  }
-  
-  .btn-theme-color:hover {
-    background-color: rgba(0, 0, 0, .70);
-    transition: 300ms;
-  }
+#theme-color-preview-secondary {
+  background-color: var(--theme-secondary);
+}
 
-  #theme-color-preview-primary, #theme-color-preview-secondary {
-    width: 34px;
-    height: 34px;
-    border-radius: 2.5px;
+/* ADDITIONAL CSS FOR FIRST COLUMN */
 
-    box-shadow: inset 4px -4px 4px rgba(0, 0, 0, 0.25);
-  }
+.settings h2 {
+  color: var(--light);
+}
 
-  #theme-color-preview-primary {
-    background-color: var(--theme-primary);
-  }
-  #theme-color-preview-secondary {
-    background-color: var(--theme-secondary);
-  }
+#watched-folders,
+.watched-folders-element > button {
+  height: 80px;
+  width: 500px;
+  padding: 15px;
+  border: none;
+  overflow-y: auto;
+  color: var(--light);
+  background-color: rgba(0 0 0 / 30%);
+  border-radius: 5px;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+  box-shadow: inset 0 4px 4px rgba(0 0 0 / 25%);
+  margin-bottom: 5px;
+}
 
-  /* ADDITIONAL CSS FOR FIRST COLUMN*/
+.watched-folders-element {
+  display: flex;
+  flex-direction: row;
+}
 
-  .settings h2 {
-    color: var(--light);
-  }
+.watched-folders-element > button {
+  padding: 0%;
+  overflow: hidden;
+  height: auto;
+  width: 25px;
+  margin-left: auto;
+}
 
-  #watched-folders,
-  .watched-folders-element > button {
-    height: 80px;
-    width: 500px;
-    padding: 15px;
-    border: none;
-    overflow-y: auto;
-    color: var(--light);
-    background-color: rgba(0, 0, 0, .30);
-    border-radius: 5px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 12px;
-    font-weight: 100;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-    margin-bottom: 5px;
-  }
+.watch-folders-btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 530px;
+  margin-bottom: 40px;
+}
 
-  .watched-folders-element {
-    display: flex;
-    flex-direction: row;
-  }
-  .watched-folders-element > button {
-    padding: 0%;
-    overflow: hidden;
-    height: auto;
-    width: 25px;
-    margin-left: auto;
-  }
+#settings-rescan,
+#add-paths-button {
+  height: 28px;
+  padding: 0 15px;
+  border: none;
+  color: var(--mid);
+  background-color: rgba(0 0 0 / 30%);
+  border-radius: 4px;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+  box-shadow: inset 0 4px 4px rgba(0 0 0 / 25%);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
 
-  .watch-folders-btns {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 530px;
-    margin-bottom: 40px;
-  }
+#settings-rescan:hover,
+#add-paths-button-label:hover {
+  background-color: rgba(0 0 0 / 70%);
+  transition: 300ms;
+}
 
-  #settings-rescan, #add-paths-button {
-    height: 28px;
-    padding: 0 15px;
-    border: none;
-    color: var(--mid);
-    background-color: rgba(0, 0, 0, .30);
-    border-radius: 4px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 12px;
-    font-weight: 100;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-  }
+#add-paths-button[type="file"],
+#add-playlist-input[type="file"] {
+  display: none;
+}
 
-  #settings-rescan:hover, 
-  #add-paths-button-label:hover {
-    background-color: rgba(0, 0, 0, .70);
-    transition: 300ms;
-  }
-  
-  #add-paths-button[type='file'], #add-playlist-input[type='file'] {
-    display: none;
-  }
+#new-playlist-name {
+  height: 24px;
+  width: 500px;
+  padding: 0 15px;
+  border: none;
+  color: var(--mid);
+  background-color: rgba(0 0 0 / 30%);
+  border-radius: 4px;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+  box-shadow: inset 0 4px 4px rgba(0 0 0 / 25%);
+  margin-bottom: 5px;
+}
 
-  #new-playlist-name {
-    height: 24px;
-    width: 500px;
-    padding: 0 15px;
-    border: none;
-    color: var(--mid);
-    background-color: rgba(0, 0, 0, .30);
-    border-radius: 4px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 12px;
-    font-weight: 100;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-    margin-bottom: 5px;
-  }
+.import-playlist-btns {
+  display: flex;
+  flex-direction: column;
+}
 
-  .import-playlist-btns {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #add-playlist-input-label {
-    height: 28px;
-    width: 38px;
-    padding: 0 15px;
-    border: none;
-    color: var(--mid);
-    background-color: rgba(0, 0, 0, .30);
-    border-radius: 4px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 12px;
-    font-weight: 100;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: end;
-  }
+#add-playlist-input-label {
+  height: 28px;
+  width: 38px;
+  padding: 0 15px;
+  border: none;
+  color: var(--mid);
+  background-color: rgba(0 0 0 / 30%);
+  border-radius: 4px;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+  box-shadow: inset 0 4px 4px rgba(0 0 0 / 25%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: end;
+}

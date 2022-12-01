@@ -1,30 +1,28 @@
-/*main will be a column flexbox*/
+/* main will be a column flexbox */
 .home {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
-/*collection which will show random selections from each category*/
+/* collection which will show random selections from each category */
 .home-container {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
 }
 
 .home-listing {
-    margin-left: 3vh;
-    margin-right: 3vh;
+  margin-left: 3vh;
+  margin-right: 3vh;
 }
 
 .home-listing > img {
-    border-radius: 10px;
-    max-width: 29vh;
+  border-radius: 10px;
+  max-width: 29vh;
 }
 
 .library-card {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
-
-
