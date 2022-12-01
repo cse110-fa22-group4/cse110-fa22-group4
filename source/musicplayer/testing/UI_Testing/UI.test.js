@@ -77,16 +77,42 @@ test('Start', async () => {
 /**
  * 
  */
-test('Navigate to Current Track', async () => {
+test('Check Page Navigation', async () => {
     const electronApp = await electron.launch({args: ['main/main.js']});
     const appPath = await electronApp.evaluate(async ({app}) => {
         return app.getAppPath();
     });
     window = await electronApp.firstWindow();
 
+    // allow for 3 minutes for debugging
+    test.setTimeout(180000);
+
+
+    // Navigate to Now Playing
     await window.locator('#btn-overview').click();
-    
     expect(await getContents('#btn-lyrics')).toStrictEqual(["Lyrics"]);
 
-});
+    // Navigate to Library
+    await window.locator('#btn-library').click();
+    expect(await getContents('#header-title')).toStrictEqual(
+        ["Library"]);
+    //console.log(await library.allInnerTexts());
+
+    // Navigate to Playlists
+    await window.locator('#btn-playlists').click();
+    expect(await getContents('#header-title')).toStrictEqual(
+        ["Playlists"]);
+
+    // Navigate to Home
+    await window.locator('#btn-home').click();
+    expect(await getContents('#header-title')).toStrictEqual(
+        ["Home"]);
+
+    // Navigate to Settings
+    await window.locator('#btn-settings').click();
+    expect(await window.locator('#top-container-extended').getAttribute('style')).toStrictEqual("visibility: visible;");
+
+    await window.pause();
+
+}, 180000);
 
