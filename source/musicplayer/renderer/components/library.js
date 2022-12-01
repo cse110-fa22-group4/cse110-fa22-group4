@@ -3,16 +3,24 @@ window.addEventListener('library-loaded', async () => {
 });
 
 window.addEventListener('library-container-row-clicked', async (args) => {
-	console.log(args['detail']);
+    // NOTE: click a row seems way too sensitive for practical use,
+    // will probably not end up using
+	// console.log(args['detail']);
 });
 
 window.addEventListener('library-container-queue-clicked', async (args) => {
-	console.log(args['detail']);
+    const trackObj = args['detail']; 
+	console.log(trackObj);
+
+    // send track to playback queue
+    queueArr.push(trackObj);
 });
 
 
 /**
- * Initial Library Load.
+ * @name onLibraryLoad
+ * @description Initial load of library page, loads grid view of song library.
+ * @return {Promise<void>}
  */
 async function onLibraryLoad() {
 	await domAPI.setHTML('library-container', '');

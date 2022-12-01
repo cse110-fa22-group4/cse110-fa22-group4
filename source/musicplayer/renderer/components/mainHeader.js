@@ -30,15 +30,18 @@ async function playlistManagerOn() {
  */
 async function addToQueue(element) {
 	// the currently selected tracks
-	// TODO: add selected tracks to queue somehow
 	const selectedTracks = await domAPI.getSelectedTracks();
-
 	if (selectedTracks.length == 0) {
 		alert('Select tracks to add to queue!');
-	} else {
-		console.log(selectedTracks);
-		alert('check console.log for selected tracks');
+        return;
 	}
+
+    // send track to playback queue
+    for (let i = 0; i < selectedTracks.length; i++) {
+        queueArr.push(selectedTracks[i]);
+    }
+
+    console.log(selectedTracks);
 }
 
 /**
