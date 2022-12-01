@@ -1,15 +1,15 @@
 /* GLOBAL VARS*/
+// fix lint issues later
+// const queueMap = {'name': 'queuePlaylist', 'numTracks': '0', 'artworks': [], 'trackList': []};
+const queueArr = [];
+
 /*
-// example this would go into window.addEventListener (but has no persitent data)
-const queueMap = new Map();
-queueMap.set( 'queuePlaylist', {
-	name: 'queuePlaylist',
-	numTracks: 0,
-	artworks: [],
-	trackList: []
-});
-await genAPI.publishGlobal(queueMap, "queuePlaylist");
+const queueMap = { };
+queueMap['queuePlaylist'] = { 'name': 'queuePlaylist', 'numTracks': '0', 'artworks': [], 'trackList': [] };
+await genAPI.publishGlobal(queueMap, 'map');
+await genAPI.getGlobal('map');
 */
+// await genAPI.publishGlobal(queueMap, "queuePlaylist");
 /*
 // getting global map and appending songs
 const queuePlaylist = globalVars["queuePlaylist"];
@@ -98,18 +98,33 @@ window.addEventListener('playback-loaded', async () => {
 	// progress bar functionalities
 	initProgress(testMap);
 	updateInfo(testMap);
+
+	await genAPI.publishGlobal(queueArr, 'queueArr');	// array is not persistent
+	// change code slightly to get tracklist
+
+	/*
+	const appWindow = await genAPI.getGlobal('mainWindow');
+	console.log(appWindow);
+	if (!(appWindow.isFocused()) ) {
+		console.log('clicked away');
+		// might need 2 functions
+		// unfocus -> get date
+		// once focused ->  get date again
+		// calc time away, add to msElapsed
+	}*/
 });
 
 // const currWin = BrowserWindow.getAllWindows()[0];
 // console.log(currWin);
-/*
-if (!MainWindow.isFocused()) {
-	console.log("clicked away");
-	might need 2 functions
-	unfocus -> get date
-	once focused ->  get date again
-	calc time away, add to msElapsed
-}*/
+
+// console.log(appWindow);
+// if (!(appWindow.isFocused()) ) {
+// 	console.log('clicked away');
+// 	// might need 2 functions
+// 	// unfocus -> get date
+// 	// once focused ->  get date again
+// 	// calc time away, add to msElapsed
+// }
 
 /**
  * @description Handles behavior of play/pause button when clicked
@@ -274,7 +289,7 @@ function loopSong() {
 	const style = window.getComputedStyle(loopBtn);
 	const currColor = style.getPropertyValue('fill');
 	toggleColor(currColor, loopBtn);
-	toggleOn = !toggleOn; 
+	toggleOn = !toggleOn;
 }
 
 /**
