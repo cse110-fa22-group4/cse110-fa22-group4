@@ -113,6 +113,7 @@ test('Check Page Navigation', async () => {
     expect(await window.locator('#top-container-extended').getAttribute('style')).toStrictEqual("visibility: visible;");
 
    //await window.pause();
+   await electronApp.close();
 
 });
 
