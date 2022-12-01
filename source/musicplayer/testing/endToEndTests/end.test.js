@@ -11,14 +11,3 @@ const {
 const { BrowserWindow } = require('electron');
 
 let electronApp;
-
-test('load', async () => {
-  electronApp = await electron.launch({ args: ['main/main.js'] })
-  
-  const window = await electronApp.firstWindow();
-  
-  console.log(await window.title());
-
-  await electronApp.close()
-
-});
