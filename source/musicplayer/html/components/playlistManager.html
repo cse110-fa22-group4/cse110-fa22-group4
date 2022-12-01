@@ -4,26 +4,30 @@
     </div>
 
     <!-- Create playlist -->
-    <input id="input-playlist-create" type="text"
-        placeholder="Create a new playlist...">
-    <input id="btn-playlist-create" type="submit" value="Create a Playlist">
+    <div id="playlist-create-container">
+        <input id="input-playlist-create" type="text"
+            placeholder="New playlist name...">
+        <input id="btn-playlist-create" type="submit" value="Create Playlist">
+    </div>
+
 
     <!-- Add to playlist -->
-    <select name="select-playlist-add" id="select-playlist-add">
-        <option value="" selected disabled>Choose a playlist...</option>
-    </select>
-
-    <div id="playlists-add-selected-container">
-        <div id="selected-playlists-title">Current selection:</div>
+    <div id="playlist-add-container">
+        <select name="select-playlist-add" id="select-playlist-add">
+            <option value="" selected disabled>Select a playlist...</option>
+        </select>
         <input id="btn-playlist-add" type="submit" value="Add to Playlist">
     </div>
+
+    <div id="selected-playlists-title">Current selection:</div>
+
 
     <div id="selected-playlists-container"></div>
 
     <div id="playlist-remove-delete-container">
-        <button id="btn-playlist-remove-selection" type="submit">Remove
-            Selected</button>
+        <button id="btn-playlist-remove-selection" type="submit">Clear</button>
         <button id="btn-playlist-delete" type="submit">Delete Playlist</button>
+        <button id="btn-playlist-special" type="submit">???</button>
     </div>
 
 </div>

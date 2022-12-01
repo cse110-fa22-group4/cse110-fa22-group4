@@ -17,6 +17,7 @@ window.addEventListener('playlistManager-loaded', async () => {
 	await domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
 	await domAPI.addEventListener('btn-playlist-remove-selection', 'click', removePlaylistSelection);
 	await domAPI.addEventListener('btn-playlist-delete', 'click', deletePlaylist);
+	await domAPI.addEventListener('btn-playlist-special', 'click', doSomethingSpecial);
 });
 
 /**
@@ -26,7 +27,7 @@ window.addEventListener('playlistManager-loaded', async () => {
  * @return {Promise<void>}
  */
 async function updatePlaylistOptions(element) {
-	let playlistMenuOptions = '<option value="" selected disabled>Choose a playlist...</option>';
+	let playlistMenuOptions = '<option value="" selected disabled>Select a playlist...</option>';
 	const userPlaylists = await fsAPI.getAllPlaylists();
 	for (let i = 0; i < userPlaylists.length; i++) {
 		let option;
@@ -128,4 +129,14 @@ async function deletePlaylist(element) {
 	await fsAPI.removePlaylist(currPlaylist);
 	await updatePlaylistOptions();
 	await updatePlaylistOptions();
+}
+
+/**
+ * @name doSomethingSpecial
+ * @description Pending function for playlist manager.
+ * @param {HTMLElement} element
+ * @return {Promise<void>}
+ */
+ async function doSomethingSpecial(element) {
+    // TODO: do something else remove later
 }
