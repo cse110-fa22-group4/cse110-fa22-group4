@@ -121,7 +121,7 @@ async function removePlaylist(playlistName) {
  * @returns {Promise<void>}
  */
 async function createPlaylist(playlistName) {
-	await writeToPlaylist(playlistName, { "meta": {}, "tags": []});
+	await writePlaylist(playlistName, { "meta": {}, "tags": []});
 }
 
 /**

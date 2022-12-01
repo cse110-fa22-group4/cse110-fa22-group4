@@ -27,7 +27,7 @@ async function updatePlaylistOptions() {
 	const userPlaylists = await fsAPI.getAllPlaylists();
 	for (let i = 0; i < userPlaylists.length; i++) {
 		let option;
-		if (userPlaylists[i] == lastCreatedPlaylist) {
+		if (userPlaylists[i] === lastCreatedPlaylist) {
 			option = `<option id="playlist-option-${userPlaylists[i]}" value="${userPlaylists[i]}" selected>
                 ${userPlaylists[i]}</option>`;
 		} else {
@@ -76,13 +76,13 @@ async function createUserPlaylist() {
  */
 async function addToPlaylist(element) {
 	const currPlaylist = await domAPI.getProperty('select-playlist-add', 'value');
-	if (currPlaylist == '') {
+	if (currPlaylist === '') {
 		alert('Select a playlist to begin adding!');
 		return;
 	}
 
 	const tracks = await domAPI.getSelectedTracks();
-	if (tracks.length == 0) {
+	if (tracks.length === 0) {
 		alert('Select tracks to begin adding!');
 		return;
 	}
@@ -108,7 +108,7 @@ async function removePlaylistSelection(element) {
  */
 async function deletePlaylist(element) {
 	const currPlaylist = await domAPI.getProperty('select-playlist-add', 'value');
-	if (currPlaylist == '') {
+	if (currPlaylist === '') {
 		alert('Select a playlist to delete!');
 		return;
 	}
