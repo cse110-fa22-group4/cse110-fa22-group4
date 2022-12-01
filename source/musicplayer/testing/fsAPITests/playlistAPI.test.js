@@ -34,7 +34,7 @@ test.beforeAll(async () => {
  * check the empty playlist in the file
  */
 /*test('Check functionality of getAllPlaylists()', async ()=>{
-    // get test the initial stage of getAllPlaylists()
+    // test the initial stage of getAllPlaylists()
     const str_playlist = JSON.stringify(await functions_playlist.getAllPlaylists());
     // Should be returning an empty object(map)
     expect(str_playlist).toBe('[]');

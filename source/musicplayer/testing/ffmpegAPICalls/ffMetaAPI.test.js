@@ -36,6 +36,7 @@ const {type} = require("process");
  */
 test.beforeAll( async() =>{
    await resetSongs('user1');
+    await resetSongs('user2');
     // Since ffmpeg haven't packed, so we need manually to set the path to it
     await setPath("D:/SchoolData/UCSD/Classes/Fall2022/CSE110/ffmpeg" +
         "/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/");
@@ -64,6 +65,18 @@ test('Test ffmpegRead for user1 song2', async () => {
     expect(JSON.stringify(meta)).toBe('{"format":{"filename":"../users/user_1/songs/Tobu/Tobu - Infectious [NCS Release].mp3","nb_streams":1,' +
         '"nb_programs":0,"format_name":"mp3","format_long_name":"MP2/3 (MPEG audio layer 2/3)","start_time":"0.025057","duration":"256.130612","size":"' +
         '4098441","bit_rate":"128010","probe_score":51,"tags":{"major_brand":"isom","minor_version":"512","compatible_brands":"isomiso2mp41","encoder":"Lavf57.83.100"}}}');
+});
+
+test('Test ffmpegRead for user2 song2', async () => {
+
+    const songPath = "../users/user_2/songs/Tobu/Tobu - Infectious [NCS Release].mp3";
+    const meta = await ffmpegRead(songPath);
+
+    expect(JSON.stringify(meta)).toBe('{"format":{"filename":"../users/user_2/songs/Tobu/Tobu - ' +
+        'Infectious [NCS Release].mp3","nb_streams":1,"nb_programs":0,"format_name":"mp3","format_long_name"' +
+        ':"MP2/3 (MPEG audio layer 2/3)","start_time":"0.025057","duration":"256.130612","size":"4098441",' +
+        '"bit_rate":"128010","probe_score":51,"tags":{"major_brand":"isom","minor_version":"512",' +
+        '"compatible_brands":"isomiso2mp41","encoder":"Lavf57.83.100"}}}');
 });
 
 /**
