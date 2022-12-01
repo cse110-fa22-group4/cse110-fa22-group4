@@ -58,7 +58,7 @@ async function createUserPlaylist() {
 		//     trackList: []
 		// };
 
-		await fsAPI.writePlaylist(playlistName, {});
+		await fsAPI.createPlaylist(playlistName);
 
 		// add custom playlist to menu option
 		lastCreatedPlaylist = playlistName;
@@ -88,8 +88,20 @@ async function addToPlaylist(element) {
 	}
 
 	// TODO: add tracks to playlists
-	// await fsAPI.writePlaylist(currPlaylist, (currPlaylist,{name: currPlaylist, numTracks:2, trackList: tracks}))
+    // TODO: add tracks to playlists
+    // currPlaylist = 'myPlaylist'
+    // tracks = [{track1}, {track2}, ...]
+    for (let i = 0; i < tracks.length; i++) {
 
+        const tags = {};
+
+        for (const [key, value] of Object.entries(tracks[i])) {
+            tags[key] = value;
+        }
+        debugger
+        await fsAPI.writeToPlaylist(currPlaylist, tags);
+    }
+    
 	alert('Tracks added to playlist!');
 }
 
