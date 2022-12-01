@@ -80,16 +80,16 @@ async function appendHTML(domID, html) {
  * @param {any} data An array of string arrays that represent rows of data,
  *                                              or a promise that returns one.
  * @param {any} params Extra grid parameters to pass into the constructor.
- * @param {string} rowSelectType Determines the type of row selection action.
  * @return {Promise<Grid>} Returns the grid created.
  * @return {Grid} The grid that is created is returned for searching purposes.
  */
-async function addGrid(domID, columns, data, params = {}, rowSelectType) {
+async function addGrid(domID, columns, data, params = {}) {
 	// return new Grid({
 	// Perform this check above all
 	const isAttributeSafe = await ipcRenderer.invoke(
 		'managedAttributeCheck', domID, 'innerHTML');
 	if (!isAttributeSafe) return undefined;
+
 
 	// enable row selection
 	columns.unshift(
@@ -103,20 +103,40 @@ async function addGrid(domID, columns, data, params = {}, rowSelectType) {
 		},
 	);
 
-	// default grid
+	// enable row buttons for queue
+	columns.push(
+		{
+			name: 'Queue',
+			formatter: (cell, row) => {
+				return h('button', {
+					className: 'gridQueueButton',
+					onClick: () => {
+						// function for row queue click
+						// TODO: add track to queue somehow
+						// alert(`${row.cells[row.cells.length - 2].data}`);
+						window.dispatchEvent(new CustomEvent(`${domID}-queue-clicked`,
+							{detail: row.cells[row.cells.length - 2].data}));
+					},
+				}, '+');
+			},
+		},
+	);
+
+	// construct default grid and render to page
 	const grid = new Grid({
 		columns: columns,
 		data: data,
 	})
 		.updateConfig(params)
-		.render(document.getElementById(domID))
-		.on('rowClick', (...args) =>
-			window.dispatchEvent(
-				new CustomEvent(`${domID}-grid-clicked`, {detail: args[1]})));
+		.render(document.getElementById(domID));
 
-	// use row selection to manage playlists
-	if (rowSelectType == 'playlists') {
-		grid.on('ready', (...args) => {
+	// row click action
+	grid.on('rowClick', (...args) =>
+		window.dispatchEvent(new CustomEvent(`${domID}-row-clicked`, {detail: args[1].cells[9].data})));
+
+	// row selection actions
+	grid.on('ready', (...args) => {
+		if (data.length != 0) {
 			const checkboxPlugin = grid.config.plugin.get('awesomeCheckbox');
 			checkboxPlugin.props.store.on('updated', function(state, prevState) {
 				// update selectedTracks with current selection
@@ -124,34 +144,48 @@ async function addGrid(domID, columns, data, params = {}, rowSelectType) {
 				for (let i = 0; i < state.rowIds.length; i++) {
 					const currTrackObj = {};
 					for (let j = 1; j < columns.length; j++) {
-						const key = columns[j].name;
-						const value = state.rowIds[i][j].data;
-						currTrackObj[`${key}`] = value;
+						if (columns[j].name in data[0]) {
+							const key = columns[j].name;
+							const value = state.rowIds[i][j].data;
+							currTrackObj[`${key}`] = value;
+						}
 					}
 					currSelection.push(currTrackObj);
 				}
 				selectedTracks = currSelection;
 
-				// send selected tracks to playlist manager
-				const playlistManager = document.getElementById('selected-playlists-container');
-				let selectedRow = `
-                <div class="playlist-manager-header">
-                <div>Title</div>
-                <div>Artist</div>
-                <div>Album</div>
-                </div>`;
-				for (let k = 0; k < currSelection.length; k++) {
-					selectedRow += `
-                    <div class="playlist-manager-row">
-                    <div>${currSelection[k].title}</div>
-                    <div>${currSelection[k].artist}</div>
-                    <div>${currSelection[k].album}</div>
+				// get current editor type
+				const editorType = document.getElementById('editor-container').getAttribute('data-editortype');
+
+				// playlist manager actions
+				// send selected tracks to selected container
+				if (editorType == 'playlists') {
+					const playlistManager = document.getElementById('selected-playlists-container');
+					let selectedRow = `
+                    <div class="playlist-manager-header">
+                    <div>Title</div>
+                    <div>Artist</div>
+                    <div>Album</div>
                     </div>`;
+					for (let k = 0; k < selectedTracks.length; k++) {
+						selectedRow += `
+                        <div class="playlist-manager-row">
+                        <div>${selectedTracks[k].title}</div>
+                        <div>${selectedTracks[k].artist}</div>
+                        <div>${selectedTracks[k].album}</div>
+                        </div>`;
+					}
+					playlistManager.innerHTML = selectedRow;
 				}
-				playlistManager.innerHTML = selectedRow;
+
+				// metadata editor actions
+				// send selected tracks to playlist manager
+				if (editorType == 'metadata') {
+					// TODO: use selected tracks to edit metadata, MAY not need function here
+				}
 			});
-		});
-	}
+		}
+	});
 }
 
 /**

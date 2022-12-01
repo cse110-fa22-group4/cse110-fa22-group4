@@ -21,6 +21,7 @@ let ffmpegPath = '';
 let ffplayPath = '';
 let multiPath = '';
 
+
 /**
  *
  * @param {string} filepath The path of the file to modify
@@ -68,18 +69,19 @@ async function getWriteCMD(filepath, options) {
 }
 
 /**
+ * @param {string[]} paths The file paths.
  * @return {Promise<{cmd: string, args: {input: string, output: string, probe:string}}>}
  */
-async function getMultiCMD() {
+async function getMultiCMD(paths) {
 	const fs = require('fs').promises;
 	const tempPath = path.join(await ipcRenderer.invoke('getTempPath'), 'songs_temp.txt');
 	const outPath = path.join(await ipcRenderer.invoke('getTempPath'), 'out_json.txt');
 
 	const songs = await getSongs();
 	let fileContents = '';
-	for (const songPath in songs) {
+	for (const songPath in paths) {
 		if (!songPath) continue;
-		fileContents += (songPath + '\n');
+		fileContents += (paths[songPath] + '\n');
 	}
 	await fs.writeFile(tempPath, fileContents, (err) => {
 		if (err) {
@@ -147,6 +149,7 @@ async function setPath(binPath = undefined) {
 		ffProbePath = path.join(binPath, '/ffprobe');
 		ffmpegPath = path.join(binPath, '/ffmpeg');
 		ffplayPath = path.join(binPath, '/ffplay');
+		multiPath = path.join(binPath, '/multi_ffmpeg');
 	}
 	await debugLog(`Set ffPaths to\nffprobe: ${ffProbePath} \nffmpeg: ${ffmpegPath}\nffplay: ${ffplayPath}`,
 		'fs-general');

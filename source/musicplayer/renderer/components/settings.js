@@ -43,7 +43,6 @@ window.addEventListener('settings-loaded', async ()=> {
  */
 async function rescanClick(element) {
 	console.log('clicked');
-	await ffmpegAPI.setBinPath();
 	let scannedSongs = { };
 	const settings = await fsAPI.getSetting('watchedDir');
 	if (settings === undefined) return;
@@ -51,15 +50,12 @@ async function rescanClick(element) {
 	// I am going to implement a naive version of this for now - Noah
 	// things I have done to make this work - changed scannedSongs from const to let,
 	// create an array of ffmpegAPI.ffmpegRead(path) and evaluate them using Promise.allSettled
-	const promises = [];
 	for (const path of settings) {
-		// todo: implement cli app
-		console.log(path);
-		promises.push(ffmpegAPI.readMetadata(path));
+		const obj = await ffmpegAPI.useMultiFFmpeg(path);
+		Object.assign(scannedSongs, obj);
 	}
-	scannedSongs = await Promise.allSettled(promises);
 	console.log(scannedSongs);
-	await fsAPI.writeSong(scannedSongs);
+	await fsAPI.writeSongs(scannedSongs);
 	await genAPI.debugLog(scannedSongs, 'settings-tests');
 }
 
@@ -78,7 +74,7 @@ async function addPath(element) {
 			watched.push(dir);
 		}
 		await fsAPI.writeToSetting('watchedDir', watched);
-		updateWatchedFoldersDisplay();
+		await updateWatchedFoldersDisplay();
 	}
 }
 
@@ -89,7 +85,7 @@ async function addPath(element) {
  */
 async function enableToggleableSetting(element) {
 	const isEnabled = await domAPI.getProperty(element.id, 'checked');
-	fsAPI.writeToSetting(element.id, isEnabled);
+	await fsAPI.writeToSetting(element.id, isEnabled);
 }
 
 /**
@@ -99,12 +95,13 @@ async function enableToggleableSetting(element) {
  */
 async function removeDirectory(element) {
 	const watchedDirs = await fsAPI.getSetting('watchedDir');
+	if (watchedDirs === undefined) return;
 	const index = watchedDirs.indexOf(element.id);
 	if (index > -1) {
 		watchedDirs.splice(index, 1);
 	}
 	await fsAPI.writeToSetting('watchedDir', watchedDirs);
-	updateWatchedFoldersDisplay();
+	await updateWatchedFoldersDisplay();
 }
 
 /**
@@ -127,7 +124,7 @@ async function updateWatchedFoldersDisplay() {
 
 		// adding event listeners to the buttons
 		for (const dir of watchedDirs) {
-			domAPI.addEventListener(`${dir}`, 'click', removeDirectory);
+			await domAPI.addEventListener(`${dir}`, 'click', removeDirectory);
 		}
 	}
 }
@@ -138,7 +135,7 @@ async function updateWatchedFoldersDisplay() {
  * the settings match their respective id name.
  */
 async function loadSettingsState() {
-	updateWatchedFoldersDisplay();
+	await updateWatchedFoldersDisplay();
 
 	// These are the toggles relevant to the settings menu
 	const relevantToggles = ['enable-scan-on-startup', 'enable-dark-mode'];

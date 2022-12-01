@@ -30,11 +30,16 @@ const {
 const {
 	getAllPlaylists, getPlaylist,
 	removePlaylist, writePlaylist,
+	writeToPlaylist, removeFromPlaylist,
+	createPlaylist, writePlaylistMeta,
+	removePlaylistMeta, getPlaylistMeta,
+	getPlaylistObj,
 } = require('./fs/playlists/playlistAPICalls');
 
 const {
 	appendSong, appendSongs, cullShortAudio,
 	getSongs, removeSong, writeSongs,
+	getSongsTrackData,
 } = require('./fs/songs/songsAPICalls');
 
 const {
@@ -130,7 +135,7 @@ contextBridge.exposeInMainWorld('domAPI', {
 contextBridge.exposeInMainWorld('ffmpegAPI', {
 	readMetadata: ffmpegRead,
 	writeMetadata: ffmpegWrite,
-	setBinpath: setPath,
+	setBinPath: setPath,
 	playSong: playSong,
 	stopSong: stopSong,
 	pauseSong: pauseSong,
@@ -150,6 +155,7 @@ contextBridge.exposeInMainWorld('fsAPI', {
 	deleteSetting: deleteSetting,
 	getSetting: getSetting,
 	getSongs: getSongs,
+	getSongsTrackData: getSongsTrackData,
 	writeSongs: writeSongs,
 	appendSongs: appendSongs,
 	appendSong: appendSong,
@@ -158,11 +164,18 @@ contextBridge.exposeInMainWorld('fsAPI', {
 	writeStats: writeStats,
 	writeToStat: writeToStat,
 	deleteStat: deleteStat,
-	getAllplaylists: getAllPlaylists,
+	getPlaylistObj: getPlaylistObj,
+	getAllPlaylists: getAllPlaylists,
 	getPlaylist: getPlaylist,
 	removePlaylist: removePlaylist,
+	createPlaylist: createPlaylist,
+	writePlaylistMeta: writePlaylistMeta,
+	removePlaylistMeta: removePlaylistMeta,
+	getPlaylistMeta: getPlaylistMeta,
+	removeFromPlaylist: removeFromPlaylist,
 	writePlaylist: writePlaylist,
+	writeToPlaylist: writeToPlaylist,
 	getSRCString: getSRCString,
-	recursiveSearchAtpath: recursiveSearchAtPath,
+	recursiveSearchAtPath: recursiveSearchAtPath,
 	cullShortAudio: cullShortAudio,
 });

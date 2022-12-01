@@ -1,18 +1,21 @@
-const libraryGrid = undefined; // gridJS library instance
-
 window.addEventListener('library-loaded', async () => {
 	await onLibraryLoad();
 });
 
-window.addEventListener('library-container-grid-clicked', async (args) => {
+window.addEventListener('library-container-row-clicked', async (args) => {
 	console.log(args['detail']);
-	console.log(libraryGrid);
 });
+
+window.addEventListener('library-container-queue-clicked', async (args) => {
+	console.log(args['detail']);
+});
+
 
 /**
  * Initial Library Load.
  */
 async function onLibraryLoad() {
-    await domAPI.setHTML('library-container', '');
-	const libraryGrid = await domAPI.addGrid('library-container', libraryHeaders, libraryCatalog, gridSettings, 'playlists');
+	await domAPI.setHTML('library-container', '');
+	const trackList = await fsAPI.getSongsTrackData();
+	await domAPI.addGrid('library-container', libraryHeaders, trackList, gridSettings);
 }

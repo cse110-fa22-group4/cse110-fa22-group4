@@ -190,7 +190,42 @@ async function recursiveSearchAtPath(searchPath) {
 	}
 }
 
+/**
+ *
+ * @param path The path of the song
+ * @param songs The songs.json object
+ * @returns {Promise<
+ * {
+ * 		duration: 	(string|number),
+ * 		path: 		(string),
+ * 		artist: 	(string),
+ * 		year: 		(string|number),
+ * 		album: 		(string),
+ * 		genre: 		(string),
+ * 		title: 		(string)
+ * 	}>}
+ */
+async function convertPathToTrack(path, songs) {
+	const song = songs[path]['format'];
+	const title = 'tags' in song && 'title' in song['tags'] ? song['tags']['title'] : '';
+	const artist = 'tags' in song && 'artist' in song['tags'] ? song['tags']['artist'] : '';
+	const album = 'tags' in song && 'album' in song['tags'] ? song['tags']['album'] : '';
+	const year = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
+	const duration = 'duration' in song ? song['duration']: '';
+	const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
+	return {
+		'title': title,
+		'path': path,
+		'artist': artist,
+		'album': album,
+		'year': year,
+		'duration': duration,
+		'genre': genre,
+	};
+}
+
 module.exports = {
+	convertPathToTrack,
 	getStoragePath,
 	makeDirIfNotExists,
 	getSRCString,
