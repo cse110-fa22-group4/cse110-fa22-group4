@@ -67,9 +67,11 @@ async function addToQueue(element) {
 
     // reset selection
     if(await getCurrentPage() == 'library') {
-        libraryClick();
+        await libraryClick();
     }
-    await removePlaylistSelection();
+    if(playlistManagerIsExtended) {
+        await removePlaylistSelection();
+    }
 
     // send user feedback
     await giveUserFeedback('Added to Queue')
@@ -84,6 +86,10 @@ async function addToQueue(element) {
 async function togglePlaylistManager(element) {
     if(!playlistManagerIsExtended) {
         // toggle on
+        // reset selection
+        if(await getCurrentPage() == 'library') {
+            await libraryClick();
+        }
 		await domAPI.loadPage('editor-container', 'components/playlistManager.html');
 		await domAPI.setAttribute('editor-container', 'data-editortype', 'playlists');
 		await editorOn();

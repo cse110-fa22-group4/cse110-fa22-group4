@@ -90,6 +90,9 @@ async function addGrid(domID, columns, data, params = {}) {
         'managedAttributeCheck', domID, 'innerHTML');
     if (!isAttributeSafe) return undefined;
 
+    // clear previously selected tracks
+    selectedTracks = [];
+
     // enable row selection
     columns.unshift(
         {
