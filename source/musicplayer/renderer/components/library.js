@@ -13,16 +13,18 @@ window.addEventListener('library-container-queue-clicked', async (args) => {
 	console.log(trackObj);
 
     // send track to playback queue
+    // playback integration edit
+    if (queueArr.length == 0) {
+        initFirstSong([trackObj]);
+        initProgress([trackObj]);
+        initInfo([trackObj]);
+    }
     queueArr.push(trackObj);
 
     // send user feedback
     await giveUserFeedback('Added to Queue')
 
-    // refresh queue viewer if already open
-    if(queueViewerIsExtended) {
-        await toggleQueueViewer();
-        await toggleQueueViewer();
-    }
+    await refreshQueueViewer();
 });
 
 

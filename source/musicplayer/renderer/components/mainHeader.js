@@ -151,6 +151,9 @@ async function toggleMetaEditor(element) {
  * @return {Promise<void>}
  */
  async function toggleQueueViewer(element) {
+    // turn off overview extension if on
+	await topExtensionOff();
+
     if(!queueViewerIsExtended) {
         // toggle on
 		await domAPI.loadPage('editor-container', 'components/queueViewer.html');

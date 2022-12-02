@@ -2,8 +2,6 @@
 // fix lint issues later
 // const queueMap = {'name': 'queuePlaylist', 'numTracks': '0', 'artworks': [], 'trackList': []};
 const queueArr = [];
-let currPlayingTrackIndex = -1;  // needed a way to track index of currently playing song,
-                                // maybe we can use something like this?
 
 /*
 const queueMap = { };
@@ -225,6 +223,8 @@ async function nextSong() {
 	intervalID = setInterval( function() { updateProgress(); }, 50);
 
 	updateInfo();
+
+    await refreshQueueViewer();
 }
 
 /**
@@ -263,6 +263,40 @@ async function prevSong() {
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
 	intervalID = setInterval( function() { updateProgress(); }, 50);
+	updateInfo();
+
+    await refreshQueueViewer();
+}
+
+/**
+ * @description Jumps to and plays a song in playlist (and kills old instance)
+ * @param {number} index the index of the song to jump to
+ * @param {Map} playlistMap the map whose tracklist property holds
+ * 	all the tracks of a playlist
+ */
+ async function jumpSong(index) {
+
+    // TODO: function currently bugged, needs proper implementation
+    // not sure what needs to be done with prevSongsArr -Alvin 
+	songNum = index;
+	prevSongsArr.push(songNum);
+
+	currSongPath = queueArr[songNum]['filename'];
+	isPaused = false;	// isPaused shouldn't be carried over from prevSong
+
+	// on skip, always play the song so button should always become pause
+	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
+	const playBtnImg = playBtn.querySelector('img');
+	if ( playBtn.id === 'play-btn' ) {
+		toggleIcon(playBtn, playBtnImg);
+	}
+
+	clearInterval(intervalID);
+	resetProgress();
+	await ffmpegAPI.stopSong();
+	await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
+	intervalID = setInterval( function() { updateProgress(); }, 50);
+
 	updateInfo();
 }
 

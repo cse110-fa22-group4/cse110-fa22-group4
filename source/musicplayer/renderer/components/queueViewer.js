@@ -15,10 +15,10 @@ window.addEventListener('queueViewer-loaded', async () => {
 
     for (let i = 0; i < queueArr.length; i++) {
             const queueRow = `
-            <div class="${i == currPlayingTrackIndex ? 'queue-track queue-track-active' : 'queue-track'}" 
+            <div class="${i == songNum ? 'queue-track queue-track-active' : 'queue-track'}" 
             data-queueIndex="${i}">
                 <div class="queue-track-icon">
-                    <img src="../img/icons/playback/currPlaying.png" class="${i == currPlayingTrackIndex ? 'icon-currPlaying icon-currPlaying-active' : 'icon-currPlaying'}">
+                    <img src="../img/icons/playback/currPlaying.png" class="${i == songNum ? 'icon-currPlaying icon-currPlaying-active' : 'icon-currPlaying'}">
                 </div>
                 <div class="queue-track-data">
                     <div class="queue-track-data-title">${queueArr[i].title}</div>
@@ -46,14 +46,12 @@ window.addEventListener('queueViewer-loaded', async () => {
  * @return {Promise<void>}
  */
  async function playTrack(element) {
-    const newTrackIndex = element.getAttribute('data-queueIndex')
-    currPlayingTrackIndex = newTrackIndex;
+    let newTrackIndex = element.getAttribute('data-queueIndex')
 
-    // refresh queue viewer if already open
-    if(queueViewerIsExtended) {
-        await toggleQueueViewer();
-        await toggleQueueViewer();
-    }
+    // jump to song
+    await jumpSong(newTrackIndex);
+
+    await refreshQueueViewer();
 }
 
 /**
@@ -66,6 +64,15 @@ window.addEventListener('queueViewer-loaded', async () => {
     const deleteTrackIndex = element.getAttribute('data-queueIndex')
     queueArr.splice(deleteTrackIndex, 1);
 
+    await refreshQueueViewer();
+}
+
+/**
+ * @name refreshQueueViewer
+ * @description Refresh the state of the queue viewer.
+ * @return {Promise<void>}
+ */
+ async function refreshQueueViewer() {
     // refresh queue viewer if already open
     if(queueViewerIsExtended) {
         await toggleQueueViewer();
