@@ -32,8 +32,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await domAPI.addEventListener( 'btn-library', 'click', libraryClick);
 	await domAPI.addEventListener( 'btn-playlists', 'click', playlistsClick);
 	await domAPI.addEventListener( 'btn-settings', 'click', settingsClick);
-	await domAPI.addEventListener( 'playbackArt', 'click', queueClick);
-	await domAPI.addEventListener( 'playlists-bottom-btn', 'click', queueClick);
+	// await domAPI.addEventListener( 'playbackArt', 'click', queueClick);          - moved to mainHeader.js momentarily
+	// await domAPI.addEventListener( 'playlists-bottom-btn', 'click', queueClick); - moved to mainHeader.js momentarily
 	// await domAPI.addEventListener( 'btn-overview', 'click', overviewClick);
 });
 
