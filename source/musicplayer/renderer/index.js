@@ -139,7 +139,7 @@ async function topExtensionOn() {
  */
 async function resetSidebarButtons() {
 	await domAPI.setStyleClassToggle('sidebar-btn-container-home', 'sidebar-btn-active', false);
-	await domAPI.setStyleClassToggle('sidebar-btn-container-nowPlaying', 'sidebar-btn-active', false);
+	// await domAPI.setStyleClassToggle('sidebar-btn-container-nowPlaying', 'sidebar-btn-active', false);
 	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', false);
 	await domAPI.setStyleClassToggle('sidebar-btn-container-playlists', 'sidebar-btn-active', false);
 }
