@@ -1,8 +1,12 @@
 # Meeting Minutes
 ## Meeting Information
+
 **Meeting Date/Time:** 11/19/22 Week 8  10:00am - 1:00pm
+
 **Meeting Location:** Geisel Library   
+
 **Note Taker:** Jiseung Yoo
+
 **Objective Statement:** Creating Video and Fix issues
 
 ## Attendees
