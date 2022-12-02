@@ -74,16 +74,28 @@
   transition: 300ms;
 }
 
-/* stylelint-disable-next-line selector-class-pattern */
 button.gridQueueButton {
   display: flex;
   background-color: var(--mid);
   color: var(--light);
-  margin: 0 auto;
+  margin: 0;
+  margin-left: 13px;
   border-radius: 2.5px;
 }
 
-/* stylelint-disable-next-line selector-class-pattern */
 button.gridQueueButton:hover {
   background-color: var(--mid-dark);
+}
+
+button.gridDeleteButton {
+    display: flex;
+    background-color: var(--mid);
+    color: var(--light);
+    margin: 0;
+    margin-left: 17px;
+    border-radius: 2.5px;
+}
+
+button.gridDeleteButton:hover {
+    background-color: var(--mid-dark);
 }

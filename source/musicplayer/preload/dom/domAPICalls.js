@@ -80,10 +80,12 @@ async function appendHTML(domID, html) {
  * @param {any} data An array of string arrays that represent rows of data,
  *                                              or a promise that returns one.
  * @param {any} params Extra grid parameters to pass into the constructor.
+ * @param {boolean} isPlaylist Determine if playlist grid type.
+ * @param {string} playlistName The name of the playlist.
  * @return {Promise<Grid>} Returns the grid created.
  * @return {Grid} The grid that is created is returned for searching purposes.
  */
-async function addGrid(domID, columns, data, params = {}) {
+async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistName) {
     // return new Grid({
     // Perform this check above all
     const isAttributeSafe = await ipcRenderer.invoke(
@@ -92,6 +94,12 @@ async function addGrid(domID, columns, data, params = {}) {
 
     // clear previously selected tracks
     selectedTracks = [];
+
+    // add row index
+    columns.unshift({hidden: true, sort: {enabled: true}, name: 'rowIndex'});
+    for (let i = 0; i < data.length; i++) {
+        data[i]['rowIndex'] = i;
+    }
 
     // enable row selection
     columns.unshift(
@@ -104,6 +112,28 @@ async function addGrid(domID, columns, data, params = {}) {
             },
         },
     );
+
+    if(isPlaylist) {
+        // enable row buttons for delete
+        columns.push(
+            {
+                name: 'Delete',
+                // row queue button actions, sends a track object
+                formatter: (cell, row) => {
+                    return h('button', {
+                        className: 'gridDeleteButton',
+                        onClick: () => {
+                            let playlistAndIndex = [playlistName];
+                            playlistAndIndex.push(row.cells[1].data);
+                            // send data back to renderer process
+                            window.dispatchEvent(new CustomEvent(`${domID}-delete-clicked`,
+                                { detail: playlistAndIndex }));
+                        },
+                    }, '-');
+                },
+            },
+        );
+    }
 
     // enable row buttons for queue
     columns.push(
@@ -119,7 +149,7 @@ async function addGrid(domID, columns, data, params = {}) {
                         for (let i = 0; i < columns.length; i++) {
                             const key = columns[i].id;
                             const value = row.cells[i].data;
-                            if (key == 'awesomeCheckbox' || key == 'queue' || value == undefined) {
+                            if (key == 'awesomeCheckbox') {
                                 continue
                             }
                             currTrackObj[key] = value

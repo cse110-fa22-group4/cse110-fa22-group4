@@ -16,11 +16,31 @@ window.addEventListener('library-playlists-container-queue-clicked', async (args
     // send track to playback queue
     queueArr.push(trackObj);
 
+    // send user feedback
+    await giveUserFeedback('Added to Queue')
+
     // refresh queue viewer if already open
     if(queueViewerIsExtended) {
         await toggleQueueViewer();
         await toggleQueueViewer();
     }
+});
+
+window.addEventListener('library-playlists-container-delete-clicked', async (args) => {
+    const playlistName = args['detail'][0];
+    const deleteIndex = args['detail'][1];
+
+    // delete track from playlist
+    await fsAPI.removeFromPlaylist(playlistName, deleteIndex);
+
+    // refresh grid
+	const currPlaylist = await fsAPI.getPlaylistObj(playlistName);
+	const trackList = currPlaylist.tags;
+	await domAPI.setHTML('library-playlists-container', '');
+	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings, true, playlistName);
+
+    // send user feedback
+    await giveUserFeedback('Track deleted')
 });
 
 /**
@@ -69,5 +89,5 @@ async function libraryPlaylistsExtended(element) {
 	const currPlaylist = await fsAPI.getPlaylistObj(cardPlaylist);
 	const trackList = currPlaylist.tags;
 	await domAPI.setHTML('library-playlists-container', '');
-	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings);
+	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings, true, cardPlaylist);
 }

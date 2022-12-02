@@ -228,7 +228,7 @@ async function getPlaylistMeta(playlistName) {
  */
 async function removeFromPlaylist(playlistName, index) {
 	const playlistObj = await getPlaylistObj(playlistName);
-	playlistObj['tags'].splice(index);
+	playlistObj['tags'].splice(index, 1);
 	await writePlaylist(playlistName, playlistObj);
 }
 

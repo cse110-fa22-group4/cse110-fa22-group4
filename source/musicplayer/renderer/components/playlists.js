@@ -13,6 +13,7 @@ let lastCreatedPlaylist; // the last selected playlist
 
 window.addEventListener('playlistManager-loaded', async () => {
 	await updatePlaylistOptions();
+	await domAPI.addEventListener('input-playlist-create', 'change', createUserPlaylist);
 	await domAPI.addEventListener('btn-playlist-create', 'click', createUserPlaylist);
 	await domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
 	await domAPI.addEventListener('btn-playlist-remove-selection', 'click', removePlaylistSelection);
@@ -64,7 +65,8 @@ async function createUserPlaylist(element) {
 		lastCreatedPlaylist = playlistName;
 		await updatePlaylistOptions();
 
-		alert(`'${playlistName}' added`);
+        // send user feedback
+        await giveUserFeedback('Playlist created')
 	} else {
 		alert('Enter a name for the playlist!');
 	}
@@ -99,7 +101,16 @@ async function addToPlaylist(element) {
         await fsAPI.writeToPlaylist(currPlaylist, tags);
     }
     
-	alert('Tracks added to playlist!');
+    // reset selection
+    if(await getCurrentPage() == 'library') {
+        await libraryClick();
+    }
+    if(playlistManagerIsExtended) {
+        await removePlaylistSelection();
+    }
+
+    // send user feedback
+    await giveUserFeedback('Tracks added to Playlist')
 }
 
 /**

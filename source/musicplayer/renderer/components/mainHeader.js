@@ -75,6 +75,8 @@ async function addToQueue(element) {
 
     // send user feedback
     await giveUserFeedback('Added to Queue')
+
+    console.log(selectedTracks);
 }
 
 /**
