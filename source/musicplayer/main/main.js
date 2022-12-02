@@ -66,7 +66,7 @@ app.whenReady().then(async () => {
 // explicitly with Cmd + Q.
 app.on('before-quit', async () => {
 	ipcMain.emit('window-closed');
-	//if(process.platform !== 'darwin') await ffmpegAPI.stopSong();
+	if(process.platform !== 'darwin') await ffmpegAPI.stopSong();
 });
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') app.quit();
