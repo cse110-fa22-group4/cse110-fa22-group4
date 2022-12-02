@@ -42,6 +42,9 @@ window.addEventListener('settings-loaded', async ()=> {
  * @param {HTMLElement} element
  */
 async function rescanClick(element) {
+	// let's unhide the progress bar stuff
+	await unhideProgressBar();
+
 	const scannedSongs = { };
 	const settings = await fsAPI.getSetting('watchedDir');
 	if (settings === undefined) return;
@@ -51,7 +54,9 @@ async function rescanClick(element) {
 	}
 	console.log(scannedSongs);
 	await fsAPI.writeSongs(scannedSongs);
-	await genAPI.debugLog(scannedSongs, 'settings-tests');
+
+	// now that we are done, we hide element again
+	await hideProgressBar();
 }
 
 /**
@@ -164,4 +169,21 @@ async function changeThemeColorSecondary() {
 	if (themeColorsSecondaryCount === 0) {
 		themeColorsSecondaryCount = themeColorsSecondary.length;
 	}
+}
+
+/**
+ * @description Unhide the progress bar elements
+ */
+async function unhideProgressBar() {
+	domAPI.setProperty('rescan-progress', 'value', 0);
+	domAPI.setProperty('rescan-progress-container', 'hidden', false);
+	domAPI.setProperty('rescan-progress', 'hidden', false);
+}
+
+/**
+ * @description After loading is done,  hide the progress bar again
+ */
+async function hideProgressBar() {
+	domAPI.setProperty('rescan-progress-container', 'hidden', true);
+	domAPI.setProperty('rescan-progress', 'hidden', true);
 }

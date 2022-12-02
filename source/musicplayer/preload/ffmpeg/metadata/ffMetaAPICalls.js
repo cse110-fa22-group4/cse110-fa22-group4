@@ -27,6 +27,7 @@ const {
 const {debugLog} = require('../../general/genAPICalls');
 const {clipboard} = require('electron');
 const {promises: fs} = require('fs');
+const {setProperty} = require('../../dom/domAPICalls');
 
 // noinspection LoopStatementThatDoesntLoopJS
 /**
@@ -113,6 +114,9 @@ async function createMultiFFmpegPromise(path) {
 			proc.stdout.on('data', async (data) => {
 				if (data) {
 					await debugLog(data.toString(), 'multi-ffmpeg-loading-progress');
+					// this updates the frontend progress bar
+					await setProperty('rescan-progress', 'value', parseFloat(data.toString()));
+					await setProperty('percentage-rescan-progress', 'innerHTML', parseFloat(data.toString()) + '%');
 				}
 			});
 

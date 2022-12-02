@@ -14,6 +14,13 @@
             <button id="add-paths-button">Add</button>
             <input type="file" id="add-paths-button">
         </div>
+        <div id="rescan-progress-container" hidden>
+            <p>Loading library...</p>
+            <div id="percentage-rescan-progress-container">
+                <p id="percentage-rescan-progress">0%</p>
+                <input type="range" id="rescan-progress" class="fader" step="0.0001" hidden>
+            </div>
+        </div>
         <div class="toggle">
             <div>Rescan watch folders at startup</div>
             <label for="enable-scan-on-startup">

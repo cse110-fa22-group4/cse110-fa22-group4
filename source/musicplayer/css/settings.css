@@ -247,3 +247,29 @@ input:checked + .slider::before {
   align-items: center;
   align-self: end;
 }
+
+#rescan-progress {
+  height: 1vmin;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-left: 10px;
+  margin-inline-end: 0px;
+}
+
+#rescan-progress-container {
+  display: flex;
+}
+
+#percentage-rescan-progress-container {
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+}
+
+div[hidden] {
+  max-height: 0px;
+  max-width: 0px;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  color: rgba(0 0 0 / 0%);
+}
