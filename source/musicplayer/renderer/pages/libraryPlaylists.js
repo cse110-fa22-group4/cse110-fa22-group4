@@ -15,6 +15,12 @@ window.addEventListener('library-playlists-container-queue-clicked', async (args
 
     // send track to playback queue
     queueArr.push(trackObj);
+
+    // refresh queue viewer if already open
+    if(queueViewerIsExtended) {
+        await toggleQueueViewer();
+        await toggleQueueViewer();
+    }
 });
 
 /**

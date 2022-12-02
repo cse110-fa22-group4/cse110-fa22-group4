@@ -16,6 +16,8 @@
 @import "settings.css";
 @import "home.css";
 @import "playlistManager.css";
+@import "queueViewer.css";
+
 
 :root {
     font-family: Roboto, sans-serif;
@@ -45,6 +47,31 @@ body {
     margin: 0;
     padding: 0;
 }
+
+#user-feedback {
+    display: none;
+    position: fixed;
+    bottom: 120px;
+    left: calc(50vw - 200px + 230px);
+    box-shadow: 2px 4px 8px 0 rgba(0 0 0 / 25%);
+    height: 50px;
+    width: 175px;
+    border-radius: 5px;
+    background-color: var(--theme-secondary);
+    color: var(--light);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* opacity: 1;
+    animation: fade 3s linear; */
+}
+
+/* @keyframes fade {
+    0%, 100% { opacity: 0 }
+    50% { opacity: 1 }
+  } */
 
 /* SCROLL BARS */
 ::-webkit-scrollbar {

@@ -2,8 +2,7 @@
 let metaEditorIsExtended = false; // helper to track meta editor
 let playlistManagerIsExtended = false; // helper to track playlist manager
 let queueViewerIsExtended = false; // helper to track queue viewer
-let currFileList; // Get file from user
-let editorIsOn = false; // helper to track if editor
+let editorIsOn = false; // helper to track editor
 
 window.addEventListener('mainHeader-loaded', async () => {
 	await domAPI.setStyle('editor-container', 'display', 'none');
@@ -60,7 +59,20 @@ async function addToQueue(element) {
         queueArr.push(selectedTracks[i]);
     }
 
-    console.log(selectedTracks);
+    // refresh queue viewer if already open
+    if(queueViewerIsExtended) {
+	    await toggleQueueViewer();
+	    await toggleQueueViewer();
+    }
+
+    // reset selection
+    if(await getCurrentPage() == 'library') {
+        libraryClick();
+    }
+    await removePlaylistSelection();
+
+    // send user feedback
+    await giveUserFeedback('Added to Queue')
 }
 
 /**
