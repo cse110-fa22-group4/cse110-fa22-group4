@@ -57,6 +57,13 @@ async function addToQueue(element) {
 
     // send tracks to playback queue
     for (let i = 0; i < selectedTracks.length; i++) {
+		// playback integration edit
+		if (queueArr.length == 0) {
+			initFirstSong(selectedTracks);
+			initProgress(selectedTracks);
+			initInfo(selectedTracks);
+		}
+
         queueArr.push(selectedTracks[i]);
     }
 
@@ -142,4 +149,52 @@ async function toggleMetaEditor(element) {
         metaEditorIsExtended = false;
 		queueViewerIsExtended = false;
     }
+}
+
+
+/**
+ * @name initFirstSong 
+ * @description set the inital song as soon as it is added to Queue
+ * @param selectedTracks array holding track objects to be pushed
+ */
+function initFirstSong(selectedTracks) {
+	// store first song in history on load
+	prevSongsArr.push(songNum);
+	currSongPath = selectedTracks[0]['filename'];
+}
+
+/**
+ * @description set the inital values of the progress bar for  song
+ * @param selectedTracks array holding track objects to be pushed
+ */
+function initProgress(selectedTracks) {
+	startStamp = document.querySelector('.timestamps:nth-of-type(1)');
+	endStamp = document.querySelector('.timestamps:nth-of-type(2)');
+	progressFader = document.querySelector('#progressBar');
+	const currSongDuration = selectedTracks[0]['duration'];
+
+	endStamp.innerHTML = msToFormatStr(currSongDuration * 1000);
+	startStamp.innerHTML = '0:00';
+	progressFader.value = '0';
+	msElapsed = 0;
+}
+
+/**
+ * @description set the inital info when first song is selected
+ * @param selectedTracks array holding track objects to be pushed 
+ */
+function initInfo(selectedTracks) {
+	const currTitle = selectedTracks[0]['title'];
+	const currArtist = selectedTracks[0]['artist'];
+	let currArt = '';
+	if ( typeof selectedTracks[0]['artwork'] === 'undefined') {
+		currArt = '../img/artwork-default.png';
+	} else {
+		currArt = selectedTracks[0]['artwork'];
+	}
+
+	document.querySelector('.songInfo > b').innerHTML = currTitle;
+	document.querySelector('.songInfo > p').innerHTML = currArtist;
+	document.querySelector('#playbackArt').style.visibility = 'visible';
+	document.querySelector('#playbackArt').src = currArt;
 }
