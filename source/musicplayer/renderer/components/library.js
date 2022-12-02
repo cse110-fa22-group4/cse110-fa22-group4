@@ -36,5 +36,21 @@ window.addEventListener('library-container-queue-clicked', async (args) => {
 async function onLibraryLoad() {
 	await domAPI.setHTML('library-container', '');
 	const trackList = await fsAPI.getSongsTrackData();
-	await domAPI.addGrid('library-container', libraryHeaders, trackList, gridSettings);
+
+    // TODO: temporary old version implementation, is bugged atm
+    if(searchQueryGlobal.length !== 0) {
+        const searchSettings = {
+            sort: true,
+            resizable: true,
+            fixedHeader: true,
+            autoWidth: true,
+            search: {
+                enabled: true,
+                keyword: searchQueryGlobal,
+            },
+        };
+        await domAPI.addGrid('library-container', libraryHeaders, trackList, searchSettings);
+    } else {
+	    await domAPI.addGrid('library-container', libraryHeaders, trackList, gridSettings);
+    }
 }

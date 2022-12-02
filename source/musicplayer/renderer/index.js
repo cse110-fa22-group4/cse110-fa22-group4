@@ -5,7 +5,7 @@
 /* GLOBAL VARS */
 let topContainerIsExtended = false; // helper to track extended overview
 const searchQuery = ''; // the current query entered into the search bar
-let searchQueryGlobal;
+let searchQueryGlobal = '';
 const currentPage = { // helper to track current page
 	home: true,
 	library: false,

@@ -57,7 +57,7 @@ body {
     height: 50px;
     width: 175px;
     border-radius: 5px;
-    background-color: var(--theme-secondary);
+    background-color: var(--theme-primary);
     color: var(--light);
 
     display: flex;
