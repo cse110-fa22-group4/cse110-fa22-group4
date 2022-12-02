@@ -33,7 +33,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await domAPI.addEventListener( 'btn-playlists', 'click', playlistsClick);
 	await domAPI.addEventListener( 'btn-settings', 'click', settingsClick);
 	// await domAPI.addEventListener( 'playbackArt', 'click', queueClick);          - moved to mainHeader.js momentarily
-	// await domAPI.addEventListener( 'playlists-bottom-btn', 'click', queueClick); - moved to mainHeader.js momentarily
+	// await domAPI.addEventListener( 'playlists-bottom-btn', 'click', queueClick); - moved to mainHeader.js mo
 	// await domAPI.addEventListener( 'btn-overview', 'click', overviewClick);
 });
 
@@ -185,11 +185,18 @@ async function setCurrentPage(currPage) {
     }
 }
 
+
 /**
- * @name queueClick
- * @description Toggle Queue view.
- * @param {HTMLElement} element
+ * @name giveUserFeedback
+ * @description Displays feedback to the user.
+ * @param {string} feedback The feedback to send to the user.
+ * @return {Promise<void>}
  */
- async function queueClick(element) {
-    // TODO: toggle queue view once implemented
+ async function giveUserFeedback(feedback) {
+    let messageBox = document.querySelector('#user-feedback-container');
+    messageBox.innerHTML = `<div id="user-feedback">${feedback}</div>`;
+
+    setTimeout(() => {
+        messageBox.innerHTML = '';
+    }, 2500)
 }

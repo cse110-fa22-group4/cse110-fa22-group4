@@ -2,6 +2,8 @@
 // fix lint issues later
 // const queueMap = {'name': 'queuePlaylist', 'numTracks': '0', 'artworks': [], 'trackList': []};
 const queueArr = [];
+let currPlayingTrackIndex = -1;  // needed a way to track index of currently playing song,
+                                // maybe we can use something like this?
 
 /*
 const queueMap = { };
