@@ -110,7 +110,11 @@ async function addToPlaylist(element) {
  */
 async function removePlaylistSelection(element) {
 	await domAPI.setHTML('selected-playlists-container', '');
-	// libraryClick();
+
+    // reset selection
+    if(await getCurrentPage() == 'library') {
+    	libraryClick();
+    }
 }
 
 /**
