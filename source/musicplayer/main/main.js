@@ -64,11 +64,11 @@ app.whenReady().then(async () => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on('before-quit', async () => {
+app.on('before-quit', () => {
 	ipcMain.emit('window-closed');
-	if(process.platform !== 'darwin') await ffmpegAPI.stopSong();
 });
-app.on('window-all-closed', () => {
+app.on('window-all-closed', async () => {
+	if(process.platform !== 'darwin') await ffmpegAPI.stopSong();
 	if (process.platform !== 'darwin') app.quit();
 });
 
