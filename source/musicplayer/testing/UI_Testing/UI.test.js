@@ -87,11 +87,6 @@ test('Check Page Navigation', async () => {
     // allow for 3 minutes for debugging
     //test.setTimeout(180000);
 
-
-    // Navigate to Now Playing
-    await window.locator('#btn-overview').click();
-    expect(await getContents('#btn-lyrics')).toStrictEqual(["Lyrics"]);
-
     // Navigate to Library
     await window.locator('#btn-library').click();
     expect(await getContents('#header-title')).toStrictEqual(
