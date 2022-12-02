@@ -18,17 +18,17 @@
 @import "playlistManager.css";
 
 :root {
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  font-weight: 100;
+    font-family: Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: 100;
 
-  --theme-primary: #67878e;
-  --theme-secondary: #67878e;
-  --dark: #1f1f1f;
-  --light: #fff;
-  --mid-light: #dbdbdb;
-  --mid: #c4c4c4;
-  --mid-dark: #767676;
+    --theme-primary: #67878e;
+    --theme-secondary: #67878e;
+    --dark: #1f1f1f;
+    --light: #fff;
+    --mid-light: #dbdbdb;
+    --mid: #c4c4c4;
+    --mid-dark: #767676;
 }
 
 /* tool to reveal div borders for formatting purposes */
@@ -41,58 +41,59 @@
 
 /* GENERAL */
 body {
-  height: 100vh;
-  margin: 0;
-  padding: 0;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 /* SCROLL BARS */
 ::-webkit-scrollbar {
-  border: none;
-  width: 6px;
-  height: 6px;
+    border: none;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--mid-light);
-  border-radius: 10px;
+    background-color: var(--mid-light);
+    border-radius: 10px;
 }
 
 /* TOP CONTAINER */
 #top-container {
-  position: fixed;
-  left: 230px;
-  width: calc(100% - 230px);
-  height: calc(100% - 120px);
-  display: flex;
-  flex-direction: column;
+    top: 100px;
+    position: fixed;
+    left: 230px;
+    width: calc(100% - 230px);
+    height: calc(100% - 220px);
+    display: flex;
+    flex-direction: column;
 }
 
 #mainMeta-container {
-  padding: 0 30px;
-  height: calc(100% - 33% - 80px);
-  display: grid;
-  grid-template-columns: 1fr 0fr;
+    padding: 0 30px;
+    height: calc(100% - 87px);
+    display: grid;
+    grid-template-columns: 1fr 0fr;
 
-  /* column-gap: 30px; */
+    /* column-gap: 30px; */
 }
 
 /* PLAYLIST MANAGER + META EDITOR */
 #editor-container {
-  border-radius: 5px;
-  padding: 30px;
-  background-color: var(--dark);
-  color: var(--light);
-  overflow-y: auto;
-  width: 20vw;
-  margin-left: 10px;
+    border-radius: 5px;
+    padding: 30px;
+    background-color: var(--dark);
+    color: var(--light);
+    overflow-y: auto;
+    width: 20vw;
+    margin-left: 10px;
 }
 
 /* HIDDEN GRID FOR SEARCHING */
 #hidden-search-grid {
-  height: 0;
-  width: 0;
-  max-height: 0;
-  max-width: 0;
-  overflow: hidden;
+    height: 0;
+    width: 0;
+    max-height: 0;
+    max-width: 0;
+    overflow: hidden;
 }
