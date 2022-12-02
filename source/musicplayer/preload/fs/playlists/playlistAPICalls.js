@@ -220,7 +220,7 @@ async function getPlaylistMeta(playlistName) {
 
 /**
  * @memberOf fsAPI
- * @name writeToPlaylist
+ * @name removeFromPlaylist
  * @description Removes a value from a tag for playlist creation.
  * @param {string} playlistName The name of the playlist.
  * @param {number} index The index of the tag group to remove.
