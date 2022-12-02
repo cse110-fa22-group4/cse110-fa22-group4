@@ -30,14 +30,22 @@
         </div>
 
         <!--Playlists-->
-        <h2>Import / Export Playlists</h2>
+        <h2>Export Playlists</h2>
+        <p>Select a playlist from the dropdown to export</p>
+        <div class="playlist-btns">
+            <select name="select-playlist-export" id="select-playlist-export">
+                <option value selected disabled>Select a playlist...</option>
+                <option>Placeholder</option>
+            </select>
+            <button id="export-selected-playlist">Export</button>
+        </div>
+        <h2>Import Playlists</h2>
         <p>Discover new mixes by importing a playlist</p>
-        <div class="import-playlist-btns">
+        <div class="playlist-btns">
             <input id="new-playlist-name" type="text">
             <label id="add-playlist-input-label" for="add-playlist-input">Import</label>
             <input type="file" id="add-playlist-input">
         </div>
-
     </div>
 
     <!--Second column-->
@@ -60,7 +68,8 @@
         </div>
 
 
-
+        <!-- This will be implemented in the future, but for now, it doesn't do anything-->
+        <!--
         <div class="toggle">
             <p>Default to light theme or toggle for dark mode</p>
             <label for="enable-dark-mode">
@@ -68,5 +77,6 @@
                 <span class="slider round"></span>
             </label>
         </div>
+        -->
     </div>
 </div>

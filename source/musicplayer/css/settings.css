@@ -183,7 +183,8 @@ input:checked + .slider::before {
 }
 
 #settings-rescan,
-#add-paths-button {
+#add-paths-button,
+#export-selected-playlist {
   height: 28px;
   padding: 0 15px;
   border: none;
@@ -199,8 +200,15 @@ input:checked + .slider::before {
   align-items: center;
 }
 
+
+
+#export-selected-playlist {
+  margin-left: auto;
+}
+
 #settings-rescan:hover,
-#add-paths-button-label:hover {
+#add-paths-button-label:hover,
+#export-selected-playlist:hover {
   background-color: rgba(0 0 0 / 70%);
   transition: 300ms;
 }
@@ -210,9 +218,9 @@ input:checked + .slider::before {
   display: none;
 }
 
-#new-playlist-name {
+#new-playlist-name,
+#select-playlist-export {
   height: 24px;
-  width: 500px;
   padding: 0 15px;
   border: none;
   color: var(--mid);
@@ -225,7 +233,7 @@ input:checked + .slider::before {
   margin-bottom: 5px;
 }
 
-.import-playlist-btns {
+.playlist-btns {
   display: flex;
   flex-direction: column;
 }
@@ -253,7 +261,7 @@ input:checked + .slider::before {
   margin-block-start: 1em;
   margin-block-end: 1em;
   margin-left: 10px;
-  margin-inline-end: 0px;
+  margin-inline-end: 0;
 }
 
 #rescan-progress-container {
@@ -267,8 +275,8 @@ input:checked + .slider::before {
 }
 
 div[hidden] {
-  max-height: 0px;
-  max-width: 0px;
+  max-height: 0;
+  max-width: 0;
   margin-top: 0%;
   margin-bottom: 0%;
   color: rgba(0 0 0 / 0%);

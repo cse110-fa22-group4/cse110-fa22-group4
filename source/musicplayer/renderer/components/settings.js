@@ -32,6 +32,7 @@ window.addEventListener('settings-loaded', async ()=> {
 	await domAPI.addEventListener('add-paths-button', 'click', addPath);
 	await domAPI.addEventListener('enable-scan-on-startup', 'click', enableToggleableSetting);
 	await domAPI.addEventListener('enable-dark-mode', 'click', enableToggleableSetting);
+	await updatePlaylistOptionsSettings();
 
 	await domAPI.addEventListener( 'btn-theme-color-primary', 'click', changeThemeColorPrimary);
 	await domAPI.addEventListener( 'btn-theme-color-secondary', 'click', changeThemeColorSecondary);
@@ -140,7 +141,7 @@ async function loadSettingsState() {
 	await updateWatchedFoldersDisplay();
 
 	// These are the toggles relevant to the settings menu
-	const relevantToggles = ['enable-scan-on-startup', 'enable-dark-mode'];
+	const relevantToggles = ['enable-scan-on-startup']; /* 'enable-dark-mode' */
 	const allSettings = await fsAPI.getSettings();
 	for (let i=0; i < relevantToggles.length; i++) {
 		if (relevantToggles[i] in allSettings) {
@@ -172,7 +173,7 @@ async function changeThemeColorSecondary() {
 }
 
 /**
- * @description Unhide the progress bar elements
+ * @description Unhide the progress bar elements for when we start loading in a library.
  */
 async function unhideProgressBar() {
 	domAPI.setProperty('rescan-progress', 'value', 0);
@@ -181,9 +182,29 @@ async function unhideProgressBar() {
 }
 
 /**
- * @description After loading is done,  hide the progress bar again
+ * @description After library loading is done,  hide the progress bar again
  */
 async function hideProgressBar() {
 	domAPI.setProperty('rescan-progress-container', 'hidden', true);
 	domAPI.setProperty('rescan-progress', 'hidden', true);
+}
+
+/**
+ * @name updatePlaylistOptionsSettings
+ * @description Update menu options for playlists drop-down. Originally in playlists.js
+ * but copied over and modified to prevent scoping issues
+ * @param {HTMLElement} element
+ * @return {Promise<void>}
+ */
+async function updatePlaylistOptionsSettings() {
+	let playlistMenuOptions = '<option value="" selected disabled>Select a playlist...</option>';
+	const userPlaylists = await fsAPI.getAllPlaylists();
+	for (let i = 0; i < userPlaylists.length; i++) {
+		const option = `<option id="playlist-option-${userPlaylists[i]}" value="${userPlaylists[i]}">
+            ${userPlaylists[i]}</option>`;
+		playlistMenuOptions += option;
+	}
+
+	// Insert playlist options into container
+	await domAPI.setHTML('select-playlist-export', playlistMenuOptions);
 }
