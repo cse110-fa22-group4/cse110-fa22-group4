@@ -1,38 +1,32 @@
 /* SIDEBAR */
 #sidebar-container {
-  
   position: fixed;
   left: 0;
+  top: 85px;
+  padding-top: 60px;
   min-width: 230px;
   max-width: 230px;
   height: 100%;
-  box-shadow: 2px 0 4px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 2px 0 4px 0 rgba(0 0 0 / 25%);
 
-  /* background: linear-gradient(19deg, rgba(7, 34, 87, 1) 0%, rgba(59, 107, 129, 1) 51%, rgba(125, 59, 118, 1) 100%); */
+  /* background: linear-gradient(19deg,
+    rgba(7, 34, 87, 1) 0%, rgba(59, 107, 129, 1) 51%, rgba(125, 59, 118, 1) 100%); */
+
   /* background: linear-gradient(10deg, #749ba7 0%, #58707d 50%, #37657a 100%); */
+
   /* background: linear-gradient(10deg, #b62727ad 0%, #2c597f 100%); */
+
   /* background: linear-gradient(19deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%); */
 
   /* background-color: #567c87; */
 
   /* background-color: var(--theme-primary); */
-  /* background-image: url(../img/sidebar-bg.png); */
-  
-  background-image: linear-gradient(19deg, var(--theme-secondary) 0%, var(--theme-primary) 100%);
 
+  /* background-image: url(../img/sidebar-bg.png); */
+  background-image: linear-gradient(19deg, var(--theme-secondary) 0%, var(--theme-primary) 100%);
   white-space: nowrap;
   overflow: hidden;
 }
-
-#logo {
-  width: 80%;
-  padding: 10px;
-  margin: 10px;
-  margin-top: 20px;
-  margin-bottom: 40px;
-  /* filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25)); */
-}
-
 
 .sidebar-icon-btn {
   display: flex;
@@ -43,12 +37,12 @@
 }
 
 .sidebar-icon-btn:hover {
-  background-color: rgba(0, 0, 0, .20);
+  background-color: rgba(0 0 0 / 20%);
   transition: 300ms;
 }
 
 .sidebar-btn-active {
-  background-color: rgba(0, 0, 0, .40);
+  background-color: rgba(0 0 0 / 40%);
   transition: 300ms;
 }
 
@@ -56,6 +50,7 @@
   height: 20px;
   position: fixed;
   margin-left: 50px;
+
   /* filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25)); */
 }
 
@@ -66,11 +61,11 @@
   height: 100%;
   color: var(--light);
   border: none;
-
-  font-family: 'Roboto', sans-serif;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   font-weight: 100;
   text-align: left;
+
   /* text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
   padding-left: 95px;
 }
@@ -79,4 +74,3 @@
   font-size: 12px;
   padding-left: 95px;
 }
-

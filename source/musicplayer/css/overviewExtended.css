@@ -1,3 +1,5 @@
+/* stylelint-disable selector-id-pattern */
+/* stylelint-disable selector-class-pattern */
 #top-container-extended {
   position: fixed;
   top: 0;
@@ -5,11 +7,9 @@
   bottom: 100px;
   left: 230px;
   border-radius: 0 0 15px 15px;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-
+  /* box-shadow: 0 4px 4px 0 rgba(0 0 0 / 25%); */
   padding: 30px;
   padding-left: 60px;
-
   background-color: var(--dark);
   color: var(--light);
 }
@@ -17,24 +17,21 @@
 .overviewExtended-container {
   min-height: 100%;
   max-height: 100%;
-
   display: grid;
-
-  grid-template-rows: .6fr 3fr 1.5fr;
+  grid-template-rows: 0.6fr 3fr 1.5fr;
   grid-template-columns: 1fr 1.5fr;
 }
 
 /* ALBUM ARTWORK */
 .ovEx-artwork {
-  grid-row-start: 1;
-  grid-row-end: 3;
+  grid-row: 1 / 3;
   padding-top: 40px;
 }
 
 .ovEx-artwork > img {
   height: 100%;
-  border-radius: 15px 15px 15px 15px;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 15px;
+  filter: drop-shadow(0 4px 4px rgba(0 0 0 / 25%));
 }
 
 /* NAVIGATION */
@@ -51,23 +48,23 @@
   border: none;
   padding-right: 40px;
   height: 40px;
-
   font-size: 26px;
   font-weight: 800;
   color: var(--mid-dark);
 }
 
 #btn-queue:hover {
-  color: #FFFFFF;
+  color: #fff;
 }
 
 #btn-track:hover {
-  color: #FFFFFF;
+  color: #fff;
 }
 
 #btn-lyrics:hover {
-  color: #FFFFFF;
+  color: #fff;
 }
+
 /* CONTENT */
 #ovEx-content-container {
   font-size: 12px;
@@ -109,13 +106,11 @@
   .ovEx-track-info :nth-child(2) {
     font-size: 14px;
     padding-left: 0;
-
   }
 
   .ovEx-track-info :nth-child(3) {
     font-size: 12px;
     padding-left: 0;
-
   }
 }
 
@@ -124,10 +119,8 @@
   display: flex;
   align-items: start;
   overflow-y: auto;
-
   padding-top: 20px;
   border-top: var(--mid-dark) 1px solid;
-
   font-size: 12px;
   font-weight: 100;
 }
@@ -136,7 +129,6 @@
   font-size: 12px;
   font-weight: 800;
   color: var(--mid-dark);
-
   text-align: right;
   padding-right: 10px;
 }
