@@ -70,6 +70,8 @@ async function addPath(element) {
 		}
 		await fsAPI.writeToSetting('watchedDir', watched);
 		await updateWatchedFoldersDisplay();
+		// we do a rescan because the user just added a folder.
+		await rescanClick();
 	}
 }
 
