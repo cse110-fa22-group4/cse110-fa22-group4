@@ -68,7 +68,7 @@ async function homeClick(element) {
  */
 async function libraryClick(element) {
     // load page
-	await domAPI.loadPage('main-container', 'pages/library.html', postLibraryLoad);
+	await domAPI.loadPage('main-container', 'pages/library.html');
 
     // set the header values
 	await domAPI.setHTML('header-title', 'Library');
@@ -123,7 +123,7 @@ async function settingsClick(element) {
 }
 
 /**
- * @name topExtensionOn
+ * @name topExtensionOff
  * @description Toggles extended overview off.
  * @return {Promise<void>}
  */
