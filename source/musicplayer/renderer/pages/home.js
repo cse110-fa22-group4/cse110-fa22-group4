@@ -24,7 +24,7 @@ async function generateHomeCards() {
 
 	// this boolean prevents us from failing to generate something unique more than once.
 	// if we generate something nonunique, try again, and it still isn't unique, we just don't add a card then
-	const maxRepeats = 4;
+	const maxRepeats = 11;
 
 	// let's get numHomeCards many unique random entries from our Library
 	const albums = new Set();
@@ -391,7 +391,7 @@ async function libraryAlbumsExtended(e) {
 	await domAPI.setHTML('header-title', `Library`);
 	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardAlbum}`);
-	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings, 'playlists');
+	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
 }
 
 /**
