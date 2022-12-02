@@ -1,3 +1,6 @@
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable selector-id-pattern */
+
 /* PLAYBACK */
 #playback-container {
   background-color: var(--light);
@@ -8,9 +11,9 @@
   right: 0;
   left: 230px;
   padding-left: 30px;
-  box-shadow: 2px 0 4px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 15px 15px 0px 0px;
-  display: flex;        
+  box-shadow: 2px 0 4px 2px rgba(0 0 0 / 25%);
+  border-radius: 15px 15px 0 0;
+  display: flex;
   align-items: center;
 }
 
@@ -39,7 +42,7 @@
 }
 
 .songInfo > p {
-  margin: 0 0 0 0;
+  margin: 0;
 }
 
 #playbackContainer {
@@ -49,7 +52,7 @@
   */
   display: grid;
   grid-template-rows: 4ch 1fr;
-  grid-auto-flow: row; 
+  grid-auto-flow: row;
   min-width: 50%;
   justify-content: center;
   align-items: center;
@@ -59,18 +62,21 @@
   height: 20%;
   width: 20%;
   margin: 2px 5px 2px 2px;
-  border-radius: 2px 2px 2px 2px;
+  border-radius: 2px;
 }
 
 #controlsContainer {
   display: grid;
-  /*grid-template-columns: auto auto auto auto auto;*/ /*whitespace issue doesnt seem related to container*/
+
+  /* grid-template-columns: auto auto auto auto auto; */
+
+  /* whitespace issue doesnt seem related to container */
   grid-template-columns: 4ch 4ch 4ch 4ch 4ch;
   justify-content: space-around;
 }
 
 .playbackBtn {
-  /*display: block;*/
+  /* display: block; */
   padding: 0;
   border: none;
   background: none;
@@ -88,21 +94,24 @@
 .audioIcons {
   height: 100%;
   width: 100%;
-}*/
+}
+*/
 
 /*
 .otherControls {
   fill: var(--theme-primary);
   fill: #C4C4C4;
-}*/
+}
+*/
 
 .timestamps {
   color: lightgrey;
-  margin: 4px 4px 4px 4px;
-  /*margin-block-start: 0em;
+  margin: 4px;
+
+  /* margin-block-start: 0em;
   margin-block-end: 0em;
   margin-inline-start: 0px;
-  margin-inline-end: 0px;*/
+  margin-inline-end: 0px; */
 }
 
 #progressContainer {
@@ -117,16 +126,15 @@
   display: flex;
   align-items: center;
   background-color: #C4C4C4;
-  border-radius: 5px;             
+  border-radius: 5px;
   padding: 1px;
   height: 6px;
   width: 100%;
 }
 
-
 .progressBar > div {
   background-color: var(--theme-primary);
-  width: 50%; 
+  width: 50%;
   height: 8px;
   border-radius: 10px;
 }
@@ -142,14 +150,14 @@
   max-height: 25%;
 }
 
-/*Pretty sure Electron is Chrominum-based*/
+/* Pretty sure Electron is Chrominum-based */
 .fader {
-  overflow: hidden; /*This is key so that box shadow appears as fill*/
+  overflow: hidden; /* This is key so that box shadow appears as fill */
   appearance: none;
   outline: none;
   height: 2vmin;
   border-radius: 1vmin;
-  background:  #C4C4C4; /*slider 'container' color*/
+  background: #c4c4c4; /* slider 'container' color */
 }
 
 #audio-fader {
@@ -162,15 +170,17 @@
   appearance: none;
   color: #13bba4;
   margin-top: -1px;
-}*/
+}
+*/
 
 .fader::-webkit-slider-thumb {
   cursor: pointer;
   appearance: none;
   width: 0;
   height: 0;
-  background: #C4C4C4;                 /*thumb color*/
+  background: #c4c4c4;                 /* thumb color */
   border-radius: 80%;
+
   /* box-shadow: -220px 0 0 220px var(--theme-primary);  'fill' color */
   box-shadow: -220px 0 0 220px var(--theme-primary);  /* Testing with global theme variable */
 }

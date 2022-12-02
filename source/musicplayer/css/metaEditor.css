@@ -1,3 +1,4 @@
+/* stylelint-disable selector-id-pattern */
 #metaEdit-main {
   margin: 20px auto;
   margin-left: 30px;
@@ -28,13 +29,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding-bottom: 20px;
   margin-bottom: 10px;
   border-bottom: var(--mid) 1px solid;
 }
 
-#metaEdit-header>div {
+#metaEdit-header > div {
   color: var(--light);
   font-size: 12px;
   font-weight: 800;
@@ -44,27 +44,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   margin-top: 10px;
   border-top: var(--mid) 1px solid;
 }
 
-#metaEdit-save>button {
+#metaEdit-save > button {
   color: var(--light);
-
   padding: 20px;
   font-size: 12px;
   font-weight: 800;
-
   height: 100%;
   width: 100%;
-
   background-color: transparent;
   border: none;
-
 }
 
 #metaEdit-save:hover {
-  background-color: rgb(255, 255, 255, 0.035);
+  background-color: rgb(255 255 255 / 3.5%);
   transition: 300ms;
 }

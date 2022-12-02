@@ -87,11 +87,6 @@ test('Check Page Navigation', async () => {
     // allow for 3 minutes for debugging
     //test.setTimeout(180000);
 
-
-    // Navigate to Now Playing
-    await window.locator('#btn-overview').click();
-    expect(await getContents('#btn-lyrics')).toStrictEqual(["Lyrics"]);
-
     // Navigate to Library
     await window.locator('#btn-library').click();
     expect(await getContents('#header-title')).toStrictEqual(
@@ -116,4 +111,36 @@ test('Check Page Navigation', async () => {
    await electronApp.close();
 
 });
+
+
+/*
+Next Steps:
+
+<---Test Full Workflow--->
+- Reset user environment
+- go through all pages
+- then go to settings
+- add a watch folder
+- rescan watch folder
+- wait a little bit
+- set the color for the app
+- close settings
+- double check that we are still on the same page
+- go to library
+- check that the songs are there
+- make sure the songs play
+- go to playlists
+- make a new playlist
+- search for songs
+- add songs to playlist
+- search for the playlist?
+- play from the playlist
+- stop playing
+- close the app
+- open the app
+- make sure the playlist still exists and the right color settings are being used
+- delete the playlist
+- make sure all songs can be played?
+- finish??
+*/
 
