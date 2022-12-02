@@ -32,23 +32,12 @@ None
 | item1 | Show demo of the program |
 | item2 | App front and back end |
 | item3 | CI/CD pipeline |
-| item3 | Writing script through Google docs |
-| item3 | Create video through OBS |
+| item4 | Writing script through Google docs |
+| item5 | Create video through OBS |
 
-## Decisions
- | Item | By Who? | Notes |
-|------|---------|-------|
- | item | who     | notes |
+## What is done
+- Jsdoc website document shown
+- Created agile video
+- Found problem with lint but couldn't find the fix
+- video is not fully done, it will need some fixation regarding time and script
 
-## Action Items
-| Done? | Item | Responsible | Due Date |
-|-------|------|-------------|----------|
-|       | item | who         | due_date |
-
-## Unfinished Items
-| Item | Who | When |
-|------|-----|------|
-| item | who | when |
-
-## Other Notes & Information
-N/A
