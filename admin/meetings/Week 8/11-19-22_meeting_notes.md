@@ -38,6 +38,6 @@ None
 ## What is done
 - Jsdoc website document shown
 - Created agile video
-- Found problem with lint but couldn't find the fix
+- Found problem with lint and fixed JS part of lint
 - video is not fully done, it will need some fixation regarding time and script
 
