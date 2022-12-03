@@ -56,8 +56,15 @@ async function createUserPlaylist(element) {
 	// get custom playlist name
 	const playlistName = await domAPI.getProperty('input-playlist-create', 'value');
 
-	if (playlistName.length !== 0) {
+	if (playlistName['length'] !== 0) {
 		await domAPI.setProperty('input-playlist-create', 'value', '');
+
+		// create new playlist object
+		// const currPlaylistObj = {
+		//     name: playlistName,
+		//     numTracks: 0,
+		//     trackList: []
+		// };
 
 		await fsAPI.createPlaylist(playlistName);
 
@@ -94,7 +101,7 @@ async function addToPlaylist(element) {
     for (let i = 0; i < tracks.length; i++) {
         const tags = {};
         for (const [key, value] of Object.entries(tracks[i])) {
-            if(value.length != 0) {
+            if(value.length !== 0) {
                 tags[key] = value;
             }
         }
@@ -102,7 +109,7 @@ async function addToPlaylist(element) {
     }
     
     // reset selection
-    if(await getCurrentPage() == 'library') {
+    if(getCurrentPage() === 'library') {
         await libraryClick();
     }
     if(playlistManagerIsExtended) {
@@ -123,8 +130,8 @@ async function removePlaylistSelection(element) {
 	await domAPI.setHTML('selected-playlists-container', '');
 
     // reset selection
-    if(await getCurrentPage() == 'library') {
-    	libraryClick();
+    if(getCurrentPage() === 'library') {
+    	await libraryClick();
     }
 }
 

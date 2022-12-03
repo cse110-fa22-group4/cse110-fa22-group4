@@ -206,7 +206,6 @@ function decideFirstSong() {
 
 /**
  * @description Plays the next song in playlist (and kills old instance)
- * @param {Map} playlistMap the map whose tracklist property holds
  * 	all the tracks of a playlist
  */
 async function nextSong() {
@@ -248,7 +247,6 @@ async function nextSong() {
 
 /**
  * @description Plays the previous song in playlist (and kills old instance)
- * @param {Map} playlistMap the map whose tracklist property holds
  * 	all the tracks of a playlist
  */
 async function prevSong() {
@@ -290,7 +288,6 @@ async function prevSong() {
 /**
  * @description Jumps to and plays a song in playlist (and kills old instance)
  * @param {number} index the index of the song to jump to
- * @param {Map} playlistMap the map whose tracklist property holds
  * 	all the tracks of a playlist
  */
  async function jumpSong(index) {
@@ -364,7 +361,7 @@ function loopSong() {
 /**
  * @description Toggle the color of the shuffle & repeat button when clicked
  * @param {string} fillColor color to change svg to
- * @param {HTMLElemet} btn svg (enclosed by button)
+ * @param {HTMLElement} btn svg (enclosed by button)
  */
 function toggleColor(fillColor, btn) {
 	if (fillColor === 'rgb(0, 0, 0)') { // equivalent to black
@@ -434,14 +431,13 @@ async function updateVolume(event) {
 // progress bar functionalities
 /**
  * @description set the inital values of the progress bar for current song
- * @param {Map} playlistMap the map whose tracklist property holds
  */
 function resetProgress() {
 	startStamp = document.querySelector('.timestamps:nth-of-type(1)');
 	endStamp = document.querySelector('.timestamps:nth-of-type(2)');
 	progressFader = document.querySelector('#progressBar');
 	// @ todo read in first song from persistent memory
-	if (queueArr.length == 0) {
+	if (queueArr.length === 0) {
 		return;
 	}
 	// const mapVal = playlistMap.get('playlist');
@@ -457,7 +453,6 @@ function resetProgress() {
 
 /**
  * @description change the length and timestamp of the progress bar for current song
- * @param {Map} playlistMap the map whose tracklist property holds
  */
 async function updateProgress() {
 	// check if song is over
@@ -529,7 +524,7 @@ function stopUpdateSeek(event) {
  * @description seek to position in song based on slider (once mouse up)
  * @param {HTMLElement} element element recieve from event 
  */
-async function updateSeek(element, playlistMap) {
+async function updateSeek(element) {
 	console.log('mouse up');
 	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
 	// console.log(Number(element.value));
@@ -559,7 +554,6 @@ async function updateSeek(element, playlistMap) {
 
 /**
  * @description updates info for current song
- * @param {Map} playlistMap the map whose tracklist property holds
  */
 function updateInfo() {
 	// @ todo read in first song from persistent memory
@@ -570,7 +564,7 @@ function updateInfo() {
 	// const playlist = mapVal['trackList'];
 	const currTitle = queueArr[songNum]['title'];
 	const currArtist = queueArr[songNum]['artist'];
-	let currArt = '';
+	let currArt;
 	if ( typeof queueArr[songNum]['artwork'] === 'undefined') {
 		currArt = '../img/artwork-default.png';
 	} else {

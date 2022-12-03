@@ -1,3 +1,5 @@
+let currGridPlaylist; // helper to track the current playlist grid
+
 window.addEventListener('libraryPlaylists-loaded', async () => {
 	await onLibraryPlaylistsLoad();
 	await domAPI.addEventListenerbyClassName('library-card', 'click', libraryPlaylistsExtended);
@@ -15,7 +17,7 @@ window.addEventListener('library-playlists-container-queue-clicked', async (args
 
     // send track to playback queue
     // playback integration edit
-    if (queueArr.length == 0) {
+    if (queueArr.length === 0) {
         initFirstSong([trackObj]);
         initProgress([trackObj]);
         initInfo([trackObj]);
@@ -82,14 +84,19 @@ async function onLibraryPlaylistsLoad() {
  * @return {Promise<void>}
  */
 async function libraryPlaylistsExtended(element) {
+    // turn on main extended buttons
+    await mainButtonsOn('components/gridExtendedButtons.html');
+    
 	const cardPlaylist = element.getAttribute('data-libtarget');
+
+    currGridPlaylist = cardPlaylist;
 
 	// Generate playlist grid
 	await domAPI.setHTML('header-subtitle', `${cardPlaylist}`);
 	await domAPI.setHTML('library-playlists-cards', '');
 
-	const currPlaylist = await fsAPI.getPlaylistObj(cardPlaylist);
-	const trackList = currPlaylist.tags;
+	const currPlaylist = await fsAPI.getPlaylist(cardPlaylist);
+	const trackList = currPlaylist['trackList'];
 	await domAPI.setHTML('library-playlists-container', '');
 	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings, true, cardPlaylist);
 }

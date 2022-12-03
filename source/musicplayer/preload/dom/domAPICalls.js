@@ -10,6 +10,9 @@ const establishedEvents = {};
 // holds track objects selected by the user
 let selectedTracks = [];
 
+// helper to track dark theme
+let darkThemeIsOn = false;
+
 /**
  * @name htmlFromRenderer
  * @description Gets a filepath corresponding to the actual html file path from a renderer process.
@@ -95,11 +98,7 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
     // clear previously selected tracks
     selectedTracks = [];
 
-    // add row index
-    columns.unshift({hidden: true, sort: {enabled: true}, name: 'rowIndex'});
-    for (let i = 0; i < data.length; i++) {
-        data[i]['rowIndex'] = i;
-    }
+
 
     // enable row selection
     columns.unshift(
@@ -149,7 +148,7 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
                         for (let i = 0; i < columns.length; i++) {
                             const key = columns[i].id;
                             const value = row.cells[i].data;
-                            if (key == 'awesomeCheckbox') {
+                            if (key === 'awesomeCheckbox') {
                                 continue
                             }
                             currTrackObj[key] = value
@@ -177,8 +176,8 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
         const currTrackObj = {};
         for (let i = 0; i < columns.length; i++) {
             const key = columns[i].id;
-            const value = args[1].cells[i].data;
-            if (key == 'awesomeCheckbox' || key == 'queue' || value == undefined) {
+            const value = args[1]['cells'][i].data;
+            if (key === 'awesomeCheckbox' || key === 'queue' || value === undefined) {
                 continue
             }
             currTrackObj[key] = value
@@ -198,9 +197,9 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
                 for (let i = 0; i < state.rowIds.length; i++) {
                     const currTrackObj = {};
                     for (let j = 1; j < columns.length; j++) {
-                        if (columns[j].name in data[0]) {
-                            const key = columns[j].name;
-                            currTrackObj[`${key}`] = state.rowIds[i][j].data;
+                        if (columns[j].id in data[0]) {
+                            const key = columns[j].id;
+                            currTrackObj[`${key}`] = state.rowIds[i][j]['data'];
                         }
                     }
                     currSelection.push(currTrackObj);
@@ -208,7 +207,8 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
                 selectedTracks = currSelection;
 
                 // get current editor type
-                const editorType = document.getElementById('editor-container').getAttribute('data-editortype');
+                const editorType = document.getElementById('editor-container')
+                    .getAttribute('data-editortype');
 
                 // playlist manager actions
                 // send selected tracks to selected container
@@ -451,6 +451,36 @@ async function setThemeColor(primary, secondary) {
 }
 
 /**
+ * @name toggleDarkTheme
+ * @memberOf domAPI
+ * @description Toggles the dark theme.
+ * @return {Promise<void>}
+ */
+ async function toggleDarkTheme() {
+    if(!darkThemeIsOn) {
+		document.documentElement.style.setProperty('--toggle-bg-1', '#282828');
+		document.documentElement.style.setProperty('--toggle-bg-3', '#1f1f1f');
+		document.documentElement.style.setProperty('--toggle-txt-1', '#ffffff');
+		document.documentElement.style.setProperty('--toggle-txt-2', '#c4c4c4');
+		document.documentElement.style.setProperty('--toggle-border', '#1f1f1f');
+		document.documentElement.style.setProperty('--toggle-hover', '#1f1f1f');
+		document.documentElement.style.setProperty('--toggle-playback', '#c4c4c4');
+
+        darkThemeIsOn = true;
+    } else {
+		document.documentElement.style.setProperty('--toggle-bg-1', '#ffffff');
+		document.documentElement.style.setProperty('--toggle-bg-3', '#ffffff');
+		document.documentElement.style.setProperty('--toggle-txt-1', '#1f1f1f');
+		document.documentElement.style.setProperty('--toggle-txt-2', '#1f1f1f');
+		document.documentElement.style.setProperty('--toggle-border', '#c4c4c4');
+		document.documentElement.style.setProperty('--toggle-hover', '#f3f3f3');
+		document.documentElement.style.setProperty('--toggle-playback', '#1f1f1f');
+
+        darkThemeIsOn = false;
+    }
+}
+
+/**
  * @name getSelectedTracks
  * @memberOf domAPI
  * @description Returns track objects selected by the user from a grid.
@@ -475,5 +505,6 @@ module.exports = {
     getProperty,
     addGrid,
     setThemeColor,
+    toggleDarkTheme,
     getSelectedTracks,
 };
