@@ -50,6 +50,10 @@
     visibility: visible;
 }
 
+.icon-currPlaying-delete {
+    width: 10px;
+}
+
 .queue-track-data {
     display: flex;
     flex-direction: column;

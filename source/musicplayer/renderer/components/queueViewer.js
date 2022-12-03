@@ -37,7 +37,9 @@ window.addEventListener('queueViewer-loaded', async () => {
                         ${new Date(1000 * queueArr[i].duration).toISOString().substr(11, 8).replace(/^[0:]+/, '')}
                         </div>
                     <div class="queue-track-delete">
-                        <button class="btn-queue-track-delete" data-queueIndex="${i}">X</button>
+                        <button class="btn-queue-track-delete" data-queueIndex="${i}">
+                            <img src="../img/icons/playback/delete.png" class="icon-currPlaying-delete">
+                        </button>
                     </div>
                 </div>
             `;
