@@ -198,8 +198,8 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
                 for (let i = 0; i < state.rowIds.length; i++) {
                     const currTrackObj = {};
                     for (let j = 1; j < columns.length; j++) {
-                        if (columns[j].name in data[0]) {
-                            const key = columns[j].name;
+                        if (columns[j].id in data[0]) {
+                            const key = columns[j].id;
                             currTrackObj[`${key}`] = state.rowIds[i][j].data;
                         }
                     }
