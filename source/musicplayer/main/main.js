@@ -9,10 +9,11 @@ const fsAPITester = require('../testing/fsAPITesting/fsAPITester');
 const { globalShortcut } = require('electron');
 
 let selectedSong = '';
+let mainWindow;
 
 const createWindow = async () => {
 	// Create the browser window.
-	const mainWindow = new BrowserWindow({
+	mainWindow = new BrowserWindow({
 		width: 1920,
 		height: 1080,
 		minHeight: 720,
@@ -80,11 +81,16 @@ app.whenReady().then(async () => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on('before-quit', () => {
-	ipcMain.emit('window-closed');
+app.on('before-quit', async () => {
+	await mainWindow.webContents.send('window-closed');
+	if (process.platform !== 'darwin') app.quit();
+
 });
 app.on('window-all-closed', async () => {
-	if(process.platform !== 'darwin') await ffmpegAPI.stopSong();
+	if (process.platform !== 'darwin') app.quit();
+});
+
+ipcMain.on('quit', () => {
 	if (process.platform !== 'darwin') app.quit();
 });
 

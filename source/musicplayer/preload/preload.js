@@ -106,6 +106,15 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await setPath();
 });
 
+window.onbeforeunload = async (e) => {
+	await stopSong();
+	let start = Date.now();
+	while(Date.now() < start + 100) {} //yeah.
+	window.onbeforeunload = null;
+	ipcRenderer.send('quit');
+
+};
+
 contextBridge.exposeInMainWorld('genAPI', {
 	debugLog: debugLog,
 	openDialog: openDialog,

@@ -18,8 +18,8 @@ let duration = 0;
  * @param {number} volume The volume of the song to play.
  * @param {number} seekVal The location to start playing the song at.
  * @param {number} durationParam, how long the song lasts
- * @param {bool} loopParam whether or not to loop
- * @param {async function} callback, the callback that calls after the song
+ * @param {boolean} loop_param whether or not to loop
+ * @param {function} callback, the callback that calls after the song
  * @todo set -loglevel quiet and -stats
  * @return {Promise<void>}
  */
@@ -49,7 +49,7 @@ async function playSong(songPath, volume = vol, seekVal = pauseTime,
 	]
 	//if we loop AND we seek to the begin
 	//Don't want to start looping at seekVal forever
-	if(loop && seekVal == 0) {
+	if(loop && seekVal === 0) {
 		options.push('-loop');
 		options.push('0');
 	}
@@ -57,7 +57,7 @@ async function playSong(songPath, volume = vol, seekVal = pauseTime,
 	instance = await require('child_process').spawn(ffPaths[0],
 	options,{shell: true});
 	timeStarted = Date.now() - (seekVal * 1000);
-	setBehaviorUponEnd(callback);
+	await setBehaviorUponEnd(callback);
 }
 /**
  * @name toggleLooping
@@ -81,11 +81,11 @@ async function toggleLooping() {
 async function setBehaviorUponEnd(callback = async () => {}) {
 	instance.on('close', async (code) => {
 		//if it closed "naturally"
-		if(code == 0) {
+		if(code === 0) {
 			await callback();
 			//if we loop, 
 			//but we didn't pause at the start
-			if(loop && pauseTime != 0) {
+			if(loop && pauseTime !== 0) {
 				await handleLooping();
 			}
 		}
