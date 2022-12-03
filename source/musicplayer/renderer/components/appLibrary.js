@@ -18,6 +18,7 @@ const libraryHeaders = [
 	{hidden: false, sort: {enabled: true}, name: 'artist'},
 	{hidden: false, sort: {enabled: true}, name: 'album'},
 	{hidden: false, sort: {enabled: true}, name: 'date'},
+	{hidden: false, sort: {enabled: true}, name: 'year'},
 	{hidden: false, sort: {enabled: true}, name: 'duration',
 		formatter: (cell) => `${new Date(1000 * cell).toISOString().substr(11, 8).replace(/^[0:]+/, '')}`},
 	// https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss

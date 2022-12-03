@@ -213,6 +213,7 @@ async function convertPathToTrack(filename, songs) {
 	const artist = 'tags' in song && 'artist' in song['tags'] ? song['tags']['artist'] : '';
 	const album = 'tags' in song && 'album' in song['tags'] ? song['tags']['album'] : '';
 	const date = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
+	const year = 'tags' in song && 'year' in song['tags'] ? song['tags']['year'] : '';
 	const duration = 'duration' in song ? song['duration']: '';
 	const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
 	const tags = 'tags' in song && 'tags' in song['tags'] ? song['tags']['tags'] : '';
@@ -223,6 +224,7 @@ async function convertPathToTrack(filename, songs) {
 		'artist': artist,
 		'album': album,
 		'date': date,
+		'year': year,
 		'duration': duration,
 		'genre': genre,
 		'tags': tags,
