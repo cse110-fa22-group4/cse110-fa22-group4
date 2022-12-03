@@ -64,6 +64,8 @@ window.addEventListener('queueViewer-loaded', async () => {
     const deleteTrackIndex = element.getAttribute('data-queueIndex')
     queueArr.splice(deleteTrackIndex, 1);
 
+	songNum--;
+
     await refreshQueueViewer();
 }
 

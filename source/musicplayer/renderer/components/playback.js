@@ -2,6 +2,16 @@
 // fix lint issues later
 // const queueMap = {'name': 'queuePlaylist', 'numTracks': '0', 'artworks': [], 'trackList': []};
 const queueArr = [];
+// identical to the original queueArr (removing songs have no affect)
+// allows prevSongArr index to be accurate and play prev songs
+// even if they are not longer in queue
+const prevSongsArr = [];
+
+// works
+// await genAPI.ipcSubscribeToEvent('window-focused', async () => {
+//	await genAPI.debugLog('test', 'unit-tests')
+// });
+
 
 /*
 const queueMap = { };
@@ -27,7 +37,7 @@ let shuffleOn = false;
 let toggleOn = false;
 const testMap = new Map();
 let songNum = 0;
-const prevSongsArr = [];
+const prevSongsIndxArr = [];
 
 let startStamp = null;
 let endStamp = null;
@@ -83,9 +93,15 @@ const song4 = {'#': '03', 'title': 'never gonna give you up', 'path': songPath4,
 
 window.addEventListener('playback-loaded', async () => {
 	// decideFirstSong();
+	// await genAPI.ipcSubscribeToEvent('window-closed', async () => {
+	// 	await genAPI.debugLog('test', 'unit-tests')
+	// });
+	// await genAPI.ipcSubscribeToEvent('window-focused', async () => {
+	// 	await genAPI.debugLog('test', 'unit-tests')
+	// });
 	await genAPI.publishGlobal(songNum, 'songNum');
 	await genAPI.publishGlobal(currSongPath, 'currSongPath');
-	await genAPI.publishGlobal(prevSongsArr, 'prevSongsArr');
+	await genAPI.publishGlobal(prevSongsIndxArr, 'prevSongsIndxArr');
 	await genAPI.publishGlobal(startStamp, 'startStamp');
 	await genAPI.publishGlobal(endStamp, 'endStamp');
 	await genAPI.publishGlobal(progressFader, 'progressFader');
@@ -141,7 +157,10 @@ window.addEventListener('playback-loaded', async () => {
  * @param {string} songPath path of curent song to be played
  */
 async function controlSong(songPath) {
-	// decideFirstSong();
+	if (queueArr.length == 0) {
+		alert('Select tracks to add to queue!');
+		return;
+	}
 	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
 	const playBtnImg = playBtn.querySelector('img');
 	// .setBinPath() in code or do in terminal atleast once, set to path of ffplay executable
@@ -177,7 +196,7 @@ function decideFirstSong() {
 	// 	return;
 	// }
 	// store first song in history on load
-	prevSongsArr.push(songNum);
+	prevSongsIndxArr.push(songNum);
 
 	// set first songPath
 	// const mapVal = playlistMap.get('playlist');
@@ -205,7 +224,7 @@ async function nextSong() {
 	}
 	// @todo decide songPath based on object
 	// songNum will only ever be used for array in Map, need to reset once Map is exited
-	prevSongsArr.push(songNum);
+	prevSongsIndxArr.push(songNum);
 	currSongPath = queueArr[songNum]['filename'];
 	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
@@ -240,11 +259,11 @@ async function prevSong() {
 	// for prev. Btn to work properly always need array to track songs
 	// -2 since length is +1 from index
 	// (ie: at index=0, 1-1=0 allows if cond. to pass, triggers indexOutOfBounds)
-	if ( prevSongsArr.length - 2 < 0) {
+	if ( prevSongsIndxArr.length - 2 < 0) {
 		return;
 	}
-	prevSongsArr.pop();	// remove current song
-	songNum = prevSongsArr[prevSongsArr.length - 1]; // retrieve prev song
+	prevSongsIndxArr.pop();	// remove current song
+	songNum = prevSongsIndxArr[prevSongsIndxArr.length - 1]; // retrieve prev song
 	// no need for branch anymore, prevSongsArr handles both cases of shuffleOn/Off
 	currSongPath = queueArr[songNum]['filename'];
 	isPaused = false;	// isPaused shouldn't be carried over from other songs
@@ -275,11 +294,11 @@ async function prevSong() {
  * 	all the tracks of a playlist
  */
  async function jumpSong(index) {
-
+	console.log(index);
     // TODO: function currently bugged, needs proper implementation
     // not sure what needs to be done with prevSongsArr -Alvin 
 	songNum = index;
-	prevSongsArr.push(songNum);
+	prevSongsIndxArr.push(songNum);
 
 	currSongPath = queueArr[songNum]['filename'];
 	isPaused = false;	// isPaused shouldn't be carried over from prevSong
@@ -532,7 +551,7 @@ async function updateSeek(element, playlistMap) {
 	// its undocumented but seekVal is not relative range 0-100
 	// but absolute time in seconds
 	// also using playSong is skips over the looping issue with seekSong() 
-	await ffmpegAPI.playSong(currSongPath, 100, msElapsed/1000);
+	await ffmpegAPI.playSong(currSongPath, volume, msElapsed/1000);
 	// convert str to number, percent to ms
 	// msElapsed = (Number(element.value) / 100) * formatStrToMs(endStamp.innerHTML);
 	intervalID = setInterval( function() { updateProgress(); }, 50);
