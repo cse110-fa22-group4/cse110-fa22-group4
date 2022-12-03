@@ -108,7 +108,7 @@
 
 .library-card-info :nth-child(2) {
   font-size: 12px;
-  color: var(--dark);
+  color: var(--toggle-txt-2);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
