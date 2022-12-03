@@ -109,7 +109,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 window.onbeforeunload = async (e) => {
 	await stopSong();
 	let start = Date.now();
-	while(Date.now() < start + 100) {} //yeah.
+	while(Date.now() < start + 100) {} // yeah.
 	window.onbeforeunload = null;
 	ipcRenderer.send('quit');
 

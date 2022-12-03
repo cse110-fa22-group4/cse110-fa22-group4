@@ -80,14 +80,19 @@ async function ffmpegRead(filepath) {
  */
 async function ffmpegWrite(filepath, options) {
 	const childProcess = require('child_process');
-	childProcess.execSync(await getWriteCMD(filepath, options)).toString();
-	if (process.platform === 'win32') {
-		childProcess.execSync('move /y out.' +
-			filepath.split('.').pop() + ' ' + filepath);
-	} else {
-		childProcess.execSync('mv out.' +
-			filepath.split('.').pop() + ' ' + filepath);
-	}
+	const commands = await getWriteCMD(filepath, options);
+	await debugLog(commands, 'unit-tests');
+	return new Promise((resolve, reject) => {
+		try {
+			const proc = childProcess.spawn(commands.cmd, commands.args);
+			proc.on('close', async (code) => {
+				debugger;
+				childProcess.execSync(commands.mvCmd + ' ' + commands.mvArgs.join(' '));
+			});
+		} catch (e) {
+			reject("Failed on ffmpeg proc: " + e);
+		}
+	});
 }
 
 /**

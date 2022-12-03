@@ -14,6 +14,7 @@ const {
 const {
 	getSongs,
 } = require('../fs/songs/songsAPICalls');
+const childProcess = require("child_process");
 
 
 let ffProbePath = '';
@@ -53,19 +54,53 @@ async function getReadCMDForSpawn(filepath) {
  *
  * @param {string} filepath The path of the file to modify
  * @param {object} options The tags to modify
- * @return {Promise<string>} The command to execute
+ * @return {Promise<{args: string[], cmd: string, mvArgs: string[], mvCmd: string}>} The command to execute
  */
 async function getWriteCMD(filepath, options) {
-	let cmd = '';
-	cmd += ffmpegPath + ' -i "' +
-        filepath.split(path.sep).join(path.posix.sep) + '"';
+	const inPath = filepath.split(path.posix.sep).join(path.sep);
+	// a very smart answer from wallacer on stackoverflow. qid: 190852 (the split.pop())
+	const outPathArr = inPath.split(path.sep)
+		.splice(0, inPath.split(path.sep).length - 1);
+	outPathArr.push('out.' + inPath.split('.').pop());
+
+	const outPath = outPathArr.join(path.sep);
+
+	let args = [
+		'-i', inPath,
+	];
+
 	Object.keys(options).forEach((tag) => {
-		cmd += ' -metadata ';
-		cmd += tag + '="' + options[tag] + '" ';
+		args.push('-metadata');
+		args.push(tag + '="' + options[tag] + '"');
 	});
-	// a very smart answer from wallacer on stackoverflow. qid: 190852
-	cmd += ' out.' + filepath.split('.').pop();
-	return cmd;
+
+	args.push(outPath);
+
+	let mvCmd;
+	let mvArgs;
+	if (process.platform === 'win32') {
+		mvCmd = 'move';
+		mvArgs = [
+			'/y',
+			'"' + outPath + '"',
+			'"'  + inPath + '"'
+		];
+	} else {
+		childProcess.execSync('mv out.' +
+			inPath.split('.').pop() + ' ' + inPath);
+		mvCmd = 'mv';
+		mvArgs = [
+			'"' + outPath + '"',
+			'"'  + inPath + '"'
+		];
+	}
+
+	return {
+		cmd: ffmpegPath,
+		args: args,
+		mvCmd: mvCmd,
+		mvArgs: mvArgs,
+	};
 }
 
 /**
