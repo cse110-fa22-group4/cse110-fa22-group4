@@ -96,6 +96,10 @@ window.addEventListener('queueViewer-loaded', async () => {
  * @return {Promise<void>}
  */
  async function clearQueue(element) {
+    if(queueArr.length == 0) {
+        return;
+    }
+
     // remove all tracks from the queue
     queueArr.splice(0, queueArr.length);
 
