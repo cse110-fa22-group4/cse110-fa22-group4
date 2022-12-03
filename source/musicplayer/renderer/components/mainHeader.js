@@ -65,7 +65,12 @@ async function addToQueue(element) {
 		}
 
         queueArr.push(selectedTracks[i]);
+		// playback integration edit
+		prevSongsArr.push(selectedTracks[i]);
     }
+
+	
+
 
     // refresh queue viewer if already open
     if(queueViewerIsExtended) {
@@ -183,7 +188,7 @@ async function toggleMetaEditor(element) {
  */
 function initFirstSong(selectedTracks) {
 	// store first song in history on load
-	prevSongsArr.push(songNum);
+	prevSongsIndxArr.push(songNum);
 	currSongPath = selectedTracks[0]['filename'];
 }
 

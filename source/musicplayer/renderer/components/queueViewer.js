@@ -83,6 +83,10 @@ window.addEventListener('queueViewer-loaded', async () => {
     // remove track from the queue
     queueArr.splice(deleteTrackIndex, 1);
 
+
+	songNum--;
+
+
     // refresh queue viewer
     await refreshQueueViewer();
 
@@ -105,6 +109,7 @@ window.addEventListener('queueViewer-loaded', async () => {
     debugger
 
     // refresh queue viewer
+
     await refreshQueueViewer();
     // TODO: not sure what else needs to be updated for playback ???
     // maybe reset state of playback queue from before the queue was populated
