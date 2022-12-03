@@ -1,5 +1,5 @@
 // preload.js
-const {ipcRenderer, contextBridge, app} = require('electron');
+const {ipcRenderer, contextBridge, app, globalShortcut} = require('electron');
 
 const {
 	addEventListener, addEventListenerbyClassName, getAttribute,

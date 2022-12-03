@@ -6,6 +6,7 @@ const path = require('path');
 const {argv} = require('process');
 const htmlPath = __dirname + '/source/musicplayer/html';
 const fsAPITester = require('../testing/fsAPITesting/fsAPITester');
+const { globalShortcut } = require('electron');
 
 let selectedSong = '';
 
@@ -25,6 +26,8 @@ const createWindow = async () => {
 
 	mainWindow.on('focus', () => {
 		mainWindow.webContents.send('window-focused');
+		globalShortcut.unregister('CommandOrControl+R');
+		globalShortcut.unregister('CommandOrControl+Shift+R');
 	});
 
 	mainWindow.on('blur', () => {
@@ -32,7 +35,7 @@ const createWindow = async () => {
 	});
 
 	mainWindow.on('closed', () => {
-		mainWindow.webContents.send('window-closed');
+
 	});
 
 	// maximize window at start
