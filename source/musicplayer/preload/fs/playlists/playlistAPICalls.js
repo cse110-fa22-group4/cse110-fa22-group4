@@ -24,7 +24,7 @@ async function getAllPlaylists() {
 	return await fsPromises.readdir(playlistPath);
 }
 
-/* PLAYLIST STRUCTURE:
+/* BACKEND PLAYLIST STRUCTURE:
 {
 	"meta": {
 		"creator": "user",
