@@ -48,6 +48,10 @@
 
 .gridjs-thead {
   text-align: left;
+  position: sticky;
+  top: 50px;
+  background-color: var(--light);
+
 }
 
 .gridjs-th,
@@ -98,4 +102,10 @@ button.gridDeleteButton {
 
 button.gridDeleteButton:hover {
     background-color: var(--mid-dark);
+}
+
+input.gridjs-input {
+    position: fixed;
+    left: 260px;
+    top: 187px;
 }
