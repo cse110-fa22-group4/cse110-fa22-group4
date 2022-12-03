@@ -60,23 +60,25 @@
 }
 
 .library-card {
-  min-width: 275px;
-  max-width: 275px;
+  min-width: 200px;
+  max-width: 200px;
   padding-left: 20px;
   padding-right: 20px;
+  padding-bottom: 20px;
+
 }
 
 .library-card img {
   width: 100%;
-  border-radius: 15px;
+  border-radius: 7.5px;
   filter: drop-shadow(0 2px 4px rgba(0 0 0 25%));
 }
 
 .library-card-artwork {
-  min-height: 275px;
-  max-height: 275px;
-  min-width: 275px;
-  max-width: 275px;
+  min-height: 200px;
+  max-height: 200px;
+  min-width: 200px;
+  max-width: 200px;
 }
 
 .library-card-info {
@@ -90,20 +92,32 @@
   text-overflow: ellipsis;
   padding: 3px 0;
   height: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .library-card-info :nth-child(1) {
   font-weight: 800;
   font-size: 12px;
   color: var(--theme-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .library-card-info :nth-child(2) {
   font-size: 12px;
   color: var(--dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .library-card-info :nth-child(3) {
   font-size: 11px;
   color: var(--mid-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
