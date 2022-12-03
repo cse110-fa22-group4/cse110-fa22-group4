@@ -23,14 +23,24 @@ const createWindow = async () => {
 		},
 	});
 
+	mainWindow.on('focus', () => {
+		mainWindow.webContents.send('window-focused');
+	});
+
+	mainWindow.on('blur', () => {
+		mainWindow.webContents.send('window-unfocused');
+	});
+
+	mainWindow.on('closed', () => {
+		mainWindow.webContents.send('window-closed');
+	});
+
 	// maximize window at start
 	// mainWindow.maximize();
 
 	// and load the index.html of the app.
 	await mainWindow.loadFile(path.join(__dirname, '/../html/index.html'));
-	mainWindow.on('closed', () => {
-		ipcMain.emit('window-closed');
-	});
+
 
 
 	// Open the DevTools.

@@ -112,6 +112,18 @@ contextBridge.exposeInMainWorld('genAPI', {
 	publishGlobal: publishGlobal,
 	getGlobal: getGlobal,
 	removeGlobal: removeGlobal,
+	/**
+	 * @memberOf genAPI
+	 * @name ipcSubscribeToEvent
+	 * @description Subscribes to an event from main.js
+	 * @param {string} e The event name
+	 * @param {function} func The function to attach to the event.
+	 */
+	ipcSubscribeToEvent: async (e, func) => {
+		await ipcRenderer.on(e, async () => {
+			await func();
+		});
+	},
 });
 
 contextBridge.exposeInMainWorld('domAPI', {
