@@ -12,9 +12,7 @@ const gridSettings = {
 
 // Library Headers
 const libraryHeaders = [
-	// {hidden: false, sort: {enabled: true}, name: '#'},           - may not be needed as category
-	// {hidden: false, sort: {enabled: true}, name: 'playlists'},   - may not be needed as category
-
+	{hidden: false, sort: {enabled: true}, name: '#', id: 'track'},
 	{hidden: false, sort: {enabled: true}, name: 'title'},
 	{hidden: false, sort: {enabled: true}, name: 'artist'},
 	{hidden: false, sort: {enabled: true}, name: 'album'},
