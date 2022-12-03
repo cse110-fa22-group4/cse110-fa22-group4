@@ -98,11 +98,7 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
     // clear previously selected tracks
     selectedTracks = [];
 
-    // add row index
-    columns.unshift({hidden: true, sort: {enabled: true}, name: 'rowIndex'});
-    for (let i = 0; i < data.length; i++) {
-        data[i]['rowIndex'] = i;
-    }
+
 
     // enable row selection
     columns.unshift(
@@ -152,7 +148,7 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
                         for (let i = 0; i < columns.length; i++) {
                             const key = columns[i].id;
                             const value = row.cells[i].data;
-                            if (key == 'awesomeCheckbox') {
+                            if (key === 'awesomeCheckbox') {
                                 continue
                             }
                             currTrackObj[key] = value
@@ -180,8 +176,8 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
         const currTrackObj = {};
         for (let i = 0; i < columns.length; i++) {
             const key = columns[i].id;
-            const value = args[1].cells[i].data;
-            if (key == 'awesomeCheckbox' || key == 'queue' || value == undefined) {
+            const value = args[1]['cells'][i].data;
+            if (key === 'awesomeCheckbox' || key === 'queue' || value === undefined) {
                 continue
             }
             currTrackObj[key] = value
@@ -203,7 +199,7 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
                     for (let j = 1; j < columns.length; j++) {
                         if (columns[j].id in data[0]) {
                             const key = columns[j].id;
-                            currTrackObj[`${key}`] = state.rowIds[i][j].data;
+                            currTrackObj[`${key}`] = state.rowIds[i][j]['data'];
                         }
                     }
                     currSelection.push(currTrackObj);
@@ -211,7 +207,8 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
                 selectedTracks = currSelection;
 
                 // get current editor type
-                const editorType = document.getElementById('editor-container').getAttribute('data-editortype');
+                const editorType = document.getElementById('editor-container')
+                    .getAttribute('data-editortype');
 
                 // playlist manager actions
                 // send selected tracks to selected container

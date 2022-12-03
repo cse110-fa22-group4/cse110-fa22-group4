@@ -112,7 +112,6 @@ window.onbeforeunload = async (e) => {
 	while(Date.now() < start + 100) {} // yeah.
 	window.onbeforeunload = null;
 	ipcRenderer.send('quit');
-
 };
 
 contextBridge.exposeInMainWorld('genAPI', {

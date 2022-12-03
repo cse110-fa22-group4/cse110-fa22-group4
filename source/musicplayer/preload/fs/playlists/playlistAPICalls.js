@@ -24,7 +24,8 @@ async function getAllPlaylists() {
 	return await fsPromises.readdir(playlistPath);
 }
 
-/* BACKEND PLAYLIST STRUCTURE:
+/*
+BACKEND PLAYLIST STRUCTURE:
 {
 	"meta": {
 		"creator": "user",
@@ -42,6 +43,16 @@ async function getAllPlaylists() {
 		},
 	],
 }
+FRONTEND PLAYLIST STRUCTURE
+{
+	"name": "playlistName"
+	"trackList": [
+		{ ... track 1 ... },
+		{ ... track 2 ... },
+	]
+	"numTracks": 2
+}
+
 
 	- meta contains useful information, such as the creator of the playlist and the time it was created
 	- tags contains a sum of products form tag collection, as this allows for a minimal coverage of any set.
@@ -72,8 +83,10 @@ async function getPlaylist(playlist) {
 			for (const tag in tagGroup) {
 
 				if (tag in metadata) {
+					debugger
 					if (!metadata[tag].includes(tagGroup[tag])) return false;
 				} else if ('tags' in metadata && tag in metadata['tags']) {
+					debugger
 					if (!metadata['tags'][tag].includes(tagGroup[tag])) return false;
 				} else return false;
 
@@ -203,6 +216,7 @@ async function removePlaylistMeta(playlistName, metaTag) {
 
 /**
  * @memberOf fsAPI
+ * @name getPlaylistMeta
  * @name getPlaylistMeta
  * @description Gets the metadata of a playlist as an object.
  * @example

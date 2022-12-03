@@ -17,7 +17,7 @@ window.addEventListener('library-playlists-container-queue-clicked', async (args
 
     // send track to playback queue
     // playback integration edit
-    if (queueArr.length == 0) {
+    if (queueArr.length === 0) {
         initFirstSong([trackObj]);
         initProgress([trackObj]);
         initInfo([trackObj]);
@@ -95,8 +95,8 @@ async function libraryPlaylistsExtended(element) {
 	await domAPI.setHTML('header-subtitle', `${cardPlaylist}`);
 	await domAPI.setHTML('library-playlists-cards', '');
 
-	const currPlaylist = await fsAPI.getPlaylistObj(cardPlaylist);
-	const trackList = currPlaylist.tags;
+	const currPlaylist = await fsAPI.getPlaylist(cardPlaylist);
+	const trackList = currPlaylist['trackList'];
 	await domAPI.setHTML('library-playlists-container', '');
 	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings, true, cardPlaylist);
 }

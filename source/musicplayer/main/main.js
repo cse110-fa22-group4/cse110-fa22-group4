@@ -85,8 +85,8 @@ app.whenReady().then(async () => {
 app.on('before-quit', async () => {
 	await mainWindow.webContents.send('window-closed');
 	if (process.platform !== 'darwin') app.quit();
-
 });
+
 app.on('window-all-closed', async () => {
 	if (process.platform !== 'darwin') app.quit();
 });

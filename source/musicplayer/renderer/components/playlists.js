@@ -56,7 +56,7 @@ async function createUserPlaylist(element) {
 	// get custom playlist name
 	const playlistName = await domAPI.getProperty('input-playlist-create', 'value');
 
-	if (playlistName.length !== 0) {
+	if (playlistName['length'] !== 0) {
 		await domAPI.setProperty('input-playlist-create', 'value', '');
 
 		// create new playlist object
@@ -109,7 +109,7 @@ async function addToPlaylist(element) {
     }
     
     // reset selection
-    if(await getCurrentPage() === 'library') {
+    if(getCurrentPage() === 'library') {
         await libraryClick();
     }
     if(playlistManagerIsExtended) {
@@ -130,8 +130,8 @@ async function removePlaylistSelection(element) {
 	await domAPI.setHTML('selected-playlists-container', '');
 
     // reset selection
-    if(await getCurrentPage() === 'library') {
-    	libraryClick();
+    if(getCurrentPage() === 'library') {
+    	await libraryClick();
     }
 }
 
