@@ -6,11 +6,13 @@
 
 #queueManage-header {
     margin-bottom: 20px;
-  }
+}
   
 #queue-container {
     height: 100%;
     width: 100%;
+    overflow-y: scroll;
+    margin-bottom: 10px;
 }
 
 .queue-track {
@@ -87,4 +89,31 @@
     background-color: transparent;
     border: none;
     color: var(--mid);
+}
+
+#queue-empty-message {
+    color: var(--mid);
+}
+
+#btn-queue-clear {
+    border: none;
+    border-radius: 2.5px;
+    background-color: rgba(0 0 0 / 80%);
+    box-shadow: inset 0 4px 4px rgba(0 0 0 / 1.5%);
+    width: 90px;
+    height: 24px;
+    min-height: 24px;
+
+    color: var(--mid-light);
+    font-size: 11px;
+  
+    /* padding: 8px 10px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+#btn-queue-clear:hover {
+    background-color: var(--theme-primary);
 }
