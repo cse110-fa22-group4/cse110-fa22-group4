@@ -9,6 +9,25 @@ window.addEventListener('home-loaded', async () => {
 	await domAPI.addEventListenerbyClassName('library-card-tag', 'click', libraryTagsExtended);
 });
 
+window.addEventListener('home-grid-queue-clicked', async (args) => {
+    const trackObj = args['detail']; 
+	console.log(trackObj);
+
+    // send track to playback queue
+    // playback integration edit
+    if (queueArr.length == 0) {
+        initFirstSong([trackObj]);
+        initProgress([trackObj]);
+        initInfo([trackObj]);
+    }
+    queueArr.push(trackObj);
+
+    // send user feedback
+    await giveUserFeedback('Added to Queue')
+
+    await refreshQueueViewer();
+});
+
 /**
  * @description Generates artist, album, genre, and tag cards, four of each, randomly selected from the library
  * @return {Promise<void>}
