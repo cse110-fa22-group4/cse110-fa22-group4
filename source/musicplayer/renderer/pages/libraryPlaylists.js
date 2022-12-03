@@ -1,3 +1,5 @@
+let currGridPlaylist; // helper to track the current playlist grid
+
 window.addEventListener('libraryPlaylists-loaded', async () => {
 	await onLibraryPlaylistsLoad();
 	await domAPI.addEventListenerbyClassName('library-card', 'click', libraryPlaylistsExtended);
@@ -82,7 +84,12 @@ async function onLibraryPlaylistsLoad() {
  * @return {Promise<void>}
  */
 async function libraryPlaylistsExtended(element) {
+    // turn on main extended buttons
+    await mainButtonsOn('components/gridExtendedButtons.html');
+    
 	const cardPlaylist = element.getAttribute('data-libtarget');
+
+    currGridPlaylist = cardPlaylist;
 
 	// Generate playlist grid
 	await domAPI.setHTML('header-subtitle', `${cardPlaylist}`);

@@ -411,6 +411,10 @@ async function libraryAlbumsExtended(e) {
 	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardAlbum}`);
 	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 }
 
 /**
@@ -433,6 +437,10 @@ async function libraryArtistsExtended(e) {
 	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardArtist}`);
 	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+    
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 }
 
 /**
@@ -460,6 +468,10 @@ async function libraryGenresExtended(e) {
 	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardGenre}`);
 	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 }
 
 /**
@@ -486,6 +498,10 @@ async function libraryTagsExtended(e) {
 	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardTag}`);
 	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 }
 
 /**

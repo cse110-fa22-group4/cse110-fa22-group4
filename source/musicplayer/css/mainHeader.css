@@ -24,7 +24,7 @@
 #header-title {
   font-size: 26px;
   font-weight: 800;
-  color: var(--dark);
+  color: var(--toggle-txt-1);
 }
 
 #header-subtitle {

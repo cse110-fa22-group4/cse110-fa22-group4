@@ -87,6 +87,9 @@ async function addPath(element) {
  * @param {HTMLElement} element
  */
 async function enableToggleableSetting(element) {
+    // this if the function to enable dark home atm
+    await domAPI.toggleDarkTheme();
+
 	const isEnabled = await domAPI.getProperty(element.id, 'checked');
 	await fsAPI.writeToSetting(element.id, isEnabled);
 }

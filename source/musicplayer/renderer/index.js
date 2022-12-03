@@ -4,6 +4,7 @@
 
 /* GLOBAL VARS */
 let topContainerIsExtended = false; // helper to track extended overview
+let mainButtonsIsOn = false; // helper to track main buttons visibility
 const searchQuery = ''; // the current query entered into the search bar
 let searchQueryGlobal = '';
 const currentPage = { // helper to track current page
@@ -14,6 +15,7 @@ const currentPage = { // helper to track current page
 
 window.addEventListener('DOMContentLoaded', async () => {
     // load page components
+	await domAPI.setStyle('main-buttons-container', 'visibility', 'hidden');
     await domAPI.loadPage('top-container-extended', 'pages/settings.html');
 	await domAPI.setStyle('top-container-extended', 'visibility', 'hidden');
 	await domAPI.loadPage('sidebar-container', 'components/sidebar.html');
@@ -43,6 +45,9 @@ window.addEventListener('DOMContentLoaded', async () => {
  * @param {HTMLElement} element
  */
 async function homeClick(element) {
+    // turn off main extended buttons
+    await mainButtonsOff();
+
     // load page
 	await domAPI.loadPage('main-container', 'pages/home.html');
 
@@ -67,6 +72,9 @@ async function homeClick(element) {
  * @param {HTMLElement} element
  */
 async function libraryClick(element) {
+    // turn off main extended buttons
+    await mainButtonsOff();
+
     // load page
 	await domAPI.loadPage('main-container', 'pages/library.html');
 
@@ -91,6 +99,9 @@ async function libraryClick(element) {
  * @param {HTMLElement} element
  */
 async function playlistsClick(element) {
+    // turn off main extended buttons
+    await mainButtonsOff();
+
     // load page
 	await domAPI.loadPage('main-container', 'pages/libraryPlaylists.html');
 
@@ -115,6 +126,9 @@ async function playlistsClick(element) {
  * @param {HTMLElement} element
  */
 async function settingsClick(element) {
+    // turn off main extended buttons
+    await mainButtonsOff();
+    
     if(topContainerIsExtended) {
         await topExtensionOff();
     } else {
@@ -146,6 +160,34 @@ async function topExtensionOn() {
 		await domAPI.setStyle('top-container-extended', 'visibility', 'visible');
 		topContainerIsExtended = true;
 	}
+}
+
+/**
+ * @name mainButtonsOff
+ * @description Toggles main buttons off.
+ * @return {Promise<void>}
+ */
+ async function mainButtonsOff() {
+	if (mainButtonsIsOn) {
+        await domAPI.setStyle('main-buttons-container', 'visibility', 'visible');
+        await domAPI.setStyle('main-buttons-container', 'visibility', 'hidden');
+		mainButtonsIsOn = false;
+	}
+}
+
+/**
+ * @name mainButtonsOn
+ * @description Toggles main buttons on.
+ * @param {string} pathHTML The path of the html to load.
+ * @return {Promise<void>}
+ */
+async function mainButtonsOn(pathHTML) {
+	if (!mainButtonsIsOn) {
+        await domAPI.setStyle('main-buttons-container', 'visibility', 'hidden');
+        await domAPI.setStyle('main-buttons-container', 'visibility', 'visible');
+		mainButtonsIsOn = true;
+	}
+	await domAPI.loadPage('main-buttons-container', pathHTML);
 }
 
 /**

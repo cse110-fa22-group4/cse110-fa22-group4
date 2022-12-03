@@ -43,10 +43,11 @@ const createWindow = async () => {
 	// and load the index.html of the app.
 	await mainWindow.loadFile(path.join(__dirname, '/../html/index.html'));
 
-
+    // hide menu bar
+    // await mainWindow.setMenuBarVisibility(false);
 
 	// Open the DevTools.
-	// mainWindow.webContents.openDevTools()
+	// await mainWindow.webContents.openDevTools()
 
 	// Check for testing flag to run tests (npm run test)
 	if (argv.length === 3 && argv[2] === '-g') {

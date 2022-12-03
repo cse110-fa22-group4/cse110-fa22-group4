@@ -66,13 +66,17 @@
 .queue-track-data-title {
     color: var(--light);
     margin-bottom: 5px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .queue-track-data-artist-album {
     color: var(--mid);
-    /* white-space: nowrap; */
+    white-space: nowrap;
     overflow: hidden;
-    /* text-overflow: ellipsis; */
+    text-overflow: ellipsis;
 }
 
 .queue-track-duration {

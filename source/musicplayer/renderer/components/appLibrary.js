@@ -12,7 +12,8 @@ const gridSettings = {
 
 // Library Headers
 const libraryHeaders = [
-	{hidden: false, sort: {enabled: true}, name: '#', id: 'track'},
+	{hidden: false, sort: {enabled: true}, name: '#', id: 'track', formatter: (cell) => 
+        `${cell.length == 1 ? '0' + cell : cell}`},
 	{hidden: false, sort: {enabled: true}, name: 'title'},
 	{hidden: false, sort: {enabled: true}, name: 'artist'},
 	{hidden: false, sort: {enabled: true}, name: 'album'},
@@ -21,7 +22,7 @@ const libraryHeaders = [
 		formatter: (cell) => `${new Date(1000 * cell).toISOString().substr(11, 8).replace(/^[0:]+/, '')}`},
 	// https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
 	{hidden: false, sort: {enabled: true}, name: 'genre'},
-	{hidden: false, sort: {enabled: true}, name: 'tags'},
+	// {hidden: false, sort: {enabled: true}, name: 'tags'},
 
 	// hidden categories
 	{hidden: true, sort: {enabled: false}, name: 'artwork'},

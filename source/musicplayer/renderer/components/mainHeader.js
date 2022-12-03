@@ -47,6 +47,7 @@ async function editorOn() {
  * @return {Promise<void>}
  */
 async function addToQueue(element) {
+
 	// get the selected tracks
 	const selectedTracks = await domAPI.getSelectedTracks();
 	if (selectedTracks.length == 0) {
