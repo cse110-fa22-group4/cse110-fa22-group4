@@ -4,6 +4,7 @@ const fun_playSongs = require('../../preload/ffmpeg/play/playSongAPICalls');
 const fun_metaData = require('../../preload/ffmpeg/metadata/ffMetaAPICalls');
 const { BrowserWindow } = require('electron');
 const { getAttribute, loadPage} = require('../../preload/dom/domAPICalls');
+const { setStoragePath } = require('../../preload/fs/fsAPICalls');
 
 let electronApp;
 let window;
@@ -84,8 +85,8 @@ test('Check Page Navigation', async () => {
     });
     window = await electronApp.firstWindow();
 
-    // allow for 3 minutes for debugging
-    //test.setTimeout(180000);
+    // allow for 5 minutes for debugging
+    test.setTimeout(300000);
 
     // Navigate to Library
     await window.locator('#btn-library').click();
@@ -106,6 +107,105 @@ test('Check Page Navigation', async () => {
     // Navigate to Settings
     await window.locator('#btn-settings').click();
     expect(await window.locator('#top-container-extended').getAttribute('style')).toStrictEqual("visibility: visible;");
+
+    // Close Settings
+    await window.locator('#btn-settings').click();
+
+    // Navigate to Library
+    await window.locator('#btn-library').click();
+
+    // lower volume to 50%
+    await window.locator('#audio-fader').click();
+
+    await window.pause();
+
+    // add third song in library to queue
+    await window.locator('#library-container :text("+")').nth(2).click();
+
+    // add first song in library to queue
+    await window.locator('#library-container :text("+")').nth(0).click();
+
+    // add second song in library to queue
+    await window.locator('#library-container :text("+")').nth(1).click();
+
+    // click shuffle (for some reason needs to be clicked twice)
+    await window.locator('#shuffle-btn').click();
+    await window.locator('#shuffle-btn').click();
+
+    //open queue
+    await window.locator('#playlists-bottom-btn').click();
+
+    // Click play
+    await window.locator('#play-btn').click();
+
+
+    // Click next track
+    await window.locator('#next-btn').click();
+    
+    // Click prev track
+    await window.locator('#prev-btn').click();
+
+    // Delete second track in queue
+    await window.locator('.btn-queue-track-delete').nth(1).click();
+
+    // Click next track
+    await window.locator('#next-btn').click();
+
+    // Click loop (causes problems rn)
+    //await window.locator('#loop-btn').click();
+    
+    // add first song in library to queue
+    await window.locator('#library-container :text("+")').nth(0).click();
+
+    // clear queue
+    await window.locator('#btn-queue-clear').click();
+
+    // select all songs to be added to queue
+    await window.locator('.gridjs-checkbox').nth(0).click();
+    await window.locator('.gridjs-checkbox').nth(1).click();
+    await window.locator('.gridjs-checkbox').nth(2).click();
+
+    // add all selected items to queue
+    await window.locator('#btn-addQueue').click();
+
+    await window.pause();
+
+    //open playlist popup
+    await window.locator('#btn-playlist').click();
+
+    // type in textbox
+    await window.locator('#input-playlist-create').type("some-playlist-name");
+    
+    // create playlist
+    await window.locator('#btn-playlist-create').click();
+
+    // select all songs to be added to playlist
+    await window.locator('.gridjs-checkbox').nth(0).click();
+    await window.locator('.gridjs-checkbox').nth(1).click();
+    await window.locator('.gridjs-checkbox').nth(2).click();
+
+    // Add selected items to playlist
+    await window.locator('#btn-playlist-add').click();
+
+    // Go to Playlist page
+    await window.locator('#btn-playlists').click();
+
+    await window.pause();
+
+    // click on playlist
+    //await window.locator('.library-card-artwork').nth(0).click();
+
+    await window.pause();
+
+    //await window.locator('#btn-playlist-playAll').click();
+    
+
+    // '#button-queue-clear'
+    // '.gridjs-checkbox'
+    // '#btn-addQueue'
+    // '#btn-playlist'
+
+    await window.pause();
 
    //await window.pause();
    await electronApp.close();
