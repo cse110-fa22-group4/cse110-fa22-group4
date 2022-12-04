@@ -8,7 +8,6 @@ let pauseTime = 0;
 let vol = 100;
 let instance = undefined;
 let pauseSongPath = '';
-let loop = false;
 let timeStarted; 
 let duration = 0;
 /**
@@ -18,18 +17,16 @@ let duration = 0;
  * @param {number} volume The volume of the song to play.
  * @param {number} seekVal The location to start playing the song at.
  * @param {number} durationParam, how long the song lasts
- * @param {boolean} loop_param whether or not to loop
  * @param {function} callback, the callback that calls after the song
  * @todo set -loglevel quiet and -stats
  * @return {Promise<void>}
  */
 async function playSong(songPath, volume = vol, seekVal = pauseTime, 
-	durationParam = duration, loop_param=loop, callback = async() => {}) {
+	durationParam = duration, callback = async() => {}) {
 	vol = Number(volume);
 	pauseTime = Number(seekVal);
 	paused = false;
 	path = `\"${songPath}\"`;
-	loop = loop_param;
 	duration = durationParam;
 	const ffPaths = await getPaths();
 	if (!fs.existsSync(songPath)) {
@@ -47,28 +44,11 @@ async function playSong(songPath, volume = vol, seekVal = pauseTime,
 			'-ss', seekVal,
 			'-volume', volume,
 	]
-	//if we loop AND we seek to the begin
-	//Don't want to start looping at seekVal forever
-	if(loop && seekVal === 0) {
-		options.push('-loop');
-		options.push('0');
-	}
 	options.push(path);
 	instance = await require('child_process').spawn(ffPaths[0],
 	options,{shell: true});
 	timeStarted = Date.now() - (seekVal * 1000);
 	await setBehaviorUponEnd(callback);
-}
-/**
- * @name toggleLooping
- * @memberOf ffmpegAPI
- * @description toggles looping on songs
- * @return {Promise<void>}
- */
-async function toggleLooping() {
-	await pauseSong();
-	loop = !loop;
-	await resumeSong();
 }
 
 /**
@@ -83,28 +63,10 @@ async function setBehaviorUponEnd(callback = async () => {}) {
 		//if it closed "naturally"
 		if(code === 0) {
 			await callback();
-			//if we loop, 
-			//but we didn't pause at the start
-			if(loop && pauseTime !== 0) {
-				await handleLooping();
-			}
 		}
 	})
 }
 
-/**
- * @name handleLooping
- * @memberOf None
- * @description if we seek and loop, it loops
- * upon the time that we seeked to
- * And that's no good!
- * So, in response, we don't initially loop, but once it ends,
- * we seek to the beginning then loop
- * @return {Promise<void>}
- */
-async function handleLooping() {
-	await playSong(path, vol, 0);
-}
 /**
  * @name changeVolume
  * @memberOf ffmpegAPI
@@ -204,7 +166,6 @@ async function stopSong(reset = true) {
 		pauseTime = 0;
 		path = '';
 		duration = 0;
-		loop = false;
 	}
 }
 
@@ -220,7 +181,7 @@ async function stopSong(reset = true) {
 async function seekSong(seekPercentage) {
 	await stopSong(false);
 	path = path.substring(1, path.length - 1);
-	await playSong(path, vol, ((seekPercentage/100.0) * duration), duration, loop);
+	await playSong(path, vol, ((seekPercentage/100.0) * duration), duration);
 }
 
 module.exports = {

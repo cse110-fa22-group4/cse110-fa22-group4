@@ -207,6 +207,7 @@ function decideFirstSong() {
 /**
  * @description Plays the next song in playlist (and kills old instance)
  * 	all the tracks of a playlist
+ * 
  */
 async function nextSong() {
 	// get next song (while handling indexOfBounds)
@@ -221,26 +222,31 @@ async function nextSong() {
 		return;
 	}
 	if (queueArr.length == 1) { // should skip to end of song
+		
 		prevSongsArr.splice(0, 0, queueArr[0]);
 		queueArr.splice(0, 1);
-		currSongPath = null;
 
-		//pause song
-		const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
-		const playBImg = playB.querySelector('img');
+		if(toggleOn) {
+			queueArr.push(prevSongsArr[0]) //add to end of queue
+		} else {
+			currSongPath = null;
 
-		if (playB.id !== 'play-btn') {
-			await ffmpegAPI.pauseSong();
-			isPaused = true;
-			clearInterval(intervalID);
+			//pause song
+			const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
+			const playBImg = playB.querySelector('img');
+			if (playB.id !== 'play-btn') {
+				await ffmpegAPI.pauseSong();
+				isPaused = true;
 			
-			toggleIcon(playB, playBImg);
-
-			clearInterval(intervalID);
-			resetProgress();
-			intervalID = setInterval( function() { updateProgress(); }, 50);
+				toggleIcon(playB, playBImg);
+			}
 		}
+		
+		
 
+		clearInterval(intervalID);
+		resetProgress();
+		intervalID = setInterval( function() { updateProgress(); }, 50);
 		
 		await refreshQueueViewer();
 		return;
@@ -252,6 +258,9 @@ async function nextSong() {
 	//prevSongsIndxArr.push(songNum);
 
 	
+	if(toggleOn) {
+		queueArr.push(queueArr[0]) //add to end of queue
+	}
 	prevSongsArr.splice(0, 0, queueArr[0]);
 	queueArr.splice(0, 1);
 	currSongPath = queueArr[0]['filename'];
@@ -392,10 +401,9 @@ function shuffle(min, max, songNum) {
  */
 function shuffleSong() {
 	const shuffleBtn = document.querySelector('#shuffle-btn > svg');
-	const style = window.getComputedStyle(shuffleBtn);
-	const currColor = style.getPropertyValue('fill');
-	toggleColor(currColor, shuffleBtn);
 	shuffleOn = !shuffleOn;
+	toggleColor(shuffleOn, shuffleBtn);
+	
 }
 
 /**
@@ -404,21 +412,21 @@ function shuffleSong() {
  */
 function loopSong() {
 	const loopBtn = document.querySelector('#loop-btn > svg');
-	const style = window.getComputedStyle(loopBtn);
-	const currColor = style.getPropertyValue('fill');
-	toggleColor(currColor, loopBtn);
 	toggleOn = !toggleOn;
+	toggleColor(toggleOn, loopBtn);
+	
 }
 
 /**
- * @description Toggle the color of the shuffle & repeat button when clicked
- * @param {string} fillColor color to change svg to
+ * @description Update the color of the shuffle & repeat button when clicked
+ * @param {boolean} toggle whether toggle should be on or off
  * @param {HTMLElement} btn svg (enclosed by button)
  */
-function toggleColor(fillColor, btn) {
-	if (fillColor === 'rgb(0, 0, 0)') { // equivalent to black
+function toggleColor(toggle, btn) {
+	if (toggle) { //on
 		fillColor = 'var(--theme-primary)';
-	} else {
+		console.log('fill')
+	} else { //off
 		fillColor = 'black';
 	}
 	btn.style.fill = fillColor;
