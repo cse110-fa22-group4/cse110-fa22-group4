@@ -44,7 +44,7 @@ async function generateHomeCards() {
 
 	// this boolean prevents us from failing to generate something unique more than once.
 	// if we generate something nonunique, try again, and it still isn't unique, we just don't add a card then
-	const maxRepeats = 11;
+	const maxRepeats = 1000;
 
 	// let's get numHomeCards many unique random entries from our Library
 	const albums = new Set();
@@ -52,6 +52,13 @@ async function generateHomeCards() {
 	while (albums.size < numHomeCards) {
 		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique. We add it regardless of whether it is new or not the second time
+		if (!('album' in libraryCatalogRef[randomIndex]))
+		{
+			count += 1;
+			if (count >= maxRepeats) break;
+			continue;
+		}
+
 		if (!(albums.has(libraryCatalogRef[randomIndex]['album']))) {
 			albums.add(libraryCatalogRef[randomIndex]['album']);
 			count = 0;
@@ -69,6 +76,12 @@ async function generateHomeCards() {
 	while (artists.size < numHomeCards) {
 		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
+		if (!('artist' in libraryCatalogRef[randomIndex]))
+		{
+			count += 1;
+			if (count >= maxRepeats) break;
+			continue;
+		}
 		if (!(artists.has(libraryCatalogRef[randomIndex]['artist']))) {
 			artists.add(libraryCatalogRef[randomIndex].artist);
 			count = 0;
@@ -87,8 +100,14 @@ async function generateHomeCards() {
 		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
 		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
-		const genreArr = libraryCatalogRef[randomIndex].genre.split(', ');
-		if (genreArr.length == 0) {
+		if (!('genre' in libraryCatalogRef[randomIndex]))
+		{
+			count += 1;
+			if (count >= maxRepeats) break;
+			continue;
+		}
+		const genreArr = libraryCatalogRef[randomIndex]['genre'].split(', ');
+		if (genreArr.length === 0) {
 			genres.add('');
 			count += 1;
 		}
@@ -112,8 +131,15 @@ async function generateHomeCards() {
 		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
 		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
-		const tagArr = libraryCatalogRef[randomIndex].tags.split(', ');
-		if (tagArr.length == 0) {
+		if (!('tags' in libraryCatalogRef[randomIndex]))
+		{
+			count += 1;
+			if (count >= maxRepeats) break;
+			continue;
+		}
+
+		const tagArr = libraryCatalogRef[randomIndex]['tags'].split(', ');
+		if (tagArr.length === 0) {
 			tags.add('');
 			count += 1;
 		}
@@ -170,18 +196,18 @@ async function generateAlbumCardList(albums) {
 	for (const [key, value] of cardData) {
 		// generation with no parameters
 		let album;
-		if (key == '') {
+		if (key === '') {
 			album = 'Unknown Album';
 		} else {
 			album = key;
 		}
-		if (value.artist == '') {
+		if (value.artist === '') {
 			value.artist = 'Unknown Artist';
 		}
-		if (value.year == '') {
+		if (value.year === '') {
 			value.year = 'Unknown Year';
 		}
-		if (value.artwork == '' || value.artwork == undefined) {
+		if (value.artwork === '' || value.artwork === undefined) {
 			value.artwork = '../img/artwork-default.png';
 		}
 		const card = `
@@ -236,12 +262,12 @@ async function generateArtistCardList(artists) {
 		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
 		// generation with no parameters
 		let artist;
-		if (key == '') {
+		if (key === '') {
 			artist = 'Unknown Artist';
 		} else {
 			artist = key;
 		}
-		if (cardCover == '' || cardCover == undefined) {
+		if (cardCover === '' || cardCover === undefined) {
 			cardCover = '../img/artwork-default.png';
 		}
 		const card = `
@@ -281,6 +307,10 @@ async function generateGenreCardList(genres) {
 	// look through the library to find songs in the genre
 	for (let i = 0; i < libraryCatalogRef.length; i++) {
 		const currTrack = libraryCatalogRef[i];
+		if (!('genre' in libraryCatalogRef[i]))
+		{
+			continue;
+		}
 		const genreArr = libraryCatalogRef[i].genre.split(', ');
 		for (let j = 0; j < genreArr.length; j++) {
 			const currGenre = genreArr[j];
@@ -300,12 +330,12 @@ async function generateGenreCardList(genres) {
 		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
 		// generation with no parameters
 		let genre;
-		if (key == '') {
+		if (key === '') {
 			genre = 'Unknown Genre';
 		} else {
 			genre = key;
 		}
-		if (cardCover == '' || cardCover == undefined) {
+		if (cardCover === '' || cardCover === undefined) {
 			cardCover = '../img/artwork-default.png';
 		}
 		const card = `
@@ -345,6 +375,10 @@ async function generateTagCardList(tags) {
 	// look through the library for songs with these tags
 	for (let i = 0; i < libraryCatalogRef.length; i++) {
 		const currTrack = libraryCatalogRef[i];
+		if (!('tags' in libraryCatalogRef[i]))
+		{
+			continue;
+		}
 		const tagArr = libraryCatalogRef[i].tags.split(', ');
 		for (let j = 0; j < tagArr.length; j++) {
 			const currTag = tagArr[j];
@@ -365,12 +399,12 @@ async function generateTagCardList(tags) {
 		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
 		// generate default info
 		let tag;
-		if (key == '') {
+		if (key === '') {
 			tag = 'Unassigned';
 		} else {
 			tag = key;
 		}
-		if (cardCover == '' || cardCover == undefined) {
+		if (cardCover === '' || cardCover === undefined) {
 			cardCover = '../img/artwork-default.png';
 		}
 		const card = `
@@ -456,6 +490,10 @@ async function libraryGenresExtended(e) {
 	// Set grid rows
 	const data = [];
 	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		if (!('genre' in libraryCatalogRef[i]))
+		{
+			continue;
+		}
 		const genreArr = libraryCatalogRef[i].genre.split(', ');
 		for (let j = 0; j < genreArr.length; j++) {
 			if (genreArr[j] === cardGenre) {
@@ -485,6 +523,10 @@ async function libraryTagsExtended(e) {
 	// Set grid rows
 	const data = [];
 	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		if (!('tags' in libraryCatalogRef[i]))
+		{
+			continue;
+		}
 		const tagsSplit = libraryCatalogRef[i].tags.split(', ');
 		for (let j = 0; j < tagsSplit.length; j++) {
 			if (tagsSplit[j] === cardTag) {
