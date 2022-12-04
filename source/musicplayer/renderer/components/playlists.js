@@ -13,6 +13,7 @@ let lastCreatedPlaylist; // the last selected playlist
 
 window.addEventListener('playlistManager-loaded', async () => {
 	await updatePlaylistOptions();
+	await domAPI.addEventListener('input-playlist-create', 'change', createUserPlaylist);
 	await domAPI.addEventListener('btn-playlist-create', 'click', createUserPlaylist);
 	await domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
 	await domAPI.addEventListener('btn-playlist-remove-selection', 'click', removePlaylistSelection);
@@ -55,8 +56,15 @@ async function createUserPlaylist(element) {
 	// get custom playlist name
 	const playlistName = await domAPI.getProperty('input-playlist-create', 'value');
 
-	if (playlistName.length !== 0) {
+	if (playlistName['length'] !== 0) {
 		await domAPI.setProperty('input-playlist-create', 'value', '');
+
+		// create new playlist object
+		// const currPlaylistObj = {
+		//     name: playlistName,
+		//     numTracks: 0,
+		//     trackList: []
+		// };
 
 		await fsAPI.createPlaylist(playlistName);
 
@@ -64,7 +72,8 @@ async function createUserPlaylist(element) {
 		lastCreatedPlaylist = playlistName;
 		await updatePlaylistOptions();
 
-		alert(`'${playlistName}' added`);
+        // send user feedback
+        await giveUserFeedback('Playlist created')
 	} else {
 		alert('Enter a name for the playlist!');
 	}
@@ -92,14 +101,23 @@ async function addToPlaylist(element) {
     for (let i = 0; i < tracks.length; i++) {
         const tags = {};
         for (const [key, value] of Object.entries(tracks[i])) {
-            if(value.length != 0) {
+            if(value.length !== 0) {
                 tags[key] = value;
             }
         }
         await fsAPI.writeToPlaylist(currPlaylist, tags);
     }
     
-	alert('Tracks added to playlist!');
+    // reset selection
+    if(getCurrentPage() === 'library') {
+        await libraryClick();
+    }
+    if(playlistManagerIsExtended) {
+        await removePlaylistSelection();
+    }
+
+    // send user feedback
+    await giveUserFeedback('Tracks added to Playlist')
 }
 
 /**
@@ -110,7 +128,11 @@ async function addToPlaylist(element) {
  */
 async function removePlaylistSelection(element) {
 	await domAPI.setHTML('selected-playlists-container', '');
-	// libraryClick();
+
+    // reset selection
+    if(getCurrentPage() === 'library') {
+    	await libraryClick();
+    }
 }
 
 /**

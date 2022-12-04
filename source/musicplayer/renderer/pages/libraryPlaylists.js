@@ -1,3 +1,5 @@
+let currGridPlaylist; // helper to track the current playlist grid
+
 window.addEventListener('libraryPlaylists-loaded', async () => {
 	await onLibraryPlaylistsLoad();
 	await domAPI.addEventListenerbyClassName('library-card', 'click', libraryPlaylistsExtended);
@@ -14,8 +16,37 @@ window.addEventListener('library-playlists-container-queue-clicked', async (args
 	console.log(trackObj);
 
     // send track to playback queue
+    // playback integration edit
+    if (queueArr.length === 0) {
+        initFirstSong([trackObj]);
+        initProgress([trackObj]);
+        initInfo([trackObj]);
+    }
     queueArr.push(trackObj);
+    prevSongsArr.push(trackObj);
+
+    // send user feedback
+    await giveUserFeedback('Added to Queue')
+
+    await refreshQueueViewer();
 });
+
+// window.addEventListener('library-playlists-container-delete-clicked', async (args) => {
+//     const playlistName = args['detail'][0];
+//     const deleteIndex = args['detail'][1];
+
+//     // delete track from playlist
+//     await fsAPI.removeFromPlaylist(playlistName, deleteIndex);
+
+//     // refresh grid
+// 	const currPlaylist = await fsAPI.getPlaylist(playlistName);
+// 	const trackList = currPlaylist.trackList;
+// 	await domAPI.setHTML('library-playlists-container', '');
+// 	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings, true, playlistName);
+
+//     // send user feedback
+//     await giveUserFeedback('Track deleted')
+// });
 
 /**
  * @name onLibraryPlaylistsLoad
@@ -54,14 +85,19 @@ async function onLibraryPlaylistsLoad() {
  * @return {Promise<void>}
  */
 async function libraryPlaylistsExtended(element) {
+    // turn on main extended buttons
+    await mainButtonsOn('components/gridExtendedButtons.html');
+    
 	const cardPlaylist = element.getAttribute('data-libtarget');
+
+    currGridPlaylist = cardPlaylist;
 
 	// Generate playlist grid
 	await domAPI.setHTML('header-subtitle', `${cardPlaylist}`);
 	await domAPI.setHTML('library-playlists-cards', '');
 
-	const currPlaylist = await fsAPI.getPlaylistObj(cardPlaylist);
-	const trackList = currPlaylist.tags;
+	const currPlaylist = await fsAPI.getPlaylist(cardPlaylist);
+	const trackList = currPlaylist['trackList'];
 	await domAPI.setHTML('library-playlists-container', '');
-	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings);
+	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings, true, cardPlaylist);
 }

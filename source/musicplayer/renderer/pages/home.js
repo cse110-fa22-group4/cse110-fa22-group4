@@ -9,6 +9,26 @@ window.addEventListener('home-loaded', async () => {
 	await domAPI.addEventListenerbyClassName('library-card-tag', 'click', libraryTagsExtended);
 });
 
+window.addEventListener('home-grid-queue-clicked', async (args) => {
+    const trackObj = args['detail']; 
+	console.log(trackObj);
+
+    // send track to playback queue
+    // playback integration edit
+    if (queueArr.length == 0) {
+        initFirstSong([trackObj]);
+        initProgress([trackObj]);
+        initInfo([trackObj]);
+    }
+    queueArr.push(trackObj);
+    prevSongsArr.push(trackObj);
+
+    // send user feedback
+    await giveUserFeedback('Added to Queue')
+
+    await refreshQueueViewer();
+});
+
 /**
  * @description Generates artist, album, genre, and tag cards, four of each, randomly selected from the library
  * @return {Promise<void>}
@@ -24,7 +44,7 @@ async function generateHomeCards() {
 
 	// this boolean prevents us from failing to generate something unique more than once.
 	// if we generate something nonunique, try again, and it still isn't unique, we just don't add a card then
-	const maxRepeats = 4;
+	const maxRepeats = 11;
 
 	// let's get numHomeCards many unique random entries from our Library
 	const albums = new Set();
@@ -391,7 +411,11 @@ async function libraryAlbumsExtended(e) {
 	await domAPI.setHTML('header-title', `Library`);
 	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardAlbum}`);
-	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings, 'playlists');
+	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 }
 
 /**
@@ -414,6 +438,10 @@ async function libraryArtistsExtended(e) {
 	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardArtist}`);
 	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+    
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 }
 
 /**
@@ -441,6 +469,10 @@ async function libraryGenresExtended(e) {
 	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardGenre}`);
 	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 }
 
 /**
@@ -467,6 +499,10 @@ async function libraryTagsExtended(e) {
 	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardTag}`);
 	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 }
 
 /**

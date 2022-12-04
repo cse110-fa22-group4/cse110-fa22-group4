@@ -6,12 +6,14 @@ const path = require('path');
 const {argv} = require('process');
 const htmlPath = __dirname + '/source/musicplayer/html';
 const fsAPITester = require('../testing/fsAPITesting/fsAPITester');
+const { globalShortcut } = require('electron');
 
 let selectedSong = '';
+let mainWindow;
 
 const createWindow = async () => {
 	// Create the browser window.
-	const mainWindow = new BrowserWindow({
+	mainWindow = new BrowserWindow({
 		width: 1920,
 		height: 1080,
 		minHeight: 720,
@@ -23,18 +25,29 @@ const createWindow = async () => {
 		},
 	});
 
+	mainWindow.on('focus', () => {
+		mainWindow.webContents.send('window-focused');
+	});
+
+	mainWindow.on('blur', () => {
+		mainWindow.webContents.send('window-unfocused');
+	});
+
+	mainWindow.on('closed', () => {
+
+	});
+
 	// maximize window at start
 	// mainWindow.maximize();
 
 	// and load the index.html of the app.
 	await mainWindow.loadFile(path.join(__dirname, '/../html/index.html'));
-	mainWindow.on('closed', () => {
-		ipcMain.emit('window-closed');
-	});
 
+    // hide menu bar
+    // await mainWindow.setMenuBarVisibility(false);
 
 	// Open the DevTools.
-	// mainWindow.webContents.openDevTools()
+	// await mainWindow.webContents.openDevTools()
 
 	// Check for testing flag to run tests (npm run test)
 	if (argv.length === 3 && argv[2] === '-g') {
@@ -58,17 +71,27 @@ app.whenReady().then(async () => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow();
 	});
 
-	//
+	await globalShortcut.unregister('CmdOrCtrl+R');
+	await globalShortcut.unregister('CmdOrCtrl+Shift+R');
+	globalShortcut.register('CmdOrCtrl+R', () => { });
+	globalShortcut.register('CmdOrCtrl+Shift+R', () => { });
+	
 });
+
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('before-quit', async () => {
-	ipcMain.emit('window-closed');
-	//if(process.platform !== 'darwin') await ffmpegAPI.stopSong();
+	await mainWindow.webContents.send('window-closed');
+	if (process.platform !== 'darwin') app.quit();
 });
-app.on('window-all-closed', () => {
+
+app.on('window-all-closed', async () => {
+	if (process.platform !== 'darwin') app.quit();
+});
+
+ipcMain.on('quit', () => {
 	if (process.platform !== 'darwin') app.quit();
 });
 

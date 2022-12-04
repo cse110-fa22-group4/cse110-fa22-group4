@@ -14,7 +14,7 @@
   color: var(--mid-dark);
   height: 29px;
   width: 250px;
-  border: 1px solid var(--mid);
+  border: 1px solid var(--toggle-border);
   border-radius: 2.5px;
   font-family: Roboto, sans-serif;
   font-size: 11px;
@@ -39,15 +39,20 @@
 .gridjs-table {
   border-spacing: 0;
   width: 100%;
+  color: var(--toggle-txt-2);
 }
 
 .gridjs-tbody .gridjs-tr:hover {
-  background-color: rgb(0 0 0 / 5%);
+  background-color: var(--toggle-hover);
   transition: 300ms;
 }
 
 .gridjs-thead {
   text-align: left;
+  position: sticky;
+  top: 50px;
+  background-color: var(--toggle-bg-1);
+
 }
 
 .gridjs-th,
@@ -74,16 +79,36 @@
   transition: 300ms;
 }
 
-/* stylelint-disable-next-line selector-class-pattern */
 button.gridQueueButton {
   display: flex;
-  background-color: var(--mid);
+  background-color: var(--mid-dark);
   color: var(--light);
-  margin: 0 auto;
+  margin: 0;
+  margin-left: 13px;
   border-radius: 2.5px;
 }
 
-/* stylelint-disable-next-line selector-class-pattern */
 button.gridQueueButton:hover {
-  background-color: var(--mid-dark);
+  background-color: var(--theme-primary);
+}
+
+button.gridDeleteButton {
+    display: flex;
+    background-color: var(--mid-dark);
+    color: var(--light);
+    margin: 0;
+    margin-left: 17px;
+    border-radius: 2.5px;
+}
+
+button.gridDeleteButton:hover {
+    background-color: var(--theme-primary);
+}
+
+input.gridjs-input {
+    position: fixed;
+    left: 260px;
+    top: 187px;
+
+    background-color: var(--toggle-bg-3);
 }

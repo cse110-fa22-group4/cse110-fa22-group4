@@ -3,7 +3,7 @@
 
 /* PLAYBACK */
 #playback-container {
-  background-color: var(--light);
+  background-color: var(--toggle-bg-3);
   min-height: 100px;
   max-height: 100px;
   position: fixed;
@@ -32,6 +32,8 @@
   align-items: center;
   max-width: 25%;
   max-height: 25%;
+
+  color: var(--toggle-txt-2);
 }
 
 .songInfo {
@@ -63,6 +65,7 @@
   width: 20%;
   margin: 2px 5px 2px 2px;
   border-radius: 2px;
+  visibility: hidden;
 }
 
 #controlsContainer {
@@ -87,7 +90,7 @@
 .mainControls {
   height: 100%;
   width: 100%;
-  fill: black;
+  fill: var(--toggle-playback);
 }
 
 /*
@@ -105,8 +108,10 @@
 */
 
 .timestamps {
-  color: lightgrey;
+  color: #c4c4c4;
   margin: 4px;
+
+  font-size: 10px;
 
   /* margin-block-start: 0em;
   margin-block-end: 0em;

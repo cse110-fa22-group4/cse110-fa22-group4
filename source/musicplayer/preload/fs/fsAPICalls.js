@@ -196,10 +196,11 @@ async function recursiveSearchAtPath(searchPath) {
  * @param songs The songs.json object
  * @returns {Promise<
  * {
+ * 		track:		(string|number),
  * 		duration: 	(string|number),
- * 		filename: 		(string),
+ * 		filename: 	(string),
  * 		artist: 	(string),
- * 		year: 		(string|number),
+ * 		date: 		(string|number),
  * 		album: 		(string),
  * 		genre: 		(string),
  * 		title: 		(string)
@@ -207,18 +208,22 @@ async function recursiveSearchAtPath(searchPath) {
  */
 async function convertPathToTrack(filename, songs) {
 	const song = songs[filename]['format'];
+	const track = 'tags' in song && 'track' in song['tags'] ? song['tags']['track'] : '';
 	const title = 'tags' in song && 'title' in song['tags'] ? song['tags']['title'] : '';
 	const artist = 'tags' in song && 'artist' in song['tags'] ? song['tags']['artist'] : '';
 	const album = 'tags' in song && 'album' in song['tags'] ? song['tags']['album'] : '';
-	const year = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
+	const date = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
+	const year = 'tags' in song && 'year' in song['tags'] ? song['tags']['year'] : '';
 	const duration = 'duration' in song ? song['duration']: '';
 	const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
 	const tags = 'tags' in song && 'tags' in song['tags'] ? song['tags']['tags'] : '';
 	return {
+		'track': track.split('/')[0],
 		'title': title,
 		'filename': filename,
 		'artist': artist,
 		'album': album,
+		'date': date,
 		'year': year,
 		'duration': duration,
 		'genre': genre,

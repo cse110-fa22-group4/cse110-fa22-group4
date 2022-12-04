@@ -1,11 +1,11 @@
 // preload.js
-const {ipcRenderer, contextBridge, app} = require('electron');
+const {ipcRenderer, contextBridge, app, globalShortcut} = require('electron');
 
 const {
 	addEventListener, addEventListenerbyClassName, getAttribute,
 	setAttribute, addChild, setHTML, appendHTML,
 	setStyle, setStyleClassToggle, loadPage,
-	addGrid, setThemeColor, setProperty, getProperty, getSelectedTracks,
+	addGrid, setThemeColor, toggleDarkTheme, setProperty, getProperty, getSelectedTracks,
 } = require('./dom/domAPICalls.js');
 
 const {
@@ -33,7 +33,7 @@ const {
 	writeToPlaylist, removeFromPlaylist,
 	createPlaylist, writePlaylistMeta,
 	removePlaylistMeta, getPlaylistMeta,
-	getPlaylistObj,
+	getPlaylistObj, exportPlaylist,
 } = require('./fs/playlists/playlistAPICalls');
 
 const {
@@ -106,12 +106,32 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await setPath();
 });
 
+window.onbeforeunload = async (e) => {
+	await stopSong();
+	let start = Date.now();
+	while(Date.now() < start + 100) {} // yeah.
+	window.onbeforeunload = null;
+	ipcRenderer.send('quit');
+};
+
 contextBridge.exposeInMainWorld('genAPI', {
 	debugLog: debugLog,
 	openDialog: openDialog,
 	publishGlobal: publishGlobal,
 	getGlobal: getGlobal,
 	removeGlobal: removeGlobal,
+	/**
+	 * @memberOf genAPI
+	 * @name ipcSubscribeToEvent
+	 * @description Subscribes to an event from main.js
+	 * @param {string} e The event name
+	 * @param {function} func The function to attach to the event.
+	 */
+	ipcSubscribeToEvent: async (e, func) => {
+		await ipcRenderer.on(e, async () => {
+			await func();
+		});
+	},
 });
 
 contextBridge.exposeInMainWorld('domAPI', {
@@ -129,6 +149,7 @@ contextBridge.exposeInMainWorld('domAPI', {
 	loadPage: loadPage,
 	addGrid: addGrid,
 	setThemeColor: setThemeColor,
+    toggleDarkTheme: toggleDarkTheme,
 	getSelectedTracks: getSelectedTracks,
 });
 
@@ -178,4 +199,5 @@ contextBridge.exposeInMainWorld('fsAPI', {
 	getSRCString: getSRCString,
 	recursiveSearchAtPath: recursiveSearchAtPath,
 	cullShortAudio: cullShortAudio,
+	exportPlaylist: exportPlaylist,
 });

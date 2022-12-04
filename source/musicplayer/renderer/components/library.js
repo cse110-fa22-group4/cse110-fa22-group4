@@ -13,7 +13,19 @@ window.addEventListener('library-container-queue-clicked', async (args) => {
 	console.log(trackObj);
 
     // send track to playback queue
+    // playback integration edit
+    if (queueArr.length == 0) {
+        initFirstSong([trackObj]);
+        initProgress([trackObj]);
+        initInfo([trackObj]);
+    }
     queueArr.push(trackObj);
+    prevSongsArr.push(trackObj);
+
+    // send user feedback
+    await giveUserFeedback('Added to Queue')
+
+    await refreshQueueViewer();
 });
 
 
@@ -25,5 +37,21 @@ window.addEventListener('library-container-queue-clicked', async (args) => {
 async function onLibraryLoad() {
 	await domAPI.setHTML('library-container', '');
 	const trackList = await fsAPI.getSongsTrackData();
-	await domAPI.addGrid('library-container', libraryHeaders, trackList, gridSettings);
+
+    // TODO: temporary old version implementation, is bugged atm
+    if(searchQueryGlobal.length !== 0) {
+        const searchSettings = {
+            sort: true,
+            resizable: true,
+            fixedHeader: true,
+            autoWidth: true,
+            search: {
+                enabled: true,
+                keyword: searchQueryGlobal,
+            },
+        };
+        await domAPI.addGrid('library-container', libraryHeaders, trackList, searchSettings);
+    } else {
+	    await domAPI.addGrid('library-container', libraryHeaders, trackList, gridSettings);
+    }
 }

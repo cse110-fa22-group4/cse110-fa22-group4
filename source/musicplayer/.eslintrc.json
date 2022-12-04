@@ -20,7 +20,8 @@
 		"topExtensionOff": true,
 		"searchQueryGlobal": true,
 		"resetSubtitleButtons": true,
-		"resetSidebarButtons": true
+		"resetSidebarButtons": true,
+		"giveUserFeedback":true
 	},
 	"plugins": [
 	],

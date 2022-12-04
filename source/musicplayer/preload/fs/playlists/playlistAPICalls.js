@@ -24,7 +24,8 @@ async function getAllPlaylists() {
 	return await fsPromises.readdir(playlistPath);
 }
 
-/* PLAYLIST STRUCTURE:
+/*
+BACKEND PLAYLIST STRUCTURE:
 {
 	"meta": {
 		"creator": "user",
@@ -42,6 +43,16 @@ async function getAllPlaylists() {
 		},
 	],
 }
+FRONTEND PLAYLIST STRUCTURE
+{
+	"name": "playlistName"
+	"trackList": [
+		{ ... track 1 ... },
+		{ ... track 2 ... },
+	]
+	"numTracks": 2
+}
+
 
 	- meta contains useful information, such as the creator of the playlist and the time it was created
 	- tags contains a sum of products form tag collection, as this allows for a minimal coverage of any set.
@@ -204,6 +215,7 @@ async function removePlaylistMeta(playlistName, metaTag) {
 /**
  * @memberOf fsAPI
  * @name getPlaylistMeta
+ * @name getPlaylistMeta
  * @description Gets the metadata of a playlist as an object.
  * @example
  * const playlistMeta = await getPlaylistMeta('myPlaylist');
@@ -220,7 +232,7 @@ async function getPlaylistMeta(playlistName) {
 
 /**
  * @memberOf fsAPI
- * @name writeToPlaylist
+ * @name removeFromPlaylist
  * @description Removes a value from a tag for playlist creation.
  * @param {string} playlistName The name of the playlist.
  * @param {number} index The index of the tag group to remove.
@@ -250,8 +262,19 @@ async function getPlaylistObj(playlistName) {
 	}
 }
 
-async function exportPlaylist(playlistName) {
-	// TODO: should just cp it if it exists
+/**
+ * @name exportPlaylist
+ * @param {string} playlistName name of the playlist
+ * @param {string} exportPath path to copy the playlist to
+ */
+async function exportPlaylist(playlistName, exportPath) {
+	// TODO: EXPOSE THIS IN PRELOAD
+	const filename = '/' + playlistName + '.mmp';
+	await fs.writeFile(exportPath + filename, JSON.stringify(await getPlaylistObj(playlistName)), (err) => {
+		if (err) {
+			console.log(err);
+		}
+	});
 }
 
 module.exports = {
@@ -266,4 +289,5 @@ module.exports = {
 	getPlaylist,
 	removePlaylist,
 	writePlaylist,
+	exportPlaylist,
 };

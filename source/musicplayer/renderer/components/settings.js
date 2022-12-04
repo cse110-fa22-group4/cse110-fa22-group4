@@ -32,9 +32,12 @@ window.addEventListener('settings-loaded', async ()=> {
 	await domAPI.addEventListener('add-paths-button', 'click', addPath);
 	await domAPI.addEventListener('enable-scan-on-startup', 'click', enableToggleableSetting);
 	await domAPI.addEventListener('enable-dark-mode', 'click', enableToggleableSetting);
+	await domAPI.addEventListener('add-playlist-input', 'change', importButtonPressed);
+	await updatePlaylistOptionsSettings();
 
 	await domAPI.addEventListener( 'btn-theme-color-primary', 'click', changeThemeColorPrimary);
 	await domAPI.addEventListener( 'btn-theme-color-secondary', 'click', changeThemeColorSecondary);
+	await domAPI.addEventListener( 'export-selected-playlist', 'click', exportButtonPressed);
 });
 
 /**
@@ -42,6 +45,9 @@ window.addEventListener('settings-loaded', async ()=> {
  * @param {HTMLElement} element
  */
 async function rescanClick(element) {
+	// let's unhide the progress bar stuff
+	await unhideProgressBar();
+
 	const scannedSongs = { };
 	const settings = await fsAPI.getSetting('watchedDir');
 	if (settings === undefined) return;
@@ -51,7 +57,9 @@ async function rescanClick(element) {
 	}
 	console.log(scannedSongs);
 	await fsAPI.writeSongs(scannedSongs);
-	await genAPI.debugLog(scannedSongs, 'settings-tests');
+
+	// now that we are done, we hide element again
+	await hideProgressBar();
 }
 
 /**
@@ -70,6 +78,8 @@ async function addPath(element) {
 		}
 		await fsAPI.writeToSetting('watchedDir', watched);
 		await updateWatchedFoldersDisplay();
+		// we do a rescan because the user just added a folder.
+		await rescanClick();
 	}
 }
 
@@ -79,6 +89,9 @@ async function addPath(element) {
  * @param {HTMLElement} element
  */
 async function enableToggleableSetting(element) {
+	// this if the function to enable dark home atm
+	await domAPI.toggleDarkTheme();
+
 	const isEnabled = await domAPI.getProperty(element.id, 'checked');
 	await fsAPI.writeToSetting(element.id, isEnabled);
 }
@@ -133,7 +146,7 @@ async function loadSettingsState() {
 	await updateWatchedFoldersDisplay();
 
 	// These are the toggles relevant to the settings menu
-	const relevantToggles = ['enable-scan-on-startup', 'enable-dark-mode'];
+	const relevantToggles = ['enable-scan-on-startup']; /* 'enable-dark-mode' */
 	const allSettings = await fsAPI.getSettings();
 	for (let i=0; i < relevantToggles.length; i++) {
 		if (relevantToggles[i] in allSettings) {
@@ -162,4 +175,99 @@ async function changeThemeColorSecondary() {
 	if (themeColorsSecondaryCount === 0) {
 		themeColorsSecondaryCount = themeColorsSecondary.length;
 	}
+}
+
+/**
+ * @description Unhide the progress bar elements for when we start loading in a library.
+ */
+async function unhideProgressBar() {
+	domAPI.setProperty('rescan-progress', 'value', 0);
+	domAPI.setProperty('rescan-progress-container', 'hidden', false);
+	domAPI.setProperty('rescan-progress', 'hidden', false);
+}
+
+/**
+ * @description After library loading is done,  hide the progress bar again
+ */
+async function hideProgressBar() {
+	domAPI.setProperty('rescan-progress-container', 'hidden', true);
+	domAPI.setProperty('rescan-progress', 'hidden', true);
+}
+
+/**
+ * @name updatePlaylistOptionsSettings
+ * @description Update menu options for playlists drop-down. Originally in playlists.js
+ * but copied over and modified to prevent scoping issues
+ * @param {HTMLElement} element
+ * @return {Promise<void>}
+ */
+async function updatePlaylistOptionsSettings() {
+	let playlistMenuOptions = '<option value="" selected disabled>Select a playlist...</option>';
+	const userPlaylists = await fsAPI.getAllPlaylists();
+	for (let i = 0; i < userPlaylists.length; i++) {
+		const option = `<option id="playlist-option-${userPlaylists[i]}" value="${userPlaylists[i]}">
+            ${userPlaylists[i]}</option>`;
+		playlistMenuOptions += option;
+	}
+
+	// Insert playlist options into container
+	await domAPI.setHTML('select-playlist-export', playlistMenuOptions);
+}
+
+/**
+ * @description This function exports the playlist selected folder
+ */
+async function exportButtonPressed() {
+	// let's get the selected playlist
+	const selectedPlaylist = await domAPI.getProperty('select-playlist-export', 'value');
+
+	// if there is nothing selected, let's let the user know that is a problem.
+	if (await selectedPlaylist == '') {
+		await giveUserFeedback('No playlist selected');
+		return 0;
+	}
+
+	// if there is something selected, let's have the user select a directory to export to
+	const dirs = await genAPI.openDialog({properties: ['openDirectory']});
+	await genAPI.debugLog(dirs['filePaths'], 'settings-tests');
+	if (!dirs['canceled']) {
+		const exportPath = dirs['filePaths'][0];
+		fsAPI.exportPlaylist(selectedPlaylist, exportPath);
+	}
+}
+
+/**
+ * @description this function will import a playlist file. It will write the playlist
+ * name into the readonly textbox as well
+ * @param {*} event
+ */
+async function importButtonPressed(event) {
+	// there is no way to detect if the user pressed cancel on the file picker
+	const file = event.files[0];
+	const reader = new FileReader();
+	let playlist;
+	reader.addEventListener('load', async (event)=>{
+		// play list file
+		playlist = JSON.parse(event.target.result);
+
+		// play list name
+		// if there is no name in the field, we will stop, and tell the user
+		// that they need to input a name
+		// otherwise we use what the user typed in
+		const typedName = await domAPI.getProperty('new-playlist-name', 'value');
+		let playlistName;
+		if (typedName == '') {
+			await giveUserFeedback('Please type a playlist name');
+			return;
+		} else {
+			playlistName = typedName;
+		}
+
+		// now let's write it
+		fsAPI.writePlaylist(playlistName, playlist);
+
+		// let's tell the user it was successfuly
+		await giveUserFeedback(`Imported playlist ${playlistName}`);
+	});
+	reader.readAsText(file);
 }
