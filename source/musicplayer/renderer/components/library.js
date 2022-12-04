@@ -20,6 +20,7 @@ window.addEventListener('library-container-queue-clicked', async (args) => {
         initInfo([trackObj]);
     }
     queueArr.push(trackObj);
+    prevSongsArr.push(trackObj);
 
     // send user feedback
     await giveUserFeedback('Added to Queue')
