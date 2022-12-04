@@ -117,6 +117,7 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
         columns.push(
             {
                 name: 'Delete',
+                hidden: true,
                 // row queue button actions, sends a track object
                 formatter: (cell, row) => {
                     return h('button', {

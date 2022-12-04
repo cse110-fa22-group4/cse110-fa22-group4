@@ -9,8 +9,8 @@ window.addEventListener('gridExtendedButtons-loaded', async () => {
  */
  async function sendQueuePlaylist() {
 	// get the playlist tracks
-    const currPlaylist = await fsAPI.getPlaylistObj(currGridPlaylist);
-	const playlistTracks = currPlaylist.tags;
+    const currPlaylist = await fsAPI.getPlaylist(currGridPlaylist);
+	const playlistTracks = currPlaylist.trackList;
 	if (playlistTracks.length == 0) {
 		alert('Select tracks to add to queue!');
         return;
