@@ -28,6 +28,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     // set theme color
 	await domAPI.setThemeColor(await fsAPI.getSetting('primaryColor'), await fsAPI.getSetting('secondaryColor'));
+	if (await fsAPI.getSetting('enable-dark-mode') == true) {
+		await domAPI.toggleDarkTheme();
+	}
 
     // navigation event listeners
 	await domAPI.addEventListener( 'btn-home', 'click', homeClick);
@@ -134,6 +137,8 @@ async function settingsClick(element) {
     } else {
         await topExtensionOn();
     }
+
+	await updatePlaylistOptionsSettings();
 }
 
 /**

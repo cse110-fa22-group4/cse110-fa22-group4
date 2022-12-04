@@ -75,7 +75,7 @@ app.whenReady().then(async () => {
 	await globalShortcut.unregister('CmdOrCtrl+Shift+R');
 	globalShortcut.register('CmdOrCtrl+R', () => { });
 	globalShortcut.register('CmdOrCtrl+Shift+R', () => { });
-	//
+	
 });
 
 

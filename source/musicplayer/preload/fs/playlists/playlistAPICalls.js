@@ -81,12 +81,10 @@ async function getPlaylist(playlist) {
 			if (!('format' in meta)) return false;
 			const metadata = meta['format'];
 			for (const tag in tagGroup) {
-
+				if (tagGroup[tag].length === 0) return true;
 				if (tag in metadata) {
-					debugger
 					if (!metadata[tag].includes(tagGroup[tag])) return false;
 				} else if ('tags' in metadata && tag in metadata['tags']) {
-					debugger
 					if (!metadata['tags'][tag].includes(tagGroup[tag])) return false;
 				} else return false;
 
@@ -264,8 +262,19 @@ async function getPlaylistObj(playlistName) {
 	}
 }
 
-async function exportPlaylist(playlistName) {
-	// TODO: should just cp it if it exists
+/**
+ * @name exportPlaylist
+ * @param {string} playlistName name of the playlist
+ * @param {string} exportPath path to copy the playlist to
+ */
+async function exportPlaylist(playlistName, exportPath) {
+	// TODO: EXPOSE THIS IN PRELOAD
+	const filename = '/' + playlistName + '.mmp';
+	await fs.writeFile(exportPath + filename, JSON.stringify(await getPlaylistObj(playlistName)), (err) => {
+		if (err) {
+			console.log(err);
+		}
+	});
 }
 
 module.exports = {
@@ -280,4 +289,5 @@ module.exports = {
 	getPlaylist,
 	removePlaylist,
 	writePlaylist,
+	exportPlaylist,
 };

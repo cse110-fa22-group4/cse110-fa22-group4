@@ -2,15 +2,11 @@
 // fix lint issues later
 // const queueMap = {'name': 'queuePlaylist', 'numTracks': '0', 'artworks': [], 'trackList': []};
 const queueArr = [];
+let shuffleArr = [];
 // identical to the original queueArr (removing songs have no affect)
 // allows prevSongArr index to be accurate and play prev songs
 // even if they are not longer in queue
-const prevSongsArr = [];
-
-// works
-// await genAPI.ipcSubscribeToEvent('window-focused', async () => {
-//	await genAPI.debugLog('test', 'unit-tests')
-// });
+let prevSongsArr = [];	// this array is reassigned in different file
 
 
 /*
@@ -29,15 +25,12 @@ const queueTracklist = queueMapVal['trackList'];
 queueTracklist.append( { '#': '01', ... });
 */
 
-// const {BrowserWindow} = require('main');
-
 // alot of these can't be added to eslintrc since reassigned
 let isPaused = false;
 let shuffleOn = false;
 let toggleOn = false;
 const testMap = new Map();
 let songNum = 0;
-//const prevSongsIndxArr = [];
 
 let startStamp = null;
 let endStamp = null;
@@ -59,28 +52,16 @@ const songPath2 = './songs/happyBirthday1.mp3';
 const songPath3 = './songs/rickroll.mp3';
 const songPath4 = './songs/starSpangledBanner.mp3';
 let currSongPath;
+
+let unfocusedTime;
+let focusedTime;
+let timeAway;
+let unfocusedMsElapsed;
+let deletedSong = false;
 // const selectedColor = 'var(--theme-primary)';
 // const unselectedColor = 'black';
 
 /*
-testMap.set( 'playlist', {
-	name: 'testPlaylist',
-	numTracks: 32,
-	artworks: ['..img.png', '..img2.png'],
-	trackList: [
-		{'#': '01', 'title': 'joy to the world', 'path': songPath1,
-			'artist': 'person a', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '1:07',
-			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
-			'tags': 'Party, Summer', 'artwork': '../img/sampleData/artwork-DuaLipa.webp'},
-		{'#': '02', 'title': 'happy birthday', 'path': songPath2,
-			'artist': 'person b', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '0:29',
-			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
-			'tags': 'Party, Summer', 'artwork': '../img/sampleData/artwork-DuaLipa.webp'},
-		{'#': '03', 'title': 'never gonna give you up', 'path': songPath3,
-			'artist': 'rick astley', 'album': '...', 'year': '2020', 'duration': '3:32',
-			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
-			'tags': 'Party, Summer', 'artwork': ''}],
-});*/
 const song0 = {'#': '03', 'title': 'never gonna give you up', 'path': songPath0,
 'artist': 'rick astley', 'album': '...', 'year': '2020', 'duration': '3:32',
 'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
@@ -89,23 +70,35 @@ const song4 = {'#': '03', 'title': 'never gonna give you up', 'path': songPath4,
 'artist': 'rick astley', 'album': '...', 'year': '2020', 'duration': '3:32',
 'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
 'tags': 'Party, Summer', 'artwork': ''}
-// let testQueue = [song0, testMap, song4];	// no longer optimal
+*/
+
 
 window.addEventListener('playback-loaded', async () => {
 	// decideFirstSong();
-	// await genAPI.ipcSubscribeToEvent('window-closed', async () => {
-	// 	await genAPI.debugLog('test', 'unit-tests')
-	// });
-	// await genAPI.ipcSubscribeToEvent('window-focused', async () => {
-	// 	await genAPI.debugLog('test', 'unit-tests')
-	// });
+	// fix for progress when window is out of focus
+	await genAPI.ipcSubscribeToEvent('window-unfocused', async () => {
+		// await console.log('test')
+		unfocusedTime = new Date();
+		unfocusedMsElapsed = msElapsed;
+	});
+	await genAPI.ipcSubscribeToEvent('window-focused', async () => {
+		// await console.log('test focus');
+		focusedTime = new Date();
+		const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
+		// only update if song is already playing
+		if (playBtn.id === 'pause-btn') {
+			timeAway = focusedTime - unfocusedTime;
+			msElapsed = unfocusedMsElapsed + timeAway;
+		}
+	});
 	await genAPI.publishGlobal(songNum, 'songNum');
 	await genAPI.publishGlobal(currSongPath, 'currSongPath');
-	//await genAPI.publishGlobal(prevSongsIndxArr, 'prevSongsIndxArr');
 	await genAPI.publishGlobal(startStamp, 'startStamp');
 	await genAPI.publishGlobal(endStamp, 'endStamp');
 	await genAPI.publishGlobal(progressFader, 'progressFader');
 	await genAPI.publishGlobal(msElapsed, 'msElapsed');
+	await genAPI.publishGlobal(intervalID, 'intervalID');
+	// await genAPI.publishGlobal(deletedSong, 'deletedSong');
 	// shuffle is going to randomize order of songs in playlist
 	await domAPI.addEventListener('shuffle-btn', 'click', shuffleSong);
 	// prev also involves access to 'playlist' (array of objects inside map)
@@ -125,31 +118,8 @@ window.addEventListener('playback-loaded', async () => {
 	// updateInfo();
 
 	await genAPI.publishGlobal(queueArr, 'queueArr');	// array is not persistent
-	// change code slightly to get tracklist
-
-	/*
-	const appWindow = await genAPI.getGlobal('mainWindow');
-	console.log(appWindow);
-	if (!(appWindow.isFocused()) ) {
-		console.log('clicked away');
-		// might need 2 functions
-		// unfocus -> get date
-		// once focused ->  get date again
-		// calc time away, add to msElapsed
-	}*/
 });
 
-// const currWin = BrowserWindow.getAllWindows()[0];
-// console.log(currWin);
-
-// console.log(appWindow);
-// if (!(appWindow.isFocused()) ) {
-// 	console.log('clicked away');
-// 	// might need 2 functions
-// 	// unfocus -> get date
-// 	// once focused ->  get date again
-// 	// calc time away, add to msElapsed
-// }
 
 /**
  * @description Handles behavior of play/pause button when clicked
@@ -250,12 +220,6 @@ async function nextSong() {
 		await refreshQueueViewer();
 		return;
 	}
-	//songNum = songNum;
-	
-	// @todo decide songPath based on object
-	// songNum will only ever be used for array in Map, need to reset once Map is exited
-	//prevSongsIndxArr.push(songNum);
-
 	
 	if(toggleOn) {
 		queueArr.push(queueArr[0]) //add to end of queue
@@ -264,25 +228,44 @@ async function nextSong() {
 	queueArr.splice(0, 1);
 	currSongPath = queueArr[0]['filename'];
 	
+
 	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
 	// on skip, always play the song so button should always become pause
+	// deleted song -> toggle to play
 	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
 	const playBtnImg = playBtn.querySelector('img');
-	if ( playBtn.id === 'play-btn' ) {
-		toggleIcon(playBtn, playBtnImg);
+	if (deletedSong) {
+		if(playBtn.id === 'pause-btn') {
+			toggleIcon(playBtn, playBtnImg);
+		}
+	} else {
+		if ( playBtn.id === 'play-btn' ) {
+			toggleIcon(playBtn, playBtnImg);
+		}
 	}
 
 	clearInterval(intervalID);
 	resetProgress();
 	await ffmpegAPI.stopSong();
-	await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
-	intervalID = setInterval( function() { updateProgress(); }, 50);
+	if(!deletedSong) {
+		await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
+		intervalID = setInterval( function() { updateProgress(); }, 50);
+	}
 
 	updateInfo();
+	deletedSong = false;
 
     await refreshQueueViewer();
 }
+
+/**
+ * @description Plays the previous song in playlist (and kills old instance)
+ * 	all the tracks of a playlist
+ */
+//function loadNextSong() {
+//
+//}
 
 /**
  * @description Plays the previous song in playlist (and kills old instance)
@@ -340,7 +323,7 @@ async function prevSong() {
  * 	all the tracks of a playlist
  */
  async function jumpSong(index) {
-	console.log(index);
+
     // TODO: function currently bugged, needs proper implementation
     // not sure what needs to be done with prevSongsArr -Alvin 
 	//songNum = index;
@@ -384,6 +367,7 @@ async function prevSong() {
 *  @return {number} representing new random index/songNum to play
  */
 function shuffle(min, max, songNum) {
+// function shuffle() {
 	let randomIndx = songNum;
 	while (randomIndx === songNum) {
 		// first formula would not give a uniform distrubution,
@@ -392,6 +376,24 @@ function shuffle(min, max, songNum) {
 		randomIndx = Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 	return randomIndx;
+
+	// let queueClone = structuredClone(queueArr);
+	// let currentIndex = queueArr.length;
+	// let randomIndex;
+	
+	// // While there remain elements to shuffle.
+	// while (currentIndex != 0) {
+	
+	// 	// Pick a remaining element.
+	// 	randomIndex = Math.floor(Math.random() * currentIndex);
+	// 	currentIndex--;
+	
+	// 	// And swap it with the current element.
+	// 	[queueArr[currentIndex], queueArr[randomIndex]] = [
+	// 		queueArr[randomIndex], queueArr[currentIndex]];
+	// }
+	
+	// shuffleArr = array;
 }
 
 /**
@@ -472,7 +474,11 @@ function updateVolumeIcon() {
 async function updateVolume(event) {
 	// playing from resume needs to check volume
 	// this only really checks vol from already playing mostly
+	console.log(event.value)
+	// volume = Math.floor(Number(event.value)/100 * 5s0);
 	volume = Number(event.value);
+	console.log(Number(event.value)/100)
+	console.log(volume)
 	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
 	if (playBtn.id === 'play-btn') {
 		return;
@@ -496,9 +502,9 @@ function resetProgress() {
 	endStamp = document.querySelector('.timestamps:nth-of-type(2)');
 	progressFader = document.querySelector('#progressBar');
 	// @ todo read in first song from persistent memory
-	if (queueArr.length === 0) {
-		return;
-	}
+	//if (queueArr.length === 0) {
+	//	return;
+	//}
 	// const mapVal = playlistMap.get('playlist');
 	// const playlist = mapVal['trackList'];
 	const currSongDuration = queueArr[0]['duration'];
