@@ -108,7 +108,6 @@ async function deleteTrackFromQueue(element) {
 
             clearInterval(intervalID);
             resetProgress();
-            intervalID = setInterval(function () { updateProgress(); }, 50);
 
             await refreshQueueViewer();
         }
@@ -143,6 +142,20 @@ async function clearQueue(element) {
     // remove all tracks from the queue
     queueArr.splice(0, queueArr.length);
     debugger
+
+    currSongPath = null;
+
+    //pause song
+    const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
+    const playBImg = playB.querySelector('img');
+    if (playB.id !== 'play-btn') {
+        await ffmpegAPI.pauseSong();
+        isPaused = true;
+        toggleIcon(playB, playBImg);
+    }
+    clearInterval(intervalID);
+    resetProgress();
+
 
     // refresh queue viewer
 
