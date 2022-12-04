@@ -83,10 +83,8 @@ async function getPlaylist(playlist) {
 			for (const tag in tagGroup) {
 
 				if (tag in metadata) {
-					debugger
 					if (!metadata[tag].includes(tagGroup[tag])) return false;
 				} else if ('tags' in metadata && tag in metadata['tags']) {
-					debugger
 					if (!metadata['tags'][tag].includes(tagGroup[tag])) return false;
 				} else return false;
 

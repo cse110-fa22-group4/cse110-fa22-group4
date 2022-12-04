@@ -278,7 +278,7 @@ async function prevSong() {
 	prevSongsIndxArr.pop();	// remove current song
 	songNum = prevSongsIndxArr[prevSongsIndxArr.length - 1]; // retrieve prev song
 	// no need for branch anymore, prevSongsArr handles both cases of shuffleOn/Off
-	currSongPath = queueArr[songNum]['filename'];
+	currSongPath = prevSongsArr[songNum]['filename'];
 	isPaused = false;	// isPaused shouldn't be carried over from other songs
 
 	// on prev, always play the song so button should always become pause

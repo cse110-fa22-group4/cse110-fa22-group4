@@ -29,6 +29,7 @@ window.addEventListener('gridExtendedButtons-loaded', async () => {
 		}
 
         queueArr.push(playlistTracks[i]);
+        prevSongsArr.push(playlistTracks[i]);
     }
 
     // refresh queue viewer if already open

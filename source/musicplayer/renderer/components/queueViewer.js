@@ -83,8 +83,9 @@ window.addEventListener('queueViewer-loaded', async () => {
     // remove track from the queue
     queueArr.splice(deleteTrackIndex, 1);
 
-
-	songNum--;
+    if(songNum > 0) {
+        songNum--;
+    }
 
 
     // refresh queue viewer
@@ -106,7 +107,6 @@ window.addEventListener('queueViewer-loaded', async () => {
 
     // remove all tracks from the queue
     queueArr.splice(0, queueArr.length);
-    debugger
 
     // refresh queue viewer
 
