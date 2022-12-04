@@ -36,40 +36,6 @@ test('Start', async () => {
     //console.log(window);
     //await window.pause();
 
-    //await window.click('settings');
-    //console.log(await window.locator('text=Library'));
-    //await window.locator('#sidebar :text("Library")').click();
-    //await window.click('sidebar-btn-container-library');
-
-    //await window.pause();
-
-    //await window.locator('text=Library').first().click();
-    //await window.locator('button:text("Library")').click();
-
-    //await window.locator('#btn-playlists').click(); //works
-
-    //await window.pause();
-
-    //await window.locator('#btn-home').click(); //works
-    
-    
-    
-    
-    
-
-    //await window.locator('#btn-settings').click(); //works
-
-    //await window.pause();
-    
-    
-    /*await window.click('btn-settings');
-    
-    await window.locator('text=Library').click();
-
-    await window.click('sidebar-btn-container-library');
-
-    await window.locator(':has-text("Playlists")').click();*/
-
     
 
     await electronApp.close()
@@ -117,7 +83,7 @@ test('Check Page Navigation', async () => {
     // lower volume to 50%
     await window.locator('#audio-fader').click();
 
-    await window.pause();
+    //await window.pause();
 
     // add third song in library to queue
     await window.locator('#library-container :text("+")').nth(2).click();
@@ -168,7 +134,7 @@ test('Check Page Navigation', async () => {
     // add all selected items to queue
     await window.locator('#btn-addQueue').click();
 
-    await window.pause();
+    //await window.pause();
 
     //open playlist popup
     await window.locator('#btn-playlist').click();
@@ -190,22 +156,46 @@ test('Check Page Navigation', async () => {
     // Go to Playlist page
     await window.locator('#btn-playlists').click();
 
-    await window.pause();
+    //await window.pause();
 
     // click on playlist
-    //await window.locator('.library-card-artwork').nth(0).click();
+    await window.locator('.library-card-info :text("some-playlist-name")').click();
 
-    await window.pause();
+    //await window.pause();
 
-    //await window.locator('#btn-playlist-playAll').click();
+    window.pause();
+
+    // play from playlist
+    await window.locator('#btn-playlist-playAll').click();
     
+    // create more playlists
+    await window.locator('#input-playlist-create').type("another-playlist-name");
+    await window.locator('#btn-playlist-create').click();
+
+    await window.locator('#input-playlist-create').type("bad-playlist");
+    await window.locator('#btn-playlist-create').click();
+
+    // click on drop down for playlist selection
+    await window.locator('#select-playlist-add').click()
+
+    // select playlist to modify
+    //await window.locator('#playlist-option-another-playlist-name').click()
+
+    //go to home
+    //await window.locator('#btn-home').click();
+
+    // click on Tobu
+    //await window.locator('.library-card-info :text("Tobu")').click();
+    //library-card library-card-artist
+    //data-libtarget="Tobu"
+
 
     // '#button-queue-clear'
     // '.gridjs-checkbox'
     // '#btn-addQueue'
     // '#btn-playlist'
 
-    await window.pause();
+    window.pause();
 
    //await window.pause();
    await electronApp.close();
