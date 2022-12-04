@@ -246,7 +246,6 @@ async function nextSong() {
 
 		clearInterval(intervalID);
 		resetProgress();
-		intervalID = setInterval( function() { updateProgress(); }, 50);
 		
 		await refreshQueueViewer();
 		return;
