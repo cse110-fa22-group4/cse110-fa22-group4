@@ -194,7 +194,9 @@ async function nextSong(deletedSong = false) {
 	}
 	// @todo decide songPath based on object
 	// songNum will only ever be used for array in Map, need to reset once Map is exited
-	prevSongsIndxArr.push(songNum);
+	if (!deletedSong) {
+		prevSongsIndxArr.push(songNum);
+	}
 	currSongPath = queueArr[songNum]['filename'];
 	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
