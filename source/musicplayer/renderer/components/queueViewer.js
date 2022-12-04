@@ -61,7 +61,7 @@ window.addEventListener('queueViewer-loaded', async () => {
     let newTrackIndex = element.getAttribute('data-queueIndex')
 
     // jump to song and play
-    await jumpSong(newTrackIndex);
+    // await jumpSong(newTrackIndex);
 
     // refresh queue viewer
     await refreshQueueViewer();
@@ -80,12 +80,22 @@ window.addEventListener('queueViewer-loaded', async () => {
     // get index of track to delete
     const deleteTrackIndex = element.getAttribute('data-queueIndex')
 
+	// clear info when last song in queue is manually removed
+	// must go before deleting with splice while object is still avaliable
+	if (queueArr.length == 1) { 
+		await resetPlayback();
+	}
+
     // remove track from the queue
     queueArr.splice(Number(deleteTrackIndex), 1);
 
+    //if(songNum > 0) {
+        songNum--;
+    //}
 
-	songNum--;
-
+	// Only if the top song is deleted skip to next song
+	// song at top of queue always index 0
+	if (deleteTrackIndex === "0") { await nextSong(true); }
 
     // refresh queue viewer
     await refreshQueueViewer();
@@ -104,9 +114,10 @@ window.addEventListener('queueViewer-loaded', async () => {
         return;
     }
 
+	await resetPlayback();
+
     // remove all tracks from the queue
     queueArr.splice(0, queueArr.length);
-    debugger
 
     // refresh queue viewer
 
@@ -126,4 +137,26 @@ window.addEventListener('queueViewer-loaded', async () => {
         await toggleQueueViewer();
         await toggleQueueViewer();
     }
+}
+
+/**
+ * @name resetPlayback
+ * @description Reset the state of the playback bar
+ * @return {Promise<void>}
+ */
+async function resetPlayback() {
+	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
+	const playBtnImg = playBtn.querySelector('img');
+	if (playBtn.id === 'pause-btn') {
+		toggleIcon(playBtn, playBtnImg);
+	}
+
+	await ffmpegAPI.stopSong();
+	clearInterval(intervalID);
+	resetProgress();
+	prevSongsArr = [];
+	prevSongsIndxArr = [];
+	document.querySelector('.songInfo > b').innerHTML = "";
+	document.querySelector('.songInfo > p').innerHTML = "";
+	document.querySelector('#playbackArt').style.visibility = 'hidden';
 }

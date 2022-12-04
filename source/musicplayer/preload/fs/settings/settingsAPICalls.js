@@ -11,6 +11,7 @@ const {throwErr, throwErrOpen, getStoragePath} = require('../fsAPICalls');
  */
 async function getSettings() {
 	const storagePath = await getStoragePath();
+	console.log(storagePath);
 	const settingsPath = path.join(storagePath, 'settings.json');
 	try {
 		return JSON.parse(await fsPromises.readFile(settingsPath, 'utf8'));

@@ -121,6 +121,7 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
         columns.push(
             {
                 name: 'Delete',
+                hidden: true,
                 // row queue button actions, sends a track object
                 formatter: (cell, row) => {
                     return h('button', {
@@ -152,7 +153,7 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
                         for (let i = 0; i < columns.length; i++) {
                             const key = columns[i].id;
                             const value = row.cells[i].data;
-                            if (key === 'awesomeCheckbox') {
+                            if (key === 'awesomeCheckbox' || value === undefined) {
                                 continue
                             }
                             currTrackObj[key] = value
@@ -181,7 +182,7 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
         for (let i = 0; i < columns.length; i++) {
             const key = columns[i].id;
             const value = args[1]['cells'][i].data;
-            if (key === 'awesomeCheckbox' || key === 'queue' || value === undefined) {
+            if (key === 'awesomeCheckbox' || value === undefined) {
                 continue
             }
             currTrackObj[key] = value
