@@ -7,11 +7,6 @@ const queueArr = [];
 // even if they are not longer in queue
 const prevSongsArr = [];
 
-// works
-// await genAPI.ipcSubscribeToEvent('window-focused', async () => {
-//	await genAPI.debugLog('test', 'unit-tests')
-// });
-
 
 /*
 const queueMap = { };
@@ -28,8 +23,6 @@ const queueMapVal = queuePlaylist.get('queuePlaylist');
 const queueTracklist = queueMapVal['trackList'];
 queueTracklist.append( { '#': '01', ... });
 */
-
-// const {BrowserWindow} = require('main');
 
 // alot of these can't be added to eslintrc since reassigned
 let isPaused = false;
@@ -68,24 +61,6 @@ let unfocusedMsElapsed;
 // const unselectedColor = 'black';
 
 /*
-testMap.set( 'playlist', {
-	name: 'testPlaylist',
-	numTracks: 32,
-	artworks: ['..img.png', '..img2.png'],
-	trackList: [
-		{'#': '01', 'title': 'joy to the world', 'path': songPath1,
-			'artist': 'person a', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '1:07',
-			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
-			'tags': 'Party, Summer', 'artwork': '../img/sampleData/artwork-DuaLipa.webp'},
-		{'#': '02', 'title': 'happy birthday', 'path': songPath2,
-			'artist': 'person b', 'album': 'Future Nostalgia', 'year': '2020', 'duration': '0:29',
-			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
-			'tags': 'Party, Summer', 'artwork': '../img/sampleData/artwork-DuaLipa.webp'},
-		{'#': '03', 'title': 'never gonna give you up', 'path': songPath3,
-			'artist': 'rick astley', 'album': '...', 'year': '2020', 'duration': '3:32',
-			'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
-			'tags': 'Party, Summer', 'artwork': ''}],
-});*/
 const song0 = {'#': '03', 'title': 'never gonna give you up', 'path': songPath0,
 'artist': 'rick astley', 'album': '...', 'year': '2020', 'duration': '3:32',
 'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
@@ -94,11 +69,12 @@ const song4 = {'#': '03', 'title': 'never gonna give you up', 'path': songPath4,
 'artist': 'rick astley', 'album': '...', 'year': '2020', 'duration': '3:32',
 'genre': 'Dance, Pop', 'playlists': 'Monday Songs, Summer Mix',
 'tags': 'Party, Summer', 'artwork': ''}
-// let testQueue = [song0, testMap, song4];	// no longer optimal
+*/
+
 
 window.addEventListener('playback-loaded', async () => {
 	// decideFirstSong();
-	// correct for progress when window is out of focus
+	// fix for progress when window is out of focus
 	await genAPI.ipcSubscribeToEvent('window-unfocused', async () => {
 		await console.log('test')
 		unfocusedTime = new Date();
@@ -140,31 +116,8 @@ window.addEventListener('playback-loaded', async () => {
 	// updateInfo();
 
 	await genAPI.publishGlobal(queueArr, 'queueArr');	// array is not persistent
-	// change code slightly to get tracklist
-
-	/*
-	const appWindow = await genAPI.getGlobal('mainWindow');
-	console.log(appWindow);
-	if (!(appWindow.isFocused()) ) {
-		console.log('clicked away');
-		// might need 2 functions
-		// unfocus -> get date
-		// once focused ->  get date again
-		// calc time away, add to msElapsed
-	}*/
 });
 
-// const currWin = BrowserWindow.getAllWindows()[0];
-// console.log(currWin);
-
-// console.log(appWindow);
-// if (!(appWindow.isFocused()) ) {
-// 	console.log('clicked away');
-// 	// might need 2 functions
-// 	// unfocus -> get date
-// 	// once focused ->  get date again
-// 	// calc time away, add to msElapsed
-// }
 
 /**
  * @description Handles behavior of play/pause button when clicked
