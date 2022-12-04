@@ -61,7 +61,7 @@ window.addEventListener('queueViewer-loaded', async () => {
     let newTrackIndex = element.getAttribute('data-queueIndex')
 
     // jump to song and play
-    await jumpSong(newTrackIndex);
+    // await jumpSong(newTrackIndex);
 
     // refresh queue viewer
     await refreshQueueViewer();
@@ -80,6 +80,17 @@ window.addEventListener('queueViewer-loaded', async () => {
     // get index of track to delete
     const deleteTrackIndex = element.getAttribute('data-queueIndex')
 
+	// clear info when last song in queue is manually removed
+	// must go before deleting with splice while object is still avaliable
+	if (queueArr.length == 1) { 
+		await ffmpegAPI.stopSong();
+		clearInterval(intervalID);
+		resetProgress();
+		document.querySelector('.songInfo > b').innerHTML = "";
+		document.querySelector('.songInfo > p').innerHTML = "";
+		document.querySelector('#playbackArt').style.visibility = 'hidden';
+	}
+
     // remove track from the queue
     queueArr.splice(deleteTrackIndex, 1);
 
@@ -87,7 +98,9 @@ window.addEventListener('queueViewer-loaded', async () => {
         songNum--;
     //}
 
-	await nextSong(true);
+	// Only if the top song is deleted skip to next song
+	// song at top of queue always index 0
+	if (deleteTrackIndex === "0") { await nextSong(true); }
 
     // refresh queue viewer
     await refreshQueueViewer();

@@ -2,6 +2,7 @@
 // fix lint issues later
 // const queueMap = {'name': 'queuePlaylist', 'numTracks': '0', 'artworks': [], 'trackList': []};
 const queueArr = [];
+const shuffleArr = [];
 // identical to the original queueArr (removing songs have no affect)
 // allows prevSongArr index to be accurate and play prev songs
 // even if they are not longer in queue
@@ -77,12 +78,12 @@ window.addEventListener('playback-loaded', async () => {
 	// decideFirstSong();
 	// fix for progress when window is out of focus
 	await genAPI.ipcSubscribeToEvent('window-unfocused', async () => {
-		await console.log('test')
+		// await console.log('test')
 		unfocusedTime = new Date();
 		unfocusedMsElapsed = msElapsed;
 	});
 	await genAPI.ipcSubscribeToEvent('window-focused', async () => {
-		await console.log('test focus');
+		// await console.log('test focus');
 		focusedTime = new Date();
 		const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
 		// only update if song is already playing
@@ -98,6 +99,7 @@ window.addEventListener('playback-loaded', async () => {
 	await genAPI.publishGlobal(endStamp, 'endStamp');
 	await genAPI.publishGlobal(progressFader, 'progressFader');
 	await genAPI.publishGlobal(msElapsed, 'msElapsed');
+	await genAPI.publishGlobal(intervalID, 'intervalID');
 	// await genAPI.publishGlobal(deletedSong, 'deletedSong');
 	// shuffle is going to randomize order of songs in playlist
 	await domAPI.addEventListener('shuffle-btn', 'click', shuffleSong);
@@ -315,6 +317,7 @@ async function prevSong() {
 *  @return {number} representing new random index/songNum to play
  */
 function shuffle(min, max, songNum) {
+// function shuffle() {
 	let randomIndx = songNum;
 	while (randomIndx === songNum) {
 		// first formula would not give a uniform distrubution,
@@ -323,6 +326,24 @@ function shuffle(min, max, songNum) {
 		randomIndx = Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 	return randomIndx;
+
+	// let queueClone = structuredClone(queueArr);
+	// let currentIndex = queueArr.length;
+	// let randomIndex;
+	
+	// // While there remain elements to shuffle.
+	// while (currentIndex != 0) {
+	
+	// 	// Pick a remaining element.
+	// 	randomIndex = Math.floor(Math.random() * currentIndex);
+	// 	currentIndex--;
+	
+	// 	// And swap it with the current element.
+	// 	[queueArr[currentIndex], queueArr[randomIndex]] = [
+	// 		queueArr[randomIndex], queueArr[currentIndex]];
+	// }
+	
+	// shuffleArr = array;
 }
 
 /**
@@ -404,7 +425,11 @@ function updateVolumeIcon() {
 async function updateVolume(event) {
 	// playing from resume needs to check volume
 	// this only really checks vol from already playing mostly
+	console.log(event.value)
+	// volume = Math.floor(Number(event.value)/100 * 5s0);
 	volume = Number(event.value);
+	console.log(Number(event.value)/100)
+	console.log(volume)
 	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
 	if (playBtn.id === 'play-btn') {
 		return;
@@ -428,9 +453,9 @@ function resetProgress() {
 	endStamp = document.querySelector('.timestamps:nth-of-type(2)');
 	progressFader = document.querySelector('#progressBar');
 	// @ todo read in first song from persistent memory
-	if (queueArr.length === 0) {
-		return;
-	}
+	//if (queueArr.length === 0) {
+	//	return;
+	//}
 	// const mapVal = playlistMap.get('playlist');
 	// const playlist = mapVal['trackList'];
 	const currSongDuration = queueArr[songNum]['duration'];
@@ -447,7 +472,6 @@ function resetProgress() {
  */
 async function updateProgress() {
 	// check if song is over
-	console.log(toggleOn);
 	if ( formatStrToMs(startStamp.innerHTML) >= formatStrToMs(endStamp.innerHTML)) {
 		clearInterval(intervalID);
 		// double check reset if issues arises, but nextSong should reset
