@@ -57,6 +57,7 @@ let unfocusedTime;
 let focusedTime;
 let timeAway;
 let unfocusedMsElapsed;
+let deletedSong = false;
 // const selectedColor = 'var(--theme-primary)';
 // const unselectedColor = 'black';
 
@@ -97,6 +98,7 @@ window.addEventListener('playback-loaded', async () => {
 	await genAPI.publishGlobal(endStamp, 'endStamp');
 	await genAPI.publishGlobal(progressFader, 'progressFader');
 	await genAPI.publishGlobal(msElapsed, 'msElapsed');
+	// await genAPI.publishGlobal(deletedSong, 'deletedSong');
 	// shuffle is going to randomize order of songs in playlist
 	await domAPI.addEventListener('shuffle-btn', 'click', shuffleSong);
 	// prev also involves access to 'playlist' (array of objects inside map)
@@ -175,8 +177,9 @@ function decideFirstSong() {
 /**
  * @description Plays the next song in playlist (and kills old instance)
  * 	all the tracks of a playlist
+ * @param deletedSong boolean indicating if function call involves deleting song
  */
-async function nextSong() {
+async function nextSong(deletedSong = false) {
 	// get next song (while handling indexOfBounds)
 	// next song is either sequential or shuffled
 	// const mapVal = playlistMap.get('playlist');
@@ -196,22 +199,40 @@ async function nextSong() {
 	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
 	// on skip, always play the song so button should always become pause
+	// deleted song -> toggle to play
 	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
 	const playBtnImg = playBtn.querySelector('img');
-	if ( playBtn.id === 'play-btn' ) {
-		toggleIcon(playBtn, playBtnImg);
+	if (deletedSong) {
+		if(playBtn.id === 'pause-btn') {
+			toggleIcon(playBtn, playBtnImg);
+		}
+	} else {
+		if ( playBtn.id === 'play-btn' ) {
+			toggleIcon(playBtn, playBtnImg);
+		}
 	}
 
 	clearInterval(intervalID);
 	resetProgress();
 	await ffmpegAPI.stopSong();
-	await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
-	intervalID = setInterval( function() { updateProgress(); }, 50);
+	if(!deletedSong) {
+		await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
+		intervalID = setInterval( function() { updateProgress(); }, 50);
+	}
 
 	updateInfo();
+	deletedSong = false;
 
     await refreshQueueViewer();
 }
+
+/**
+ * @description Plays the previous song in playlist (and kills old instance)
+ * 	all the tracks of a playlist
+ */
+//function loadNextSong() {
+//
+//}
 
 /**
  * @description Plays the previous song in playlist (and kills old instance)
@@ -332,10 +353,10 @@ function loopSong() {
  * @param {HTMLElement} btn svg (enclosed by button)
  */
 function toggleColor(fillColor, btn) {
-	if (fillColor === 'rgb(0, 0, 0)') { // equivalent to black
+	if (fillColor === 'rgb(31, 31, 31)') { // equivalent to black
 		fillColor = 'var(--theme-primary)';
 	} else {
-		fillColor = 'black';
+		fillColor = 'rgb(31, 31, 31)';
 	}
 	btn.style.fill = fillColor;
 }
@@ -424,6 +445,7 @@ function resetProgress() {
  */
 async function updateProgress() {
 	// check if song is over
+	console.log(toggleOn);
 	if ( formatStrToMs(startStamp.innerHTML) >= formatStrToMs(endStamp.innerHTML)) {
 		clearInterval(intervalID);
 		// double check reset if issues arises, but nextSong should reset
