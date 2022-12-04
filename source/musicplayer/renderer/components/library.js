@@ -14,7 +14,7 @@ window.addEventListener('library-container-queue-clicked', async (args) => {
 
     // send track to playback queue
     // playback integration edit
-    if (queueArr.length == 0) {
+    if (queueArr.length === 0) {
         initFirstSong([trackObj]);
         initProgress([trackObj]);
         initInfo([trackObj]);
@@ -43,7 +43,8 @@ async function onLibraryLoad() {
             sort: true,
             resizable: true,
             fixedHeader: true,
-            autoWidth: true,
+            autoWidth: false,
+            width: '100%',
             search: {
                 enabled: true,
                 keyword: searchQueryGlobal,

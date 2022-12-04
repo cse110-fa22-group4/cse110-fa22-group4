@@ -27,10 +27,14 @@ async function htmlFromRenderer(htmlFile) {
 /**
  * @name loadPage
  * @memberOf domAPI
- * @description Loads a html page into an element using JQuery.
+ * @description Loads a html page into an element.
  * @param {string} targetID The ID of the element to load a html page into.
  * @param {string} htmlFile The name of the html file to load.
  * @param {function | undefined} callback An optional callback to execute.
+ * @example
+ * await domAPI.loadPage('library-container', htmlFromRenderer('pages/library.html'), (element) => {
+ *    await genAPI.debugLog('Library loaded!', 'page-load-events');
+ * });
  * @return {Promise<void>}
  */
 async function loadPage(targetID, htmlFile, callback = undefined) {
@@ -395,10 +399,10 @@ async function setStyleClassToggle(domID, style, toggle) {
  * @name setProperty
  * @memberOf domAPI
  * @description Sets an arbitrary property of a given domID, if it exists and
- * is deemed 'safe.' TODO: Verify with backend that this is safe and needed.
+ * is deemed 'safe.'
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} property The property to set for the element.
- * @param {string} propertyLiteral The literal that we are setting the value to
+ * @param {string|number} propertyLiteral The literal that we are setting the value to
  * @return {Promise<boolean>} The true if the setter is successful, else
  * false if the value is deemed 'unsafe.'
  *
@@ -417,7 +421,7 @@ async function setProperty(domID, property, propertyLiteral) {
  * @name getProperty
  * @memberOf domAPI
  * @description Gets an arbitrary property of a given domID, if it exists and
- * is deemed 'safe.' TODO: Verify with backend that this is safe and needed.
+ * is deemed 'safe.'
  * @param {string} domID The 'id' tag that the element has in the html.
  * @param {string} property The property to get for the element.
  * @return {Promise<object> | undefined} The true if the setter is successful, else

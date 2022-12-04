@@ -291,7 +291,7 @@ async function prevSong() {
  * 	all the tracks of a playlist
  */
  async function jumpSong(index) {
-	console.log(index);
+
     // TODO: function currently bugged, needs proper implementation
     // not sure what needs to be done with prevSongsArr -Alvin 
 	songNum = index;

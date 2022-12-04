@@ -81,12 +81,10 @@ async function getPlaylist(playlist) {
 			if (!('format' in meta)) return false;
 			const metadata = meta['format'];
 			for (const tag in tagGroup) {
-
+				if (tagGroup[tag].length === 0) return true;
 				if (tag in metadata) {
-					debugger
 					if (!metadata[tag].includes(tagGroup[tag])) return false;
 				} else if ('tags' in metadata && tag in metadata['tags']) {
-					debugger
 					if (!metadata['tags'][tag].includes(tagGroup[tag])) return false;
 				} else return false;
 

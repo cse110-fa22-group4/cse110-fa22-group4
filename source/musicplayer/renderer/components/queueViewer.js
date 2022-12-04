@@ -23,11 +23,11 @@ window.addEventListener('queueViewer-loaded', async () => {
     let queueList = '';
     for (let i = songNum; i < queueArr.length; i++) {
             const queueRow = `
-                <div class="${i == songNum ? 'queue-track queue-track-active' : 'queue-track'}" 
+                <div class="${i === songNum ? 'queue-track queue-track-active' : 'queue-track'}" 
                 data-queueIndex="${i}">
                     <div class="queue-track-icon">
                         <img src="../img/icons/playback/currPlaying.png" class="
-                        ${i == songNum ? 'icon-currPlaying icon-currPlaying-active' : 'icon-currPlaying'}">
+                        ${i === songNum ? 'icon-currPlaying icon-currPlaying-active' : 'icon-currPlaying'}">
                     </div>
                     <div class="queue-track-data">
                         <div class="queue-track-data-title">${queueArr[i].title}</div>
@@ -81,7 +81,7 @@ window.addEventListener('queueViewer-loaded', async () => {
     const deleteTrackIndex = element.getAttribute('data-queueIndex')
 
     // remove track from the queue
-    queueArr.splice(deleteTrackIndex, 1);
+    queueArr.splice(Number(deleteTrackIndex), 1);
 
 
 	songNum--;
@@ -100,7 +100,7 @@ window.addEventListener('queueViewer-loaded', async () => {
  * @return {Promise<void>}
  */
  async function clearQueue(element) {
-    if(queueArr.length == 0) {
+    if(queueArr.length === 0) {
         return;
     }
 
