@@ -200,8 +200,6 @@ input:checked + .slider::before {
   align-items: center;
 }
 
-
-
 #export-selected-playlist {
   margin-left: auto;
 }
@@ -280,4 +278,8 @@ div[hidden] {
   margin-top: 0%;
   margin-bottom: 0%;
   color: rgba(0 0 0 / 0%);
+}
+
+#select-playlist-export option {
+  color: var(--dark);
 }

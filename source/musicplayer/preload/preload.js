@@ -33,7 +33,7 @@ const {
 	writeToPlaylist, removeFromPlaylist,
 	createPlaylist, writePlaylistMeta,
 	removePlaylistMeta, getPlaylistMeta,
-	getPlaylistObj,
+	getPlaylistObj, exportPlaylist,
 } = require('./fs/playlists/playlistAPICalls');
 
 const {
@@ -199,4 +199,5 @@ contextBridge.exposeInMainWorld('fsAPI', {
 	getSRCString: getSRCString,
 	recursiveSearchAtPath: recursiveSearchAtPath,
 	cullShortAudio: cullShortAudio,
+	exportPlaylist: exportPlaylist,
 });
