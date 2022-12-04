@@ -242,6 +242,10 @@ async function convertPathToTrack(filename, songs) {
 	else if ('genre' in song) ret['genre'] = song['genre'];
 	else ret['genre'] = '';
 
+	if ('tags' in song && filename in song['tags']) ret['filename'] = song['tags']['filename'];
+	else if ('filename' in song) ret['filename'] = song['filename'];
+	else ret['filename'] = '';
+
 	if ('tags' in song && 'tags' in song['tags']) ret['tags'] = song['tags']['tags'];
 	else ret['tags'] = '';
 
