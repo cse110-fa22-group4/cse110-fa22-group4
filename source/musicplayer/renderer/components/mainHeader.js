@@ -66,7 +66,7 @@ async function addToQueue(element) {
 
         queueArr.push(selectedTracks[i]);
 		// playback integration edit
-		prevSongsArr.push(selectedTracks[i]);
+		//prevSongsArr.push(selectedTracks[i]);
     }
 
 	
@@ -188,7 +188,7 @@ async function toggleMetaEditor(element) {
  */
 function initFirstSong(selectedTracks) {
 	// store first song in history on load
-	prevSongsIndxArr.push(songNum);
+	//prevSongsIndxArr.push(songNum);
 	currSongPath = selectedTracks[0]['filename'];
 }
 

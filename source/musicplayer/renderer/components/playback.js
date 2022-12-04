@@ -37,7 +37,7 @@ let shuffleOn = false;
 let toggleOn = false;
 const testMap = new Map();
 let songNum = 0;
-const prevSongsIndxArr = [];
+//const prevSongsIndxArr = [];
 
 let startStamp = null;
 let endStamp = null;
@@ -101,7 +101,7 @@ window.addEventListener('playback-loaded', async () => {
 	// });
 	await genAPI.publishGlobal(songNum, 'songNum');
 	await genAPI.publishGlobal(currSongPath, 'currSongPath');
-	await genAPI.publishGlobal(prevSongsIndxArr, 'prevSongsIndxArr');
+	//await genAPI.publishGlobal(prevSongsIndxArr, 'prevSongsIndxArr');
 	await genAPI.publishGlobal(startStamp, 'startStamp');
 	await genAPI.publishGlobal(endStamp, 'endStamp');
 	await genAPI.publishGlobal(progressFader, 'progressFader');
@@ -196,12 +196,12 @@ function decideFirstSong() {
 	// 	return;
 	// }
 	// store first song in history on load
-	prevSongsIndxArr.push(songNum);
+	//prevSongsIndxArr.push(songNum);
 
 	// set first songPath
 	// const mapVal = playlistMap.get('playlist');
 	// const playlist = mapVal['trackList'];
-	currSongPath = queueArr[songNum]['filename'];
+	currSongPath = queueArr[0]['filename'];
 }
 
 /**
@@ -214,17 +214,25 @@ async function nextSong() {
 	// const mapVal = playlistMap.get('playlist');
 	// const playlist = mapVal['trackList'];
 	if (shuffleOn === true) {
-		songNum = shuffle(0, queueArr.length - 1, songNum);
+		//songNum = shuffle(0, queueArr.length - 1, songNum); do nothing
 	} else {
-		if (songNum + 1 > queueArr.length - 1 ) {
+		if (queueArr.length == 0) {
 			return;
 		}
-		songNum = songNum + 1;
+		if (queueArr.length == 1) { // should skip to end of song
+			return;
+		}
+		//songNum = songNum;
 	}
 	// @todo decide songPath based on object
 	// songNum will only ever be used for array in Map, need to reset once Map is exited
-	prevSongsIndxArr.push(songNum);
-	currSongPath = queueArr[songNum]['filename'];
+	//prevSongsIndxArr.push(songNum);
+
+	
+	prevSongsArr.splice(0, 0, queueArr[0]);
+	queueArr.splice(0, 1);
+	currSongPath = queueArr[0]['filename'];
+	
 	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
 	// on skip, always play the song so button should always become pause
@@ -257,13 +265,23 @@ async function prevSong() {
 	// for prev. Btn to work properly always need array to track songs
 	// -2 since length is +1 from index
 	// (ie: at index=0, 1-1=0 allows if cond. to pass, triggers indexOutOfBounds)
-	if ( prevSongsIndxArr.length - 2 < 0) {
+	/*if ( prevSongsIndxArr.length - 2 < 0) {
 		return;
-	}
-	prevSongsIndxArr.pop();	// remove current song
-	songNum = prevSongsIndxArr[prevSongsIndxArr.length - 1]; // retrieve prev song
+	}*/
+	//prevSongsIndxArr.pop();	// remove current song
+	//songNum = 0; // retrieve prev song //dsadhasiudhuaishdiashiduhas
 	// no need for branch anymore, prevSongsArr handles both cases of shuffleOn/Off
-	currSongPath = queueArr[songNum]['filename'];
+
+	if(prevSongsArr.length != 0) {
+	
+		// insert into queue array
+		queueArr.splice(0, 0, prevSongsArr[0]);
+
+		// edit prevSongs
+		prevSongsArr.splice(0, 1);
+		currSongPath = queueArr[0]['filename'];
+	}
+
 	isPaused = false;	// isPaused shouldn't be carried over from other songs
 
 	// on prev, always play the song so button should always become pause
@@ -294,10 +312,21 @@ async function prevSong() {
 	console.log(index);
     // TODO: function currently bugged, needs proper implementation
     // not sure what needs to be done with prevSongsArr -Alvin 
-	songNum = index;
-	prevSongsIndxArr.push(songNum);
+	//songNum = index;
+	//prevSongsIndxArr.push(songNum);
 
-	currSongPath = queueArr[songNum]['filename'];
+	if(index != 0) {
+
+		prevSongsArr.splice(0, 0, queueArr[0]);
+		for(let i = 0; i < index; i++) {
+			queueArr.splice(0, 1);
+		}
+
+		currSongPath = queueArr[0]['filename'];
+
+	}
+
+	
 	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
 	// on skip, always play the song so button should always become pause
@@ -442,7 +471,7 @@ function resetProgress() {
 	}
 	// const mapVal = playlistMap.get('playlist');
 	// const playlist = mapVal['trackList'];
-	const currSongDuration = queueArr[songNum]['duration'];
+	const currSongDuration = queueArr[0]['duration'];
 
 	endStamp.innerHTML = msToFormatStr(currSongDuration * 1000);
 	startStamp.innerHTML = '0:00';
@@ -562,13 +591,13 @@ function updateInfo() {
 	// }
 	// const mapVal = playlistMap.get('playlist');
 	// const playlist = mapVal['trackList'];
-	const currTitle = queueArr[songNum]['title'];
-	const currArtist = queueArr[songNum]['artist'];
+	const currTitle = queueArr[0]['title'];
+	const currArtist = queueArr[0]['artist'];
 	let currArt;
-	if ( typeof queueArr[songNum]['artwork'] === 'undefined') {
+	if ( typeof queueArr[0]['artwork'] === 'undefined') {
 		currArt = '../img/artwork-default.png';
 	} else {
-		currArt = queueArr[songNum]['artwork'];
+		currArt = queueArr[0]['artwork'];
 	}
 
 	const songTitle = document.querySelector('.songInfo > b');

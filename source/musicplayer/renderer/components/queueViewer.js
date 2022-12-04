@@ -21,13 +21,13 @@ window.addEventListener('queueViewer-loaded', async () => {
     } 
 
     let queueList = '';
-    for (let i = songNum; i < queueArr.length; i++) {
+    for (let i = 0; i < queueArr.length; i++) {
             const queueRow = `
-                <div class="${i == songNum ? 'queue-track queue-track-active' : 'queue-track'}" 
+                <div class="${i == 0 ? 'queue-track queue-track-active' : 'queue-track'}" 
                 data-queueIndex="${i}">
                     <div class="queue-track-icon">
                         <img src="../img/icons/playback/currPlaying.png" class="
-                        ${i == songNum ? 'icon-currPlaying icon-currPlaying-active' : 'icon-currPlaying'}">
+                        ${i == 0 ? 'icon-currPlaying icon-currPlaying-active' : 'icon-currPlaying'}">
                     </div>
                     <div class="queue-track-data">
                         <div class="queue-track-data-title">${queueArr[i].title}</div>
@@ -80,11 +80,16 @@ window.addEventListener('queueViewer-loaded', async () => {
     // get index of track to delete
     const deleteTrackIndex = element.getAttribute('data-queueIndex')
 
-    // remove track from the queue
-    queueArr.splice(deleteTrackIndex, 1);
+    if(deleteTrackIndex == 0) {
+        nextSong();
+    }
+    else {
+         // remove track from the queue
+         queueArr.splice(deleteTrackIndex, 1);
+    }
+        
 
 
-	songNum--;
 
 
     // refresh queue viewer
