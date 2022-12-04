@@ -2,11 +2,11 @@
 // fix lint issues later
 // const queueMap = {'name': 'queuePlaylist', 'numTracks': '0', 'artworks': [], 'trackList': []};
 const queueArr = [];
-const shuffleArr = [];
+let shuffleArr = [];
 // identical to the original queueArr (removing songs have no affect)
 // allows prevSongArr index to be accurate and play prev songs
 // even if they are not longer in queue
-const prevSongsArr = [];
+let prevSongsArr = [];	// this array is reassigned in different file
 
 
 /*
@@ -31,7 +31,7 @@ let shuffleOn = false;
 let toggleOn = false;
 const testMap = new Map();
 let songNum = 0;
-const prevSongsIndxArr = [];
+let prevSongsIndxArr = [];	// this array is reassigned in different file
 
 let startStamp = null;
 let endStamp = null;
@@ -94,6 +94,7 @@ window.addEventListener('playback-loaded', async () => {
 	});
 	await genAPI.publishGlobal(songNum, 'songNum');
 	await genAPI.publishGlobal(currSongPath, 'currSongPath');
+	await genAPI.publishGlobal(prevSongsIndxArr, 'prevSongsIndxArr');
 	await genAPI.publishGlobal(prevSongsIndxArr, 'prevSongsIndxArr');
 	await genAPI.publishGlobal(startStamp, 'startStamp');
 	await genAPI.publishGlobal(endStamp, 'endStamp');
