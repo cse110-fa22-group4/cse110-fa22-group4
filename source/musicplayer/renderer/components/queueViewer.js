@@ -80,15 +80,13 @@ window.addEventListener('queueViewer-loaded', async () => {
     // get index of track to delete
     const deleteTrackIndex = element.getAttribute('data-queueIndex')
 
-    if(deleteTrackIndex == 0) {
+    if(deleteTrackIndex == 0 && queueArr.length != 1) {
         await nextSong();
     }
     else {
          // remove track from the queue
          queueArr.splice(deleteTrackIndex, 1);
     }
-        
-
 
 
 

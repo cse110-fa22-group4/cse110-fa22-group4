@@ -215,15 +215,16 @@ async function nextSong() {
 	// const playlist = mapVal['trackList'];
 	if (shuffleOn === true) {
 		//songNum = shuffle(0, queueArr.length - 1, songNum); do nothing
-	} else {
-		if (queueArr.length == 0) {
-			return;
-		}
-		if (queueArr.length == 1) { // should skip to end of song
-			return;
-		}
-		//songNum = songNum;
+	} 
+	
+	if (queueArr.length == 0) {
+		return;
 	}
+	if (queueArr.length == 1) { // should skip to end of song
+		
+	}
+	//songNum = songNum;
+	
 	// @todo decide songPath based on object
 	// songNum will only ever be used for array in Map, need to reset once Map is exited
 	//prevSongsIndxArr.push(songNum);
@@ -496,7 +497,7 @@ async function updateProgress() {
 			intervalID = setInterval( function() { updateProgress(); }, 50);
 			// no info update needed
 		} else {
-			nextSong();
+			await nextSong();
 		}
 
 		return;
