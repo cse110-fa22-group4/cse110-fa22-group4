@@ -134,6 +134,8 @@ async function settingsClick(element) {
     } else {
         await topExtensionOn();
     }
+
+	await updatePlaylistOptionsSettings();
 }
 
 /**
