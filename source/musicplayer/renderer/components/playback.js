@@ -221,7 +221,29 @@ async function nextSong() {
 		return;
 	}
 	if (queueArr.length == 1) { // should skip to end of song
+		prevSongsArr.splice(0, 0, queueArr[0]);
+		queueArr.splice(0, 1);
+		currSongPath = null;
+
+		//pause song
+		const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
+		const playBImg = playB.querySelector('img');
+
+		if (playB.id !== 'play-btn') {
+			await ffmpegAPI.pauseSong();
+			isPaused = true;
+			clearInterval(intervalID);
+			
+			toggleIcon(playB, playBImg);
+
+			clearInterval(intervalID);
+			resetProgress();
+			intervalID = setInterval( function() { updateProgress(); }, 50);
+		}
+
 		
+		await refreshQueueViewer();
+		return;
 	}
 	//songNum = songNum;
 	
