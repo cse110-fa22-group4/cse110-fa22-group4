@@ -212,29 +212,38 @@ async function convertPathToTrack(filename, songs) {
 
 	if ('tags' in song && 'track' in song['tags']) ret['track'] = Number(song['tags']['track'].split('/')[0]);
 	else if ('track' in song) ret['track'] = song['track'];
+	else ret['track'] = '';
 
 	if ('tags' in song && 'title' in song['tags']) ret['title'] = song['tags']['title'];
 	else if ('title' in song) ret['title'] = song['title'];
+	else ret['title'] = '';
 
 	if ('tags' in song && 'artist' in song['tags']) ret['artist'] = song['tags']['artist'];
 	else if ('artist' in song) ret['artist'] = song['artist'];
+	else ret['artist'] = '';
 
 	if ('tags' in song && 'album' in song['tags']) ret['album'] = song['tags']['album'];
 	else if ('album' in song) ret['album'] = song['album'];
+	else ret['album'] = '';
 
 	if ('tags' in song && 'date' in song['tags']) ret['date'] = song['tags']['date'];
 	else if ('date' in song) ret['date'] = song['date'];
+	else ret['date'] = '';
 
 	if ('tags' in song && 'year' in song['tags']) ret['year'] = song['tags']['year'];
 	else if ('year' in song) ret['year'] = song['year'];
+	else ret['year'] = '';
 
 	if ('tags' in song && 'duration' in song['tags']) ret['duration'] = song['tags']['duration'];
 	else if ('duration' in song) ret['duration'] = song['duration'];
+	else ret['duration'] = '';
 
 	if ('tags' in song && 'genre' in song['tags']) ret['genre'] = song['tags']['genre'];
 	else if ('genre' in song) ret['genre'] = song['genre'];
+	else ret['genre'] = '';
 
 	if ('tags' in song && 'tags' in song['tags']) ret['tags'] = song['tags']['tags'];
+	else ret['tags'] = '';
 
 	return ret;
 }
