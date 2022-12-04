@@ -59,6 +59,11 @@ const songPath2 = './songs/happyBirthday1.mp3';
 const songPath3 = './songs/rickroll.mp3';
 const songPath4 = './songs/starSpangledBanner.mp3';
 let currSongPath;
+
+let unfocusedTime;
+let focusedTime;
+let timeAway;
+let unfocusedMsElapsed;
 // const selectedColor = 'var(--theme-primary)';
 // const unselectedColor = 'black';
 
@@ -93,12 +98,22 @@ const song4 = {'#': '03', 'title': 'never gonna give you up', 'path': songPath4,
 
 window.addEventListener('playback-loaded', async () => {
 	// decideFirstSong();
-	// await genAPI.ipcSubscribeToEvent('window-closed', async () => {
-	// 	await genAPI.debugLog('test', 'unit-tests')
-	// });
-	// await genAPI.ipcSubscribeToEvent('window-focused', async () => {
-	// 	await genAPI.debugLog('test', 'unit-tests')
-	// });
+	// correct for progress when window is out of focus
+	await genAPI.ipcSubscribeToEvent('window-unfocused', async () => {
+		await console.log('test')
+		unfocusedTime = new Date();
+		unfocusedMsElapsed = msElapsed;
+	});
+	await genAPI.ipcSubscribeToEvent('window-focused', async () => {
+		await console.log('test focus');
+		focusedTime = new Date();
+		const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
+		// only update if song is already playing
+		if (playBtn.id === 'pause-btn') {
+			timeAway = focusedTime - unfocusedTime;
+			msElapsed = unfocusedMsElapsed + timeAway;
+		}
+	});
 	await genAPI.publishGlobal(songNum, 'songNum');
 	await genAPI.publishGlobal(currSongPath, 'currSongPath');
 	await genAPI.publishGlobal(prevSongsIndxArr, 'prevSongsIndxArr');

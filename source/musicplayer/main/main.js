@@ -71,10 +71,10 @@ app.whenReady().then(async () => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow();
 	});
 
-	await globalShortcut.unregister('CmdOrCtrl+R');
-	await globalShortcut.unregister('CmdOrCtrl+Shift+R');
-	globalShortcut.register('CmdOrCtrl+R', () => { });
-	globalShortcut.register('CmdOrCtrl+Shift+R', () => { });
+	// await globalShortcut.unregister('CmdOrCtrl+R');
+	// await globalShortcut.unregister('CmdOrCtrl+Shift+R');
+	// globalShortcut.register('CmdOrCtrl+R', () => { });
+	// globalShortcut.register('CmdOrCtrl+Shift+R', () => { });
 	//
 });
 
