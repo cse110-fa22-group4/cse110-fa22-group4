@@ -205,7 +205,7 @@ async function generateAlbumCardList(albums) {
 			value.artist = 'Unknown Artist';
 		}
 		if (value.date === '') {
-			value.date = 'Unknown date';
+			value.date = 'Unknown Year';
 		}
 		if (value.artwork === '' || value.artwork === undefined) {
 			value.artwork = '../img/artwork-default.png';
