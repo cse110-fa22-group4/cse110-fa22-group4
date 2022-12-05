@@ -31,23 +31,6 @@ window.addEventListener('library-playlists-container-queue-clicked', async (args
     await refreshQueueViewer();
 });
 
-// window.addEventListener('library-playlists-container-delete-clicked', async (args) => {
-//     const playlistName = args['detail'][0];
-//     const deleteIndex = args['detail'][1];
-
-//     // delete track from playlist
-//     await fsAPI.removeFromPlaylist(playlistName, deleteIndex);
-
-//     // refresh grid
-// 	const currPlaylist = await fsAPI.getPlaylist(playlistName);
-// 	const trackList = currPlaylist.trackList;
-// 	await domAPI.setHTML('library-playlists-container', '');
-// 	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings, true, playlistName);
-
-//     // send user feedback
-//     await giveUserFeedback('Track deleted')
-// });
-
 /**
  * @name onLibraryPlaylistsLoad
  * @description Initial load of playlists page, loads card view of playlists.
