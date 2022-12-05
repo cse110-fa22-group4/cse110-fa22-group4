@@ -8,7 +8,7 @@ const {
 } = require('../../preload/fs/settings/settingsAPICalls');
 
 /**
- * @description Runs unit tests for settings API.
+ * @description Runs tests for settings API.
  * @return {Promise<void>}
  */
 async function testSettings() {
@@ -31,7 +31,7 @@ async function testSettings() {
 }
 
 /**
- * @description Unit test for getSettings(). Prints out the settings file
+ * @description Test for getSettings()
  * @return {Promise<void>}
  */
 async function testGetSettings() {
@@ -39,7 +39,7 @@ async function testGetSettings() {
 }
 
 /**
- * @description Unit test for writeToSetting()
+ * @description Test for writeToSetting()
  * @param {string} name Name of the setting field to write
  * @param {*} val Value of the setting
  * @return {Promise<void>}

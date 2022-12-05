@@ -6,7 +6,7 @@ const {
 } = require('../../preload/fs/fsAPICalls');
 
 const {
-  reset_user1, reset_user2, reset_user3, reset_songs, reset_user_blank, reset_all,
+  reset_user1, reset_user2, reset_songs, reset_user_blank, reset_all,
 } = require('../fsAPITesting/fsAPITester');
 
 const {

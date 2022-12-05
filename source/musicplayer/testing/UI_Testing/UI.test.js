@@ -21,17 +21,18 @@ async function getContents(query) {
 }
 
 /**
- * 
- * @returns 
+ * @description Waits for a period of time
+ * @param {int} time amount of milliseconds to wait
+ * @returns {Promise<void>}
  */
-function sleep(time=500) {
+async function sleep(time=500) {
     return new Promise(resolve => setTimeout(resolve, time));
 }
 
 /**
- * 
+ * Test Playback features
  */
-test('Check Page Navigation', async () => {
+test('Check Playback Functions', async () => {
     const electronApp = await electron.launch({args: ['main/main.js']});
     const appPath = await electronApp.evaluate(async ({app}) => {
         return app.getAppPath();
@@ -278,37 +279,3 @@ test('Check Page Navigation', async () => {
    await electronApp.close();
 
 });
-
-//await new Promise(r => setTimeout(r, 2000));
-
-/*
-Next Steps:
-
-<---Test Full Workflow--->
-- Reset user environment
-- go through all pages
-- then go to settings
-- add a watch folder
-- rescan watch folder
-- wait a little bit
-- set the color for the app
-- close settings
-- double check that we are still on the same page
-- go to library
-- check that the songs are there
-- make sure the songs play
-- go to playlists
-- make a new playlist
-- search for songs
-- add songs to playlist
-- search for the playlist?
-- play from the playlist
-- stop playing
-- close the app
-- open the app
-- make sure the playlist still exists and the right color settings are being used
-- delete the playlist
-- make sure all songs can be played?
-- finish??
-*/
-
