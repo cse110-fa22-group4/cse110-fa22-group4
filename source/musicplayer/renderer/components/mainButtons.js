@@ -19,6 +19,20 @@ window.addEventListener('gridExtendedButtons-loaded', async () => {
     // clear queue
     await clearQueue();
 
+    if(shuffleOn) {
+        //shuffle items before inserting into queue
+        for(let i = playlistTracks.length - 1; i >= 0; i--) {
+            
+            //swap with random element
+            let indexToSwap = Math.floor(Math.random()*playlistTracks.length);
+            console.log(indexToSwap);
+            let tempSong = playlistTracks[i];
+            playlistTracks[i] = playlistTracks[indexToSwap];
+            playlistTracks[indexToSwap] = tempSong;
+        }
+    }
+    
+
     // send tracks to playback queue
     for (let i = 0; i < playlistTracks.length; i++) {
 		// playback integration edit
@@ -29,8 +43,9 @@ window.addEventListener('gridExtendedButtons-loaded', async () => {
 		}
 
         queueArr.push(playlistTracks[i]);
-        prevSongsArr.push(playlistTracks[i]);
     }
+
+    
 
     // refresh queue viewer if already open
     if(queueViewerIsExtended) {

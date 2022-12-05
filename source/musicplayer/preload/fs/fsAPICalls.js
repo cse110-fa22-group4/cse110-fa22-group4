@@ -26,7 +26,7 @@ async function fsInit() {
 /**
  * @name setStoragePath
  * @memberOf fsAPI
- * @description sets the storage path, the folder 
+ * @description sets the storage path, the folder
  * that stores settings and playlists
  * which is normally appData, to what we want
  * It's typically inside the repo
@@ -44,7 +44,7 @@ async function setStoragePath(newStoragePath) {
  * @name getStoragePath
  * @memberOf fsAPI
  * @description returns the storage path
- * @return {Promise<string>} A promise containing 
+ * @return {Promise<string>} A promise containing
  * the storage path
  */
 async function getStoragePath() {
@@ -55,7 +55,7 @@ async function getStoragePath() {
  * @name getSourceFolder
  * @memberOf fsAPI
  * @description returns the source folder of the repo
- * @return {Promise<string>} a promise containing 
+ * @return {Promise<string>} a promise containing
  * a string of the repo's source folder
  */
 async function getSourceFolder() {
@@ -114,8 +114,7 @@ async function makeDirIfNotExists(folder) {
 	//WARNING: untested code
 	try {
 		await fsPromises.opendir(folder);
-	}
-	catch(e) {
+	} catch (e) {
 		await fsPromises.mkdir(folder, {recursive: false});
 	}
 	/*
@@ -200,35 +199,57 @@ async function recursiveSearchAtPath(searchPath) {
  * 		duration: 	(string|number),
  * 		filename: 	(string),
  * 		artist: 	(string),
- * 		date: 		(string|number),
+ * 		date: 		(string),
+ * 		year:		(string),
  * 		album: 		(string),
  * 		genre: 		(string),
  * 		title: 		(string)
  * 	}>}
  */
 async function convertPathToTrack(filename, songs) {
+	const ret = {};
 	const song = songs[filename]['format'];
-	const track = 'tags' in song && 'track' in song['tags'] ? song['tags']['track'] : '';
-	const title = 'tags' in song && 'title' in song['tags'] ? song['tags']['title'] : '';
-	const artist = 'tags' in song && 'artist' in song['tags'] ? song['tags']['artist'] : '';
-	const album = 'tags' in song && 'album' in song['tags'] ? song['tags']['album'] : '';
-	const date = 'tags' in song && 'date' in song['tags'] ? song['tags']['date'] : '';
-	const year = 'tags' in song && 'year' in song['tags'] ? song['tags']['year'] : '';
-	const duration = 'duration' in song ? song['duration']: '';
-	const genre = 'tags' in song && 'genre' in song['tags'] ? song['tags']['genre'] : '';
-	const tags = 'tags' in song && 'tags' in song['tags'] ? song['tags']['tags'] : '';
-	return {
-		'track': track.split('/')[0],
-		'title': title,
-		'filename': filename,
-		'artist': artist,
-		'album': album,
-		'date': date,
-		'year': year,
-		'duration': duration,
-		'genre': genre,
-		'tags': tags,
-	};
+
+	if ('tags' in song && 'track' in song['tags']) ret['track'] = Number(song['tags']['track'].split('/')[0]);
+	else if ('track' in song) ret['track'] = song['track'];
+	else ret['track'] = '';
+
+	if ('tags' in song && 'title' in song['tags']) ret['title'] = song['tags']['title'];
+	else if ('title' in song) ret['title'] = song['title'];
+	else ret['title'] = '';
+
+	if ('tags' in song && 'artist' in song['tags']) ret['artist'] = song['tags']['artist'];
+	else if ('artist' in song) ret['artist'] = song['artist'];
+	else ret['artist'] = '';
+
+	if ('tags' in song && 'album' in song['tags']) ret['album'] = song['tags']['album'];
+	else if ('album' in song) ret['album'] = song['album'];
+	else ret['album'] = '';
+
+	if ('tags' in song && 'date' in song['tags']) ret['date'] = song['tags']['date'];
+	else if ('date' in song) ret['date'] = song['date'];
+	else ret['date'] = '';
+
+	if ('tags' in song && 'year' in song['tags']) ret['year'] = song['tags']['year'];
+	else if ('year' in song) ret['year'] = song['year'];
+	else ret['year'] = '';
+
+	if ('tags' in song && 'duration' in song['tags']) ret['duration'] = song['tags']['duration'];
+	else if ('duration' in song) ret['duration'] = song['duration'];
+	else ret['duration'] = '';
+
+	if ('tags' in song && 'genre' in song['tags']) ret['genre'] = song['tags']['genre'];
+	else if ('genre' in song) ret['genre'] = song['genre'];
+	else ret['genre'] = '';
+
+	if ('tags' in song && filename in song['tags']) ret['filename'] = song['tags']['filename'];
+	else if ('filename' in song) ret['filename'] = song['filename'];
+	else ret['filename'] = '';
+
+	if ('tags' in song && 'tags' in song['tags']) ret['tags'] = song['tags']['tags'];
+	else ret['tags'] = '';
+
+	return ret;
 }
 
 module.exports = {
