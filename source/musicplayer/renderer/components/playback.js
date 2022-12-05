@@ -1,32 +1,12 @@
 /* GLOBAL VARS*/
-// fix lint issues later
 // const queueMap = {'name': 'queuePlaylist', 'numTracks': '0', 'artworks': [], 'trackList': []};
-const queueArr = [];
-let shuffleArr = [];
-// identical to the original queueArr (removing songs have no affect)
-// allows prevSongArr index to be accurate and play prev songs
-// even if they are not longer in queue
-let prevSongsArr = [];	// this array is reassigned in different file
 
+const queueArr = []; // This array stores the songs in the queue
+const prevSongsArr = [];	// this array is stores the previously played songs
 
-/*
-const queueMap = { };
-queueMap['queuePlaylist'] = { 'name': 'queuePlaylist', 'numTracks': '0', 'artworks': [], 'trackList': [] };
-await genAPI.publishGlobal(queueMap, 'map');
-await genAPI.getGlobal('map');
-*/
-// await genAPI.publishGlobal(queueMap, "queuePlaylist");
-/*
-// getting global map and appending songs
-const queuePlaylist = globalVars["queuePlaylist"];
-console.log(queuePlaylist)
-const queueMapVal = queuePlaylist.get('queuePlaylist');
-const queueTracklist = queueMapVal['trackList'];
-queueTracklist.append( { '#': '01', ... });
-*/
 
 // alot of these can't be added to eslintrc since reassigned
-let isPaused = false;
+let isPaused = true;
 let shuffleOn = false;
 let toggleOn = false;
 const testMap = new Map();
@@ -40,12 +20,6 @@ let barPercent = 0;
 let intervalID;
 
 let volume = 100;
-// absolute path from local fs
-// const songPath1 = 'C:/Users/andre/Downloads/cse110_dev7/cse110-fa22-group4/source/musicplayer/songs/jingle_bells.mp3'
-// const songPath2 = 'C:/Users/andre/Downloads/cse110_dev7/cse110-fa22-group4/source/musicplayer/
-// songs/happyBirthday1.mp3'
-// const songPath3 = 'C:/Users/andre/Downloads/cse110_dev7/cse110-fa22-group4/source/musicplayer/songs/rickroll.mp3'
-// relative from /musicplayer
 const songPath0 = './songs/twinkleLittleStar.mp3';
 const songPath1 = './songs/jingle_bells.mp3';
 const songPath2 = './songs/happyBirthday1.mp3';
@@ -57,7 +31,6 @@ let unfocusedTime;
 let focusedTime;
 let timeAway;
 let unfocusedMsElapsed;
-let deletedSong = false;
 // const selectedColor = 'var(--theme-primary)';
 // const unselectedColor = 'black';
 
@@ -74,7 +47,6 @@ const song4 = {'#': '03', 'title': 'never gonna give you up', 'path': songPath4,
 
 
 window.addEventListener('playback-loaded', async () => {
-	// decideFirstSong();
 	// fix for progress when window is out of focus
 	await genAPI.ipcSubscribeToEvent('window-unfocused', async () => {
 		// await console.log('test')
@@ -98,10 +70,9 @@ window.addEventListener('playback-loaded', async () => {
 	await genAPI.publishGlobal(progressFader, 'progressFader');
 	await genAPI.publishGlobal(msElapsed, 'msElapsed');
 	await genAPI.publishGlobal(intervalID, 'intervalID');
-	// await genAPI.publishGlobal(deletedSong, 'deletedSong');
-	// shuffle is going to randomize order of songs in playlist
+	// shuffle is going to randomize order of songs in when playing from playlist
 	await domAPI.addEventListener('shuffle-btn', 'click', shuffleSong);
-	// prev also involves access to 'playlist' (array of objects inside map)
+	// prev also involves access to 'playlist' (array of objects)
 	await domAPI.addEventListener('prev-btn', 'click', function() { prevSong(); } );
 	// wrapper to properly pass params without triggering functions initally
 	await domAPI.addEventListener('play-btn', 'click', function() { controlSong(currSongPath);});
@@ -111,19 +82,13 @@ window.addEventListener('playback-loaded', async () => {
 	await domAPI.addEventListener('progressBar', 'mouseup', updateSeek);
 	await domAPI.addEventListener('audio-fader', 'input', updateVolumeIcon);
 	await domAPI.addEventListener('audio-fader', 'change', updateVolume);
-	
-
-	// progress bar functionalities
-	// initProgress();
-	// updateInfo();
-
 	await genAPI.publishGlobal(queueArr, 'queueArr');	// array is not persistent
 });
 
 
 /**
  * @description Handles behavior of play/pause button when clicked
- * 	(ie: change icon, call play, pause, resume)
+ * 	(ie: change icon, call play, pause)
  * @param {string} songPath path of curent song to be played
  */
 async function controlSong(songPath) {
@@ -131,39 +96,21 @@ async function controlSong(songPath) {
 		alert('Select tracks to add to queue!');
 		return;
 	}
-	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
-	const playBtnImg = playBtn.querySelector('img');
-	// .setBinPath() in code or do in terminal atleast once, set to path of ffplay executable
-	if (playBtn.id === 'play-btn') {
-		if (isPaused) {
-			// await ffmpegAPI.resumeSong();	//dont use this anymore since I need to set vol
-			const resumeTime = (msElapsed/1000);
-			await ffmpegAPI.playSong(songPath, volume, resumeTime, 67);
-			intervalID = setInterval( function() { updateProgress(); }, 50);
-		} else {
-			// @todo actual data/song path needs to be set here
-			// @todo decide songPath based on object
-			await ffmpegAPI.playSong(songPath, volume, msElapsed/1000, 67);
-			// setTimeout();	// exec code after duration of song
-			// possible to change update every 1 sec like spotify
-			intervalID = setInterval( function() { updateProgress(); }, 50);
-		}
+
+	if (isPaused) {
+		// if paused, resume
+		const resumeTime = (msElapsed/1000);
+		isPaused = false;
+		await ffmpegAPI.playSong(songPath, volume, resumeTime, 67);
+		intervalID = setInterval( function() { updateProgress(); }, 50);
 	} else {
+		// if playing, pause
 		await ffmpegAPI.pauseSong();
-		isPaused = true; // guessing this line throws error since isPaused is reassigned
+		isPaused = true;
 		clearInterval(intervalID);
 	}
-	toggleIcon(playBtn, playBtnImg);
-}
-
-/**
- * @description add first song on load since next wouldn't been clicked yet
- * helper for nextSong, prevSong to handle edge case
- */
-function decideFirstSong() {
-	
-	// set first songPath
-	currSongPath = queueArr[0]['filename'];
+	// switch play to pause and vice versa
+	toggleIcon();
 }
 
 /**
@@ -177,80 +124,54 @@ async function nextSong() {
 	if (queueArr.length == 0) {
 		return;
 	}
-	// if last item, should remove song from queue and pause it
+	// if last item
 	if (queueArr.length == 1) { 
 		
-		
+		// add finished song to prevSongsArr
+		prevSongsArr.splice(0, 0, queueArr[0]);
 
+		// if loop toggle is on, replay song
 		if(toggleOn) {
-			prevSongsArr.splice(0, 0, queueArr[0]);
+			// don't change current song in queue
 			clearInterval(intervalID);
 			resetProgress();
-			await refreshQueueViewer();
-		} else {
+		} 
+		// otherwise remove from queue and end song
+		else {
+			queueArr.splice(0, 1);	// remove song from queue
+			currSongPath = null;	// set current song to be blank
 
-			//pause song
-			const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
-			const playBImg = playB.querySelector('img');
-			if (playB.id !== 'play-btn') {
-				await ffmpegAPI.pauseSong();
-				isPaused = true;
-			
-				toggleIcon(playB, playBImg);
-			}
-			clearInterval(intervalID);
-			resetProgress();
-			prevSongsArr.splice(0, 0, queueArr[0]);
-			queueArr.splice(0, 1);
-			currSongPath = null;
-		
-			await refreshQueueViewer();
+			//pause song, reset
+			await resetPlayback();
 		}
-		
+		await refreshQueueViewer();
 		return;
 	}
-	
+
+	// If loop toggle is on, add song to back of queue
 	if(toggleOn) {
-		queueArr.push(queueArr[0]) //add to end of queue
+		queueArr.push(queueArr[0])
 	}
+
+	// move song to prevSongsArr
 	prevSongsArr.splice(0, 0, queueArr[0]);
 	queueArr.splice(0, 1);
+
+	// set next song path
 	currSongPath = queueArr[0]['filename'];
-	
-	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
 	// on skip, always play the song so button should always become pause
-	// deleted song -> toggle to play
-	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
-	const playBtnImg = playBtn.querySelector('img');
-	if (deletedSong) {
-		if(playBtn.id === 'pause-btn') {
-			toggleIcon(playBtn, playBtnImg);
-		}
-	} else {
-		if ( playBtn.id === 'play-btn' ) {
-			toggleIcon(playBtn, playBtnImg);
-		}
+	if (isPaused) {
+		await controlSong();
 	}
 
-	clearInterval(intervalID);
-	resetProgress();
-	await ffmpegAPI.stopSong();
-	if(!deletedSong) {
-		await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
-		intervalID = setInterval( function() { updateProgress(); }, 50);
-	}
-
-	updateInfo();
-	deletedSong = false;
+	await playNewSong();
 
     await refreshQueueViewer();
 }
 
-
 /**
  * @description Plays the previous song in playlist (and kills old instance)
- * 	all the tracks of a playlist
  */
 async function prevSong() {
 
@@ -265,24 +186,13 @@ async function prevSong() {
 		currSongPath = queueArr[0]['filename'];
 	}
 
-	isPaused = false;	// isPaused shouldn't be carried over from other songs
-
 	// on prev, always play the song so button should always become pause
-	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
-	const playBtnImg = playBtn.querySelector('img');
-	if ( playBtn.id === 'play-btn' ) {
-		toggleIcon(playBtn, playBtnImg);
+	if(isPaused) {
+		await controlSong();
 	}
 
-	clearInterval(intervalID);
-	resetProgress();
-	// console.log(startStamp.innerHTML);
-	// console.log('test' + endStamp.innerHTML);
-	await ffmpegAPI.stopSong();
-	await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
-	intervalID = setInterval( function() { updateProgress(); }, 50);
-	updateInfo();
-
+	//prep next song
+	await playNewSong();
     await refreshQueueViewer();
 }
 
@@ -293,7 +203,6 @@ async function prevSong() {
  */
  async function jumpSong(index) {
 
-    // TODO: function currently bugged, needs proper implementation
 
 	if(index != 0) {
 
@@ -305,22 +214,25 @@ async function prevSong() {
 		currSongPath = queueArr[0]['filename'];
 
 	}
-	
-	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
 	// on skip, always play the song so button should always become pause
-	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
-	const playBtnImg = playBtn.querySelector('img');
-	if ( playBtn.id === 'play-btn' ) {
-		toggleIcon(playBtn, playBtnImg);
+	if(isPaused) {
+		await controlSong();
 	}
 
+	// prep next song
+	await playNewSong();
+}
+
+/**
+ * Prepares the next song for being played
+ */
+async function playNewSong() {
 	clearInterval(intervalID);
 	resetProgress();
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
 	intervalID = setInterval( function() { updateProgress(); }, 50);
-
 	updateInfo();
 }
 
@@ -363,10 +275,10 @@ function toggleColor(toggle, btn) {
 
 /**
  * @description Toggle the icon of the play/pause button when clicked
- * @param {HTMLElement} btn The button which contains the icon image
- * @param {HTMLElement} btnImg The icon image
  */
-function toggleIcon(btn, btnImg) {
+function toggleIcon() {
+	let btn = document.querySelector('.playbackBtn:nth-of-type(3)');
+	let btnImg = btn.querySelector('img');
 	if (btn.id === 'play-btn') {
 		btnImg.src = '../img/icons/playback/pause.png';
 		(btn).id = 'pause-btn';
@@ -428,13 +340,15 @@ function resetProgress() {
 	startStamp = document.querySelector('.timestamps:nth-of-type(1)');
 	endStamp = document.querySelector('.timestamps:nth-of-type(2)');
 	progressFader = document.querySelector('#progressBar');
-	// @ todo read in first song from persistent memory
-	//if (queueArr.length === 0) {
-	//	return;
-	//}
-	// const mapVal = playlistMap.get('playlist');
-	// const playlist = mapVal['trackList'];
-	const currSongDuration = queueArr[0]['duration'];
+
+	let currSongDuration;
+	if(queueArr.length != 0) {
+		currSongDuration = queueArr[0]['duration'];
+	}
+	else {
+		currSongDuration = 0;
+	}
+
 
 	endStamp.innerHTML = msToFormatStr(currSongDuration * 1000);
 	startStamp.innerHTML = '0:00';
@@ -519,15 +433,9 @@ function stopUpdateSeek(event) {
 async function updateSeek(element) {
 	console.log('mouse up');
 	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
-	// console.log(Number(element.value));
-	// const mapVal = playlistMap.get('playlist');
-	// const playlist = mapVal['trackList'];
-	// currSongPath = playlist[songNum]['duration'];
-	// await ffmpegAPI.seekSong(Number(element.value));
-	// seekSong() will likely work too
-	// but relies on duration (which was previosuly hardcoded to 67)
+	
 	msElapsed = (Number(element.value) / 100) * formatStrToMs(endStamp.innerHTML);
-	// const playBtnImg = playBtn.querySelector('img');
+	
 	// case where user pauses then seek, seek should not play automatically
 	if (playBtn.id === 'play-btn') {
 		// don't even have to set global seekVal var b/c msElapsed is basically seekVal
@@ -537,7 +445,6 @@ async function updateSeek(element) {
 	await ffmpegAPI.stopSong();
 	// its undocumented but seekVal is not relative range 0-100
 	// but absolute time in seconds
-	// also using playSong is skips over the looping issue with seekSong() 
 	await ffmpegAPI.playSong(currSongPath, volume, msElapsed/1000);
 	// convert str to number, percent to ms
 	// msElapsed = (Number(element.value) / 100) * formatStrToMs(endStamp.innerHTML);
@@ -563,8 +470,8 @@ function updateInfo() {
 		currArt = queueArr[0]['artwork'];
 	}
 
-	const songTitle = document.querySelector('.songInfo > b');
-	const songArtist = document.querySelector('.songInfo > p');
+	const songTitle = document.querySelector('#songInfo-title');
+	const songArtist = document.querySelector('#songInfo-artist');
 	const songArt = document.querySelector('#playbackArt');
 
 	songTitle.innerHTML = currTitle;
@@ -573,6 +480,3 @@ function updateInfo() {
 	console.log(songNum);
 	songArt.src = currArt;
 }
-
-// module.exports.decideFirstSong = decideFirstSong
-// export { decideFirstSong };

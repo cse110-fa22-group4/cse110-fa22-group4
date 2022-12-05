@@ -60,14 +60,16 @@ async function onLibraryPlaylistsLoad() {
 	// generate cards
 	let cardList = '';
 	for (let i = 0; i < libraryPlaylists.length; i++) {
+        let currPlaylist = await fsAPI.getPlaylist(libraryPlaylists[i]);
 		const cardCover = '../img/artwork-default.png';
 		const card = `
-    <div class="library-card" data-libtarget="${libraryPlaylists[i]}">
+    <div class="library-card" data-libtarget="${currPlaylist.name}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
-        <div>${libraryPlaylists[i]}</div>
+        <div>${currPlaylist.name}</div>
+        <div>${currPlaylist.numTracks} ${currPlaylist.numTracks === 1 ? 'Track' : 'Tracks'}</div>
       </div>
     </div>
   `;
@@ -93,7 +95,7 @@ async function libraryPlaylistsExtended(element) {
     currGridPlaylist = cardPlaylist;
 
 	// Generate playlist grid
-	await domAPI.setHTML('header-subtitle', `${cardPlaylist}`);
+	await domAPI.setHTML('header-subtitle', `Playlists > ${cardPlaylist}`);
 	await domAPI.setHTML('library-playlists-cards', '');
 
 	const currPlaylist = await fsAPI.getPlaylist(cardPlaylist);

@@ -1,10 +1,11 @@
 window.addEventListener('searchbar-loaded', async () => {
-	await domAPI.addEventListener('search-form', 'submit', submitSearch);
+	// await domAPI.addEventListener('search-form', 'submit', submitSearch);
 });
 
 /**
- * Handles search
- * @param {HTMLElement} element
+ * @name submitSearch
+ * @description Handles search.
+ * @return {Promise<void>}
  */
 async function submitSearch(element) {
     

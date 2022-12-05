@@ -18,7 +18,7 @@ const {
 } = require('./ffmpeg/metadata/ffMetaAPICalls');
 
 const {
-	pauseSong, playSong, stopSong, resumeSong, seekSong,
+	pauseSong, playSong, stopSong, resumeSong,
 	setBehaviorUponEnd, changeVolume, getCurrentTime,
 } = require('./ffmpeg/play/playSongAPICalls');
 
@@ -161,7 +161,6 @@ contextBridge.exposeInMainWorld('ffmpegAPI', {
 	stopSong: stopSong,
 	pauseSong: pauseSong,
 	resumeSong: resumeSong,
-	seekSong: seekSong,
 	useMultiFFmpeg: useMultiFFmpeg,
 	setBehaviorUponEnd: setBehaviorUponEnd,
 	changeVolume: changeVolume,
