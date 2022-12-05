@@ -294,9 +294,6 @@ async function prevSong() {
  async function jumpSong(index) {
 
     // TODO: function currently bugged, needs proper implementation
-    // not sure what needs to be done with prevSongsArr -Alvin 
-	//songNum = index;
-	//prevSongsIndxArr.push(songNum);
 
 	if(index != 0) {
 
@@ -308,7 +305,6 @@ async function prevSong() {
 		currSongPath = queueArr[0]['filename'];
 
 	}
-
 	
 	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 

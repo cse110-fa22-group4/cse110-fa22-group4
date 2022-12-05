@@ -131,30 +131,17 @@ async function clearQueue(element) {
         return;
     }
 
-	await resetPlayback();
 
+
+    //pause song, reset
+    await resetPlayback();
+    currSongPath = null;
     // remove all tracks from the queue
     queueArr.splice(0, queueArr.length);
 
-    currSongPath = null;
-
-    //pause song
-    const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
-    const playBImg = playB.querySelector('img');
-    if (playB.id !== 'play-btn') {
-        await ffmpegAPI.pauseSong();
-        isPaused = true;
-        toggleIcon(playB, playBImg);
-    }
-    clearInterval(intervalID);
-    resetProgress();
-
 
     // refresh queue viewer
-
     await refreshQueueViewer();
-    // TODO: not sure what else needs to be updated for playback ???
-    // maybe reset state of playback queue from before the queue was populated
 }
 
 /**
@@ -176,11 +163,14 @@ async function refreshQueueViewer() {
  * @return {Promise<void>}
  */
 async function resetPlayback() {
-	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
-	const playBtnImg = playBtn.querySelector('img');
-	if (playBtn.id === 'pause-btn') {
-		toggleIcon(playBtn, playBtnImg);
-	}
+
+    const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
+    const playBImg = playB.querySelector('img');
+    if (playB.id !== 'play-btn') {
+        await ffmpegAPI.pauseSong();
+        isPaused = true;
+        toggleIcon(playB, playBImg);
+    }
 
 	await ffmpegAPI.stopSong();
 	clearInterval(intervalID);
