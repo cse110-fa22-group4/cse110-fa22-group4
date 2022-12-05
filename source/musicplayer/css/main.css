@@ -36,6 +36,10 @@
     margin-left: 10px;
 }
 
+#btn-playlist-playAll:hover {
+    background-color: var(--theme-primary);
+}
+
 /* #btn-playlist-playAll img {
     width: 15px;
     margin: auto;

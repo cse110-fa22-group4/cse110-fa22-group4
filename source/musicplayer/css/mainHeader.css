@@ -79,6 +79,12 @@ button#btn-addQueue {
   padding: 0 15px;
 }
 
+button#btn-meta:hover,
+button#btn-playlist:hover,
+button#btn-addQueue:hover {
+    background-color: var(--theme-primary);
+}
+
 /* BUTTON - ADD TO LIBRARY */
 #btn-file {
   display: none;
