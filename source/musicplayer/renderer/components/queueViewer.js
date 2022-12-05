@@ -176,8 +176,8 @@ async function resetPlayback() {
 	clearInterval(intervalID);
 	resetProgress();
 	prevSongsArr = [];
-	prevSongsIndxArr = [];
-	document.querySelector('.songInfo > b').innerHTML = "";
-	document.querySelector('.songInfo > p').innerHTML = "";
+	// prevSongsIndxArr = [];
+	document.querySelector('.songInfo > b').innerHTML = '';
+	document.querySelector('.songInfo > p').innerHTML = '';
 	document.querySelector('#playbackArt').style.visibility = 'hidden';
 }

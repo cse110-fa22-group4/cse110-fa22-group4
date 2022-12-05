@@ -180,12 +180,12 @@ async function toggleMetaEditor(element) {
  */
 function initFirstSong(selectedTracks) {
 	// store first song in history on load
-	//prevSongsIndxArr.push(songNum);
+	// prevSongsIndxArr.push(songNum);
 	currSongPath = selectedTracks[0]['filename'];
 }
 
 /**
- * @name initProgress 
+ * @name initProgress
  * @description set the inital values of the progress bar for  song
  * @param selectedTracks array holding track objects to be pushed
  */
@@ -202,7 +202,7 @@ function initProgress(selectedTracks) {
 }
 
 /**
- * @name initInfo 
+ * @name initInfo
  * @description set the inital info when first song is selected
  * @param selectedTracks array holding track objects to be pushed 
  */
