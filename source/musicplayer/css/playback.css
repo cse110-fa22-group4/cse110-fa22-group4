@@ -278,3 +278,7 @@ input#progressBar {
     fill: var(--toggle-playback);
 }
 
+#audioIcon {
+    width: 30px;
+    padding-top: 6px;
+}
