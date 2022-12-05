@@ -133,8 +133,7 @@ async function nextSong() {
 		// if loop toggle is on, replay song
 		if (toggleOn) {
 			// don't change current song in queue
-			clearInterval(intervalID);
-			resetProgress();
+			await playNewSong();
 		}
 		// otherwise remove from queue and end song
 		else {
