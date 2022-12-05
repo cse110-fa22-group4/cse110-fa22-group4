@@ -89,13 +89,8 @@ async function deleteTrackFromQueue(element) {
         else {
                 
                 //pause song
-                const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
-                const playBImg = playB.querySelector('img');
-                if (playB.id !== 'play-btn') {
-                    await ffmpegAPI.pauseSong();
-                    isPaused = true;
-
-                    toggleIcon(playB, playBImg);
+                if(!isPaused) {
+                    await controlSong();
                 }
 
                 clearInterval(intervalID);
@@ -106,7 +101,6 @@ async function deleteTrackFromQueue(element) {
 
                 await refreshQueueViewer();
             
-
         }
 
     }
@@ -131,13 +125,13 @@ async function clearQueue(element) {
         return;
     }
 
+    // TODO: add current playing song to prevSongsArr
 
+    // remove all tracks from the queue
+    queueArr.splice(0, queueArr.length);
 
     //pause song, reset
     await resetPlayback();
-    currSongPath = null;
-    // remove all tracks from the queue
-    queueArr.splice(0, queueArr.length);
 
 
     // refresh queue viewer
@@ -164,19 +158,15 @@ async function refreshQueueViewer() {
  */
 async function resetPlayback() {
 
-    const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
-    const playBImg = playB.querySelector('img');
-    if (playB.id !== 'play-btn') {
-        await ffmpegAPI.pauseSong();
-        isPaused = true;
-        toggleIcon(playB, playBImg);
-    }
+    // if playing, pause
+    if (!isPaused) {
+        toggleIcon();
+		isPaused = true;
+	}
 
 	await ffmpegAPI.stopSong();
 	clearInterval(intervalID);
 	resetProgress();
-	prevSongsArr = [];
-	prevSongsIndxArr = [];
 	document.querySelector('.songInfo > b').innerHTML = "";
 	document.querySelector('.songInfo > p').innerHTML = "";
 	document.querySelector('#playbackArt').style.visibility = 'hidden';

@@ -103,9 +103,7 @@ async function controlSong(songPath) {
 		alert('Select tracks to add to queue!');
 		return;
 	}
-	
-	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
-	const playBtnImg = playBtn.querySelector('img');
+
 	if (isPaused) {
 		// if paused, resume
 		const resumeTime = (msElapsed/1000);
@@ -115,10 +113,10 @@ async function controlSong(songPath) {
 	} else {
 		// if playing, pause
 		await ffmpegAPI.pauseSong();
-		isPaused = true; // guessing this line throws error since isPaused is reassigned
+		isPaused = true;
 		clearInterval(intervalID);
 	}
-	toggleIcon(playBtn, playBtnImg);
+	toggleIcon();
 }
 
 /**
@@ -155,23 +153,22 @@ async function nextSong() {
 			resetProgress();
 			await refreshQueueViewer();
 		} 
-		// otherwise remove song from queue and stop playing
+		// otherwise remove from queue and end song
 		else {
-			//pause song
 
-			if(isPaused) {
-				controlSong();
+			//pause song if not paused
+			if (!isPaused) {
+				await controlSong();
 			}
+			// reset intervals
 			clearInterval(intervalID);
 			resetProgress();
 
-			// add song to prevSongsArr
+			// move song to prevSongsArr
 			prevSongsArr.splice(0, 0, queueArr[0]);
-
-			// remove from queue
 			queueArr.splice(0, 1);
 
-			// TODO: set player to be blank
+			// set current song to be blank. TODO: Set playbar to not have song content
 			currSongPath = null;
 		
 			await refreshQueueViewer();
@@ -180,26 +177,23 @@ async function nextSong() {
 		return;
 	}
 
-	// if looping, add played song to end of queue
+	// If loop toggle is on, add song to back of queue
 	if(toggleOn) {
-		queueArr.push(queueArr[0]);
+		queueArr.push(queueArr[0])
 	}
 
 	// move song to prevSongsArr
 	prevSongsArr.splice(0, 0, queueArr[0]);
 	queueArr.splice(0, 1);
 
-	// set current song path
+	// set next song path
 	currSongPath = queueArr[0]['filename'];
 	
 	
+
 	// on skip, always play the song so button should always become pause
-	// deleted song -> toggle to play
-	isPaused = false;z
-	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
-	const playBtnImg = playBtn.querySelector('img');
-	if ( playBtn.id === 'play-btn' ) {
-		toggleIcon(playBtn, playBtnImg);
+	if (isPaused) {
+		await controlSong();
 	}
 	
 
@@ -232,19 +226,14 @@ async function prevSong() {
 		currSongPath = queueArr[0]['filename'];
 	}
 
-	isPaused = false;	// isPaused shouldn't be carried over from other songs
-
 	// on prev, always play the song so button should always become pause
-	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
-	const playBtnImg = playBtn.querySelector('img');
-	if ( playBtn.id === 'play-btn' ) {
-		toggleIcon(playBtn, playBtnImg);
+	if(isPaused) {
+		await controlSong();
 	}
 
 	clearInterval(intervalID);
 	resetProgress();
-	// console.log(startStamp.innerHTML);
-	// console.log('test' + endStamp.innerHTML);
+	
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
 	intervalID = setInterval( function() { updateProgress(); }, 50);
@@ -260,7 +249,6 @@ async function prevSong() {
  */
  async function jumpSong(index) {
 
-    // TODO: function currently bugged, needs proper implementation
 
 	if(index != 0) {
 
@@ -272,14 +260,10 @@ async function prevSong() {
 		currSongPath = queueArr[0]['filename'];
 
 	}
-	
-	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
 	// on skip, always play the song so button should always become pause
-	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
-	const playBtnImg = playBtn.querySelector('img');
-	if ( playBtn.id === 'play-btn' ) {
-		toggleIcon(playBtn, playBtnImg);
+	if(isPaused) {
+		await controlSong();
 	}
 
 	clearInterval(intervalID);
@@ -330,10 +314,10 @@ function toggleColor(toggle, btn) {
 
 /**
  * @description Toggle the icon of the play/pause button when clicked
- * @param {HTMLElement} btn The button which contains the icon image
- * @param {HTMLElement} btnImg The icon image
  */
-function toggleIcon(btn, btnImg) {
+function toggleIcon() {
+	let btn = document.querySelector('.playbackBtn:nth-of-type(3)');
+	let btnImg = btn.querySelector('img');
 	if (btn.id === 'play-btn') {
 		btnImg.src = '../img/icons/playback/pause.png';
 		(btn).id = 'pause-btn';
@@ -401,7 +385,14 @@ function resetProgress() {
 	//}
 	// const mapVal = playlistMap.get('playlist');
 	// const playlist = mapVal['trackList'];
-	const currSongDuration = queueArr[0]['duration'];
+	let currSongDuration;
+	if(queueArr.length != 0) {
+		currSongDuration = queueArr[0]['duration'];
+	}
+	else {
+		currSongDuration = 0;
+	}
+
 
 	endStamp.innerHTML = msToFormatStr(currSongDuration * 1000);
 	startStamp.innerHTML = '0:00';
