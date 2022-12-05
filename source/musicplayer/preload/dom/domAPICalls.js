@@ -59,7 +59,7 @@ async function loadPage(targetID, htmlFile, callback = undefined) {
  */
 async function setHTML(domID, html) {
     const isAttributeSafe = await ipcRenderer.invoke(
-        'managedAttributeCheck', domID, 'innerHTML');
+        'managedAttributeCheck', domID, 'innerHTML', html);
     if (isAttributeSafe) {
         document.getElementById(domID).innerHTML = html;
     }
@@ -75,7 +75,7 @@ async function setHTML(domID, html) {
  */
 async function appendHTML(domID, html) {
     const isAttributeSafe = await ipcRenderer.invoke(
-        'managedAttributeCheck', domID, 'innerHTML');
+        'managedAttributeCheck', domID, 'innerHTML', html);
     if (isAttributeSafe) {
         document.getElementById(domID).innerHTML += html;
     }
@@ -258,7 +258,7 @@ async function addGrid(domID, columns, data, params = {}, isPlaylist, playlistNa
  */
 async function addEventListener(domID, event, func) {
     const isEventSafe = await ipcRenderer.invoke(
-        'managedAddEventListenerCheck', domID, event);
+        'managedAddEventListenerCheck', domID, event, func.toString());
     const element = document.getElementById(domID);
     if (element === undefined || element === null) {
         await debugLog(`Failed to find ID: ${domID}`, 'add-event-error');
@@ -287,7 +287,7 @@ async function addEventListener(domID, event, func) {
  */
 async function addEventListenerbyClassName(domClass, event, func) {
     const isEventSafe = await ipcRenderer.invoke(
-        'managedAddEventListenerCheck', domClass, event);
+        'managedAddEventListenerCheck', domClass, event, func.toString());
     const elements = document.getElementsByClassName(domClass);
     if (elements === undefined || elements === null) {
         await debugLog(`Failed to find ClassName: ${domClass}`, 'add-event-error');
@@ -339,7 +339,7 @@ async function getAttribute(domID, attribute) {
  */
 async function setAttribute(domID, attribute, value) {
     const isAttributeSafe = await ipcRenderer.invoke(
-        'managedAttributeCheck', domID, attribute);
+        'managedAttributeCheck', domID, attribute, value);
     if (isAttributeSafe) {
         document.getElementById(domID).setAttribute(attribute, value);
     }
@@ -354,7 +354,7 @@ async function setAttribute(domID, attribute, value) {
  * @return {Promise<void>}
  */
 async function addChild(domID, child) {
-    const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID);
+    const isChildSafe = await ipcRenderer.invoke('managedChildCheck', domID, child);
     if (isChildSafe) {
         document.getElementById(domID).appendChild(child);
     }
@@ -409,7 +409,7 @@ async function setStyleClassToggle(domID, style, toggle) {
  *
  */
 async function setProperty(domID, property, propertyLiteral) {
-    const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, property);
+    const isValueSafe = await ipcRenderer.invoke('managedValueCheck', domID, property, propertyLiteral);
     if (isValueSafe) {
         document.getElementById(domID)[property] = propertyLiteral;
         return true;
