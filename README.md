@@ -5,4 +5,4 @@
 [![Node.js CI](https://github.com/cse110-fa22-group4/cse110-fa22-group4/actions/workflows/CI.yml/badge.svg)](https://github.com/cse110-fa22-group4/cse110-fa22-group4/actions/workflows/CI.yml)
 
 
-[Documentations](https://cse110-fa22-group4.github.io/cse110-fa22-group4/docs/index2.html)
+[Documentations](https://cse110-fa22-group4.github.io/cse110-fa22-group4/index2.html)
