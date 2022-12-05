@@ -205,7 +205,7 @@
 */
 
 input#progressBar {
-    height: 5px;
+    height: 10px;
     width: 100%;
 }
 
@@ -241,7 +241,7 @@ input#progressBar {
 
 #audio-fader {
   width: 90px;
-  height: 5px;
+  height: 10px;
 }
 
 /*
@@ -262,13 +262,23 @@ input#progressBar {
   border-radius: 80%;
 
   /* box-shadow: -220px 0 0 220px var(--theme-primary);  'fill' color */
-  box-shadow: -220px 0 0 220px var(--theme-primary);  /* Testing with global theme variable */
+  box-shadow: -1080px 0 0 1080px var(--theme-primary);  /* Testing with global theme variable */
 }
 
 #playlists-bottom-btn {
-  margin: 0 0 0 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    padding-top: 31px;
+    margin-left: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+#playback-queue-btn {
+    min-width: 60px;
+    fill: var(--toggle-playback);
+}
+
+#audioIcon {
+    width: 30px;
+    padding-top: 6px;
+}

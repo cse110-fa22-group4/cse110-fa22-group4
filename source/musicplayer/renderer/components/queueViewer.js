@@ -79,10 +79,19 @@ async function deleteTrackFromQueue(element) {
 
     if (deleteTrackIndex == 0) {
         // basically just nextSong but we make sure to delete the item even if loop is on
+
+        // easy way is to set toggle off temporarily
+        let oldToggle = toggleOn;
+        if(toggleOn) {
+            toggleOn = false;
+        }
+
         if (queueArr.length != 1) {
-            await nextSong();
+            await nextSong(); // next song exists, so ok
         }
         else {
+            // no next song, need to reset the whole bar
+            
             //pause song
             if (!isPaused) {
                 await controlSong();
@@ -98,6 +107,8 @@ async function deleteTrackFromQueue(element) {
             // refresh queue viewer
             await refreshQueueViewer();
         }
+
+        toggle = oldToggle;
 
     }
     else {

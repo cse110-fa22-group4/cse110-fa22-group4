@@ -171,10 +171,10 @@ async function generateHomeCards() {
  */
 async function generateAlbumCardList(albums) {
 	// let's fill out our cardData with entries from the albums
-	const cardData = new Map(); // ('album', {artist: '', year: Number, artwork: ''})
+	const cardData = new Map(); // ('album', {artist: '', date: Number, artwork: ''})
 	albums.forEach((album) =>{
 		cardData.set(album, {
-			year: 0,
+			date: 0,
 			artworks: [],
 		});
 	});
@@ -185,7 +185,7 @@ async function generateAlbumCardList(albums) {
 		if (cardData.has(currTrack.album)) {
 			cardData.set(currTrack.album, {
 				artist: currTrack.artist,
-				year: currTrack.year,
+				date: currTrack.date,
 				artwork: currTrack.artwork,
 			});
 		}
@@ -204,8 +204,8 @@ async function generateAlbumCardList(albums) {
 		if (value.artist === '') {
 			value.artist = 'Unknown Artist';
 		}
-		if (value.year === '') {
-			value.year = 'Unknown Year';
+		if (value.date === '') {
+			value.date = 'Unknown Year';
 		}
 		if (value.artwork === '' || value.artwork === undefined) {
 			value.artwork = '../img/artwork-default.png';
@@ -218,7 +218,7 @@ async function generateAlbumCardList(albums) {
       <div class="library-card-info">
         <div>${album}</div>
         <div>${value.artist}</div>
-        <div>${value.year}</div>
+        <div>${value.date}</div>
       </div>
     </div>
   `;
@@ -235,7 +235,7 @@ async function generateAlbumCardList(albums) {
  */
 async function generateArtistCardList(artists) {
 	// we fill our cardData with the artists we were passed in
-	const cardData = new Map(); // ('artist, {numAlbums: '', year: Number, artwork: ''})
+	const cardData = new Map(); // ('artist, {numAlbums: '', date: Number, artwork: ''})
 	artists.forEach((artist) => {
 		cardData.set(artist, {
 			numAlbums: new Set(),

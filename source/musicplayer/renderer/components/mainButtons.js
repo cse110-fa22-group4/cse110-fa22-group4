@@ -1,5 +1,6 @@
 window.addEventListener('gridExtendedButtons-loaded', async () => {
 	await domAPI.addEventListener('btn-playlist-playAll', 'click', sendQueuePlaylist);
+	await domAPI.addEventListener('btn-playlist-deleteAll', 'click', deleteTracksPlaylist);
 });
 
 /**
@@ -68,4 +69,45 @@ window.addEventListener('gridExtendedButtons-loaded', async () => {
     console.log(playlistTracks);
 
     // TODO: play immediately after tracks are added
+}
+
+
+/**
+ * @name deleteTracksPlaylist 
+ * @description Delete selected tracks from playlist
+ * @return {Promise<void>}
+ */
+ async function deleteTracksPlaylist() {
+	const tracks = await domAPI.getSelectedTracks();
+	if (tracks.length === 0) {
+		alert('Select tracks to delete from playlist!');
+		return;
+	}
+
+    for (let i = 0; i < tracks.length; i++) {
+        await fsAPI.removeFromPlaylist(currGridPlaylist, i);
+    }
+
+    // refresh page 
+    await playlistsClick();
+
+    // Generate playlist grid
+    await domAPI.setHTML('header-subtitle', `Playlists > ${currGridPlaylist}`);
+    await domAPI.setHTML('library-playlists-cards', '');
+
+    // turn on main extended buttons
+    await mainButtonsOn('components/gridExtendedButtons.html');
+    
+	// Generate playlist grid
+	await domAPI.setHTML('header-subtitle', `Playlists > ${currGridPlaylist}`);
+	await domAPI.setHTML('library-playlists-cards', '');
+
+	const currPlaylist = await fsAPI.getPlaylist(currGridPlaylist);
+	const trackList = currPlaylist['trackList'];
+	await domAPI.setHTML('library-playlists-container', '');
+    debugger
+	await domAPI.addGrid('library-playlists-container', libraryHeaders, trackList, gridSettings, true, currGridPlaylist);
+
+    // send user feedback
+    await giveUserFeedback('Tracks deleted')
 }

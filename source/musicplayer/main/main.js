@@ -43,8 +43,8 @@ const createWindow = async () => {
 	// and load the index.html of the app.
 	await mainWindow.loadFile(path.join(__dirname, '/../html/index.html'));
 
-    // hide menu bar
-    // await mainWindow.setMenuBarVisibility(false);
+    // hide menu bar on windows
+    await mainWindow.setMenuBarVisibility(false);
 
 	// Open the DevTools.
 	// await mainWindow.webContents.openDevTools()

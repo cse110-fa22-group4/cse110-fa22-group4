@@ -1,19 +1,8 @@
 const path = require('path');
 
 const {
-    testSettings,
-} = require('../fsAPITesting/settingsAPITester');
-
-
-const {
-    getStoragePath,
-    makeDirIfNotExists,
-    getSRCString,
-    fsInit,
     devClear,
-    recursiveSearchAtPath,
     setStoragePath,
-    getSourceFolder,
 } = require('../../preload/fs/fsAPICalls');
 
 const {
@@ -36,7 +25,9 @@ const {
 const { expect } = require('@playwright/test');
 
 /**
- * 
+ * @name reset_all
+ * @description Resets data for all test users
+ * @return {Promise<void>}
  */
  async function reset_all() {
     await reset_user1();
@@ -45,7 +36,9 @@ const { expect } = require('@playwright/test');
  }
 
 /**
- * 
+ * @name reset_user1
+ * @description Resets data for test user 1
+ * @return {Promise<void>}
  */
 async function reset_user1() {
 
@@ -61,7 +54,9 @@ async function reset_user1() {
 }
 
 /**
- * 
+ * @name reset_user2
+ * @description Resets data for test user 2
+ * @return {Promise<void>}
  */
  async function reset_user2() {
 
@@ -77,7 +72,9 @@ async function reset_user1() {
 }
 
 /**
- * 
+ * @name reset_user_blank
+ * @description Resets data for the blank test user
+ * @return {Promise<void>}
  */
  async function reset_user_blank() {
 
@@ -87,7 +84,9 @@ async function reset_user1() {
 }
 
 /**
- * 
+ * @name reset_stats
+ * @description Resets stats data for test users 1 and 2
+ * @return {Promise<void>}
  */
  async function reset_stats() {
 
@@ -104,7 +103,9 @@ async function reset_user1() {
 }
 
 /**
- * 
+ * @name reset_songs
+ * @description Resets songs data for test users 1 and 2
+ * @return {Promise<void>}
  */
  async function reset_songs() {
 
@@ -121,7 +122,9 @@ async function reset_user1() {
 }
 
 /**
- * 
+ * @name reset_settings
+ * @description Resets settings data for test users 1 and 2
+ * @return {Promise<void>}
  */
  async function reset_settings() {
 

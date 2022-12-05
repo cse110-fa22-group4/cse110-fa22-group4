@@ -1,5 +1,6 @@
 {
 	"name": "musicplayer",
+    "productName": "Mixmatch",
 	"version": "1.0.0",
 	"description": "",
 	"main": "main/main.js",
