@@ -19,7 +19,7 @@ jobs:
       run: npm install
       
     - name: Generate Template
-      run: npm run tempUpdate
+      run: npm run tempUpdate --no-audit
         
     - name: Generate Docs
       run: npm run testJsDoc 
