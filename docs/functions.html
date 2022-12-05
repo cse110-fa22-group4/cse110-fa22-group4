@@ -1,184 +1,260 @@
-<p>
-    Detailed Functions Implemented:
-</p>
+<h1>Detailed Functions Implemented:</h1>
+<h2 id="domapicalls">domAPICalls</h2>
+<h2 id="htmlfromrenderer">htmlFromRenderer</h2>
+<ul>
+    <li>
+        Gets a filepath corresponding to the actual html file path from a renderer process<h2 id="loadpage">loadPage</h2>
+    </li>
+    <li>
+        Loads an html page into an element<h2 id="sethtml">setHTML</h2>
+    </li>
+    <li>
+        Sets the inner html of an element<h2 id="appendhtml">appendHTML</h2>
+    </li>
+    <li>
+        Appends the inner html of an element<h2 id="addgrid">addGrid</h2>
+    </li>
+    <li>
+        Creates a GridJS, and inserts it into a html element.<h2 id="addeventlistener">addEventListener</h2>
+    </li>
+    <li>
+        Adds an event listener<h2 id="addeventlistenerbyclassname">addEventListenerbyClassName</h2>
+    </li>
+    <li>
+        Adds an event listener<h2 id="getattribute">getAttribute</h2>
+    </li>
+    <li>
+        Gets the attribute of a given id<h2 id="setattribute">setAttribute</h2>
+    </li>
+    <li>
+        Sets the attribute of a given id<h2 id="addchild">addChild</h2>
+    </li>
+    <li>
+        Adds a child to a given id<h2 id="setstyle">setStyle</h2>
+    </li>
+    <li>
+        Sets the style of a given id<h2 id="setstyleclasstoggle">setStyleClassToggle</h2>
+    </li>
+    <li>
+        Toggles a css class style<h2 id="setproperty">setProperty</h2>
+    </li>
+    <li>
+        Sets an arbitrary property of a given domID<h2 id="getproperty">getProperty</h2>
+    </li>
+    <li>
+        gets an arbitrary property of a given domID<h2 id="setthemecolor">setThemeColor</h2>
+    </li>
+    <li>
+        Sets the application theme colors<h2 id="toggledarktheme">toggleDarkTheme</h2>
+    </li>
+    <li>
+        Toggles dark theme<h2 id="getselectedtracks">getSelectedTracks</h2>
+    </li>
+    <li>
+        Returns track objects selected by users from a grid.<h1 id="ffmetaapicalls">ffMetaAPICalls</h1>
+        <h2 id="ffmpegreadpromise">ffmpegReadPromise</h2>
+    </li>
+    <li>
+        A nonexposed function that creates a promise for reading metadata<h2 id="ffmpegread">ffmpegRead</h2>
+    </li>
+    <li>
+        Performs a read operation on the command line<h2 id="ffmpegwrite">ffmpegWrite</h2>
+    </li>
+    <li>
+        Writes metadata to a file<h2 id="createmultiffmpegpromise">createMultiFFmpegPromise</h2>
+    </li>
+    <li>
+        A nonexposed function that creates a promise for reading metadata<h2 id="usemultiffmpeg">useMultiFFmpeg</h2>
+    </li>
+    <li>
+        Reads many files metadata at once<h1 id="playsongapicalls">playSongAPICalls</h1>
+<h2 id="playsong">playSong</h2>
+    </li>
+    <li>
+        Plays a song<h2 id="togglelooping">toggleLooping</h2>
+    </li>
+    <li>
+        Toggles looping on a song<h2 id="setbehavioruponend">setBehaviorUponEnd</h2>
+    </li>
+    <li>
+        Creates a callback for a song ending<h2 id="handlelooping">handleLooping</h2>
+    </li>
+    <li>
+        Loops a song<h2 id="changevolume">changeVolume</h2>
+    </li>
+    <li>
+        Changes the volume<h2 id="getcurrenttime">getCurrentTime</h2>
+    </li>
+    <li>
+        Gets the current time of the song<h2 id="pausesong">pauseSong</h2>
+    </li>
+    <li>
+        Pauses the song<h2 id="resumesong">resumeSong</h2>
+    </li>
+    <li>
+        Resumes the song<h2 id="stopsong">stopSong</h2>
+    </li>
+    <li>
+        Stops the song<h2 id="seeksong">seekSong</h2>
+    </li>
+    <li>
+        Seeks the current song to a song time<h1 id="ffmpegapicalls">ffmpegAPICalls</h1>
+<h2 id="getreadcmd">getReadCMD</h2>
+    </li>
+    <li>
+        Gets a list of arguments for reading metadata<h2 id="getreadcmdforspawn">getReadCMDForSpawn</h2>
+    </li>
+    <li>
+        Gets a list of arguments for reading metadata using .spawn()<h2 id="getwritecmd">getWriteCMD</h2>
+    </li>
+    <li>
+        A list of arguments for writing metadata<h2 id="getmulticmd">getMultiCMD</h2>
+    </li>
+    <li>
+        A list of arguments for reading metadata with multi_ffmpeg<h2 id="removetempfile">removeTempFile</h2>
+    </li>
+    <li>Removes temp files created by our app</li>
+    <li>
+        we don&#39;t call this because who cares lol<h2 id="setpath">setPath</h2>
+    </li>
+    <li>
+        Sets path to bin, such as ffmpeg, ffprobe, etc<h2 id="getpaths">getPaths</h2>
+    </li>
+    <li>
+        Gets paths to ffmpeg, ffprobe, etc<h1 id="playlistapicalls">playlistAPICalls</h1>
+        <h2 id="getallplaylist">getAllPlaylist</h2>
+    </li>
+    <li>
+        Get a list of all playlist names<h2 id="getplaylist">getPlaylist</h2>
+    </li>
+    <li>
+        Gets a playlist object<h2 id="removeplaylist">removePlaylist</h2>
+    </li>
+    <li>
+        Removes a playlist by name<h2 id="createplaylist">createPlaylist</h2>
+    </li>
+    <li>
+        creates a playlist<h2 id="writeplaylist">writePlaylist</h2>
+    </li>
+    <li>
+        writes to a playlist<h2 id="writetoplaylist">writeToPlaylist</h2>
+    </li>
+    <li>
+        Writes individual tags to a playlist<h2 id="writeplaylistmeta">writePlaylistMeta</h2>
+    </li>
+    <li>
+        Writes playlist metadata<h2 id="removeplaylistmeta">RemovePlaylistMeta</h2>
+    </li>
+    <li>
+        Removes a metadata tag<h2 id="getplaylistmeta">getPlaylistMeta</h2>
+    </li>
+    <li>
+        Gets the metadata of a playlist<h2 id="removefromplaylist">removeFromPlaylist</h2>
+    </li>
+    <li>
+        Removes a taggroup from a playlist<h2 id="getplaylistobj">getPlaylistObj</h2>
+    </li>
+    <li>Gets the actual underlying playlist object</li>
+    <li>
+        for backend purposes only<h2 id="exportplaylist">exportPlaylist</h2>
+    </li>
+    <li>
+Exports a playlist<h1 id="settingsapicalls">settingsAPICalls</h1>
+<h2 id="getsettings">getSettings</h2>
+    </li>
+    <li>
+        Gets the settings object<h2 id="getsetting">getSetting</h2>
+    </li>
+    <li>
+        Gets a single setting<h2 id="writesettings">writeSettings</h2>
+    </li>
+    <li>
+        Writes the setting object<h2 id="writetosetting">writeToSetting</h2>
+    </li>
+    <li>
+        Writes a single setting<h2 id="deletesetting">deleteSetting</h2>
+    </li>
+    <li>
+        Removes a setting<h1 id="songsapicalls">songsAPICalls</h1>
+        <h2 id="getsongs">getSongs</h2>
+    </li>
+    <li>
+        Gets the songs object<h2 id="getsongstrackdata">getSongsTrackData</h2>
+    </li>
+    <li>
+        Gets the songs object as tracks<h2 id="writesongs">writeSongs</h2>
+    </li>
+    <li>
+        Writes the song object<h2 id="appendsong">appendSong</h2>
+    </li>
+    <li>
+        Appends a song to the song object<h2 id="appendsongs">appendSongs</h2>
+    </li>
+    <li>
+        Appens multiple songs to the song object<h2 id="removesong">removeSong</h2>
+    </li>
+    <li>
+        Removes a song from the song object<h2 id="cullshortaudio">cullShortAudio</h2>
+    </li>
+    <li>Culls short audio</li>
+    <li>
+        why do we not use this?? it is the best function<h1 id="statsapicalls">statsAPICalls</h1>
+        can we get an f, this file is fully functional but we never used it<h2 id="getstats">getStats</h2>
+    </li>
+    <li>
+        Gets the stats object<h2 id="writestats">writeStats</h2>
+    </li>
+    <li>
+        Writes the stats object<h2 id="writetostat">writeToStat</h2>
+    </li>
+    <li>
+        Writes a single stat<h2 id="deletestat">deleteStat</h2>
+    </li>
+    <li>
+        Deletes a stat<h1 id="fsapicalls">fsAPICalls</h1>
+        <h2 id="fsinit">fsInit</h2>
+    </li>
+    <li>
+        Inits fsAPI<h2 id="setstoragepath">setStoragePath</h2>
+    </li>
+    <li>
+        Sets the path to storage, only done once<h2 id="getstoragepath">getStoragePath</h2>
+    </li>
+    <li>
+        Gets the path to storage<h2 id="getsourcefolder">getSourceFolder</h2>
+    </li>
+    <li>
+        Gets the folder of this app<h2 id="devclear">devClear</h2>
+    </li>
+    <li>
+        Deletes everything, for testing purposes only!!<h2 id="makedirifnotexists">makeDirIfNotExists</h2>
+    </li>
+    <li>
+        Creates the mixmatch directory if it doesn&#39;t exist<h2 id="getsrcstring">getSRCString</h2>
+    </li>
+    <li>
+        A way of playing music through not ffmpeg<h2 id="recursivesearchatpath">recursiveSearchAtPath</h2>
+    </li>
+    <li>
+        A nonasync function that gets all music files recursively from a directory<h2 id="convertpathtotrack">convertPathToTrack</h2>
+    </li>
+    <li>
+        Converts a song to a track object<h1 id="genapicalls">genAPICalls</h1>
+        <h2 id="debuglog">debugLog</h2>
+    </li>
+    <li>
+        A controllable debug console.log where we can enable/disable tags<h2 id="opendialog">openDialog</h2>
+    </li>
+    <li>
+        Opens a popup dialog<h2 id="publishglobal">publishGlobal</h2>
+    </li>
+    <li>
+        Publishes a global variable (not function)<h2 id="getglobal">getGlobal</h2>
+    </li>
+    <li>
+        Gets a global variable<h2 id="removegloabl">removeGloabl</h2>
+    </li>
+    <li>Removes a global variable</li>
+</ul>
 
-
-
-<pre class="prettyprint">    # domAPICalls
-    ## htmlFromRenderer
-    - Gets a filepath corresponding to the actual html file path from a renderer process
-    ## loadPage
-    - Loads an html page into an element
-    ## setHTML
-    - Sets the inner html of an element
-    ## appendHTML
-    - Appends the inner html of an element
-    ## addGrid
-    - Creates a GridJS, and inserts it into a html element.
-    ## addEventListener
-    - Adds an event listener
-    ## addEventListenerbyClassName
-    - Adds an event listener
-    ## getAttribute
-    - Gets the attribute of a given id
-    ## setAttribute
-    - Sets the attribute of a given id
-    ## addChild
-    - Adds a child to a given id
-    ## setStyle
-    - Sets the style of a given id
-    ## setStyleClassToggle
-    - Toggles a css class style
-    ## setProperty
-    - Sets an arbitrary property of a given domID
-    ## getProperty
-    - gets an arbitrary property of a given domID
-    ## setThemeColor
-    - Sets the application theme colors
-    ## toggleDarkTheme
-    - Toggles dark theme
-    ## getSelectedTracks
-    - Returns track objects selected by users from a grid.
-    # ffMetaAPICalls
-    ## ffmpegReadPromise
-    - A nonexposed function that creates a promise for reading metadata
-    ## ffmpegRead
-    - Performs a read operation on the command line
-    ## ffmpegWrite
-    - Writes metadata to a file
-    ## createMultiFFmpegPromise
-    - A nonexposed function that creates a promise for reading metadata
-    ## useMultiFFmpeg
-    - Reads many files metadata at once
-    # playSongAPICalls
-    ## playSong
-    - Plays a song
-    ## toggleLooping
-    - Toggles looping on a song
-    ## setBehaviorUponEnd
-    - Creates a callback for a song ending
-    ## handleLooping
-    - Loops a song
-    ## changeVolume
-    - Changes the volume
-    ## getCurrentTime
-    - Gets the current time of the song
-    ## pauseSong
-    - Pauses the song
-    ## resumeSong
-    - Resumes the song
-    ## stopSong
-    - Stops the song
-    ## seekSong
-    - Seeks the current song to a song time
-    # ffmpegAPICalls
-    ## getReadCMD
-    - Gets a list of arguments for reading metadata
-    ## getReadCMDForSpawn
-    - Gets a list of arguments for reading metadata using .spawn()
-    ## getWriteCMD
-    - A list of arguments for writing metadata
-    ## getMultiCMD
-    - A list of arguments for reading metadata with multi_ffmpeg
-    ## removeTempFile
-    - Removes temp files created by our app
-    - we don't call this because who cares lol
-    ## setPath
-    - Sets path to bin, such as ffmpeg, ffprobe, etc
-    ## getPaths
-    - Gets paths to ffmpeg, ffprobe, etc
-    # playlistAPICalls
-    ## getAllPlaylist
-    - Get a list of all playlist names
-    ## getPlaylist
-    - Gets a playlist object
-    ## removePlaylist
-    - Removes a playlist by name
-    ## createPlaylist
-    - creates a playlist
-    ## writePlaylist
-    - writes to a playlist
-    ## writeToPlaylist
-    - Writes individual tags to a playlist
-    ## writePlaylistMeta
-    - Writes playlist metadata
-    ## RemovePlaylistMeta
-    - Removes a metadata tag
-    ## getPlaylistMeta
-    - Gets the metadata of a playlist
-    ## removeFromPlaylist
-    - Removes a taggroup from a playlist
-    ## getPlaylistObj
-    - Gets the actual underlying playlist object
-    - for backend purposes only
-    ## exportPlaylist
-    - Exports a playlist
-    # settingsAPICalls
-    ## getSettings
-    - Gets the settings object
-    ## getSetting
-    - Gets a single setting
-    ## writeSettings
-    - Writes the setting object
-    ## writeToSetting
-    - Writes a single setting
-    ## deleteSetting
-    - Removes a setting
-    # songsAPICalls
-    ## getSongs
-    - Gets the songs object
-    ## getSongsTrackData
-    - Gets the songs object as tracks
-    ## writeSongs
-    - Writes the song object
-    ## appendSong
-    - Appends a song to the song object
-    ## appendSongs
-    - Appens multiple songs to the song object
-    ## removeSong
-    - Removes a song from the song object
-    ## cullShortAudio
-    - Culls short audio
-    - why do we not use this?? it is the best function
-    # statsAPICalls
-    can we get an f, this file is fully functional but we never used it
-    ## getStats
-    - Gets the stats object
-    ## writeStats
-    - Writes the stats object
-    ## writeToStat
-    - Writes a single stat
-    ## deleteStat
-    - Deletes a stat
-    # fsAPICalls
-    ## fsInit
-    - Inits fsAPI
-    ## setStoragePath
-    - Sets the path to storage, only done once
-    ## getStoragePath
-    - Gets the path to storage
-    ## getSourceFolder
-    - Gets the folder of this app
-    ## devClear
-    - Deletes everything, for testing purposes only!!
-    ## makeDirIfNotExists
-    - Creates the mixmatch directory if it doesn't exist
-    ## getSRCString
-    - A way of playing music through not ffmpeg
-    ## recursiveSearchAtPath
-    - A nonasync function that gets all music files recursively from a directory
-    ## convertPathToTrack
-    - Converts a song to a track object
-    # genAPICalls
-    ## debugLog
-    - A controllable debug console.log where we can enable/disable tags
-    ## openDialog
-    - Opens a popup dialog
-    ## publishGlobal
-    - Publishes a global variable (not function)
-    ## getGlobal
-    - Gets a global variable
-    ## removeGloabl
-    - Removes a global variable
-</pre>
 

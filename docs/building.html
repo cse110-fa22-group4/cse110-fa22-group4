@@ -1,0 +1,72 @@
+<ul>
+    <li>
+        Prerequisites:<ul>
+            <li>These are used to play music and read song metadata </li>
+            <li>
+                Have the following installed:<ul>
+                    <li>.NET 6.0</li>
+                    <li>ffmpeg</li>
+                    <li>node</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>To build from source, you will need to first clone to clone the repo.</li>
+    <li>
+        To clone over HTTP, run the following command \
+        <code>git clone https://github.com/cse110-fa22-group4/cse110-fa22-group4.git</code>
+    </li>
+    <li>
+        Next, you¡¯ll need to build the electron app and install the node dependencies.<ul>
+            <li>Change your directory to the <code>/source/musicplayer</code></li>
+            <li>
+                Run the command \
+                <code>npm install</code>
+            </li>
+            <li>
+                To test that everything installed correctly, try running the command \
+                <code>npm start</code>
+            </li>
+            <li>If the app starts up, you¡¯ve done this step correctly.</li>
+        </ul>
+    </li>
+    <li>
+        Now, you¡¯ll need to build the custom binary included in the project for reading song metadata and playback.<ul>
+            <li>Change your directory to the <code>/source/multi_ffmpeg</code></li>
+            <li>Depending on your architecture, run one of the following commands: </li>
+        </ul>
+    </li>
+</ul>
+<p>multi-ffmpeg-build-win-64</p>
+<p>multi-ffmpeg-build-osx-64</p>
+<p>multi-ffmpeg-build-osx-arm</p>
+<p>multi-ffmpeg-build-linux-64</p>
+<p>multi-ffmpeg-build-adaptive</p>
+<ul>
+    <li>
+        Now, you want to grab the generated binary, <code>multi_ffmpeg</code>, which will now be in the directory<ul>
+            <li>/source/multi_ffmpeg/bin/Debug/net6.0/&lt;your architecture here&gt;/publish/multi_ffmpeg</li>
+            <li>You can check if it was built right, Give iit execute permissions, and then run the command </li>
+        </ul>
+    </li>
+</ul>
+<p>multi_ffmpeg --help</p>
+<ul>
+    <li>
+        Take this, and put it in the same folder where you have the ffmpeg binaries.<ul>
+            <li>
+                To find this folder, you can type in \
+                <code>which ffmpeg</code>
+            </li>
+            <li>
+                Alternatively you can copy the ffmpeg binaries, <code>ffplay</code>, <code>ffprobe</code>, and <code>ffmpeg</code> and put them into the same folder as the <code>multi_ffmpeg</code> binary.<ul>
+                    <li>Start the app, open up the developer console, and type</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+<p>await fsAPI.setPath(¡°[path to your folder with the 4 binaries¡±])</p>
+<ul>
+    <li>That¡¯s it! </li>
+</ul>

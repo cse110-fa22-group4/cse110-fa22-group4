@@ -1,0 +1,108 @@
+<ul>
+<li><p>The Repo is divided into a few main folders</p>
+<ul>
+<li><p>/.github/workflows</p>
+<pre><code>  This <span class="hljs-keyword">contains</span> <span class="hljs-keyword">the</span> github automated workflows <span class="hljs-keyword">for</span> linting, <span class="hljs-built_in">running</span> unit <span class="hljs-keyword">and</span> E2E tests, <span class="hljs-keyword">and</span> code quality checks.
+</code></pre></li>
+<li><p>/admin</p>
+</li>
+</ul>
+</li>
+<li><p>Contains meeting related files such as retrospective, meeting notes, videos, ETC.</p>
+<ul>
+<li><p>/jsdoc</p>
+<pre><code>  Contains jsdoc source <span class="hljs-built_in">code</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">output</span> folder docs.
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>/Source</p>
+<ul>
+<li><p>/multi_ffmpeg</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> has <span class="hljs-keyword">the</span> source code needed <span class="hljs-built_in">to</span> build <span class="hljs-keyword">the</span> multi_ffmpeg binary used <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> app <span class="hljs-built_in">to</span> play music <span class="hljs-keyword">and</span> <span class="hljs-built_in">read</span> metadata
+</code></pre></li>
+<li><p>/users</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> <span class="hljs-keyword">contains</span> data <span class="hljs-keyword">for</span> imaginary users <span class="hljs-built_in">to</span> be used <span class="hljs-keyword">in</span> testing
+</code></pre></li>
+<li><p>/musicplayer</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> <span class="hljs-keyword">contains</span> all <span class="hljs-keyword">the</span> HTML, CSS, <span class="hljs-keyword">and</span> JS source code.
+</code></pre><ul>
+<li><p>/css</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> <span class="hljs-keyword">contains</span> all <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> css <span class="hljs-built_in">files</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">the</span> entire project. Each <span class="hljs-built_in">file</span> is <span class="hljs-keyword">for</span> <span class="hljs-keyword">a</span> specific view <span class="hljs-keyword">or</span> component <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> app, <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> exception <span class="hljs-keyword">of</span> style.css, which <span class="hljs-keyword">contains</span> <span class="hljs-keyword">the</span> <span class="hljs-built_in">global</span> theme variables <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> styling <span class="hljs-keyword">for</span> <span class="hljs-keyword">the</span> structure <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> app.
+</code></pre></li>
+<li><p>/html</p>
+<ul>
+<li><p>/components</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> <span class="hljs-keyword">contains</span> all <span class="hljs-keyword">the</span> HTML <span class="hljs-built_in">files</span> <span class="hljs-keyword">for</span> ¡®components¡¯, which are <span class="hljs-keyword">any</span> part <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> app which should always be instantly available. An example <span class="hljs-keyword">of</span> this is <span class="hljs-keyword">the</span> sidebar <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> bottom playback bar
+</code></pre></li>
+<li><p>/pages</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> <span class="hljs-keyword">contains</span> <span class="hljs-keyword">the</span> HTML <span class="hljs-built_in">files</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">the</span> different ¡®views¡¯ which are parts <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> app which can be loaded <span class="hljs-keyword">and</span> unloaded. An example <span class="hljs-keyword">of</span> this is home screen <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> cards <span class="hljs-keyword">on</span> <span class="hljs-title">it</span>, <span class="hljs-title">or</span> <span class="hljs-title">the</span> <span class="hljs-title">library</span> <span class="hljs-title">page</span> <span class="hljs-title">that</span> <span class="hljs-title">displays</span> <span class="hljs-title">tracks</span>
+</code></pre></li>
+</ul>
+</li>
+<li><p>/img</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> <span class="hljs-keyword">contains</span> various graphical assets.
+</code></pre></li>
+<li><p>/main</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> <span class="hljs-keyword">contains</span> `main.js`, which is <span class="hljs-keyword">a</span> secure thread which handles secure access <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> DOM <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> app. 
+</code></pre></li>
+<li><p>/preload</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> <span class="hljs-keyword">contains</span> Javascript <span class="hljs-built_in">files</span> that form <span class="hljs-keyword">a</span> secure context bridge <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> frontend UI <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> backend main <span class="hljs-built_in">process</span> <span class="hljs-built_in">to</span> allow <span class="hljs-keyword">for</span> accessing <span class="hljs-keyword">the</span> DOM, <span class="hljs-keyword">the</span> <span class="hljs-built_in">file</span> <span class="hljs-keyword">system</span>, <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> ffmpeg <span class="hljs-keyword">and</span> multi_ffmpeg binaries. These are accessible through <span class="hljs-literal">four</span> APIs, separated <span class="hljs-keyword">by</span> their <span class="hljs-built_in">folders</span>
+</code></pre><ul>
+<li><p>/dom</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> <span class="hljs-keyword">contains</span> all <span class="hljs-built_in">files</span> relevant <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> `domAPI`. Any UI code that accesses <span class="hljs-keyword">the</span> DOM will <span class="hljs-built_in">do</span> <span class="hljs-keyword">it</span> here.
+</code></pre></li>
+<li><p>/ffmpeg</p>
+<pre><code>  This folder <span class="hljs-keyword">contains</span> files <span class="hljs-keyword">that</span> access ffmpeg/multi_ffmpeg, which <span class="hljs-keyword">is</span> done <span class="hljs-keyword">to</span> play songs <span class="hljs-keyword">and</span> <span class="hljs-built_in">read</span> metadata. This <span class="hljs-keyword">is</span> all done <span class="hljs-keyword">by</span> opening a terminal.
+</code></pre></li>
+<li><p>/fs</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> <span class="hljs-keyword">contains</span> <span class="hljs-built_in">files</span> that access <span class="hljs-keyword">the</span> filesystem. We access <span class="hljs-keyword">the</span> filesystem <span class="hljs-keyword">for</span> playlists, settings, songs, <span class="hljs-keyword">and</span> stats.
+</code></pre></li>
+<li><p>/general</p>
+<pre><code>  This <span class="hljs-built_in">folder</span> <span class="hljs-keyword">contains</span> API that don¡¯t fit <span class="hljs-keyword">into</span> <span class="hljs-keyword">the</span> other categories. This includes general purpose debugging logs <span class="hljs-keyword">and</span> <span class="hljs-keyword">a</span> wrapper <span class="hljs-keyword">for</span> accessing <span class="hljs-keyword">and</span> creating <span class="hljs-built_in">global</span> variables.
+</code></pre></li>
+</ul>
+</li>
+<li><p>/renderer</p>
+<pre><code>  Contains Javascript <span class="hljs-built_in">files</span> related <span class="hljs-built_in">to</span> graphically implementing <span class="hljs-keyword">the</span> UI. These <span class="hljs-built_in">files</span> <span class="hljs-built_in">do</span> <span class="hljs-keyword">not</span> have access <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> DOM <span class="hljs-keyword">by</span> Electron standards, so <span class="hljs-built_in">do</span> this access through <span class="hljs-keyword">the</span> secure context bridge <span class="hljs-keyword">the</span> `preload` forms.
+</code></pre><ul>
+<li><p>/components</p>
+<pre><code>  Contains files <span class="hljs-literal">that</span> form parts <span class="hljs-keyword">of</span> different views. An example <span class="hljs-keyword">of</span> <span class="hljs-keyword">this</span> <span class="hljs-keyword">is</span> code <span class="hljs-keyword">for</span> the sidebar buttons.
+</code></pre></li>
+<li><p>/pages</p>
+<pre><code>  Contains files <span class="hljs-keyword">that</span> dictate pages, which represent entire different views, used <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> <span class="hljs-built_in">application</span>. An example <span class="hljs-keyword">of</span> this <span class="hljs-keyword">is</span> <span class="hljs-keyword">the</span> home page.
+</code></pre></li>
+</ul>
+</li>
+<li><p>/songs</p>
+<ul>
+<li>Contains songs for testing</li>
+</ul>
+</li>
+<li>/testing<ul>
+<li>Contains all the files needed for unit testing</li>
+</ul>
+</li>
+<li>package.json<ul>
+<li>This file contains scripts used in workflows as well as for development.</li>
+</ul>
+</li>
+<li>.eslintrc.json<ul>
+<li>This is the config file for linting Javascript files</li>
+</ul>
+</li>
+<li><p>.stylintrc.json</p>
+<ul>
+<li>This is the config file for linting CSS files.<ul>
+<li>specs</li>
+</ul>
+</li>
+</ul>
+<p>Contains basic outline of the project and its derivation from the start.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
