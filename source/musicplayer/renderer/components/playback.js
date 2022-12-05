@@ -31,7 +31,6 @@ let shuffleOn = false;
 let toggleOn = false;
 const testMap = new Map();
 let songNum = 0;
-let prevSongsIndxArr = [];	// this array is reassigned in different file
 
 let startStamp = null;
 let endStamp = null;
@@ -94,8 +93,6 @@ window.addEventListener('playback-loaded', async () => {
 	});
 	await genAPI.publishGlobal(songNum, 'songNum');
 	await genAPI.publishGlobal(currSongPath, 'currSongPath');
-	await genAPI.publishGlobal(prevSongsIndxArr, 'prevSongsIndxArr');
-	await genAPI.publishGlobal(prevSongsIndxArr, 'prevSongsIndxArr');
 	await genAPI.publishGlobal(startStamp, 'startStamp');
 	await genAPI.publishGlobal(endStamp, 'endStamp');
 	await genAPI.publishGlobal(progressFader, 'progressFader');
@@ -169,38 +166,69 @@ function decideFirstSong() {
 	// 	return;
 	// }
 	// store first song in history on load
-	prevSongsIndxArr.push(songNum);
+	//prevSongsIndxArr.push(songNum);
 
 	// set first songPath
 	// const mapVal = playlistMap.get('playlist');
 	// const playlist = mapVal['trackList'];
-	currSongPath = queueArr[songNum]['filename'];
+	currSongPath = queueArr[0]['filename'];
 }
 
 /**
  * @description Plays the next song in playlist (and kills old instance)
  * 	all the tracks of a playlist
- * @param deletedSong boolean indicating if function call involves deleting song
+ * 
  */
-async function nextSong(deletedSong = false) {
+async function nextSong() {
 	// get next song (while handling indexOfBounds)
 	// next song is either sequential or shuffled
 	// const mapVal = playlistMap.get('playlist');
 	// const playlist = mapVal['trackList'];
 	if (shuffleOn === true) {
-		songNum = shuffle(0, queueArr.length - 1, songNum);
-	} else {
-		if (songNum + 1 > queueArr.length - 1 ) {
-			return;
+		//songNum = shuffle(0, queueArr.length - 1, songNum); do nothing
+	} 
+	
+	if (queueArr.length == 0) {
+		return;
+	}
+	if (queueArr.length == 1) { // should skip to end of song
+		
+		prevSongsArr.splice(0, 0, queueArr[0]);
+		queueArr.splice(0, 1);
+
+		if(toggleOn) {
+			queueArr.push(prevSongsArr[0]) //add to end of queue
+		} else {
+			currSongPath = null;
+
+			//pause song
+			const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
+			const playBImg = playB.querySelector('img');
+			if (playB.id !== 'play-btn') {
+				await ffmpegAPI.pauseSong();
+				isPaused = true;
+			
+				toggleIcon(playB, playBImg);
+			}
 		}
-		songNum = songNum + 1;
+		
+		
+
+		clearInterval(intervalID);
+		resetProgress();
+		
+		await refreshQueueViewer();
+		return;
 	}
-	// @todo decide songPath based on object
-	// songNum will only ever be used for array in Map, need to reset once Map is exited
-	if (!deletedSong) {
-		prevSongsIndxArr.push(songNum);
+	
+	if(toggleOn) {
+		queueArr.push(queueArr[0]) //add to end of queue
 	}
-	currSongPath = queueArr[songNum]['filename'];
+	prevSongsArr.splice(0, 0, queueArr[0]);
+	queueArr.splice(0, 1);
+	currSongPath = queueArr[0]['filename'];
+	
+
 	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
 	// on skip, always play the song so button should always become pause
@@ -251,13 +279,23 @@ async function prevSong() {
 	// for prev. Btn to work properly always need array to track songs
 	// -2 since length is +1 from index
 	// (ie: at index=0, 1-1=0 allows if cond. to pass, triggers indexOutOfBounds)
-	if ( prevSongsIndxArr.length - 2 < 0) {
+	/*if ( prevSongsIndxArr.length - 2 < 0) {
 		return;
-	}
-	prevSongsIndxArr.pop();	// remove current song
-	songNum = prevSongsIndxArr[prevSongsIndxArr.length - 1]; // retrieve prev song
+	}*/
+	//prevSongsIndxArr.pop();	// remove current song
+	//songNum = 0; // retrieve prev song //dsadhasiudhuaishdiashiduhas
 	// no need for branch anymore, prevSongsArr handles both cases of shuffleOn/Off
-	currSongPath = prevSongsArr[songNum]['filename'];
+
+	if(prevSongsArr.length != 0) {
+	
+		// insert into queue array
+		queueArr.splice(0, 0, prevSongsArr[0]);
+
+		// edit prevSongs
+		prevSongsArr.splice(0, 1);
+		currSongPath = queueArr[0]['filename'];
+	}
+
 	isPaused = false;	// isPaused shouldn't be carried over from other songs
 
 	// on prev, always play the song so button should always become pause
@@ -288,10 +326,21 @@ async function prevSong() {
 
     // TODO: function currently bugged, needs proper implementation
     // not sure what needs to be done with prevSongsArr -Alvin 
-	songNum = index;
-	prevSongsIndxArr.push(songNum);
+	//songNum = index;
+	//prevSongsIndxArr.push(songNum);
 
-	currSongPath = queueArr[songNum]['filename'];
+	if(index != 0) {
+
+		prevSongsArr.splice(0, 0, queueArr[0]);
+		for(let i = 0; i < index; i++) {
+			queueArr.splice(0, 1);
+		}
+
+		currSongPath = queueArr[0]['filename'];
+
+	}
+
+	
 	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
 	// on skip, always play the song so button should always become pause
@@ -353,10 +402,9 @@ function shuffle(min, max, songNum) {
  */
 function shuffleSong() {
 	const shuffleBtn = document.querySelector('#shuffle-btn > svg');
-	const style = window.getComputedStyle(shuffleBtn);
-	const currColor = style.getPropertyValue('fill');
-	toggleColor(currColor, shuffleBtn);
 	shuffleOn = !shuffleOn;
+	toggleColor(shuffleOn, shuffleBtn);
+	
 }
 
 /**
@@ -365,22 +413,22 @@ function shuffleSong() {
  */
 function loopSong() {
 	const loopBtn = document.querySelector('#loop-btn > svg');
-	const style = window.getComputedStyle(loopBtn);
-	const currColor = style.getPropertyValue('fill');
-	toggleColor(currColor, loopBtn);
 	toggleOn = !toggleOn;
+	toggleColor(toggleOn, loopBtn);
+	
 }
 
 /**
- * @description Toggle the color of the shuffle & repeat button when clicked
- * @param {string} fillColor color to change svg to
+ * @description Update the color of the shuffle & repeat button when clicked
+ * @param {boolean} toggle whether toggle should be on or off
  * @param {HTMLElement} btn svg (enclosed by button)
  */
-function toggleColor(fillColor, btn) {
-	if (fillColor === 'rgb(31, 31, 31)') { // equivalent to black
+function toggleColor(toggle, btn) {
+	if (toggle) { //on
 		fillColor = 'var(--theme-primary)';
-	} else {
-		fillColor = 'rgb(31, 31, 31)';
+		console.log('fill')
+	} else { //off
+		fillColor = 'black';
 	}
 	btn.style.fill = fillColor;
 }
@@ -459,7 +507,7 @@ function resetProgress() {
 	//}
 	// const mapVal = playlistMap.get('playlist');
 	// const playlist = mapVal['trackList'];
-	const currSongDuration = queueArr[songNum]['duration'];
+	const currSongDuration = queueArr[0]['duration'];
 
 	endStamp.innerHTML = msToFormatStr(currSongDuration * 1000);
 	startStamp.innerHTML = '0:00';
@@ -484,7 +532,7 @@ async function updateProgress() {
 			intervalID = setInterval( function() { updateProgress(); }, 50);
 			// no info update needed
 		} else {
-			nextSong();
+			await nextSong();
 		}
 
 		return;
@@ -579,13 +627,13 @@ function updateInfo() {
 	// }
 	// const mapVal = playlistMap.get('playlist');
 	// const playlist = mapVal['trackList'];
-	const currTitle = queueArr[songNum]['title'];
-	const currArtist = queueArr[songNum]['artist'];
+	const currTitle = queueArr[0]['title'];
+	const currArtist = queueArr[0]['artist'];
 	let currArt;
-	if ( typeof queueArr[songNum]['artwork'] === 'undefined') {
+	if ( typeof queueArr[0]['artwork'] === 'undefined') {
 		currArt = '../img/artwork-default.png';
 	} else {
-		currArt = queueArr[songNum]['artwork'];
+		currArt = queueArr[0]['artwork'];
 	}
 
 	const songTitle = document.querySelector('.songInfo > b');

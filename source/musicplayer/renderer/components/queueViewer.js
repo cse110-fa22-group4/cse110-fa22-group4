@@ -1,8 +1,8 @@
 window.addEventListener('queueViewer-loaded', async () => {
-	await queueViewerLoad();
-	await domAPI.addEventListenerbyClassName('queue-track', 'dblclick', playTrack);
-	await domAPI.addEventListenerbyClassName('btn-queue-track-delete', 'click', deleteTrackFromQueue);
-	await domAPI.addEventListener('btn-queue-clear', 'click', clearQueue);
+    await queueViewerLoad();
+    await domAPI.addEventListenerbyClassName('queue-track', 'dblclick', playTrack);
+    await domAPI.addEventListenerbyClassName('btn-queue-track-delete', 'click', deleteTrackFromQueue);
+    await domAPI.addEventListener('btn-queue-clear', 'click', clearQueue);
 });
 
 /**
@@ -11,23 +11,23 @@ window.addEventListener('queueViewer-loaded', async () => {
  * @param {HTMLElement} element
  * @return {Promise<void>}
  */
- async function queueViewerLoad(element) {
-    if(queueArr.length == 0) {
+async function queueViewerLoad(element) {
+    if (queueArr.length == 0) {
         const emptyQueueMessage = `
             <div id="queue-empty-message">Your queue is currently empty. Add songs from the library to begin playback!</div>
         `;
         await domAPI.setHTML('queue-container', emptyQueueMessage);
         return;
-    } 
+    }
 
     let queueList = '';
-    for (let i = songNum; i < queueArr.length; i++) {
-            const queueRow = `
-                <div class="${i === songNum ? 'queue-track queue-track-active' : 'queue-track'}" 
+    for (let i = 0; i < queueArr.length; i++) {
+        const queueRow = `
+                <div class="${i == 0 ? 'queue-track queue-track-active' : 'queue-track'}" 
                 data-queueIndex="${i}">
                     <div class="queue-track-icon">
                         <img src="../img/icons/playback/currPlaying.png" class="
-                        ${i === songNum ? 'icon-currPlaying icon-currPlaying-active' : 'icon-currPlaying'}">
+                        ${i == 0 ? 'icon-currPlaying icon-currPlaying-active' : 'icon-currPlaying'}">
                     </div>
                     <div class="queue-track-data">
                         <div class="queue-track-data-title">${queueArr[i].title}</div>
@@ -43,11 +43,11 @@ window.addEventListener('queueViewer-loaded', async () => {
                     </div>
                 </div>
             `;
-            queueList += queueRow;
+        queueList += queueRow;
     }
 
     // insert queue list into container
-	await domAPI.setHTML('queue-container', queueList);
+    await domAPI.setHTML('queue-container', queueList);
 }
 
 /**
@@ -56,7 +56,7 @@ window.addEventListener('queueViewer-loaded', async () => {
  * @param {HTMLElement} element
  * @return {Promise<void>}
  */
- async function playTrack(element) {
+async function playTrack(element) {
     // get index of track to jump tp
     let newTrackIndex = element.getAttribute('data-queueIndex')
 
@@ -76,22 +76,50 @@ window.addEventListener('queueViewer-loaded', async () => {
  * @param {HTMLElement} element
  * @return {Promise<void>}
  */
- async function deleteTrackFromQueue(element) {
+async function deleteTrackFromQueue(element) {
     // get index of track to delete
     const deleteTrackIndex = element.getAttribute('data-queueIndex')
 
-	// clear info when last song in queue is manually removed
-	// must go before deleting with splice while object is still avaliable
-	if (queueArr.length == 1) { 
-		await resetPlayback();
-	}
+    if (deleteTrackIndex == 0) {
 
-    // remove track from the queue
-    queueArr.splice(Number(deleteTrackIndex), 1);
+        // basically just nextSong but we make sure to delete the item even if loop is on
+        if(queueArr.length != 1) {
+            await nextSong();
+        }
+        else {
+            prevSongsArr.splice(0, 0, queueArr[0]);
+            queueArr.splice(0, 1);
 
-    //if(songNum > 0) {
-        songNum--;
-    //}
+            if (toggleOn) {
+                // do not add to end of queue
+            } else {
+                currSongPath = null;
+
+                //pause song
+                const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
+                const playBImg = playB.querySelector('img');
+                if (playB.id !== 'play-btn') {
+                    await ffmpegAPI.pauseSong();
+                    isPaused = true;
+
+                    toggleIcon(playB, playBImg);
+                }
+            }
+
+            clearInterval(intervalID);
+            resetProgress();
+
+            await refreshQueueViewer();
+        }
+
+
+
+    }
+    else {
+        // remove track from the queue
+        queueArr.splice(deleteTrackIndex, 1);
+    }
+
 
 	// Only if the top song is deleted skip to next song
 	// song at top of queue always index 0
@@ -109,8 +137,8 @@ window.addEventListener('queueViewer-loaded', async () => {
  * @param {HTMLElement} element
  * @return {Promise<void>}
  */
- async function clearQueue(element) {
-    if(queueArr.length === 0) {
+async function clearQueue(element) {
+    if (queueArr.length == 0) {
         return;
     }
 
@@ -118,6 +146,20 @@ window.addEventListener('queueViewer-loaded', async () => {
 
     // remove all tracks from the queue
     queueArr.splice(0, queueArr.length);
+
+    currSongPath = null;
+
+    //pause song
+    const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
+    const playBImg = playB.querySelector('img');
+    if (playB.id !== 'play-btn') {
+        await ffmpegAPI.pauseSong();
+        isPaused = true;
+        toggleIcon(playB, playBImg);
+    }
+    clearInterval(intervalID);
+    resetProgress();
+
 
     // refresh queue viewer
 
@@ -131,9 +173,9 @@ window.addEventListener('queueViewer-loaded', async () => {
  * @description Refresh the state of the queue viewer.
  * @return {Promise<void>}
  */
- async function refreshQueueViewer() {
+async function refreshQueueViewer() {
     // refresh queue viewer if already open
-    if(queueViewerIsExtended) {
+    if (queueViewerIsExtended) {
         await toggleQueueViewer();
         await toggleQueueViewer();
     }
