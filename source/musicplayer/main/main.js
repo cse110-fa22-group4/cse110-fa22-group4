@@ -122,11 +122,37 @@ ipcMain.on('quit', () => {
 
 // This is where ipc security checks are being done.
 // TODO: Abstract this out to a separate "IPC Security" file.
-ipcMain.handle('managedAttributeCheck', (event, args) => {
-	return true; // TODO: Add security!
+
+ipcMain.handle('managedAttributeCheck', (event, args) => { 
+	const domID = args[0]; 
+	const attribute = args[1];
+	
+	if(args.length == 2) { //get attributes
+		//we don't really have important attributes we want to hide, do we?
+		return true;
+	}
+	else if(attribute == 'onclick'){
+		const propertyLiteral = args[2];
+		//it shouldn't be deleting playlists
+		if(domID != 'btn-playlist-delete' && /removePlaylist/.test(attribute)) return false;
+		//We don't want to spam create and load up the disk
+		if(domID != 'btn-playlist-create' && /createPlaylist/.test(attribute)) return false;
+		if(domID != 'settings-rescan' && /useMultiFFmpeg/.test(attribute)) return false;
+	}
+	return true;
 });
 ipcMain.handle('managedAddEventListenerCheck', (event, args) => {
-	return true; // TODO: Add security!
+	const domID = args[0];
+	const functionText = args[2];
+	//it shouldn't be deleting playlists
+	if(domID != 'btn-playlist-delete' && /removePlaylist/.test(functionText)) return false;
+	//We don't want to spam create and load up the disk
+	
+	if(domID != 'btn-playlist-create' && /createPlaylist/.test(functionText)) return false;
+
+	//Don't rescan if we don't need to
+	if(domID != 'settings-rescan' && /useMultiFFmpeg/.test(functionText)) return false;
+	return true; 
 });
 ipcMain.handle('getUserData', (event, args) => {
 	return app.getPath('userData'); // No security needed, just returns a path to user data.
@@ -138,7 +164,22 @@ ipcMain.handle('getTempPath', (event, args) => {
 	return app.getPath('temp');
 });
 ipcMain.handle('managedValueCheck', (event, args) => {
-	return true; // TODO: Add security!
+	const domID = args[0]; 
+	const property = args[1];
+	
+	if(args.length == 2) { //get attributes
+		//we don't really have important attributes we want to hide, do we?
+		return true;
+	}
+	else if(property == 'onclick'){
+		const propertyLiteral = args[2];
+		//it shouldn't be deleting playlists
+		if(domID != 'btn-playlist-delete' && /removePlaylist/.test(propertyLiteral)) return false;
+		//We don't want to spam create and load up the disk
+		if(domID != 'btn-playlist-create' && /createPlaylist/.test(propertyLiteral)) return false;
+		if(domID != 'settings-rescan' && /useMultiFFmpeg/.test(propertyLiteral)) return false;
+	}
+	return true; 
 });
 ipcMain.handle('managedChildCheck', (event, args) => {
 	return true;
