@@ -368,12 +368,9 @@ async function updateProgress() {
 	if (formatStrToMs(startStamp.innerHTML) >= formatStrToMs(endStamp.innerHTML)) {
 		clearInterval(intervalID);
 		// double check reset if issues arises, but nextSong should reset
-		if (toggleOn) {
-			await playNewSong();
-			// no info update needed
-		} else {
-			await nextSong();
-		}
+		
+		await playNewSong();
+		await nextSong();
 		return;
 	}
 
