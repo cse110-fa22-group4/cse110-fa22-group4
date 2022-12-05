@@ -1,6 +1,9 @@
 #btn-playlist-playAll {
-    background-color: blue;
     height: 100%;
     width: 100px;
-    margin-left: 30px;
+}
+
+#btn-playlist-deleteAll {
+    height: 100%;
+    width: 100px;
 }
