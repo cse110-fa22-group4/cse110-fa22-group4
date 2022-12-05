@@ -165,16 +165,10 @@ async function nextSong() {
 		await controlSong();
 	}
 
-	clearInterval(intervalID);
-	resetProgress();
-	await ffmpegAPI.stopSong();
-	await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
-	intervalID = setInterval( function() { updateProgress(); }, 50);
-	updateInfo();
+	await playNewSong();
 
     await refreshQueueViewer();
 }
-
 
 /**
  * @description Plays the previous song in playlist (and kills old instance)
