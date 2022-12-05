@@ -143,9 +143,9 @@ test('Testing removeFromPlaylist(playlistName, index)', async () => {
     expect(str_tags).toBe("[]");
 });
 /**
- *
+ * A test for getPlaylist
  */
-test('Testing getPlaylist', async () => {
+test('Testing getPlaylist 1', async () => {
 	let tags = {'artist' : 'Tobu'};
 	await writeToPlaylist('New Playlist', tags);
 	//import writeSongs
@@ -157,7 +157,7 @@ test('Testing getPlaylist', async () => {
 	let success = true;
 	let filepaths = ["../../../users/user_3/songs/Tobu/Tobu - Hope.mp3", "../../../users/user_3/songs/Tobu/Tobu - Infectious.mp3"];
 	for(let i = 0; i < playlist['trackList'].length; i++) {
-		if(!filepaths.include(playlist['trackList'][i])) {
+		if(filepaths[i] != (playlist['trackList'][i])) {
 			success = false;
 		}
 	}
@@ -165,7 +165,29 @@ test('Testing getPlaylist', async () => {
 
 
 });
+/**
+ * A test for getPlaylist
+ */
+test('Testing getPlaylist 2', async () => {
+	let tags = {'title': 'Infectious', 'artist' : 'Tobu'};
+	await writeToPlaylist('New Playlist', tags);
+	//import writeSongs
+	await writeSongs(JSON.parse('{"../../../users/user_3/songs/Different Heaven & EH!DE - My Heart.mp3":{"format":{"filename":"../../../users/user_3/songs/Different Heaven & EH!DE - My Heart.mp3","nb_streams":2,"nb_programs":0,"format_name":"mp3","format_long_name":"MP2/3 (MPEG audio layer 2/3)","start_time":"0.025056","duration":"267.128163","size":"4297938","bit_rate":"128715","probe_score":51,"tags":{"title":"My Heart","artist":"Different Heaven, EH!DE","album":"My Heart","track":"1/1","genre":"Drumstep","comment":"Edited by Maztr Audio Tag Editor. https://maztr.com/audiotageditor","date":"2014"}}},"../../../users/user_3/songs/' + 
+'Tobu/Tobu - Infectious.mp3":{"format":{"filename":"../../../users/user_3/songs/Tobu/Tobu - Infectious.mp3","nb_streams":2,"nb_programs":0,"format_name":"mp3","format_long_name":"MP2/3 (MPEG audio layer 2/3)","start_time":"0.025056","duration":"256.130612","size":"4127097","bit_rate":"128906","probe_score":51,"tags":{"title":"Infectious","artist":"Tobu","album":"Infectious","track":"1/1","comment":"Edited by Maztr Audio Tag Editor. https://maztr.com/audiotageditor","date":"2014"}}},"../../../users/user_3/songs/' + 
+'Tobu/Tobu - Hope.mp3":{"format":{"filename":"../../../users/user_3/songs/Tobu/Tobu - Hope.mp3","nb_streams":1,"nb_programs":0,"format_name":"mp3","format_long_name":"MP2/3 (MPEG audio layer 2/3)","start_time":"0.025057","duration":"285.126531","size":"4566456","bit_rate":"128124","probe_score":51,"tags":{"title":"Hope","artist":"Tobu","album":"Hope","track":"1/1","comment":"Edited by Maztr Audio Tag Editor. https://maztr.com/audiotageditor","date":"2014"}}}}'))
+	
+	let playlist = await getPlaylist('New Playlist');
+	let success = true;
+	let filepaths = [ "../../../users/user_3/songs/Tobu/Tobu - Infectious.mp3"];
+	for(let i = 0; i < playlist['trackList'].length; i++) {
+		if(filepaths[i] != (playlist['trackList'][i])) {
+			success = false;
+		}
+	}
+	expect(success).toBe(true);
 
+
+});
 
 /**
  * Test write/get/remove Meta to the playlist.

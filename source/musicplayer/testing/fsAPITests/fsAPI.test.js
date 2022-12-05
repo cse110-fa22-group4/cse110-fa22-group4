@@ -49,9 +49,9 @@ test('recursivelySearchAtPath Test', async () => {
   let p = path.join(source, 'users/user_1/songs');
   let songs = (await recursiveSearchAtPath(p));
 
-  expect(songs[0]).toBe(path.join(source, 'users/user_1/songs/Tobu/Tobu - Hope [NCS Release].mp3'));
-  expect(songs[1]).toBe(path.join(source, 'users/user_1/songs/Tobu/Tobu - Infectious [NCS Release].mp3'));
-  expect(songs[2]).toBe(path.join(source, 'users/user_1/songs//Different Heaven & EH!DE - My Heart [NCS Release].mp3'));
+  expect(songs[0]).toBe(path.join(source, 'users/user_1/songs/Tobu/Tobu - Hope.mp3'));
+  expect(songs[1]).toBe(path.join(source, 'users/user_1/songs/Tobu/Tobu - Infectious.mp3'));
+  expect(songs[2]).toBe(path.join(source, 'users/user_1/songs/Different Heaven & EH!DE - My Heart.mp3'));
 
   p = path.join(source, 'users/user_blank/songs');
   songs = (await recursiveSearchAtPath(p));
