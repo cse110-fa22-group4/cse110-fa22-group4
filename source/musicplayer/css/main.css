@@ -7,4 +7,42 @@
 #library-container {
   height: 100%;
   width: 100%;
+  margin: -20px 0;
 }
+
+#library-playlists-container, #home-grid {
+    margin: -20px 0;
+  }
+
+/* MAIN BUTTONS */
+#main-buttons-container {
+    position: fixed;
+    height: 29px;
+    width: calc(100% - 510px);
+    left: 510px;
+    top: 187px;
+    padding-left: 4px;
+}
+
+#btn-playlist-playAll, #btn-playlist-deleteAll {
+    background-color: var(--dark);
+    color: var(--light);
+    border: none;
+    border-radius: 2.5px;
+    height: 100%;
+    font-family: Roboto, sans-serif;
+    font-size: 11px;
+    font-weight: 100;
+    padding: 0 15px;
+    margin-left: 5px;
+}
+
+#btn-playlist-playAll:hover,
+#btn-playlist-deleteAll:hover {
+    background-color: var(--theme-primary);
+}
+
+/* #btn-playlist-playAll img {
+    width: 15px;
+    margin: auto;
+} */

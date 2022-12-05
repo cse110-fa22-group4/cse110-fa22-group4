@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-const {getStoragePath, throwErr, throwErrOpen} = require('../fsAPICalls');
+const fsPromises = require('fs').promises;
+const {setStoragePath, getStoragePath, throwErr, throwErrOpen, convertPathToTrack} = require('../fsAPICalls');
 
 /**
  * @name getSongs
@@ -12,17 +13,29 @@ const {getStoragePath, throwErr, throwErrOpen} = require('../fsAPICalls');
 async function getSongs() {
 	const storagePath = await getStoragePath();
 	const songPath = path.join(storagePath, 'songs.json');
-	//if (!(await fs.exists(songPath))) {
-	fs.exists(songPath, async (e) => {
-		if(!e) {
-				await fs.open(songPath, 'w', throwErrOpen);
-				await fs.writeFile(songPath, '{ }', throwErr);
-		}
-	});
-	const res = fs.readFileSync(songPath, 'utf8');
-	//console.log(res);
+	try {
+		let songData = await fsPromises.readFile(songPath, 'utf8');
+		return JSON.parse(songData);
+	} catch (e) {
+		await fsPromises.writeFile(songPath, "{ }");
+		let songData = await fsPromises.readFile(songPath, 'utf8');
+		return JSON.parse(songData);
+	}
+}
 
-	return JSON.parse(res);
+/**
+ * @name getSongsTrackData
+ * @memberOf fsAPI
+ * @description Gets all songs in the user's library, in track data format.
+ * @returns {Promise<object>} An array of track data.
+ */
+async function getSongsTrackData() {
+	const songs = await getSongs();
+	const ret = [];
+	for (const songPath in songs) {
+		ret.push(await convertPathToTrack(songPath, songs));
+	}
+	return ret;
 }
 
 /**
@@ -36,12 +49,8 @@ async function getSongs() {
 async function writeSongs(songs) {
 	const storagePath = await getStoragePath();
 	const songPath = path.join(storagePath, 'songs.json');
-	//if (!(await fs.exists(songPath))) {
-	fs.exists(songPath, async (e) => {
-		if(!e)
-			await fs.open(songPath, 'w', throwErrOpen);
-	});
-	await fs.writeFile(songPath, JSON.stringify(songs), throwErr);
+
+	await fsPromises.writeFile(songPath, JSON.stringify(songs));
 }
 
 /**
@@ -55,7 +64,7 @@ async function writeSongs(songs) {
  */
 async function appendSong(newSong) {
 	const songs = await getSongs();
-	for(const song in newSongs)
+	for(const song in newSong)
 		songs[song] = newSong[song];
 	await writeSongs(songs);
 }
@@ -63,7 +72,7 @@ async function appendSong(newSong) {
 /**
  * @name appendSongs
  * @description Appends multiple songs to the songs.json file.
- * @param {object[]} newSongs An array of new songs to be appended.
+ * @param {object} newSongs An array of new songs to be appended.
  * @return {Promise<void>}
  */
 async function appendSongs(newSongs) {
@@ -109,16 +118,9 @@ async function cullShortAudio() {
 	await writeSongs(songs);
 }
 
-async function songsGrid() {
-	//TODO: returns a grid of the songs
-	
-}
-async function songsSearch() {
-	//TODO:
-}
-
 module.exports = {
 	getSongs,
+	getSongsTrackData,
 	writeSongs,
 	appendSong,
 	appendSongs,

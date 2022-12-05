@@ -1,11 +1,11 @@
 // preload.js
-const {ipcRenderer, contextBridge, app} = require('electron');
+const {ipcRenderer, contextBridge, app, globalShortcut} = require('electron');
 
 const {
 	addEventListener, addEventListenerbyClassName, getAttribute,
 	setAttribute, addChild, setHTML, appendHTML,
 	setStyle, setStyleClassToggle, loadPage,
-	addGrid, setThemeColor, setProperty, getProperty, getSelectedTracks,
+	addGrid, setThemeColor, toggleDarkTheme, setProperty, getProperty, getSelectedTracks,
 } = require('./dom/domAPICalls.js');
 
 const {
@@ -18,22 +18,28 @@ const {
 } = require('./ffmpeg/metadata/ffMetaAPICalls');
 
 const {
-	pauseSong, playSong, stopSong, resumeSong, seekSong,
+	pauseSong, playSong, stopSong, resumeSong,
+	setBehaviorUponEnd, changeVolume, getCurrentTime,
 } = require('./ffmpeg/play/playSongAPICalls');
 
 const {
 	recursiveSearchAtPath, getSRCString,
-	fsInit, devClear,
+	fsInit, devClear, 
 } = require('./fs/fsAPICalls');
 
 const {
 	getAllPlaylists, getPlaylist,
 	removePlaylist, writePlaylist,
+	writeToPlaylist, removeFromPlaylist,
+	createPlaylist, writePlaylistMeta,
+	removePlaylistMeta, getPlaylistMeta,
+	getPlaylistObj, exportPlaylist,
 } = require('./fs/playlists/playlistAPICalls');
 
 const {
 	appendSong, appendSongs, cullShortAudio,
 	getSongs, removeSong, writeSongs,
+	getSongsTrackData,
 } = require('./fs/songs/songsAPICalls');
 
 const {
@@ -100,12 +106,32 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await setPath();
 });
 
+window.onbeforeunload = async (e) => {
+	await stopSong();
+	let start = Date.now();
+	while(Date.now() < start + 100) {} // yeah.
+	window.onbeforeunload = null;
+	ipcRenderer.send('quit');
+};
+
 contextBridge.exposeInMainWorld('genAPI', {
 	debugLog: debugLog,
 	openDialog: openDialog,
 	publishGlobal: publishGlobal,
 	getGlobal: getGlobal,
 	removeGlobal: removeGlobal,
+	/**
+	 * @memberOf genAPI
+	 * @name ipcSubscribeToEvent
+	 * @description Subscribes to an event from main.js
+	 * @param {string} e The event name
+	 * @param {function} func The function to attach to the event.
+	 */
+	ipcSubscribeToEvent: async (e, func) => {
+		await ipcRenderer.on(e, async () => {
+			await func();
+		});
+	},
 });
 
 contextBridge.exposeInMainWorld('domAPI', {
@@ -123,19 +149,23 @@ contextBridge.exposeInMainWorld('domAPI', {
 	loadPage: loadPage,
 	addGrid: addGrid,
 	setThemeColor: setThemeColor,
+    toggleDarkTheme: toggleDarkTheme,
 	getSelectedTracks: getSelectedTracks,
 });
 
 contextBridge.exposeInMainWorld('ffmpegAPI', {
 	readMetadata: ffmpegRead,
 	writeMetadata: ffmpegWrite,
-	setBinpath: setPath,
+	setBinPath: setPath,
 	playSong: playSong,
 	stopSong: stopSong,
 	pauseSong: pauseSong,
 	resumeSong: resumeSong,
-	seekSong: seekSong,
 	useMultiFFmpeg: useMultiFFmpeg,
+	setBehaviorUponEnd: setBehaviorUponEnd,
+	changeVolume: changeVolume,
+	getCurrentTime: getCurrentTime,
+
 });
 
 contextBridge.exposeInMainWorld('fsAPI', {
@@ -145,6 +175,7 @@ contextBridge.exposeInMainWorld('fsAPI', {
 	deleteSetting: deleteSetting,
 	getSetting: getSetting,
 	getSongs: getSongs,
+	getSongsTrackData: getSongsTrackData,
 	writeSongs: writeSongs,
 	appendSongs: appendSongs,
 	appendSong: appendSong,
@@ -153,11 +184,19 @@ contextBridge.exposeInMainWorld('fsAPI', {
 	writeStats: writeStats,
 	writeToStat: writeToStat,
 	deleteStat: deleteStat,
-	getAllplaylists: getAllPlaylists,
+	getPlaylistObj: getPlaylistObj,
+	getAllPlaylists: getAllPlaylists,
 	getPlaylist: getPlaylist,
 	removePlaylist: removePlaylist,
+	createPlaylist: createPlaylist,
+	writePlaylistMeta: writePlaylistMeta,
+	removePlaylistMeta: removePlaylistMeta,
+	getPlaylistMeta: getPlaylistMeta,
+	removeFromPlaylist: removeFromPlaylist,
 	writePlaylist: writePlaylist,
+	writeToPlaylist: writeToPlaylist,
 	getSRCString: getSRCString,
-	recursiveSearchAtpath: recursiveSearchAtPath,
+	recursiveSearchAtPath: recursiveSearchAtPath,
 	cullShortAudio: cullShortAudio,
+	exportPlaylist: exportPlaylist,
 });

@@ -14,12 +14,14 @@ const {
 const {
 	getSongs,
 } = require('../fs/songs/songsAPICalls');
+const childProcess = require("child_process");
 
 
 let ffProbePath = '';
 let ffmpegPath = '';
 let ffplayPath = '';
 let multiPath = '';
+
 
 /**
  *
@@ -52,34 +54,69 @@ async function getReadCMDForSpawn(filepath) {
  *
  * @param {string} filepath The path of the file to modify
  * @param {object} options The tags to modify
- * @return {Promise<string>} The command to execute
+ * @return {Promise<{args: string[], cmd: string, mvArgs: string[], mvCmd: string}>} The command to execute
  */
 async function getWriteCMD(filepath, options) {
-	let cmd = '';
-	cmd += ffmpegPath + ' -i "' +
-        filepath.split(path.sep).join(path.posix.sep) + '"';
+	const inPath = filepath.split(path.posix.sep).join(path.sep);
+	// a very smart answer from wallacer on stackoverflow. qid: 190852 (the split.pop())
+	const outPathArr = inPath.split(path.sep)
+		.splice(0, inPath.split(path.sep).length - 1);
+	outPathArr.push('out.' + inPath.split('.').pop());
+
+	const outPath = outPathArr.join(path.sep);
+
+	let args = [
+		'-i', inPath,
+	];
+
 	Object.keys(options).forEach((tag) => {
-		cmd += ' -metadata ';
-		cmd += tag + '="' + options[tag] + '" ';
+		args.push('-metadata');
+		args.push(tag + '="' + options[tag] + '"');
 	});
-	// a very smart answer from wallacer on stackoverflow. qid: 190852
-	cmd += ' out.' + filepath.split('.').pop();
-	return cmd;
+
+	args.push(outPath);
+
+	let mvCmd;
+	let mvArgs;
+	if (process.platform === 'win32') {
+		mvCmd = 'move';
+		mvArgs = [
+			'/y',
+			'"' + outPath + '"',
+			'"'  + inPath + '"'
+		];
+	} else {
+		childProcess.execSync('mv out.' +
+			inPath.split('.').pop() + ' ' + inPath);
+		mvCmd = 'mv';
+		mvArgs = [
+			'"' + outPath + '"',
+			'"'  + inPath + '"'
+		];
+	}
+
+	return {
+		cmd: ffmpegPath,
+		args: args,
+		mvCmd: mvCmd,
+		mvArgs: mvArgs,
+	};
 }
 
 /**
+ * @param {string[]} paths The file paths.
  * @return {Promise<{cmd: string, args: {input: string, output: string, probe:string}}>}
  */
-async function getMultiCMD() {
+async function getMultiCMD(paths) {
 	const fs = require('fs').promises;
 	const tempPath = path.join(await ipcRenderer.invoke('getTempPath'), 'songs_temp.txt');
 	const outPath = path.join(await ipcRenderer.invoke('getTempPath'), 'out_json.txt');
 
 	const songs = await getSongs();
 	let fileContents = '';
-	for (const songPath in songs) {
+	for (const songPath in paths) {
 		if (!songPath) continue;
-		fileContents += (songPath + '\n');
+		fileContents += (paths[songPath] + '\n');
 	}
 	await fs.writeFile(tempPath, fileContents, (err) => {
 		if (err) {
@@ -147,6 +184,7 @@ async function setPath(binPath = undefined) {
 		ffProbePath = path.join(binPath, '/ffprobe');
 		ffmpegPath = path.join(binPath, '/ffmpeg');
 		ffplayPath = path.join(binPath, '/ffplay');
+		multiPath = path.join(binPath, '/multi_ffmpeg');
 	}
 	await debugLog(`Set ffPaths to\nffprobe: ${ffProbePath} \nffmpeg: ${ffmpegPath}\nffplay: ${ffplayPath}`,
 		'fs-general');

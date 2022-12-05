@@ -3,9 +3,12 @@
     <div id="infoContainer">
         <!-- need js actually to dynamically change content-->
         <!-- get data from api-->
-            <img src="../img/sampleData/artwork-DuaLipa.webp" id="playbackArt">
-            <!-- <img src="/musicplayer/img/artwork.webp" id="playbackArt"> -->
-        <p><b>Don't start now</b><br>Dua Lipa</p>
+			<img src="../img/artwork-default.png" id="playbackArt">
+            <!-- <img src="../img/artwork-default.png" id="playbackArt"> -->
+        <div class="songInfo">
+            <div id="songInfo-title"></div>
+            <div id="songInfo-artist"></div>
+        </div>
     </div>
 
     <!-- PLAYBACK CONTROLS -->
@@ -18,8 +21,10 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="mainControls" viewBox="0 0 60 60"><path d="M11 36V12h3v24Zm26 0L19.7 24 37 12Z"/></svg>
             </button>
             <button type="button" id="play-btn" class="playbackBtn">
-                <img src="../img/icons/playback/play.png" width="20" height="20">
-                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="mainControls" viewBox="0 0 60 60"><path d="M16 37.85v-28l22 14Z"/></svg> -->
+                <!-- This image is an alternative to the SVG, but it doesn't work with dark mode, so I am removing it - SIKE - need to update toggleIcon function first!-->
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="mainControls" viewBox="0 2 45 45"><path d="M16 37.85v-28l22 14Z"/></svg> -->
+                <!-- <img src="../img/icons/playback/play.png" width="20" height="20"> -->
+                <svg xmlns="http://www.w3.org/2000/svg" id="play-btn-icon" class="mainControls" viewBox="0 0 60 60"><path d="M16 37.85v-28l22 14Z"/></svg>
             </button>
             <button type="button" id="next-btn" class="playbackBtn">
                 <svg xmlns="http://www.w3.org/2000/svg" class="mainControls" viewBox="0 0 60 60"><path d="M34 36V12h3v24Zm-23 0V12l17.3 12Z"/></svg>
@@ -29,26 +34,27 @@
             </button>
         </div>
         <div id="progressContainer">
-            <p class="timestamps">###</p>
+            <p class="timestamps"></p>
             <!-- <svg>
                 <rect id="playbackBar" class="bar"/>
             </svg> -->
             <!-- <div class="progressBar">
                 <div></div>
             </div> -->
-            <input type="range" id="progressBar" class="fader" value="100">
-            <p class="timestamps">###</p>
+            <input type="range" id="progressBar" class="fader" step="0.0001" value="0">
+            <p class="timestamps"></p>
         </div>
     </div>
 
     <!-- VOLUME -->
     <div id="audioContainer">
-        <img src="../img/icons/playback/unmuted.png" id="audioIcon" width="20" height="20">
+        <svg xmlns="http://www.w3.org/2000/svg" id="audioIcon" class="mainControls" viewBox="0 0 60 60" height="60" width="60"><path d="M28 41.45v-3.1q4.85-1.4 7.925-5.375T39 23.95q0-5.05-3.05-9.05-3.05-4-7.95-5.35v-3.1q6.2 1.4 10.1 6.275Q42 17.6 42 23.95t-3.9 11.225Q34.2 40.05 28 41.45ZM6 30V18h8L24 8v32L14 30Zm21 2.4V15.55q2.75.85 4.375 3.2T33 24q0 2.85-1.65 5.2T27 32.4Z"/></svg>
+        <!-- <img src="../img/icons/playback/unmuted.png" id="audioIcon" width="20" height="20"> -->
         <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" height="48" width="48"><path d="M28 41.45v-3.1q4.85-1.4 7.925-5.375T39 23.95q0-5.05-3.05-9.05-3.05-4-7.95-5.35v-3.1q6.2 1.4 10.1 6.275Q42 17.6 42 23.95t-3.9 11.225Q34.2 40.05 28 41.45ZM6 30V18h8L24 8v32L14 30Zm21 2.4V15.55q2.75.85 4.375 3.2T33 24q0 2.85-1.65 5.2T27 32.4Zm-6-16.8L15.35 21H9v6h6.35L21 32.45ZM16.3 24Z"/></svg> -->
         <input type="range" id="audio-fader" class="fader" value="100">
         <button type="button" id="playlists-bottom-btn" class="playbackBtn" >
-            <img src="../img/icons/queue.png" width="20" height="20">
-            <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" height="48" width="48"><path d="M5 31.5v-3h15.3v3Zm0-8.25v-3h23.65v3ZM5 15v-3h23.65v3Zm27.1 27V25.9L43 33.95Z"/></svg> -->
+            <!-- <img src="../img/icons/queue.png" width="20" height="20"> -->
+            <svg xmlns="http://www.w3.org/2000/svg" id="playback-queue-btn" viewBox="0 0 100 100" height="60" width="60"><path d="M5 31.5v-3h15.3v3Zm0-8.25v-3h23.65v3ZM5 15v-3h23.65v3Zm27.1 27V25.9L43 33.95Z"/></svg>
         </button>
     </div>
 </div>

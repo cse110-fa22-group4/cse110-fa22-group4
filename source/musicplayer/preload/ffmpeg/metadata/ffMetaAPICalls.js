@@ -27,6 +27,7 @@ const {
 const {debugLog} = require('../../general/genAPICalls');
 const {clipboard} = require('electron');
 const {promises: fs} = require('fs');
+const {setProperty} = require('../../dom/domAPICalls');
 
 // noinspection LoopStatementThatDoesntLoopJS
 /**
@@ -79,24 +80,30 @@ async function ffmpegRead(filepath) {
  */
 async function ffmpegWrite(filepath, options) {
 	const childProcess = require('child_process');
-	childProcess.execSync(await getWriteCMD(filepath, options)).toString();
-	if (process.platform === 'win32') {
-		childProcess.execSync('move /y out.' +
-			filepath.split('.').pop() + ' ' + filepath);
-	} else {
-		childProcess.execSync('mv out.' +
-			filepath.split('.').pop() + ' ' + filepath);
-	}
+	const commands = await getWriteCMD(filepath, options);
+	await debugLog(commands, 'unit-tests');
+	return new Promise((resolve, reject) => {
+		try {
+			const proc = childProcess.spawn(commands.cmd, commands.args);
+			proc.on('close', async (code) => {
+				debugger;
+				childProcess.execSync(commands.mvCmd + ' ' + commands.mvArgs.join(' '));
+			});
+		} catch (e) {
+			reject("Failed on ffmpeg proc: " + e);
+		}
+	});
 }
 
 /**
+ * @param {string} path The paths to search.
  * @return {Promise<object>}
  */
-async function createMultiFFmpegPromise() {
+async function createMultiFFmpegPromise(path) {
 	const childProcess = require('child_process');
 	const fs = require('fs').promises;
 	const {debugLog} = require('../../general/genAPICalls');
-	const commands = await getMultiCMD();
+	const commands = await getMultiCMD(await recursiveSearchAtPath(path));
 	return new Promise((resolve, reject) => {
 		try {
 			const proc = childProcess.spawn(
@@ -112,6 +119,9 @@ async function createMultiFFmpegPromise() {
 			proc.stdout.on('data', async (data) => {
 				if (data) {
 					await debugLog(data.toString(), 'multi-ffmpeg-loading-progress');
+					// this updates the frontend progress bar
+					await setProperty('rescan-progress', 'value', parseFloat(data.toString()));
+					await setProperty('percentage-rescan-progress', 'innerHTML', parseFloat(data.toString()) + '%');
 				}
 			});
 
@@ -142,11 +152,13 @@ async function createMultiFFmpegPromise() {
 }
 
 /**
- *
+ * @memberOf ffmpegAPI
+ * @name createMultiFFmpegPromise
+ * @param {string[]} paths The paths to search.
  * @return {Promise<Object>}
  */
-async function useMultiFFmpeg() {
-	return await createMultiFFmpegPromise();
+async function useMultiFFmpeg(paths) {
+	return await createMultiFFmpegPromise(paths);
 }
 
 module.exports = {

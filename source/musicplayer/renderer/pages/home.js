@@ -1,6 +1,7 @@
-/* eslint-disable linebreak-style */
-// This file is very WIP
+let libraryCatalogRef;
 window.addEventListener('home-loaded', async () => {
+	// we need to get our global libraryCatalogRef
+	libraryCatalogRef = await fsAPI.getSongsTrackData();
 	await generateHomeCards();
 	await domAPI.addEventListenerbyClassName('library-card-album', 'click', libraryAlbumsExtended);
 	await domAPI.addEventListenerbyClassName('library-card-artist', 'click', libraryArtistsExtended);
@@ -8,90 +9,159 @@ window.addEventListener('home-loaded', async () => {
 	await domAPI.addEventListenerbyClassName('library-card-tag', 'click', libraryTagsExtended);
 });
 
+window.addEventListener('home-grid-queue-clicked', async (args) => {
+    const trackObj = args['detail']; 
+	console.log(trackObj);
+
+    // send track to playback queue
+    // playback integration edit
+    if (queueArr.length == 0) {
+        initFirstSong([trackObj]);
+        initProgress([trackObj]);
+        initInfo([trackObj]);
+    }
+    queueArr.push(trackObj);
+    prevSongsArr.push(trackObj);
+
+    // send user feedback
+    await giveUserFeedback('Added to Queue')
+
+    await refreshQueueViewer();
+});
+
 /**
  * @description Generates artist, album, genre, and tag cards, four of each, randomly selected from the library
  * @return {Promise<void>}
  */
 async function generateHomeCards() {
-	// we need to get our global libraryCatalog
-	const libraryCatalog = await genAPI.getGlobal(libraryCatalog);
 	// we cannot have more cards than we have songs
-	const numHomeCards = Math.max(4, libraryCatalog.length);
+	const numHomeCards = Math.min(4, libraryCatalogRef.length);
+
+	if (numHomeCards === 0) {
+		await emptyLibrary();
+		return;
+	}
 
 	// this boolean prevents us from failing to generate something unique more than once.
 	// if we generate something nonunique, try again, and it still isn't unique, we just don't add a card then
-	let repeatFailure = false;
+	const maxRepeats = 1000;
 
 	// let's get numHomeCards many unique random entries from our Library
 	const albums = new Set();
+	let count = 0;
 	while (albums.size < numHomeCards) {
-		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique. We add it regardless of whether it is new or not the second time
-		if (!(albums[randomIndex] in albums) || repeatFailure) {
-			albums.add(libraryCatalog[randomIndex].album);
-			repeatFailure = false;
+		if (!('album' in libraryCatalogRef[randomIndex]))
+		{
+			count += 1;
+			if (count >= maxRepeats) break;
+			continue;
+		}
+
+		if (!(albums.has(libraryCatalogRef[randomIndex]['album']))) {
+			albums.add(libraryCatalogRef[randomIndex]['album']);
+			count = 0;
+		} else if (count >= maxRepeats) {
+			break;
 		} else {
 			// this only gets executed when there has not been a repeat
 			// failure and the two adjacent elements are not equal.
-			repeatFailure = true;
+			count+=1;
 		}
 	}
 
 	const artists = new Set();
+	count = 0;
 	while (artists.size < numHomeCards) {
-		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
-		if (!(artists[randomIndex] in artists) || repeatFailure) {
-			artists.add(libraryCatalog[randomIndex].artist);
-			repeatFailure = false;
+		if (!('artist' in libraryCatalogRef[randomIndex]))
+		{
+			count += 1;
+			if (count >= maxRepeats) break;
+			continue;
+		}
+		if (!(artists.has(libraryCatalogRef[randomIndex]['artist']))) {
+			artists.add(libraryCatalogRef[randomIndex].artist);
+			count = 0;
+		} else if (count >= maxRepeats) {
+			break;
 		} else {
 			// this only gets executed when there has not been a repeat
 			// failure and the two adjacent elements are not equal.
-			repeatFailure = true;
+			count+=1;
 		}
 	}
 
-	const genres = [];
-	while (genres.size < numHomeCards) {
-		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+	const genres = new Set();
+	count = 0;
+	while (genres.size < numHomeCards && count < maxRepeats) {
+		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
 		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
-		const genreArr = libraryCatalog[randomIndex].genre.split(', ');
+		if (!('genre' in libraryCatalogRef[randomIndex]))
+		{
+			count += 1;
+			if (count >= maxRepeats) break;
+			continue;
+		}
+		const genreArr = libraryCatalogRef[randomIndex]['genre'].split(', ');
+		if (genreArr.length === 0) {
+			genres.add('');
+			count += 1;
+		}
 		for (const i of genreArr) {
-			if ((!(i in genres) || repeatFailure) && genres.size < numHomeCards) {
+			if ((!(genres.has(i))) && genres.size < numHomeCards) {
 				genres.add(i);
-				repeatFailure = false;
+				count = 0;
+			} else if (count >= maxRepeats) {
+				break;
 			} else {
 				// this only gets executed when there has not been a repeat
 				// failure and the two adjacent elements are not equal.
-				repeatFailure = true;
+				count += 1;
 			}
 		}
 	}
 
-	const tags = [];
-	while (tags.size < numHomeCards) {
-		const randomIndex = Math.floor(Math.random*libraryCatalog.length);
+	const tags = new Set();
+	count = 0;
+	while (tags.size < numHomeCards && count < maxRepeats) {
+		const randomIndex = Math.floor(Math.random()*libraryCatalogRef.length);
 		// let's try this once more if it's not unique
 		// since there can be an array of genres, we add all of them as long as they are unique in a for loop
-		const tagArr = libraryCatalog[randomIndex].tags.split(', ');
+		if (!('tags' in libraryCatalogRef[randomIndex]))
+		{
+			count += 1;
+			if (count >= maxRepeats) break;
+			continue;
+		}
+
+		const tagArr = libraryCatalogRef[randomIndex]['tags'].split(', ');
+		if (tagArr.length === 0) {
+			tags.add('');
+			count += 1;
+		}
 		for (const i of tagArr) {
-			if ((!(i in tags) || repeatFailure) && tags.size < numHomeCards) {
+			if ((!(tags.has(i))) && tags.size < numHomeCards) {
 				tags.add(i);
-				repeatFailure = false;
+				count = 0;
+			} else if (count >= maxRepeats) {
+				break;
 			} else {
 				// this only gets executed when there has not been a repeat
 				// failure and the two adjacent elements are not equal.
-				repeatFailure = true;
+				count+=1;
 			}
 		}
 	}
 
 	// insert card list into containers
-	await domAPI.setHTML('home-albums-container', albums);
-	await domAPI.setHTML('home-artists-container', artists);
-	await domAPI.setHTML('home-genres-container', genres);
-	await domAPI.setHTML('home-tags-container', tags);
+	await domAPI.setHTML('home-albums-container', await generateAlbumCardList(albums));
+	await domAPI.setHTML('home-artists-container', await generateArtistCardList(artists));
+	await domAPI.setHTML('home-genres-container', await generateGenreCardList(genres));
+	await domAPI.setHTML('home-tags-container', await generateTagCardList(tags));
 }
 
 /**
@@ -101,21 +171,21 @@ async function generateHomeCards() {
  */
 async function generateAlbumCardList(albums) {
 	// let's fill out our cardData with entries from the albums
-	const cardData = new Map(); // ('album', {artist: '', year: Number, artwork: ''})
+	const cardData = new Map(); // ('album', {artist: '', date: Number, artwork: ''})
 	albums.forEach((album) =>{
 		cardData.set(album, {
-			year: 0,
+			date: 0,
 			artworks: [],
 		});
 	});
 
 	// we go through the library and fill in our information for the album
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const currTrack = libraryCatalog[i];
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		const currTrack = libraryCatalogRef[i];
 		if (cardData.has(currTrack.album)) {
 			cardData.set(currTrack.album, {
 				artist: currTrack.artist,
-				year: currTrack.year,
+				date: currTrack.date,
 				artwork: currTrack.artwork,
 			});
 		}
@@ -124,15 +194,31 @@ async function generateAlbumCardList(albums) {
 	// generate cards
 	let cardList = '';
 	for (const [key, value] of cardData) {
+		// generation with no parameters
+		let album;
+		if (key === '') {
+			album = 'Unknown Album';
+		} else {
+			album = key;
+		}
+		if (value.artist === '') {
+			value.artist = 'Unknown Artist';
+		}
+		if (value.date === '') {
+			value.date = 'Unknown Year';
+		}
+		if (value.artwork === '' || value.artwork === undefined) {
+			value.artwork = '../img/artwork-default.png';
+		}
 		const card = `
-    <div class="library-card-album" data-libtarget="${key}">
+    <div class="library-card library-card-album" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${value.artwork} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${album}</div>
         <div>${value.artist}</div>
-        <div>${value.year}</div>
+        <div>${value.date}</div>
       </div>
     </div>
   `;
@@ -149,7 +235,7 @@ async function generateAlbumCardList(albums) {
  */
 async function generateArtistCardList(artists) {
 	// we fill our cardData with the artists we were passed in
-	const cardData = new Map(); // ('album', {artist: '', year: Number, artwork: ''})
+	const cardData = new Map(); // ('artist, {numAlbums: '', date: Number, artwork: ''})
 	artists.forEach((artist) => {
 		cardData.set(artist, {
 			numAlbums: new Set(),
@@ -159,8 +245,8 @@ async function generateArtistCardList(artists) {
 	});
 
 	// go through the library and get information on the artists
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const currTrack = libraryCatalog[i];
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		const currTrack = libraryCatalogRef[i];
 		if (cardData.has(currTrack.artist)) {
 			cardData.get(currTrack.artist).numAlbums.add(currTrack.album);
 			cardData.get(currTrack.artist).numTracks++;
@@ -173,14 +259,24 @@ async function generateArtistCardList(artists) {
 	// generate cards from cardData
 	let cardList = '';
 	for (const [key, value] of cardData) {
-		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		// generation with no parameters
+		let artist;
+		if (key === '') {
+			artist = 'Unknown Artist';
+		} else {
+			artist = key;
+		}
+		if (cardCover === '' || cardCover === undefined) {
+			cardCover = '../img/artwork-default.png';
+		}
 		const card = `
-    <div class="library-card-artist" data-libtarget="${key}">
+    <div class="library-card library-card-artist" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${artist}</div>
         <div>${value.numAlbums.size} ${value.numAlbums.size === 1 ? 'Album' : 'Albums'}</div>
         <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
@@ -209,9 +305,13 @@ async function generateGenreCardList(genres) {
 	});
 
 	// look through the library to find songs in the genre
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const currTrack = libraryCatalog[i];
-		const genreArr = libraryCatalog[i].genre.split(', ');
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		const currTrack = libraryCatalogRef[i];
+		if (!('genre' in libraryCatalogRef[i]))
+		{
+			continue;
+		}
+		const genreArr = libraryCatalogRef[i].genre.split(', ');
 		for (let j = 0; j < genreArr.length; j++) {
 			const currGenre = genreArr[j];
 			if (cardData.has(currGenre)) {
@@ -227,14 +327,24 @@ async function generateGenreCardList(genres) {
 	// generate cards
 	let cardList = '';
 	for (const [key, value] of cardData) {
-		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		// generation with no parameters
+		let genre;
+		if (key === '') {
+			genre = 'Unknown Genre';
+		} else {
+			genre = key;
+		}
+		if (cardCover === '' || cardCover === undefined) {
+			cardCover = '../img/artwork-default.png';
+		}
 		const card = `
-    <div class="library-card-genre" data-libtarget="${key}">
+    <div class="library-card library-card-genre" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${genre}</div>
         <div>${value.numArtists.size} ${value.numArtists.size === 1 ? 'Artist' : 'Artists'}</div>
         <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
@@ -263,9 +373,13 @@ async function generateTagCardList(tags) {
 	});
 
 	// look through the library for songs with these tags
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const currTrack = libraryCatalog[i];
-		const tagArr = libraryCatalog[i].tags.split(', ');
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		const currTrack = libraryCatalogRef[i];
+		if (!('tags' in libraryCatalogRef[i]))
+		{
+			continue;
+		}
+		const tagArr = libraryCatalogRef[i].tags.split(', ');
 		for (let j = 0; j < tagArr.length; j++) {
 			const currTag = tagArr[j];
 			if (cardData.has(currTag)) {
@@ -282,14 +396,24 @@ async function generateTagCardList(tags) {
 	// generate cards
 	let cardList = '';
 	for (const [key, value] of cardData) {
-		const cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		let cardCover = value.artworks[Math.floor(Math.random() * value.artworks.length)];
+		// generate default info
+		let tag;
+		if (key === '') {
+			tag = 'Unassigned';
+		} else {
+			tag = key;
+		}
+		if (cardCover === '' || cardCover === undefined) {
+			cardCover = '../img/artwork-default.png';
+		}
 		const card = `
-    <div class="library-card-tag" data-libtarget="${key}">
+    <div class="library-card library-card-tag" data-libtarget="${key}">
       <div class="library-card-artwork">
         <img src=${cardCover} alt="">
       </div>
       <div class="library-card-info">
-        <div>${key}</div>
+        <div>${tag}</div>
         <div>${value.numArtists.size} ${value.numArtists.size === 1 ? 'Artist' : 'Artists'}</div>
         <div>${value.numTracks} ${value.numTracks === 1 ? 'Track' : 'Tracks'} </div>
       </div>
@@ -299,11 +423,6 @@ async function generateTagCardList(tags) {
 	}
 	return cardList;
 }
-
-// ALL THESE FUNCTIONS ARE HERE TEMPORARILY BECAUSE I DO NOT KNOW HOW TO IMPORT FUNCTIONS.
-// Originally were in files by Alvin, but those are gone. 
-// I expect them to come back though, so I will leave this message in
-
 
 /**
  * @description  > Albums Extended Page. Generate Album Library View based on user selection.
@@ -316,16 +435,21 @@ async function libraryAlbumsExtended(e) {
 
 	// Set grid rows
 	const data = [];
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		if (libraryCatalog[i].album === cardAlbum) {
-			data.push(libraryCatalog[i]);
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		if (libraryCatalogRef[i].album === cardAlbum) {
+			data.push(libraryCatalogRef[i]);
 		}
 	}
 
 	// Generate album grid
-	await domAPI.setHTML('header-subtitle', `Library > Albums > ${cardAlbum}`);
-	await domAPI.setHTML('library-albums-cards', '');
-	await domAPI.addGrid('library-albums-container', libraryHeaders, data, gridSettings);
+	await domAPI.setHTML('header-title', `Library`);
+	await domAPI.setHTML('home', '');
+	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardAlbum}`);
+	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 }
 
 /**
@@ -337,16 +461,21 @@ async function libraryArtistsExtended(e) {
 
 	// Set grid rows
 	const data = [];
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		if (libraryCatalog[i].artist === cardArtist) {
-			data.push(libraryCatalog[i]);
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		if (libraryCatalogRef[i].artist === cardArtist) {
+			data.push(libraryCatalogRef[i]);
 		}
 	}
 
 	// Generate artist grid
-	await domAPI.setHTML('header-subtitle', `Library > Artists > ${cardArtist}`);
-	await domAPI.setHTML('library-artists-cards', '');
-	await domAPI.addGrid('library-artists-container', libraryHeaders, data, gridSettings);
+	await domAPI.setHTML('header-title', `Library`);
+	await domAPI.setHTML('home', '');
+	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardArtist}`);
+	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+    
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 }
 
 /**
@@ -360,20 +489,28 @@ async function libraryGenresExtended(e) {
 
 	// Set grid rows
 	const data = [];
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const genreArr = libraryCatalog[i].genre.split(', ');
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		if (!('genre' in libraryCatalogRef[i]))
+		{
+			continue;
+		}
+		const genreArr = libraryCatalogRef[i].genre.split(', ');
 		for (let j = 0; j < genreArr.length; j++) {
 			if (genreArr[j] === cardGenre) {
-				data.push(libraryCatalog[i]);
+				data.push(libraryCatalogRef[i]);
 				break;
 			}
 		}
 	}
 
-	// Generate genre grid
-	await domAPI.setHTML('header-subtitle', `Library > Genres > ${cardGenre}`);
-	await domAPI.setHTML('library-genres-cards', '');
-	await domAPI.addGrid('library-genres-container', libraryHeaders, data, gridSettings);
+	await domAPI.setHTML('header-title', `Library`);
+	await domAPI.setHTML('home', '');
+	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardGenre}`);
+	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
 }
 
 /**
@@ -385,18 +522,37 @@ async function libraryTagsExtended(e) {
 
 	// Set grid rows
 	const data = [];
-	for (let i = 0; i < libraryCatalog.length; i++) {
-		const tagsSplit = libraryCatalog[i].tags.split(', ');
+	for (let i = 0; i < libraryCatalogRef.length; i++) {
+		if (!('tags' in libraryCatalogRef[i]))
+		{
+			continue;
+		}
+		const tagsSplit = libraryCatalogRef[i].tags.split(', ');
 		for (let j = 0; j < tagsSplit.length; j++) {
 			if (tagsSplit[j] === cardTag) {
-				data.push(libraryCatalog[i]);
+				data.push(libraryCatalogRef[i]);
 				break;
 			}
 		}
 	}
 
 	// Generate tag grid
+	await domAPI.setHTML('header-title', `Library`);
+	await domAPI.setHTML('home', '');
 	await domAPI.setHTML('header-subtitle', `Library > Tags > ${cardTag}`);
-	await domAPI.setHTML('library-tags-cards', '');
-	await domAPI.addGrid('library-tags-container', libraryHeaders, data, gridSettings);
+	await domAPI.addGrid('home-grid', libraryHeaders, data, gridSettings);
+
+    // update the sidebar
+	await resetSidebarButtons();
+	await domAPI.setStyleClassToggle('sidebar-btn-container-library', 'sidebar-btn-active', true);
+}
+
+/**
+ * @description this function should be called if you have an empty library. It will display some friendly
+ * text telling the user to go add a watched folder.
+ */
+async function emptyLibrary() {
+	const friendlyText = `<h2>Looks like you don't have any songs in your library :(</h2>
+		<p>To add songs, go into the settings and add a folder with songs in it.</p>`;
+	await domAPI.setHTML('home', friendlyText);
 }

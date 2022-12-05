@@ -21,15 +21,13 @@
   <script src="../renderer/components/settings.js"></script>
   <script src="../renderer/components/overviewExtended.js"></script>
   <script src="../renderer/components/mainHeader.js"></script>
-  <script src="../renderer/components/library.js"></script>
+  <script src="../renderer/components/mainButtons.js"></script>
   <script src="../renderer/pages/home.js"></script>
-  <script src="../renderer/pages/libraryArtists.js"></script>
-  <script src="../renderer/pages/libraryAlbums.js"></script>
-  <script src="../renderer/pages/libraryGenres.js"></script>
-  <script src="../renderer/pages/libraryTags.js"></script>
+  <script src="../renderer/components/library.js"></script>
   <script src="../renderer/pages/libraryPlaylists.js"></script>
   <script src="../renderer/components/search.js"></script>
   <script src="../renderer/components/metaEditor.js"></script>
+  <script src="../renderer/components/queueViewer.js"></script>
   <script src="../renderer/components/playback.js"></script>
   <script src="../renderer/components/searchCategories.js"></script>
   <script src="../renderer/components/searchPage.js"></script>
@@ -47,34 +45,39 @@
   <!-- Sidebar -->
   <div id="sidebar-container" class="vis"></div>
 
-  <!-- Overview + Main Heading + Main Contents (pages) + Meta Editor -->
+  <!-- Overview Panel -->
+  <div id="overview-container" class="vis"></div>
+
+  <!-- Main -->
   <div id="top-container">
     
-    <div id="overview-container" class="vis"></div>
-
     <div id="main-header-container" class="vis"></div>
 
     <div id="mainMeta-container">
       <div id="main-container" class="vis"></div>
-      <div id="editor-container" class="vis"></div>
+      <div id="editor-container" class="vis" data-editortype=""></div>
     </div>
 
   </div>
+
+  <!-- Main Buttons -->
+  <div id="main-buttons-container"></div>
 
   <!-- Overview Extended -->
   <div id="top-container-extended"></div>
 
   <!-- Playback -->
   <div id="playback-container" class="vis"></div>
-
+  
   <!-- Searchbar + Settings -->
   <div id="searchbar-container" class="vis"></div>
 
   <!-- Hidden Grid for searching-->
-  <div id="hidden-search-grid">
-  </div>
+  <div id="hidden-search-grid"></div>
   <h1> test </h1>
 
+  <!-- User feedback -->
+  <div id="user-feedback-container"></div>
 
 </body>
 

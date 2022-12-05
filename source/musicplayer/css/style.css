@@ -1,3 +1,6 @@
+/* stylelint-disable selector-id-pattern */
+/* stylelint-disable import-notation */
+
 /* @import "gridjs.css"; */
 @import "customGridjs.css";
 @import "main.css";
@@ -13,23 +16,40 @@
 @import "settings.css";
 @import "home.css";
 @import "playlistManager.css";
+@import "queueViewer.css";
 
 
 :root {
-  font-family: 'Roboto', sans-serif;
-  font-size: 12px;
-  font-weight: 100;
+    font-family: Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: 100;
 
-  --theme-primary: #67878E;
-  --theme-secondary: #67878E;
-  --dark: #1F1F1F;
-  --light: #FFFFFF;
-  --mid-light: #dbdbdb;
-  --mid: #C4C4C4;
-  --mid-dark: #767676;
+    --theme-primary: #67878e;
+    --theme-secondary: #67878e;
+    --dark: #1f1f1f;
+    --light: #ffffff;
+    --mid-light: #dbdbdb;
+    --mid: #c4c4c4;
+    --mid-dark: #767676;
+
+    --toggle-txt-1: #1f1f1f;
+    --toggle-txt-2: #1f1f1f;
+    --toggle-txt-3: #767676;
+    --toggle-bg-1: #ffffff;
+    --toggle-bg-2: #1f1f1f;
+    --toggle-bg-3: #ffffff;
+    --toggle-border: #c4c4c4;
+    --toggle-hover: #f3f3f3;
+    --toggle-playback: #1f1f1f;
+
+
+
+    --color-test: #3b3b3b;
+
 }
 
 /* tool to reveal div borders for formatting purposes */
+
 /* .vis {
   background: steelblue;
   color: white;
@@ -38,40 +58,80 @@
 
 /* GENERAL */
 body {
-  height: 100vh;
-  margin: 0;
-  padding: 0;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+
+    background-color: var(--toggle-bg-1);
+}
+
+h2 {
+    color: var(--toggle-txt-1);
+}
+
+#user-feedback {
+    display: none;
+    position: fixed;
+    bottom: 120px;
+    left: calc(50vw - 200px + 230px);
+    box-shadow: 2px 4px 8px 0 rgba(0 0 0 / 25%);
+    height: 50px;
+    width: 175px;
+    border-radius: 5px;
+    background-color: var(--theme-primary);
+    color: var(--light);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* opacity: 1;
+    animation: fade 3s linear; */
+}
+
+/* @keyframes fade {
+    0%, 100% { opacity: 0 }
+    50% { opacity: 1 }
+  } */
+
+.grid-top-padding {
+    height: 50px;
+    width: 100%;
+    background-color: var(--toggle-bg-1);
+    position: sticky;
+    top: 0px;
 }
 
 /* SCROLL BARS */
 ::-webkit-scrollbar {
-  border: none;
-  width: 6px;
-  height: 6px;
+    border: none;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--mid-light);
-  border-radius: 10px;
+    background-color: var(--mid-light);
+    border-radius: 10px;
 }
 
 /* TOP CONTAINER */
 #top-container {
-  position: fixed;
-  left: 230px;
-  width: calc(100% - 230px);
-  height: calc(100% - 120px);
-
-  display: flex;
-  flex-direction: column;
+    top: 100px;
+    position: fixed;
+    left: 230px;
+    width: calc(100% - 230px);
+    height: calc(100% - 220px);
+    display: flex;
+    flex-direction: column;
 }
 
 #mainMeta-container {
-  padding: 0 30px;
-  height: calc(100% - 33% - 80px);
-  display: grid;
-  grid-template-columns: 1fr 0fr;
-  /* column-gap: 30px; */
+    padding: 0 30px;
+    height: calc(100% - 87px);
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+
+    /* column-gap: 30px; */
 }
 
 /* PLAYLIST MANAGER + META EDITOR */
@@ -87,9 +147,9 @@ body {
 
 /* HIDDEN GRID FOR SEARCHING */
 #hidden-search-grid {
-  height: 0px;
-  width: 0px;
-  max-height: 0px;
-  max-width: 0px;
-  overflow: hidden;
+    height: 0;
+    width: 0;
+    max-height: 0;
+    max-width: 0;
+    overflow: hidden;
 }
