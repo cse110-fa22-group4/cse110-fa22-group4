@@ -1,4 +1,3 @@
-/* GLOBAL VARS */
 let metaEditorIsExtended = false; // helper to track meta editor
 let playlistManagerIsExtended = false; // helper to track playlist manager
 let queueViewerIsExtended = false; // helper to track queue viewer
@@ -68,14 +67,8 @@ async function addToQueue(element) {
 		
     }
 
-	
-
-
     // refresh queue viewer if already open
-    if(queueViewerIsExtended) {
-	    await toggleQueueViewer();
-	    await toggleQueueViewer();
-    }
+    await refreshQueueViewer();
 
     // reset selection
     if(await getCurrentPage() == 'library') {
@@ -192,6 +185,7 @@ function initFirstSong(selectedTracks) {
 }
 
 /**
+ * @name initProgress 
  * @description set the inital values of the progress bar for  song
  * @param selectedTracks array holding track objects to be pushed
  */
@@ -208,6 +202,7 @@ function initProgress(selectedTracks) {
 }
 
 /**
+ * @name initInfo 
  * @description set the inital info when first song is selected
  * @param selectedTracks array holding track objects to be pushed 
  */

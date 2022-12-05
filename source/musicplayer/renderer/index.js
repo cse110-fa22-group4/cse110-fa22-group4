@@ -2,7 +2,6 @@
  * @namespace Renderer
  */
 
-/* GLOBAL VARS */
 let topContainerIsExtended = false; // helper to track extended overview
 let mainButtonsIsOn = false; // helper to track main buttons visibility
 const searchQuery = ''; // the current query entered into the search bar

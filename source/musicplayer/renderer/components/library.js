@@ -38,20 +38,20 @@ async function onLibraryLoad() {
 	const trackList = await fsAPI.getSongsTrackData();
 
     // TODO: temporary old version implementation, is bugged atm
-    if(searchQueryGlobal.length !== 0) {
-        const searchSettings = {
-            sort: true,
-            resizable: true,
-            fixedHeader: true,
-            autoWidth: false,
-            width: '100%',
-            search: {
-                enabled: true,
-                keyword: searchQueryGlobal,
-            },
-        };
-        await domAPI.addGrid('library-container', libraryHeaders, trackList, searchSettings);
-    } else {
+    // if(searchQueryGlobal.length !== 0) {
+    //     const searchSettings = {
+    //         sort: true,
+    //         resizable: true,
+    //         fixedHeader: true,
+    //         autoWidth: false,
+    //         width: '100%',
+    //         search: {
+    //             enabled: true,
+    //             keyword: searchQueryGlobal,
+    //         },
+    //     };
+    //     await domAPI.addGrid('library-container', libraryHeaders, trackList, searchSettings);
+    // } else {
 	    await domAPI.addGrid('library-container', libraryHeaders, trackList, gridSettings);
-    }
+    // }
 }

@@ -13,7 +13,8 @@ const gridSettings = {
 // Library Headers
 const libraryHeaders = [
 	{hidden: false, sort: {enabled: true}, name: '#', id: 'track', formatter: (cell) => 
-        `${cell.length === 1 ? '0' + cell : cell}`},
+        `${cell.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false})}`},
+    // https://stackoverflow.com/questions/8043026/how-to-format-numbers-by-prepending-0-to-single-digit-numbers
 	{hidden: false, sort: {enabled: true}, name: 'title'},
 	{hidden: false, sort: {enabled: true}, name: 'artist'},
 	{hidden: false, sort: {enabled: true}, name: 'album'},

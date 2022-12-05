@@ -18,7 +18,7 @@ window.addEventListener('playlistManager-loaded', async () => {
 	await domAPI.addEventListener('btn-playlist-add', 'click', addToPlaylist);
 	await domAPI.addEventListener('btn-playlist-remove-selection', 'click', removePlaylistSelection);
 	await domAPI.addEventListener('btn-playlist-delete', 'click', deletePlaylist);
-	await domAPI.addEventListener('btn-playlist-special', 'click', doSomethingSpecial);
+	// await domAPI.addEventListener('btn-playlist-special', 'click', doSomethingSpecial);
 });
 
 /**
@@ -151,11 +151,14 @@ async function deletePlaylist(element) {
 	await fsAPI.removePlaylist(currPlaylist);
 	await updatePlaylistOptions();
 	await updatePlaylistOptions();
+
+    // send user feedback
+    await giveUserFeedback('Playlist deleted');
 }
 
 /**
  * @name doSomethingSpecial
- * @description Pending function for playlist manager.
+ * @description Backup function for playlist manager.
  * @param {HTMLElement} element
  * @return {Promise<void>}
  */
