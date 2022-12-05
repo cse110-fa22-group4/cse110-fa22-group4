@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: preload/general/genAPICalls.js | Source: preload/general/genAPICalls.js</title>
+    <title>Home | Home</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -28,7 +26,7 @@
         
     </div>
     <div class="title">
-        <h1><a href="index.html" class="link">Source: preload/general/genAPICalls.js</a></h1>
+        <h1><a href="index.html" class="link">Home</a></h1>
         
     </div>
     <div class="search-container" id="search-container">
@@ -41,113 +39,141 @@
 <div id="resizer"></div>
 
 <div class="main" id="main">
-    
-
-
-
-    
     <section>
+
+        <header>
+
+            <h2>Overview of MixMatch</h2>
+
+
+        </header>
+
         <article>
-            <pre class="prettyprint source linenums"><code>const path = require('path');
-const {ipcRenderer} = require('electron');
 
-/**
- * @description A list of all debugLog tags. Use comments to enable/disable please.
- * @type {string[]}
- */
-const enabledTags =
-	[
-		'add-event-error',
-		'broadcast-event',
-		'fs-general',
-		'unit-tests',
-		'multi-ffmpeg-loading-progress',
-		'fsplay-error',
-		'play-song-tests',
-		'playlists-test',
-		// 'settings-test',
-	];
+            <div class="container-overview">
+                <div class="description">
+                    <h3 style="font-family:'Comic Sans MS'">When we listen to music, there are two ways:<br>streaming through spotify or youtube music, downloading the music file and listening through groove, or using another music player. But every music player has some defects on it, either it has serious lagging issues, or UIs are deteriorated. <br />So we came up with another music player and we have added many functions that we think would be handy.</h3>
+                </div>
+                <dl class="details">
+                </dl>
+            </div>
+            <h3 class="subsection-title">Main Functions</h3>
 
-/**
- * @name debugLog
- * @memberOf genAPI
- * @description A toggleable version of console.log. One can force the print
- * to go through outside of debug. This
- *              method is preferred to console.log even when forced because
- *              we  can use this to trace console messages.
- * @param {object} message The message to print.
- * @param {string} tag The ID of this debug message. Each tag must be toggled.
- * @return {Promise&lt;void>}
- */
-async function debugLog(message, tag) {
-	if (enabledTags.includes(tag)) {
-		console.log(message);
-	}
-}
-
-/**
- * @name openDialog
- * @memberOf genAPI
- * @description Provides a wrapper to open a file dialog and get file paths.
- * @param {object} opts The options to pass into the open dialog.
- * @return {Promise&lt;Electron.OpenDialogReturnValue>}
- */
-async function openDialog(opts) {
-	const {dialog} = require('electron');
-	return JSON.parse(await ipcRenderer.invoke('openDialog', opts));
-}
-
-const globalVars = {};
-
-/**
- * @name publishGlobal
- * @memberOf genAPI
- * @description Adds a global to storage. Will overwrite anything with the same key
- * @param {any} globalValue - the value of the global we are storing
- * @param {string} globalKey - this string is the key that can be used to access the global that we just stored
- * @return {Promise&lt;void>}
- */
-async function publishGlobal(globalValue, globalKey) {
-	globalVars[globalKey] = globalValue;
-}
-
-/**
- * @name getGlobal
- * @memberOf genAPI
- * @description Retrieves a global from storage
- * @param {string} globalKey - the key to access the global, should be the same as the name of the global
- * @return {Promise&lt;any>}
- */
-async function getGlobal(globalKey) {
-	if (globalKey in globalVars) {
-		return globalVars[globalKey];
-	}
-}
-
-/**
- * @name removeGlobal
- * @memberOf genAPI
- * @description Removes a global from storage.
- * @param {string} globalKey - the key of the global variable we want to remove
- * @return {Promise&lt;void>}
- */
-async function removeGlobal(globalKey) {
-	delete globalVars.globalKey;
-}
+            <dl>
 
 
-module.exports = {
-	debugLog,
-	openDialog,
-	publishGlobal,
-	getGlobal,
-	removeGlobal,
-};
-</code></pre>
+                <dt>
+                    <h4 class="name" id=".loadPage">
+                        <span class="type-signature"> </span>Basic Functions<span class="type-signature"></span>
+                    </h4>
+                </dt>
+                <dd>
+                    <div class="description">
+                        Play, next song, pause, before current song, volume, etc
+                    </div>
+                    <dl class="details">
+                    </dl>
+                </dd>
+                <dt>
+                    <h4 class="name" id=".loadPage">
+                        <span class="type-signature"> </span>Playlist<span class="type-signature"></span>
+                    </h4>
+                </dt>
+                <dd>
+                    <div class="description">
+                        You can create your own playlist and export/import the playlist. You can share your own playlist to your friends and family, or you can get other people’s playlist.
+
+                    </div>
+                    <dl class="details">
+                    </dl>
+                </dd>
+                <dt>
+                    <h4 class="name" id=".loadPage">
+                        <span class="type-signature"> </span>Metadata editing<span class="type-signature"></span>
+                    </h4>
+                </dt>
+                <dd>
+                    <div class="description">
+                        You can make your custom tags for your favorite songs, or add in some comments to your songs. You can also change the metadata for any other purposes.
+
+                    </div>
+                    <dl class="details">
+                    </dl>
+                </dd>
+                <dt>
+                    <h4 class="name" id=".loadPage">
+                        <span class="type-signature"> </span>Searching<span class="type-signature"></span>
+                    </h4>
+                </dt>
+                <dd>
+                    <div class="description">
+                        The search algorithm is based upon many things, could be the name of the song, or tags you created and metadata.
+
+
+                    </div>
+                    <dl class="details">
+                    </dl>
+                </dd>
+                <dt>
+                    <h4 class="name" id=".loadPage">
+                        <span class="type-signature"> </span>Statistics<span class="type-signature"></span>
+                    </h4>
+                </dt>
+                <dd>
+                    <div class="description">
+                        You can figure your statistics and see what your favorite songs are.
+
+
+                    </div>
+                    <dl class="details">
+                    </dl>
+                </dd>
+                <dt>
+                    <h4 class="name" id=".loadPage">
+                        <span class="type-signature"> </span>Styles<span class="type-signature"></span>
+                    </h4>
+                </dt>
+                <dd>
+                    <div class="description">
+                        You can change the styles of UI in the settings.
+
+                    </div>
+                    <dl class="details">
+                    </dl>
+                </dd>
+                <dt>
+                    <h4 class="name" id=".loadPage">
+                        <span class="type-signature"> </span>Dark theme<span class="type-signature"></span>
+                    </h4>
+                </dt>
+                <dd>
+                    <div class="description">
+                        You can set the player to dark themes which are provided in the settings.
+
+                    </div>
+                    <dl class="details">
+                    </dl>
+                </dd>
+                <div>
+                    <a href="functions.md">for more details on the functions please look at the markdown file</a>
+                </div>
+            </dl>
+            <header>
+
+                <h2>Building from source</h2>
+
+
+            </header>
+            <a href="building.md">for tutorials on building, click this link</a>
+            <header>
+
+                <h2>Repo structure</h2>
+                <a href="repoStructure.md">for more information about repo structure, click this link</a>
+
+            </header>
         </article>
+
     </section>
-
-
 
 
 </div>
@@ -162,7 +188,7 @@ module.exports = {
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = '_sub'.replace(/"/g, '_');
+        var id = 'package:undefined_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

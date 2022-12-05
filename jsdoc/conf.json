@@ -8,5 +8,14 @@
     "destination": "docs",
     "recurse": true,
     "template": "node_modules/tui-jsdoc-template"
+  },
+  "templates": {
+    "logo": {
+      "url": "https://raw.githubusercontent.com/cse110-fa22-group4/cse110-fa22-group4/main/admin/misc/images/logo.png",
+      "width": "60px",
+      "height": "15px",
+      "link": "https://github.com/cse110-fa22-group4/cse110-fa22-group4"
+    },
+    "footerText": "Delivered by team Mariposa"
   }
 }
