@@ -61,7 +61,7 @@ async function playTrack(element) {
     let newTrackIndex = element.getAttribute('data-queueIndex')
 
     // jump to song and play
-    // await jumpSong(newTrackIndex);
+     await jumpSong(newTrackIndex);
 
     // refresh queue viewer
     await refreshQueueViewer();
@@ -87,14 +87,7 @@ async function deleteTrackFromQueue(element) {
             await nextSong();
         }
         else {
-            prevSongsArr.splice(0, 0, queueArr[0]);
-            queueArr.splice(0, 1);
-
-            if (toggleOn) {
-                // do not add to end of queue
-            } else {
-                currSongPath = null;
-
+                
                 //pause song
                 const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
                 const playBImg = playB.querySelector('img');
@@ -104,15 +97,17 @@ async function deleteTrackFromQueue(element) {
 
                     toggleIcon(playB, playBImg);
                 }
-            }
 
-            clearInterval(intervalID);
-            resetProgress();
+                clearInterval(intervalID);
+                resetProgress();
+                currSongPath = null;
+                prevSongsArr.splice(0, 0, queueArr[0]);
+                queueArr.splice(0, 1);
 
-            await refreshQueueViewer();
+                await refreshQueueViewer();
+            
+
         }
-
-
 
     }
     else {
@@ -120,15 +115,9 @@ async function deleteTrackFromQueue(element) {
         queueArr.splice(deleteTrackIndex, 1);
     }
 
-
-	// Only if the top song is deleted skip to next song
-	// song at top of queue always index 0
-	if (deleteTrackIndex === "0") { await nextSong(true); }
-
     // refresh queue viewer
     await refreshQueueViewer();
 
-    // TODO: not sure what else needs to be updated for playback ???
 }
 
 /**

@@ -65,8 +65,7 @@ async function addToQueue(element) {
 		}
 
         queueArr.push(selectedTracks[i]);
-		// playback integration edit
-		//prevSongsArr.push(selectedTracks[i]);
+		
     }
 
 	

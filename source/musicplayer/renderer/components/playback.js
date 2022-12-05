@@ -161,16 +161,8 @@ async function controlSong(songPath) {
  * helper for nextSong, prevSong to handle edge case
  */
 function decideFirstSong() {
-	// @ todo read in first song from persistent memory
-	// if (queueArr.length == 0) {
-	// 	return;
-	// }
-	// store first song in history on load
-	//prevSongsIndxArr.push(songNum);
-
+	
 	// set first songPath
-	// const mapVal = playlistMap.get('playlist');
-	// const playlist = mapVal['trackList'];
 	currSongPath = queueArr[0]['filename'];
 }
 
@@ -180,26 +172,22 @@ function decideFirstSong() {
  * 
  */
 async function nextSong() {
-	// get next song (while handling indexOfBounds)
-	// next song is either sequential or shuffled
-	// const mapVal = playlistMap.get('playlist');
-	// const playlist = mapVal['trackList'];
-	if (shuffleOn === true) {
-		//songNum = shuffle(0, queueArr.length - 1, songNum); do nothing
-	} 
-	
+
+	// Do nothing if queue empty
 	if (queueArr.length == 0) {
 		return;
 	}
-	if (queueArr.length == 1) { // should skip to end of song
+	// if last item, should remove song from queue and pause it
+	if (queueArr.length == 1) { 
 		
-		prevSongsArr.splice(0, 0, queueArr[0]);
-		queueArr.splice(0, 1);
+		
 
 		if(toggleOn) {
-			queueArr.push(prevSongsArr[0]) //add to end of queue
+			prevSongsArr.splice(0, 0, queueArr[0]);
+			clearInterval(intervalID);
+			resetProgress();
+			await refreshQueueViewer();
 		} else {
-			currSongPath = null;
 
 			//pause song
 			const playB = document.querySelector('.playbackBtn:nth-of-type(3)');
@@ -210,14 +198,15 @@ async function nextSong() {
 			
 				toggleIcon(playB, playBImg);
 			}
+			clearInterval(intervalID);
+			resetProgress();
+			prevSongsArr.splice(0, 0, queueArr[0]);
+			queueArr.splice(0, 1);
+			currSongPath = null;
+		
+			await refreshQueueViewer();
 		}
 		
-		
-
-		clearInterval(intervalID);
-		resetProgress();
-		
-		await refreshQueueViewer();
 		return;
 	}
 	
@@ -228,7 +217,6 @@ async function nextSong() {
 	queueArr.splice(0, 1);
 	currSongPath = queueArr[0]['filename'];
 	
-
 	isPaused = false;	// isPaused shouldn't be carried over from prevSong
 
 	// on skip, always play the song so button should always become pause
@@ -259,33 +247,14 @@ async function nextSong() {
     await refreshQueueViewer();
 }
 
-/**
- * @description Plays the previous song in playlist (and kills old instance)
- * 	all the tracks of a playlist
- */
-//function loadNextSong() {
-//
-//}
 
 /**
  * @description Plays the previous song in playlist (and kills old instance)
  * 	all the tracks of a playlist
  */
 async function prevSong() {
-	// get prev. song (while handling indexOfBounds)
-	// const mapVal = playlistMap.get('playlist');
-	// const playlist = mapVal['trackList'];
-	// turns out shuffleOn is not special case, since shuffling exists
-	// for prev. Btn to work properly always need array to track songs
-	// -2 since length is +1 from index
-	// (ie: at index=0, 1-1=0 allows if cond. to pass, triggers indexOutOfBounds)
-	/*if ( prevSongsIndxArr.length - 2 < 0) {
-		return;
-	}*/
-	//prevSongsIndxArr.pop();	// remove current song
-	//songNum = 0; // retrieve prev song //dsadhasiudhuaishdiashiduhas
-	// no need for branch anymore, prevSongsArr handles both cases of shuffleOn/Off
 
+	// get prev. song (while handling indexOfBounds)
 	if(prevSongsArr.length != 0) {
 	
 		// insert into queue array
@@ -360,43 +329,6 @@ async function prevSong() {
 }
 
 /**
- * @description randomized index for playlist order which cannot be current index
- * @param {number} min lower bound on randomized song index
- * @param {number} max upper bound on randomized song index
- * @param {number} songNum curent song index
-*  @return {number} representing new random index/songNum to play
- */
-function shuffle(min, max, songNum) {
-// function shuffle() {
-	let randomIndx = songNum;
-	while (randomIndx === songNum) {
-		// first formula would not give a uniform distrubution,
-		// highest indexed song only appears if exactly 2.0, really rare
-		// randomIndx = Math.floor( Math.random() * (max - min) + min );
-		randomIndx = Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-	return randomIndx;
-
-	// let queueClone = structuredClone(queueArr);
-	// let currentIndex = queueArr.length;
-	// let randomIndex;
-	
-	// // While there remain elements to shuffle.
-	// while (currentIndex != 0) {
-	
-	// 	// Pick a remaining element.
-	// 	randomIndex = Math.floor(Math.random() * currentIndex);
-	// 	currentIndex--;
-	
-	// 	// And swap it with the current element.
-	// 	[queueArr[currentIndex], queueArr[randomIndex]] = [
-	// 		queueArr[randomIndex], queueArr[currentIndex]];
-	// }
-	
-	// shuffleArr = array;
-}
-
-/**
  * @description Handles behavior of shuffle button when clicked
  *  (ie: change color, randomize playlist order)
  */
@@ -440,7 +372,6 @@ function toggleColor(toggle, btn) {
  */
 function toggleIcon(btn, btnImg) {
 	if (btn.id === 'play-btn') {
-		// console.log(btn);
 		btnImg.src = '../img/icons/playback/pause.png';
 		(btn).id = 'pause-btn';
 	} else {
