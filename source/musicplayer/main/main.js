@@ -71,6 +71,8 @@ app.whenReady().then(async () => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow();
 	});
 
+	//Citation: 
+	//https://stackoverflow.com/questions/69348406/disable-all-keyboard-shortcuts-in-electron-js
 	globalShortcut.register('CmdOrCtrl+R', () => {
 		//Disable it
 	});
