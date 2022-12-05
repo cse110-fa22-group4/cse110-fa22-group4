@@ -19,6 +19,22 @@ window.addEventListener('gridExtendedButtons-loaded', async () => {
     // clear queue
     await clearQueue();
 
+    if(shuffleOn) {
+        // shuffle items before inserting into queue
+        // shuffle method takes each song, swaps with random index
+        for(let i = playlistTracks.length - 1; i >= 0; i--) {
+            
+            // find index to swap with
+            let indexToSwap = Math.floor(Math.random()*playlistTracks.length);
+
+            // swap elements
+            let tempSong = playlistTracks[i];
+            playlistTracks[i] = playlistTracks[indexToSwap];
+            playlistTracks[indexToSwap] = tempSong;
+        }
+    }
+    
+
     // send tracks to playback queue
     for (let i = 0; i < playlistTracks.length; i++) {
 		// playback integration edit
@@ -29,8 +45,8 @@ window.addEventListener('gridExtendedButtons-loaded', async () => {
 		}
 
         queueArr.push(playlistTracks[i]);
-        prevSongsArr.push(playlistTracks[i]);
     }
+
 
     // refresh queue viewer if already open
     if(queueViewerIsExtended) {
@@ -51,5 +67,5 @@ window.addEventListener('gridExtendedButtons-loaded', async () => {
 
     console.log(playlistTracks);
 
-    // TODO: probably buggy atm, doesn't play immediately after tracks are added
+    // TODO: play immediately after tracks are added
 }

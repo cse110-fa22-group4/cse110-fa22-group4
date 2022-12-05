@@ -10,6 +10,7 @@ window.addEventListener('searchbarSearch', async (event) => {
 /**
  * This is a reference to an ongoing async filter process,
  * which can be cancelled and overwritten.
+ * @name findCategories
  * @type {function}
  */
 /**

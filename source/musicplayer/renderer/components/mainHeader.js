@@ -1,4 +1,3 @@
-/* GLOBAL VARS */
 let metaEditorIsExtended = false; // helper to track meta editor
 let playlistManagerIsExtended = false; // helper to track playlist manager
 let queueViewerIsExtended = false; // helper to track queue viewer
@@ -65,18 +64,11 @@ async function addToQueue(element) {
 		}
 
         queueArr.push(selectedTracks[i]);
-		// playback integration edit
-		prevSongsArr.push(selectedTracks[i]);
+		
     }
-
-	
-
 
     // refresh queue viewer if already open
-    if(queueViewerIsExtended) {
-	    await toggleQueueViewer();
-	    await toggleQueueViewer();
-    }
+    await refreshQueueViewer();
 
     // reset selection
     if(await getCurrentPage() == 'library') {
@@ -188,11 +180,12 @@ async function toggleMetaEditor(element) {
  */
 function initFirstSong(selectedTracks) {
 	// store first song in history on load
-	prevSongsIndxArr.push(songNum);
+	//prevSongsIndxArr.push(songNum);
 	currSongPath = selectedTracks[0]['filename'];
 }
 
 /**
+ * @name initProgress 
  * @description set the inital values of the progress bar for  song
  * @param selectedTracks array holding track objects to be pushed
  */
@@ -209,6 +202,7 @@ function initProgress(selectedTracks) {
 }
 
 /**
+ * @name initInfo 
  * @description set the inital info when first song is selected
  * @param selectedTracks array holding track objects to be pushed 
  */
@@ -222,8 +216,8 @@ function initInfo(selectedTracks) {
 		currArt = selectedTracks[0]['artwork'];
 	}
 
-	document.querySelector('.songInfo > b').innerHTML = currTitle;
-	document.querySelector('.songInfo > p').innerHTML = currArtist;
+	document.querySelector('#songInfo-title').innerHTML = currTitle;
+	document.querySelector('#songInfo-artist').innerHTML = currArtist;
 	document.querySelector('#playbackArt').style.visibility = 'visible';
 	document.querySelector('#playbackArt').src = currArt;
 }

@@ -89,8 +89,10 @@ async function addPath(element) {
  * @param {HTMLElement} element
  */
 async function enableToggleableSetting(element) {
-	// this if the function to enable dark home atm
-	await domAPI.toggleDarkTheme();
+	// if we enable dark mode, we want it to take place immediately
+	if (element.id == 'enable-dark-mode') {
+		await domAPI.toggleDarkTheme();
+	}
 
 	const isEnabled = await domAPI.getProperty(element.id, 'checked');
 	await fsAPI.writeToSetting(element.id, isEnabled);
@@ -146,7 +148,7 @@ async function loadSettingsState() {
 	await updateWatchedFoldersDisplay();
 
 	// These are the toggles relevant to the settings menu
-	const relevantToggles = ['enable-scan-on-startup']; /* 'enable-dark-mode' */
+	const relevantToggles = ['enable-scan-on-startup', 'enable-dark-mode']; /* 'enable-dark-mode' */
 	const allSettings = await fsAPI.getSettings();
 	for (let i=0; i < relevantToggles.length; i++) {
 		if (relevantToggles[i] in allSettings) {

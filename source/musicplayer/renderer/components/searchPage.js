@@ -4,8 +4,10 @@ window.addEventListener('searchPage-loaded', async () => {
 
 let searchGrid = undefined;
 
-/**
- * Function that is called on SearchPage load.
+/** 
+ * @name onSearchPageLoad
+ * @description Function that is called on SearchPage load.
+ * @return {Promise<void>}
  */
 async function onSearchPageLoad() {
 	// GridJS - USAGE EXAMPLE
