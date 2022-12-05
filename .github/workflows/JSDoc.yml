@@ -17,6 +17,9 @@ jobs:
       
     - name: install JSDOC
       run: npm install
+      
+    - name: Generate Template
+      run: npm run tempUpdate
         
     - name: Generate Docs
       run: npm run testJsDoc 
