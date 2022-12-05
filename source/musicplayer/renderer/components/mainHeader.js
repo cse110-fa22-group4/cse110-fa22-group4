@@ -216,8 +216,8 @@ function initInfo(selectedTracks) {
 		currArt = selectedTracks[0]['artwork'];
 	}
 
-	document.querySelector('.songInfo > b').innerHTML = currTitle;
-	document.querySelector('.songInfo > p').innerHTML = currArtist;
+	document.querySelector('#songInfo-title').innerHTML = currTitle;
+	document.querySelector('#songInfo-artist').innerHTML = currArtist;
 	document.querySelector('#playbackArt').style.visibility = 'visible';
 	document.querySelector('#playbackArt').src = currArt;
 }
