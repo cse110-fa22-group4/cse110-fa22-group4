@@ -61,13 +61,10 @@ async function playTrack(element) {
     let newTrackIndex = element.getAttribute('data-queueIndex')
 
     // jump to song and play
-     await jumpSong(newTrackIndex);
+    await jumpSong(newTrackIndex);
 
     // refresh queue viewer
     await refreshQueueViewer();
-
-    // TODO: not sure what else needs to be updated for playback ???
-    // may not end up using this feature, not that important to have
 }
 
 /**
@@ -81,26 +78,25 @@ async function deleteTrackFromQueue(element) {
     const deleteTrackIndex = element.getAttribute('data-queueIndex')
 
     if (deleteTrackIndex == 0) {
-
         // basically just nextSong but we make sure to delete the item even if loop is on
-        if(queueArr.length != 1) {
+        if (queueArr.length != 1) {
             await nextSong();
         }
         else {
-                
-                //pause song
-                if(!isPaused) {
-                    await controlSong();
-                }
+            //pause song
+            if (!isPaused) {
+                await controlSong();
+            }
 
-                clearInterval(intervalID);
-                resetProgress();
-                currSongPath = null;
-                prevSongsArr.splice(0, 0, queueArr[0]);
-                queueArr.splice(0, 1);
+            // move song to history
+            prevSongsArr.splice(0, 0, queueArr[0]);
+            queueArr.splice(0, 1);
 
-                await refreshQueueViewer();
-            
+            //pause song, reset
+            await resetPlayback();
+
+            // refresh queue viewer
+            await refreshQueueViewer();
         }
 
     }
@@ -125,14 +121,14 @@ async function clearQueue(element) {
         return;
     }
 
-    // TODO: add current playing song to prevSongsArr
+    // add current song into song history
+    prevSongsArr.splice(0, 0, queueArr[0]);
 
     // remove all tracks from the queue
     queueArr.splice(0, queueArr.length);
 
     //pause song, reset
     await resetPlayback();
-
 
     // refresh queue viewer
     await refreshQueueViewer();
@@ -161,13 +157,14 @@ async function resetPlayback() {
     // if playing, pause
     if (!isPaused) {
         toggleIcon();
-		isPaused = true;
-	}
+        isPaused = true;
+    }
 
-	await ffmpegAPI.stopSong();
-	clearInterval(intervalID);
-	resetProgress();
-	document.querySelector('#songInfo-title').innerHTML = "";
-	document.querySelector('#songInfo-artist').innerHTML = "";
-	document.querySelector('#playbackArt').style.visibility = 'hidden';
+    await ffmpegAPI.stopSong();
+    currSongPath = null;
+    clearInterval(intervalID);
+    resetProgress();
+    document.querySelector('.songInfo > b').innerHTML = "";
+    document.querySelector('.songInfo > p').innerHTML = "";
+    document.querySelector('#playbackArt').style.visibility = 'hidden';
 }
