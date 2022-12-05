@@ -521,8 +521,8 @@ function updateInfo() {
 		currArt = queueArr[0]['artwork'];
 	}
 
-	const songTitle = document.querySelector('.songInfo > b');
-	const songArtist = document.querySelector('.songInfo > p');
+	const songTitle = document.querySelector('#songInfo-title');
+	const songArtist = document.querySelector('#songInfo-artist');
 	const songArt = document.querySelector('#playbackArt');
 
 	songTitle.innerHTML = currTitle;

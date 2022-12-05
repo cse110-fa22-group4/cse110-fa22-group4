@@ -89,7 +89,6 @@
 }
 
 .library-card-info > div {
-  text-overflow: ellipsis;
   padding: 3px 0;
   height: 11px;
   white-space: nowrap;
