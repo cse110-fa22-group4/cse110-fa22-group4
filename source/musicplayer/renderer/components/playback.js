@@ -47,7 +47,6 @@ const song4 = {'#': '03', 'title': 'never gonna give you up', 'path': songPath4,
 
 
 window.addEventListener('playback-loaded', async () => {
-	// decideFirstSong();
 	// fix for progress when window is out of focus
 	await genAPI.ipcSubscribeToEvent('window-unfocused', async () => {
 		// await console.log('test')
@@ -71,9 +70,9 @@ window.addEventListener('playback-loaded', async () => {
 	await genAPI.publishGlobal(progressFader, 'progressFader');
 	await genAPI.publishGlobal(msElapsed, 'msElapsed');
 	await genAPI.publishGlobal(intervalID, 'intervalID');
-	// shuffle is going to randomize order of songs in playlist
+	// shuffle is going to randomize order of songs in when playing from playlist
 	await domAPI.addEventListener('shuffle-btn', 'click', shuffleSong);
-	// prev also involves access to 'playlist' (array of objects inside map)
+	// prev also involves access to 'playlist' (array of objects)
 	await domAPI.addEventListener('prev-btn', 'click', function() { prevSong(); } );
 	// wrapper to properly pass params without triggering functions initally
 	await domAPI.addEventListener('play-btn', 'click', function() { controlSong(currSongPath);});
@@ -83,19 +82,13 @@ window.addEventListener('playback-loaded', async () => {
 	await domAPI.addEventListener('progressBar', 'mouseup', updateSeek);
 	await domAPI.addEventListener('audio-fader', 'input', updateVolumeIcon);
 	await domAPI.addEventListener('audio-fader', 'change', updateVolume);
-	
-
-	// progress bar functionalities
-	// initProgress();
-	// updateInfo();
-
 	await genAPI.publishGlobal(queueArr, 'queueArr');	// array is not persistent
 });
 
 
 /**
  * @description Handles behavior of play/pause button when clicked
- * 	(ie: change icon, call play, pause, resume)
+ * 	(ie: change icon, call play, pause)
  * @param {string} songPath path of curent song to be played
  */
 async function controlSong(songPath) {
@@ -116,17 +109,8 @@ async function controlSong(songPath) {
 		isPaused = true;
 		clearInterval(intervalID);
 	}
+	// switch play to pause and vice versa
 	toggleIcon();
-}
-
-/**
- * @description add first song on load since next wouldn't been clicked yet
- * helper for nextSong, prevSong to handle edge case
- */
-function decideFirstSong() {
-
-	// set first songPath
-	currSongPath = queueArr[0]['filename'];
 }
 
 /**
@@ -143,37 +127,24 @@ async function nextSong() {
 	// if last item
 	if (queueArr.length == 1) { 
 		
+		// add finished song to prevSongsArr
+		prevSongsArr.splice(0, 0, queueArr[0]);
+
 		// if loop toggle is on, replay song
 		if(toggleOn) {
-			// add finished song to prevSongsArr
-			prevSongsArr.splice(0, 0, queueArr[0]);
-
-			// continue with next song
+			// don't change current song in queue
 			clearInterval(intervalID);
 			resetProgress();
-			await refreshQueueViewer();
 		} 
 		// otherwise remove from queue and end song
 		else {
+			queueArr.splice(0, 1);	// remove song from queue
+			currSongPath = null;	// set current song to be blank
 
-			//pause song if not paused
-			if (!isPaused) {
-				await controlSong();
-			}
-			// reset intervals
-			clearInterval(intervalID);
-			resetProgress();
-
-			// move song to prevSongsArr
-			prevSongsArr.splice(0, 0, queueArr[0]);
-			queueArr.splice(0, 1);
-
-			// set current song to be blank. TODO: Set playbar to not have song content
-			currSongPath = null;
-		
-			await refreshQueueViewer();
+			//pause song, reset
+			await resetPlayback();
 		}
-		
+		await refreshQueueViewer();
 		return;
 	}
 
@@ -188,21 +159,17 @@ async function nextSong() {
 
 	// set next song path
 	currSongPath = queueArr[0]['filename'];
-	
-	
 
 	// on skip, always play the song so button should always become pause
 	if (isPaused) {
 		await controlSong();
 	}
-	
 
 	clearInterval(intervalID);
 	resetProgress();
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
 	intervalID = setInterval( function() { updateProgress(); }, 50);
-	
 	updateInfo();
 
     await refreshQueueViewer();
@@ -211,7 +178,6 @@ async function nextSong() {
 
 /**
  * @description Plays the previous song in playlist (and kills old instance)
- * 	all the tracks of a playlist
  */
 async function prevSong() {
 
@@ -231,14 +197,8 @@ async function prevSong() {
 		await controlSong();
 	}
 
-	clearInterval(intervalID);
-	resetProgress();
-	
-	await ffmpegAPI.stopSong();
-	await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
-	intervalID = setInterval( function() { updateProgress(); }, 50);
-	updateInfo();
-
+	//prep next song
+	await playNewSong();
     await refreshQueueViewer();
 }
 
@@ -266,12 +226,19 @@ async function prevSong() {
 		await controlSong();
 	}
 
+	// prep next song
+	await playNewSong();
+}
+
+/**
+ * Prepares the next song for being played
+ */
+async function playNewSong() {
 	clearInterval(intervalID);
 	resetProgress();
 	await ffmpegAPI.stopSong();
 	await ffmpegAPI.playSong(currSongPath, volume, 0, 67);
 	intervalID = setInterval( function() { updateProgress(); }, 50);
-
 	updateInfo();
 }
 
@@ -379,12 +346,7 @@ function resetProgress() {
 	startStamp = document.querySelector('.timestamps:nth-of-type(1)');
 	endStamp = document.querySelector('.timestamps:nth-of-type(2)');
 	progressFader = document.querySelector('#progressBar');
-	// @ todo read in first song from persistent memory
-	//if (queueArr.length === 0) {
-	//	return;
-	//}
-	// const mapVal = playlistMap.get('playlist');
-	// const playlist = mapVal['trackList'];
+
 	let currSongDuration;
 	if(queueArr.length != 0) {
 		currSongDuration = queueArr[0]['duration'];
@@ -477,15 +439,9 @@ function stopUpdateSeek(event) {
 async function updateSeek(element) {
 	console.log('mouse up');
 	const playBtn = document.querySelector('.playbackBtn:nth-of-type(3)');
-	// console.log(Number(element.value));
-	// const mapVal = playlistMap.get('playlist');
-	// const playlist = mapVal['trackList'];
-	// currSongPath = playlist[songNum]['duration'];
-	// await ffmpegAPI.seekSong(Number(element.value));
-	// seekSong() will likely work too
-	// but relies on duration (which was previosuly hardcoded to 67)
+	
 	msElapsed = (Number(element.value) / 100) * formatStrToMs(endStamp.innerHTML);
-	// const playBtnImg = playBtn.querySelector('img');
+	
 	// case where user pauses then seek, seek should not play automatically
 	if (playBtn.id === 'play-btn') {
 		// don't even have to set global seekVal var b/c msElapsed is basically seekVal
@@ -495,7 +451,6 @@ async function updateSeek(element) {
 	await ffmpegAPI.stopSong();
 	// its undocumented but seekVal is not relative range 0-100
 	// but absolute time in seconds
-	// also using playSong is skips over the looping issue with seekSong() 
 	await ffmpegAPI.playSong(currSongPath, volume, msElapsed/1000);
 	// convert str to number, percent to ms
 	// msElapsed = (Number(element.value) / 100) * formatStrToMs(endStamp.innerHTML);
@@ -531,6 +486,3 @@ function updateInfo() {
 	console.log(songNum);
 	songArt.src = currArt;
 }
-
-// module.exports.decideFirstSong = decideFirstSong
-// export { decideFirstSong };
